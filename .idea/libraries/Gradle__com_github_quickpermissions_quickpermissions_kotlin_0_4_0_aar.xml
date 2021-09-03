@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.quickpermissions:quickpermissions-kotlin:0.4.0@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55eaa8bacdf6e23e4aa3215657b942b/jetified-quickpermissions-kotlin-0.4.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55eaa8bacdf6e23e4aa3215657b942b/jetified-quickpermissions-kotlin-0.4.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b55eaa8bacdf6e23e4aa3215657b942b/jetified-quickpermissions-kotlin-0.4.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.quickpermissions/quickpermissions-kotlin/0.4.0/36f1539c480947cee3d1a9c0fadee8a14dce8b12/quickpermissions-kotlin-0.4.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

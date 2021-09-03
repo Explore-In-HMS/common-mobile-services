@@ -1,0 +1,10 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.huawei.hms:base:5.2.0.300'
+    implementation 'com.google.android.gms:play-services-base:17.6.0'
+
+    api 'com.google.code.gson:gson:2.8.6'
+
+}
+

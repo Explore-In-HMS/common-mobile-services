@@ -1,0 +1,7 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    api project(path: ':core')
+
+    implementation 'com.huawei.hms:identity:5.1.0.300'
+}

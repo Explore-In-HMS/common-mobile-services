@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:dynamic-api:1.0.15.302@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f19671e67b5c6068cb998bdcd1a1ee1/jetified-dynamic-api-1.0.15.302/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f19671e67b5c6068cb998bdcd1a1ee1/jetified-dynamic-api-1.0.15.302/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8f19671e67b5c6068cb998bdcd1a1ee1/jetified-dynamic-api-1.0.15.302/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

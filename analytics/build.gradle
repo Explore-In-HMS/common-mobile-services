@@ -1,0 +1,9 @@
+apply plugin:'com.huawei.agconnect'
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.huawei.hms:hianalytics:5.2.0.300'
+    implementation 'com.google.firebase:firebase-analytics-ktx:18.0.3'
+    api project(path: ':core')
+}
+

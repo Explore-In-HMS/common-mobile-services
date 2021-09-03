@@ -1,0 +1,11 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-awareness:17.1.0' // Don't upgrade the version. Weather API deprecated from upper version.
+    implementation 'com.huawei.hms:awareness:1.0.8.301'
+    implementation 'com.huawei.hms:location:5.0.5.300'
+    implementation "androidx.work:work-runtime-ktx:2.4.0"
+    implementation "com.github.quickpermissions:quickpermissions-kotlin:0.4.0"
+    api project(":core")
+}
+

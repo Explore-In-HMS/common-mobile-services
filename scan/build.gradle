@@ -1,0 +1,15 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+apply plugin: 'com.huawei.agconnect'
+apply plugin: 'kotlin-android'
+
+dependencies {
+    implementation 'com.huawei.hms:scan:1.2.5.300'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "com.github.quickpermissions:quickpermissions-kotlin:0.4.0"
+    implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.1.4'
+    //QR Code Scanner library
+    implementation "com.google.android.gms:play-services-vision:20.1.3"
+    api project(':core')
+}
+

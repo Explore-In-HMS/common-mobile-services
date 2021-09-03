@@ -1,0 +1,9 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+apply plugin: 'com.huawei.agconnect'
+
+dependencies {
+    implementation 'com.huawei.hms:ml-computer-translate:2.2.0.300'
+    implementation 'com.huawei.hms:ml-computer-language-detection:2.0.5.300'
+    api project(':core')
+}
+

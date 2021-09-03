@@ -1,0 +1,9 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    //Scene Kit
+    implementation 'com.huawei.scenekit:full-sdk:5.0.2.300' // Don't upgrade the version number, it wouldn't compile with upper version.
+
+    api project(':core')
+}

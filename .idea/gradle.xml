@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="testRunner" value="GRADLE" />
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/account" />
+            <option value="$PROJECT_DIR$/analytics" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/auth" />
+            <option value="$PROJECT_DIR$/awareness" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/crash" />
+            <option value="$PROJECT_DIR$/creditcardscanner" />
+            <option value="$PROJECT_DIR$/identity" />
+            <option value="$PROJECT_DIR$/location" />
+            <option value="$PROJECT_DIR$/mapkit" />
+            <option value="$PROJECT_DIR$/push" />
+            <option value="$PROJECT_DIR$/safety" />
+            <option value="$PROJECT_DIR$/scan" />
+            <option value="$PROJECT_DIR$/scene" />
+            <option value="$PROJECT_DIR$/site" />
+            <option value="$PROJECT_DIR$/speechtotext" />
+            <option value="$PROJECT_DIR$/translate" />
+          </set>
+        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>

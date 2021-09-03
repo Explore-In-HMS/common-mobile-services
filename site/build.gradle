@@ -1,0 +1,13 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    //Huawei Services
+    implementation 'com.huawei.hms:site:5.1.0.300' // Dont upgrade the version. It wouldn't compile with upper versions.
+    //Google Services
+    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    api 'com.google.android.gms:play-services-maps:17.0.0'
+    api 'com.google.maps.android:android-maps-utils:0.6.2'
+    api project(':core')
+}
+

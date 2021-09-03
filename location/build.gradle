@@ -1,0 +1,9 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.huawei.hms:location:5.0.5.300'
+    api "com.github.quickpermissions:quickpermissions-kotlin:0.4.0"
+    api project(':core')
+}
+

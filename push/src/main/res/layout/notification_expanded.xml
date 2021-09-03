@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="256dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ViewFlipper
+            android:id="@+id/viewFlipperExpandedSPN"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:autoStart="false"
+            android:flipInterval="2500"
+            android:inAnimation="@android:anim/slide_in_left"
+            android:outAnimation="@android:anim/slide_out_right" />
+
+        <ImageView
+            android:id="@+id/buttonPreviousSPN"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center"
+            android:layout_marginStart="8dp"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/prev_button"
+            tools:ignore="RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/buttonNextSPN"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:scaleType="centerInside"
+            android:src="@drawable/next_button"
+            tools:ignore="RtlHardcoded" />
+
+    </FrameLayout>
+
+</RelativeLayout>

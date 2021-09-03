@@ -1,0 +1,8 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation "com.huawei.hms:ml-computer-voice-asr-plugin:2.2.0.300"
+    implementation "com.github.quickpermissions:quickpermissions-kotlin:0.4.0"
+    api project(":core")
+}
+

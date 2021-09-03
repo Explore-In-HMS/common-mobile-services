@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_cancelled">User Cancelled</string>
+    <string name="scan_fail">Scan Fail</string>
+    <string name="scan_denied">Scan Denied</string>
+</resources>

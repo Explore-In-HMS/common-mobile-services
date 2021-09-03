@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Common_Mobile_Services.iml" filepath="$PROJECT_DIR$/.idea/modules/Common_Mobile_Services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/account/Common_Mobile_Services.account.iml" filepath="$PROJECT_DIR$/.idea/modules/account/Common_Mobile_Services.account.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/analytics/Common_Mobile_Services.analytics.iml" filepath="$PROJECT_DIR$/.idea/modules/analytics/Common_Mobile_Services.analytics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Common_Mobile_Services.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Common_Mobile_Services.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth/Common_Mobile_Services.auth.iml" filepath="$PROJECT_DIR$/.idea/modules/auth/Common_Mobile_Services.auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/awareness/Common_Mobile_Services.awareness.iml" filepath="$PROJECT_DIR$/.idea/modules/awareness/Common_Mobile_Services.awareness.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Common_Mobile_Services.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Common_Mobile_Services.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crash/Common_Mobile_Services.crash.iml" filepath="$PROJECT_DIR$/.idea/modules/crash/Common_Mobile_Services.crash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/creditcardscanner/Common_Mobile_Services.creditcardscanner.iml" filepath="$PROJECT_DIR$/.idea/modules/creditcardscanner/Common_Mobile_Services.creditcardscanner.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/identity/Common_Mobile_Services.identity.iml" filepath="$PROJECT_DIR$/.idea/modules/identity/Common_Mobile_Services.identity.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/Common_Mobile_Services.location.iml" filepath="$PROJECT_DIR$/.idea/modules/location/Common_Mobile_Services.location.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/mapkit/Common_Mobile_Services.mapkit.iml" filepath="$PROJECT_DIR$/.idea/modules/mapkit/Common_Mobile_Services.mapkit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/push/Common_Mobile_Services.push.iml" filepath="$PROJECT_DIR$/.idea/modules/push/Common_Mobile_Services.push.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/safety/Common_Mobile_Services.safety.iml" filepath="$PROJECT_DIR$/.idea/modules/safety/Common_Mobile_Services.safety.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scan/Common_Mobile_Services.scan.iml" filepath="$PROJECT_DIR$/.idea/modules/scan/Common_Mobile_Services.scan.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/scene/Common_Mobile_Services.scene.iml" filepath="$PROJECT_DIR$/.idea/modules/scene/Common_Mobile_Services.scene.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/site/Common_Mobile_Services.site.iml" filepath="$PROJECT_DIR$/.idea/modules/site/Common_Mobile_Services.site.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/speechtotext/Common_Mobile_Services.speechtotext.iml" filepath="$PROJECT_DIR$/.idea/modules/speechtotext/Common_Mobile_Services.speechtotext.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/translate/Common_Mobile_Services.translate.iml" filepath="$PROJECT_DIR$/.idea/modules/translate/Common_Mobile_Services.translate.iml" />
+    </modules>
+  </component>
+</project>

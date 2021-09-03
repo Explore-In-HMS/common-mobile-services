@@ -1,0 +1,11 @@
+apply plugin: "org.sonarqube"
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", ""
+        property "sonar.projectName", ""
+        property "sonar.login", ""
+        property "sonar.host.url", ""
+        property "sonar.projectVersion", android.defaultConfig.versionName
+    }
+}

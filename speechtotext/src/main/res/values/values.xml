@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gms_not_supported">This feature is not supported on GMS devices.</string>
+</resources>

@@ -1,0 +1,12 @@
+{
+	"client":{
+		"cp_id":"000",
+		"product_id":"000",
+		"client_id":"000",
+		"client_secret":"xxx",
+		"app_id":"000",
+		"package_name":"com.hms.lib.commonmobileservices",
+		"api_key":"xxx"
+	},
+	"configuration_version":"1.0"
+}

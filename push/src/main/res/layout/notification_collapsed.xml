@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewCollapsedHeaderSPN"
+        tools:text="New Message!"
+        android:textSize="15sp"
+        style="@style/TextAppearance.Compat.Notification.Title"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Expand to show!"
+        android:id="@+id/textViewCollapsedContentSPN"
+        style="@style/TextAppearance.Compat.Notification.Info"/>
+</LinearLayout>

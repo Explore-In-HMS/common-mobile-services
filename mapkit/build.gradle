@@ -1,0 +1,11 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    //Huawei Services
+    api 'com.huawei.hms:maps:5.2.0.302'
+    //Google Services
+    api 'com.google.android.gms:play-services-maps:17.0.0'
+    api 'com.google.maps.android:android-maps-utils:0.6.2'
+    api project(':core')
+}
+

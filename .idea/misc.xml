@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="mapkit/src/main/res/layout/common_map_view.xml" value="0.1" />
+        <entry key="push/src/main/res/layout/notification_collapsed.xml" value="0.1" />
+        <entry key="push/src/main/res/layout/notification_expanded.xml" value="0.1" />
+        <entry key="push/src/main/res/layout/notification_expanded_item.xml" value="0.1" />
+        <entry key="scan/src/main/res/layout/activity_google_barcode_scanner.xml" value="0.1" />
+        <entry key="scene/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.19739583333333333" />
+        <entry key="scene/src/main/res/drawable/ic_launcher_background.xml" value="0.19739583333333333" />
+        <entry key="scene/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19739583333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="SuppressABINotification">
+    <option name="modulesWithSuppressedNotConfigured">
+      <set>
+        <option value="Common_Mobile_Services.site" />
+      </set>
+    </option>
+  </component>
+</project>

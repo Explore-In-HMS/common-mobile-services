@@ -1,0 +1,5 @@
+<resources>
+    <string name="gms_awareness_error">GMS awareness service is currently not working. Try it later.</string>
+    <string name="hms_awareness_error">HMS awareness service is currently not working. Try it later.</string>
+    <string name="missing_permission">Missing permission(s).</string>
+</resources>

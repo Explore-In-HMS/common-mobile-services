@@ -1,0 +1,7 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    api 'com.huawei.hms:ml-computer-card-bcr:2.0.3.301'
+    api project(":core")
+}
+
