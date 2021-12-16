@@ -30,20 +30,20 @@ interface CommonMap : UISettings {
         longitude: Double,
         iconBitmap: Bitmap? = null,
         anchor: Pair<Float, Float>? = null
-    ): CommonMarker
+    ): Marker
 
-    fun addPolygon(commonPolygonOptions: CommonPolygonOptions): CommonPolygon
-    fun addPolyline(commonPolylineOptions: CommonPolylineOptions): CommonPolyline
+    fun addPolygon(polygonOptions: PolygonOptions): Polygon
+    fun addPolyline(polylineOptions: PolylineOptions): Polyline
 
     fun setOnInfoWindowClickListener(
         markerClickCallback: (
             markerTitle: String?,
             markerSnippet: String?,
-            commonLatLng: CommonLatLng
+            latLng: LatLng
         ) -> Unit
     )
 
-    fun setOnMapClickListener(onClick: (commonLatLng: CommonLatLng) -> Unit)
+    fun setOnMapClickListener(onClick: (latLng: LatLng) -> Unit)
     fun moveCamera(latitude: Double, longitude: Double, zoomRatio: Float)
     fun animateCamera(latitude: Double, longitude: Double, zoomRatio: Float)
     fun setMyLocationEnabled(myLocationEnabled: Boolean?, context: Context): Boolean
@@ -55,7 +55,7 @@ interface CommonMap : UISettings {
     fun onStop()
     fun onDestroy()
     fun onLowMemory()
-    fun calculateDistanceBetweenPoints(p1: CommonLatLng, p2: CommonLatLng): Double
+    fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng): Double
     fun getCameraPosition(): CameraPosition
     fun setOnCameraIdleListener(listener: () -> Unit)
     fun setOnCameraMoveStartedListener(listener: () -> Unit)

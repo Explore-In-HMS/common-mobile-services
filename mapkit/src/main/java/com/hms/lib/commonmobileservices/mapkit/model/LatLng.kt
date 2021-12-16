@@ -11,11 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.hms.lib.commonmobileservices.mapkit.model
 
-class CommonPolylineOptions {
-    val baseLatLngs = ArrayList<CommonLatLng>()
-    var Color : Int?=null
-    var Width : Float?=null
-}
+data class LatLng (val lat: Double, val lng: Double)

@@ -13,4 +13,10 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class CommonLatLng (val lat: Double, val lng: Double)
+class PolygonOptions()  {
+    val baseLatLngs = ArrayList<LatLng>()
+    var strokeColor : Int?=null
+    var strokeWidth : Float?=null
+}
+
+

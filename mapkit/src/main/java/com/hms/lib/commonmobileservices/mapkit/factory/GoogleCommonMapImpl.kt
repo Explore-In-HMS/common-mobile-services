@@ -50,12 +50,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         }
     }
 
-    override fun addPolygon(commonPolygon: CommonPolygonOptions): CommonPolygon {
-        return map.addPolygon(commonPolygon.toGMSPolygonOptions()).toCommonPolygon()
+    override fun addPolygon(polygonOptions: PolygonOptions): Polygon {
+        return map.addPolygon(polygonOptions.toGMSPolygonOptions()).toPolygon()
     }
 
-    override fun addPolyline(commonPolyline: CommonPolylineOptions): CommonPolyline {
-        return map.addPolyline(commonPolyline.toGMSPolylineOptions()).toCommonPolyline()
+    override fun addPolyline(polygonOptions: PolylineOptions): Polyline {
+        return map.addPolyline(polygonOptions.toGMSPolylineOptions()).toPolyline()
     }
 
     override fun addMarker(
@@ -65,7 +65,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         longitude: Double,
         iconBitmap: Bitmap?,
         anchor: Pair<Float, Float>?
-    ): CommonMarker {
+    ): Marker {
         val markerOptions = MarkerOptions().apply {
             position(LatLng(latitude, longitude))
             title?.let { title(it) }
@@ -73,21 +73,21 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
             iconBitmap?.let { icon(BitmapDescriptorFactory.fromBitmap(it)) }
             anchor?.let { anchor(it.first, it.second) }
         }
-        return CommonMarker(map.addMarker(markerOptions))
+        return Marker(map.addMarker(markerOptions))
     }
 
     override fun setOnInfoWindowClickListener(
         markerClickCallback: (
             markerTitle: String?,
             markerSnippet: String?,
-            commonLatLng: CommonLatLng
+            latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng
         ) -> Unit
     ) {
         map.setOnInfoWindowClickListener { marker ->
             markerClickCallback.invoke(
                 marker.title,
                 marker.snippet,
-                marker.position.toCommonLatLng()
+                marker.position.toLatLng()
             )
         }
     }
@@ -148,7 +148,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun getCameraPosition(): CameraPosition = CameraPosition(
-        CommonLatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
+        com.hms.lib.commonmobileservices.mapkit.model.LatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
         map.cameraPosition.zoom,
         map.cameraPosition.tilt,
         map.cameraPosition.bearing
@@ -256,9 +256,9 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         map.uiSettings.setAllGesturesEnabled(allGestureEnable!!)
     }
 
-    override fun setOnMapClickListener(onClick: (commonLatLng: CommonLatLng) -> Unit) {
+    override fun setOnMapClickListener(onClick: (latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng) -> Unit) {
         map.setOnMapClickListener {
-            onClick.invoke(CommonLatLng(it.latitude, it.longitude))
+            onClick.invoke(com.hms.lib.commonmobileservices.mapkit.model.LatLng(it.latitude, it.longitude))
         }
     }
 

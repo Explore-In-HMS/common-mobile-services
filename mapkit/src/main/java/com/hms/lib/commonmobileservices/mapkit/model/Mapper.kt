@@ -13,39 +13,37 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.huawei.hms.maps.model.*
+fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
+fun com.huawei.hms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
 
-fun Polygon.toCommonPolygon() : CommonPolygon = CommonPolygon(this)
-fun Polyline.toCommonPolyline() : CommonPolyline = CommonPolyline(this)
+fun com.google.android.gms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
+fun com.google.android.gms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
 
-fun com.google.android.gms.maps.model.Polygon.toCommonPolygon() : CommonPolygon = CommonPolygon(this)
-fun com.google.android.gms.maps.model.Polyline.toCommonPolyline() : CommonPolyline = CommonPolyline(this)
-
-fun CommonPolygonOptions.toHMSPolygonOptions() : PolygonOptions {
-    return PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
+fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
+    return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
         strokeColor?.let {hmsOpts.strokeColor(it)}
         strokeWidth?.let {hmsOpts.strokeWidth(it)}
     }
 }
 
-fun CommonLatLng.toHMSLatLng() : LatLng {
-    return LatLng(lat,lng)
+fun LatLng.toHMSLatLng() : com.huawei.hms.maps.model.LatLng {
+    return com.huawei.hms.maps.model.LatLng(lat,lng)
 }
 
-fun LatLng.toCommonLatLng() : CommonLatLng {
-    return CommonLatLng(latitude,longitude)
+fun com.huawei.hms.maps.model.LatLng.toLatLng() : LatLng {
+    return LatLng(latitude,longitude)
 }
 
-fun CommonLatLng.toGMSLatLng() : com.google.android.gms.maps.model.LatLng{
+fun LatLng.toGMSLatLng() : com.google.android.gms.maps.model.LatLng{
     return com.google.android.gms.maps.model.LatLng(lat,lng)
 }
 
-fun com.google.android.gms.maps.model.LatLng.toCommonLatLng() : CommonLatLng {
-    return CommonLatLng(latitude,longitude)
+fun com.google.android.gms.maps.model.LatLng.toLatLng() : LatLng {
+    return LatLng(latitude,longitude)
 }
 
 
-fun CommonPolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.model.PolygonOptions{
+fun PolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.model.PolygonOptions{
     return com.google.android.gms.maps.model.PolygonOptions().
     addAll(baseLatLngs.map { it.toGMSLatLng() }).also {gmsOpts->
         strokeColor?.let {gmsOpts.strokeColor(it)}
@@ -53,14 +51,14 @@ fun CommonPolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.mod
     }
 }
 
-fun CommonPolylineOptions.toHMSPolylineOptions() : PolylineOptions {
-    return PolylineOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
+fun PolylineOptions.toHMSPolylineOptions() : com.huawei.hms.maps.model.PolylineOptions {
+    return com.huawei.hms.maps.model.PolylineOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
         Color?.let {hmsOpts.color(it)}
         Width?.let {hmsOpts.width(it)}
     }
 }
 
-fun CommonPolylineOptions.toGMSPolylineOptions() : com.google.android.gms.maps.model.PolylineOptions{
+fun PolylineOptions.toGMSPolylineOptions() : com.google.android.gms.maps.model.PolylineOptions{
     return com.google.android.gms.maps.model.PolylineOptions().
     addAll(baseLatLngs.map { it.toGMSLatLng() }).also {gmsOpts->
         Color?.let {gmsOpts.color(it)}

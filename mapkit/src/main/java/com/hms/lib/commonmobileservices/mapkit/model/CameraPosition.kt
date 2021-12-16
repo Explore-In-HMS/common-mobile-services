@@ -14,7 +14,7 @@
 package com.hms.lib.commonmobileservices.mapkit.model
 
 data class CameraPosition(
-    val target: CommonLatLng,
+    val target: LatLng,
     val zoom: Float,
     val tilt: Float,
     val bearing: Float
