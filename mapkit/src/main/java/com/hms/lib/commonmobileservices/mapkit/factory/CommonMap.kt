@@ -59,5 +59,7 @@ interface CommonMap : UISettings {
     fun getCameraPosition(): CameraPosition
     fun setOnCameraIdleListener(listener: () -> Unit)
     fun setOnCameraMoveStartedListener(listener: () -> Unit)
+    fun getMaxZoomLevel(): Float
+    fun getMinZoomLevel(): Float
 
 }

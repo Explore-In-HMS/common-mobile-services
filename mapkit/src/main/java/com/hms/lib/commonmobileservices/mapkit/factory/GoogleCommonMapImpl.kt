@@ -162,6 +162,14 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         map.setOnCameraMoveStartedListener { listener.invoke() }
     }
 
+    override fun getMaxZoomLevel(): Float {
+        return map.maxZoomLevel
+    }
+
+    override fun getMinZoomLevel(): Float {
+        return map.minZoomLevel
+    }
+
 
     override fun isCompassEnabled(): Boolean {
         return map.uiSettings.isCompassEnabled

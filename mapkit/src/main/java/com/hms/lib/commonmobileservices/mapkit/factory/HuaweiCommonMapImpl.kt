@@ -181,6 +181,10 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         map.setOnCameraMoveStartedListener { listener.invoke() }
     }
 
+    override fun getMaxZoomLevel(): Float {
+        return map.maxZoomLevel
+    }
+
     override fun isCompassEnabled(): Boolean {
         return map.uiSettings.isCompassEnabled
     }
@@ -267,4 +271,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         map.uiSettings.setAllGesturesEnabled(allGestureEnable!!)
     }
 
+    override fun getMinZoomLevel(): Float {
+        return map.minZoomLevel
+    }
 }
