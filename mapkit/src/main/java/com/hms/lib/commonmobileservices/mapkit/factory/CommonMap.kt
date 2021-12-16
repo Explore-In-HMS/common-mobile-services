@@ -56,7 +56,7 @@ interface CommonMap : UISettings {
     fun onDestroy()
     fun onLowMemory()
     fun calculateDistanceBetweenPoints(p1: CommonLatLng, p2: CommonLatLng): Double
-    fun getCameraPosition(): CommonCameraPosition
+    fun getCameraPosition(): CameraPosition
     fun setOnCameraIdleListener(listener: () -> Unit)
     fun setOnCameraMoveStartedListener(listener: () -> Unit)
 

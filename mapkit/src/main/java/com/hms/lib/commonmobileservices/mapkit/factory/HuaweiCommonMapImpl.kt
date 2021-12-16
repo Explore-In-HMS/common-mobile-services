@@ -162,10 +162,10 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         mapView.onLowMemory()
     }
 
-    override fun getCameraPosition(): CommonCameraPosition {
+    override fun getCameraPosition(): CameraPosition {
         println("huawei map: $map")
         println("camera position huawei: ${map.cameraPosition.target}")
-        return CommonCameraPosition(
+        return CameraPosition(
             CommonLatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
             map.cameraPosition.zoom,
             map.cameraPosition.tilt,

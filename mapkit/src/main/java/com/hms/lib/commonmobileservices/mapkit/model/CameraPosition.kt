@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class CommonCameraPosition(
+data class CameraPosition(
     val target: CommonLatLng,
     val zoom: Float,
     val tilt: Float,

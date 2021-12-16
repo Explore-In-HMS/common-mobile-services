@@ -147,7 +147,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         mapView.onLowMemory()
     }
 
-    override fun getCameraPosition(): CommonCameraPosition = CommonCameraPosition(
+    override fun getCameraPosition(): CameraPosition = CameraPosition(
         CommonLatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
         map.cameraPosition.zoom,
         map.cameraPosition.tilt,

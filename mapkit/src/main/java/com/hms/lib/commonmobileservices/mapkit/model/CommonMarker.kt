@@ -16,7 +16,7 @@ package com.hms.lib.commonmobileservices.mapkit.model
 import com.huawei.hms.maps.model.Marker
 import java.lang.Exception
 
-class CommonMarker(val markerImpl : Any) {
+class CommonMarker(val markerImpl : Any?) {
     fun hide(){
         when (markerImpl){
             is Marker -> markerImpl.isVisible=false
