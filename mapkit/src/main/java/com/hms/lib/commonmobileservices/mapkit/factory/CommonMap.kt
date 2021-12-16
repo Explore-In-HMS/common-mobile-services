@@ -61,5 +61,6 @@ interface CommonMap : UISettings {
     fun setOnCameraMoveStartedListener(listener: () -> Unit)
     fun getMaxZoomLevel(): Float
     fun getMinZoomLevel(): Float
-
+    fun stopAnimation()
+    fun addCircle(circleOptions: CircleOptions): Circle
 }

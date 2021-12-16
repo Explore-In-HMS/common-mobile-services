@@ -15,9 +15,11 @@ package com.hms.lib.commonmobileservices.mapkit.model
 
 fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.huawei.hms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
+fun HmsCircle.toCircle(): Circle = Circle(this)
 
 fun com.google.android.gms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.google.android.gms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
+fun GmsCircle.toCircle(): Circle = Circle(this)
 
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
     return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
@@ -63,6 +65,20 @@ fun PolylineOptions.toGMSPolylineOptions() : com.google.android.gms.maps.model.P
     addAll(baseLatLngs.map { it.toGMSLatLng() }).also {gmsOpts->
         Color?.let {gmsOpts.color(it)}
         Width?.let {gmsOpts.width(it)}
+    }
+}
+
+fun CircleOptions.toHMSCircleOptions(): HmsCircleOptions{
+    return HmsCircleOptions().also { hmsCircle ->
+        radius?.let { hmsCircle.radius(it) }
+        center?.let { hmsCircle.center(it.toHMSLatLng()) }
+    }
+}
+
+fun CircleOptions.toGmsCircleOptions(): GmsCircleOptions{
+    return GmsCircleOptions().also { gmsCircle ->
+        radius?.let { gmsCircle.radius(it) }
+        center?.let { gmsCircle.center(it.toGMSLatLng()) }
     }
 }
 

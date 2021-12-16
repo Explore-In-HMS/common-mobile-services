@@ -13,20 +13,20 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.huawei.hms.maps.model.Polygon
+
 import java.lang.Exception
 
 class Polygon(val polygonImpl : Any) {
     fun hide(){
         when (polygonImpl){
-            is Polygon -> polygonImpl.isVisible=false
+            is com.huawei.hms.maps.model.Polygon -> polygonImpl.isVisible=false
             is com.google.android.gms.maps.model.Polygon -> polygonImpl.isVisible=false
         }
     }
 
     fun show(){
         when (polygonImpl){
-            is Polygon -> polygonImpl.isVisible=true
+            is com.huawei.hms.maps.model.Polygon -> polygonImpl.isVisible=true
             is com.google.android.gms.maps.model.Polygon -> polygonImpl.isVisible=true
         }
     }
@@ -34,7 +34,7 @@ class Polygon(val polygonImpl : Any) {
     fun remove() :Boolean{
         return try {
             when (polygonImpl){
-                is Polygon -> polygonImpl.remove()
+                is com.huawei.hms.maps.model.Polygon -> polygonImpl.remove()
                 is com.google.android.gms.maps.model.Polygon -> polygonImpl.remove()
             }
             true

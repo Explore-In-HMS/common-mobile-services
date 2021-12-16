@@ -13,20 +13,19 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.huawei.hms.maps.model.Marker
 import java.lang.Exception
 
 class Marker(val markerImpl : Any?) {
     fun hide(){
         when (markerImpl){
-            is Marker -> markerImpl.isVisible=false
+            is com.huawei.hms.maps.model.Marker -> markerImpl.isVisible=false
             is com.google.android.gms.maps.model.Marker -> markerImpl.isVisible=false
         }
     }
 
     fun show(){
         when (markerImpl){
-            is Marker -> markerImpl.isVisible=true
+            is com.huawei.hms.maps.model.Marker -> markerImpl.isVisible=true
             is com.google.android.gms.maps.model.Marker -> markerImpl.isVisible=true
         }
     }
@@ -34,7 +33,7 @@ class Marker(val markerImpl : Any?) {
     fun remove() : Boolean{
         return try {
             when (markerImpl){
-                is Marker -> markerImpl.remove()
+                is com.huawei.hms.maps.model.Marker -> markerImpl.remove()
                 is com.google.android.gms.maps.model.Marker -> markerImpl.remove()
             }
             true

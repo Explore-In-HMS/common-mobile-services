@@ -274,4 +274,12 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun getMinZoomLevel(): Float {
         return map.minZoomLevel
     }
+
+    override fun stopAnimation() {
+        map.stopAnimation()
+    }
+
+    override fun addCircle(circleOptions: CircleOptions): Circle {
+        return map.addCircle(circleOptions.toHMSCircleOptions()).toCircle()
+    }
 }

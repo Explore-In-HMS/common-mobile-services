@@ -54,8 +54,8 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         return map.addPolygon(polygonOptions.toGMSPolygonOptions()).toPolygon()
     }
 
-    override fun addPolyline(polygonOptions: PolylineOptions): Polyline {
-        return map.addPolyline(polygonOptions.toGMSPolylineOptions()).toPolyline()
+    override fun addPolyline(polylineOptions: PolylineOptions): Polyline {
+        return map.addPolyline(polylineOptions.toGMSPolylineOptions()).toPolyline()
     }
 
     override fun addMarker(
@@ -262,4 +262,11 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         }
     }
 
+    override fun stopAnimation() {
+        map.stopAnimation()
+    }
+
+    override fun addCircle(circleOptions: CircleOptions): Circle {
+        return map.addCircle(circleOptions.toGmsCircleOptions()).toCircle()
+    }
 }
