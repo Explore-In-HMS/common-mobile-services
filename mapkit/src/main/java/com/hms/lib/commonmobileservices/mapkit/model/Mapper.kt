@@ -13,15 +13,22 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
-fun com.huawei.hms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
-fun HmsCircle.toCircle(): Circle = Circle(this)
-fun HmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
+import com.google.android.gms.maps.model.Tile
 
+fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.google.android.gms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
+
+fun com.huawei.hms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
 fun com.google.android.gms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
+
+fun HmsCircle.toCircle(): Circle = Circle(this)
 fun GmsCircle.toCircle(): Circle = Circle(this)
+
+fun HmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
 fun GmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
+
+fun HmsTileOverlay.toTileOverlay(): TileOverlay = TileOverlay(this)
+fun GmsTileOverlay.toTileOverlay(): TileOverlay = TileOverlay(this)
 
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
     return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
@@ -125,3 +132,22 @@ fun LatLngBounds.toHmsLatLngBounds(): HmsLatLngBounds{
         northeast.toHMSLatLng()
     )
 }
+
+fun TileOverlayOptions.toHmsTileOverlayOptions(): HmsTileOverlayOptions{
+    return HmsTileOverlayOptions().also { options ->
+        options.zIndex(zIndex)
+        options.visible(isVisible)
+        options.fadeIn(fadeIn)
+        options.transparency(transparency)
+    }
+}
+
+fun TileOverlayOptions.toGmsTileOverlayOptions(): GmsTileOverlayOptions{
+    return GmsTileOverlayOptions().also { options ->
+        options.zIndex(zIndex)
+        options.visible(isVisible)
+        options.fadeIn(fadeIn)
+        options.transparency(transparency)
+    }
+}
+

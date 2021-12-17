@@ -274,4 +274,8 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
         return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions()).toGroundOverlay()
     }
+
+    override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
+        return map.addTileOverlay(tileOverlayOptions.toGmsTileOverlayOptions()).toTileOverlay()
+    }
 }

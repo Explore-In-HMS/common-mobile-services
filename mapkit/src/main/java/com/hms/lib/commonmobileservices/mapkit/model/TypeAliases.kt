@@ -14,3 +14,9 @@ typealias GmsGroundOverlayOptions = com.google.android.gms.maps.model.GroundOver
 
 typealias HmsLatLngBounds = com.huawei.hms.maps.model.LatLngBounds
 typealias GmsLatLngBounds = com.google.android.gms.maps.model.LatLngBounds
+
+typealias HmsTileOverlay = com.huawei.hms.maps.model.TileOverlay
+typealias GmsTileOverlay = com.google.android.gms.maps.model.TileOverlay
+
+typealias HmsTileOverlayOptions = com.huawei.hms.maps.model.TileOverlayOptions
+typealias GmsTileOverlayOptions = com.google.android.gms.maps.model.TileOverlayOptions

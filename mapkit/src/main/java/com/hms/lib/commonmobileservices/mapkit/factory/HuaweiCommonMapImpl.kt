@@ -286,4 +286,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
         return map.addGroundOverlay(groundOverlayOptions.toHmsGroundOverlayOptions()).toGroundOverlay()
     }
+
+    override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
+        return map.addTileOverlay(tileOverlayOptions.toHmsTileOverlayOptions()).toTileOverlay()
+    }
 }

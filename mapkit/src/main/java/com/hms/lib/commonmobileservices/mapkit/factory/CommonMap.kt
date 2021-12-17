@@ -64,4 +64,5 @@ interface CommonMap : UISettings {
     fun stopAnimation()
     fun addCircle(circleOptions: CircleOptions): Circle
     fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay
+    fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay
 }
