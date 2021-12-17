@@ -63,4 +63,5 @@ interface CommonMap : UISettings {
     fun getMinZoomLevel(): Float
     fun stopAnimation()
     fun addCircle(circleOptions: CircleOptions): Circle
+    fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay
 }

@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -268,5 +269,9 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun addCircle(circleOptions: CircleOptions): Circle {
         return map.addCircle(circleOptions.toGmsCircleOptions()).toCircle()
+    }
+
+    override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
+        return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions()).toGroundOverlay()
     }
 }

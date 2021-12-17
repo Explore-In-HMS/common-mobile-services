@@ -282,4 +282,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun addCircle(circleOptions: CircleOptions): Circle {
         return map.addCircle(circleOptions.toHMSCircleOptions()).toCircle()
     }
+
+    override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
+        return map.addGroundOverlay(groundOverlayOptions.toHmsGroundOverlayOptions()).toGroundOverlay()
+    }
 }

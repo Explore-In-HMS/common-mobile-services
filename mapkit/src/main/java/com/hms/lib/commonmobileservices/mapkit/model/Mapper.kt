@@ -16,10 +16,12 @@ package com.hms.lib.commonmobileservices.mapkit.model
 fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.huawei.hms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
 fun HmsCircle.toCircle(): Circle = Circle(this)
+fun HmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
 
 fun com.google.android.gms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.google.android.gms.maps.model.Polyline.toPolyline() : Polyline = Polyline(this)
 fun GmsCircle.toCircle(): Circle = Circle(this)
+fun GmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
 
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
     return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
@@ -82,5 +84,44 @@ fun CircleOptions.toGmsCircleOptions(): GmsCircleOptions{
     }
 }
 
+fun GroundOverlayOptions.toHmsGroundOverlayOptions(): HmsGroundOverlayOptions{
+    return HmsGroundOverlayOptions().also { options ->
+        options.bearing(getBearing())
+        options.anchor(getAnchorU(), getAnchorV())
+        options.clickable(isClickable())
+        getLocation()?.let { options.position(it.toHMSLatLng(), getWidth()) }
+        getLocation()?.let { options.position(it.toHMSLatLng(), getWidth(), getHeight()) }
+        getBounds()?.let { options.positionFromBounds(it.toHmsLatLngBounds()) }
+        options.transparency(getTransparency())
+        options.visible(isVisible())
+        options.zIndex(getZIndex())
+    }
+}
 
+fun GroundOverlayOptions.toGmsGroundOverlayOptions(): GmsGroundOverlayOptions{
+    return GmsGroundOverlayOptions().also { options ->
+        options.bearing(getBearing())
+        options.anchor(getAnchorU(), getAnchorV())
+        options.clickable(isClickable())
+        getLocation()?.let { options.position(it.toGMSLatLng(), getWidth()) }
+        getLocation()?.let { options.position(it.toGMSLatLng(), getWidth(), getHeight()) }
+        getBounds()?.let { options.positionFromBounds(it.toGmsLatLngBounds()) }
+        options.transparency(getTransparency())
+        options.visible(isVisible())
+        options.zIndex(getZIndex())
+    }
+}
 
+fun LatLngBounds.toGmsLatLngBounds(): GmsLatLngBounds{
+    return GmsLatLngBounds(
+        southwest.toGMSLatLng(),
+        northeast.toGMSLatLng()
+    )
+}
+
+fun LatLngBounds.toHmsLatLngBounds(): HmsLatLngBounds{
+    return HmsLatLngBounds(
+        southwest.toHMSLatLng(),
+        northeast.toHMSLatLng()
+    )
+}
