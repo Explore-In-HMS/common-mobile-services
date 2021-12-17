@@ -278,4 +278,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
         return map.addTileOverlay(tileOverlayOptions.toGmsTileOverlayOptions()).toTileOverlay()
     }
+
+    override fun setMapType(type: Int) {
+        map.mapType = type
+    }
+
+    override fun getMapType(): Int {
+        return map.mapType
+    }
 }

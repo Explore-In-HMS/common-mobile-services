@@ -20,6 +20,15 @@ import android.view.View
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
 interface CommonMap : UISettings {
+
+    companion object{
+        const val MAP_TYPE_NONE = 0
+        const val MAP_TYPE_NORMAL = 1
+        const val MAP_TYPE_SATELLITE = 2
+        const val MAP_TYPE_TERRAIN = 3
+        const val MAP_TYPE_HYBRID = 4
+    }
+
     fun getMapView(): View
     fun onCreate(bundle: Bundle?)
     fun getMapAsync(onMapReadyListener: (map: CommonMap) -> Unit)
@@ -65,4 +74,6 @@ interface CommonMap : UISettings {
     fun addCircle(circleOptions: CircleOptions): Circle
     fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay
     fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay
+    fun setMapType(type: Int)
+    fun getMapType():Int
 }
