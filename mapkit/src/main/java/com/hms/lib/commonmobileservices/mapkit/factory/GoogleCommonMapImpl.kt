@@ -294,4 +294,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun setTrafficEnabled(enabled: Boolean) {
         map.isTrafficEnabled = enabled
     }
+
+    override fun isIndoorEnabled(): Boolean {
+        return map.isIndoorEnabled
+    }
+
+    override fun setIndoorEnabled(enabled: Boolean) {
+        map.isIndoorEnabled = enabled
+    }
 }
