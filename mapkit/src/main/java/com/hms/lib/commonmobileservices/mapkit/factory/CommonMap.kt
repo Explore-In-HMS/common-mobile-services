@@ -76,4 +76,6 @@ interface CommonMap : UISettings {
     fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay
     fun setMapType(type: Int)
     fun getMapType():Int
+    fun isTrafficEnabled(): Boolean
+    fun setTrafficEnabled(enabled: Boolean)
 }

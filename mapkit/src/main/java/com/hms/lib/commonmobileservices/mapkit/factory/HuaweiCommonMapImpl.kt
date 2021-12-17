@@ -298,4 +298,12 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun getMapType(): Int {
         return map.mapType
     }
+
+    override fun isTrafficEnabled(): Boolean {
+        return map.isTrafficEnabled
+    }
+
+    override fun setTrafficEnabled(enabled: Boolean) {
+        map.isTrafficEnabled = enabled
+    }
 }
