@@ -80,4 +80,6 @@ interface CommonMap : UISettings {
     fun setTrafficEnabled(enabled: Boolean)
     fun isIndoorEnabled(): Boolean
     fun setIndoorEnabled(enabled: Boolean)
+    fun isBuildingEnabled(): Boolean
+    fun setBuildingEnabled(enabled: Boolean)
 }

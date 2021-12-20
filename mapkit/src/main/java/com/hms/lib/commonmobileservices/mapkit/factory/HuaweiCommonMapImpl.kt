@@ -314,4 +314,12 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun setIndoorEnabled(enabled: Boolean) {
         map.isIndoorEnabled = enabled
     }
+
+    override fun isBuildingEnabled(): Boolean {
+        return map.isBuildingsEnabled
+    }
+
+    override fun setBuildingEnabled(enabled: Boolean) {
+        map.isIndoorEnabled = enabled
+    }
 }

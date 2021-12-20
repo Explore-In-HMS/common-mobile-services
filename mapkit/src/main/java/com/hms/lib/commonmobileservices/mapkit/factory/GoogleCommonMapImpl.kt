@@ -302,4 +302,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun setIndoorEnabled(enabled: Boolean) {
         map.isIndoorEnabled = enabled
     }
+
+    override fun isBuildingEnabled(): Boolean {
+        return map.isBuildingsEnabled
+    }
+
+    override fun setBuildingEnabled(enabled: Boolean) {
+        map.isBuildingsEnabled = enabled
+    }
 }
