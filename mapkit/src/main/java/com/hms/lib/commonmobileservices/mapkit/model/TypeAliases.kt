@@ -33,3 +33,9 @@ typealias GmsTileOverlay = com.google.android.gms.maps.model.TileOverlay
 
 typealias HmsTileOverlayOptions = com.huawei.hms.maps.model.TileOverlayOptions
 typealias GmsTileOverlayOptions = com.google.android.gms.maps.model.TileOverlayOptions
+
+typealias HmsProjection = com.huawei.hms.maps.Projection
+typealias GmsProjection = com.google.android.gms.maps.Projection
+
+typealias HmsVisibleRegion = com.huawei.hms.maps.model.VisibleRegion
+typealias GmsVisibleRegion = com.google.android.gms.maps.model.VisibleRegion

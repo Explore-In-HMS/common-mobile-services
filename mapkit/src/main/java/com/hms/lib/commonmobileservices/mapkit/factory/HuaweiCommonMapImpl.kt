@@ -22,6 +22,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
+import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapView
@@ -348,5 +349,9 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
             }
 
         })
+    }
+
+    override fun getProjection(): Projection {
+        return map.projection.toProjection()
     }
 }

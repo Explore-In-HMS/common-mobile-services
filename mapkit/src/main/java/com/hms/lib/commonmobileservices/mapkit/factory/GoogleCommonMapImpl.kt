@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
+import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
 class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
@@ -333,7 +334,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
             override fun deactivate() {
                 locationSource.deactivate()
             }
-
         })
+    }
+
+    override fun getProjection(): Projection {
+        return map.projection.toProjection()
     }
 }

@@ -18,6 +18,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
+import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
 interface CommonMap : UISettings {
@@ -86,4 +87,5 @@ interface CommonMap : UISettings {
     fun isMyLocationEnabled(): Boolean
     fun setMyLocationEnabled(enabled: Boolean)
     fun setLocationSource(locationSource: LocationSource)
+    fun getProjection(): Projection
 }

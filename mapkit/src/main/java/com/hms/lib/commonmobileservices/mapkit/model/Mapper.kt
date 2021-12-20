@@ -14,6 +14,7 @@
 package com.hms.lib.commonmobileservices.mapkit.model
 
 import com.google.android.gms.maps.model.Tile
+import com.hms.lib.commonmobileservices.mapkit.Projection
 
 fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
 fun com.google.android.gms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
@@ -29,6 +30,9 @@ fun GmsGroundOverlay.toGroundOverlay(): GroundOverlay = GroundOverlay(this)
 
 fun HmsTileOverlay.toTileOverlay(): TileOverlay = TileOverlay(this)
 fun GmsTileOverlay.toTileOverlay(): TileOverlay = TileOverlay(this)
+
+fun HmsProjection.toProjection(): Projection = Projection(this)
+fun GmsProjection.toProjection(): Projection = Projection(this)
 
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
     return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
@@ -149,5 +153,39 @@ fun TileOverlayOptions.toGmsTileOverlayOptions(): GmsTileOverlayOptions{
         options.fadeIn(fadeIn)
         options.transparency(transparency)
     }
+}
+
+fun HmsVisibleRegion.toVisibleRegion(): VisibleRegion{
+    return VisibleRegion(
+        nearLeft = nearLeft.toLatLng(),
+        nearRight = nearRight.toLatLng(),
+        farLeft = farLeft.toLatLng(),
+        farRight = farRight.toLatLng(),
+        bounds = latLngBounds.toLatLngBounds()
+    )
+}
+
+fun GmsVisibleRegion.toVisibleRegion(): VisibleRegion{
+    return VisibleRegion(
+        nearLeft = nearLeft.toLatLng(),
+        nearRight = nearRight.toLatLng(),
+        farLeft = farLeft.toLatLng(),
+        farRight = farRight.toLatLng(),
+        bounds = latLngBounds.toLatLngBounds()
+    )
+}
+
+fun GmsLatLngBounds.toLatLngBounds(): LatLngBounds{
+    return LatLngBounds(
+        southwest.toLatLng(),
+        northeast.toLatLng()
+    )
+}
+
+fun HmsLatLngBounds.toLatLngBounds(): LatLngBounds{
+    return LatLngBounds(
+        southwest.toLatLng(),
+        northeast.toLatLng()
+    )
 }
 
