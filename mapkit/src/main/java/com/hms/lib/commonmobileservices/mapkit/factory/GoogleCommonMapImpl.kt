@@ -17,16 +17,17 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.hms.lib.commonmobileservices.mapkit.LocationSource
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
 class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
@@ -317,5 +318,22 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun setMyLocationEnabled(enabled: Boolean) {
         map.isMyLocationEnabled = enabled
+    }
+
+    override fun setLocationSource(locationSource: LocationSource) {
+        map.setLocationSource(object: com.google.android.gms.maps.LocationSource{
+            override fun activate(p0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener?) {
+                locationSource.activate(object : LocationSource.OnLocationChangedListener{
+                    override fun onLocationChanged(location: Location) {
+                        p0?.onLocationChanged(location)
+                    }
+
+                })
+            }
+            override fun deactivate() {
+                locationSource.deactivate()
+            }
+
+        })
     }
 }
