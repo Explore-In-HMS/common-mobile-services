@@ -310,4 +310,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun setBuildingEnabled(enabled: Boolean) {
         map.isBuildingsEnabled = enabled
     }
+
+    override fun isMyLocationEnabled(): Boolean {
+        return map.isMyLocationEnabled
+    }
+
+    override fun setMyLocationEnabled(enabled: Boolean) {
+        map.isMyLocationEnabled = enabled
+    }
 }

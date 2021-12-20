@@ -82,4 +82,6 @@ interface CommonMap : UISettings {
     fun setIndoorEnabled(enabled: Boolean)
     fun isBuildingEnabled(): Boolean
     fun setBuildingEnabled(enabled: Boolean)
+    fun isMyLocationEnabled(): Boolean
+    fun setMyLocationEnabled(enabled: Boolean)
 }
