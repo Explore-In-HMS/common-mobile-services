@@ -108,6 +108,12 @@ interface CommonMap : UISettings {
     fun setOnPolylineClickListener(listener: OnPolylineClickListener)
     fun snapshot(callback: SnapshotReadyCallback)
     fun snapshot(callback: SnapshotReadyCallback, bitmap: Bitmap)
+    fun setPadding(var1: Int, var2: Int, var3: Int, var4: Int)
+    fun setContentDescription(description: String)
+    fun setMinZoomPreference(preference: Float)
+    fun setMaxZoomPreference(preference: Float)
+    fun resetMinMaxZoomPreference()
+    fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds)
 
     interface OnCameraMoveListener{
         fun onCameraMove()

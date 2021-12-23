@@ -455,4 +455,28 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun snapshot(callback: CommonMap.SnapshotReadyCallback, bitmap: Bitmap) {
         map.snapshot({ callback.onSnapshotReady(bitmap) }, bitmap)
     }
+
+    override fun setPadding(var1: Int, var2: Int, var3: Int, var4: Int) {
+        map.setPadding(var1, var2, var3, var4)
+    }
+
+    override fun setContentDescription(description: String) {
+        map.setContentDescription(description)
+    }
+
+    override fun setMinZoomPreference(preference: Float) {
+        map.setMinZoomPreference(preference)
+    }
+
+    override fun setMaxZoomPreference(preference: Float) {
+        map.setMaxZoomPreference(preference)
+    }
+
+    override fun resetMinMaxZoomPreference() {
+        map.resetMinMaxZoomPreference()
+    }
+
+    override fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds) {
+        map.setLatLngBoundsForCameraTarget(bounds.toHmsLatLngBounds())
+    }
 }
