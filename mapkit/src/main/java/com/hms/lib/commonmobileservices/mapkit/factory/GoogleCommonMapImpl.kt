@@ -20,6 +20,7 @@ import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -319,6 +320,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         return map.isMyLocationEnabled
     }
 
+    @RequiresPermission(anyOf = [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+    ])
     override fun setMyLocationEnabled(enabled: Boolean) {
         map.isMyLocationEnabled = enabled
     }
