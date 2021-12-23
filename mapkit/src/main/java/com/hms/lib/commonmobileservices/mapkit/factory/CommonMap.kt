@@ -90,6 +90,7 @@ interface CommonMap : UISettings {
     fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener)
     fun setOnCameraMoveCancelledListener(listener: OnCameraMoveCancelledListener)
     fun setOnCameraIdleListener(listener: OnCameraIdleListener)
+    fun setOnMapClickListener(listener: OnMapClickListener)
 
     interface OnCameraMoveListener{
         fun onCameraMove()
@@ -112,5 +113,9 @@ interface CommonMap : UISettings {
 
     interface OnCameraIdleListener{
         fun onCameraIdle()
+    }
+
+    interface OnMapClickListener{
+        fun onMapClick(latLng: LatLng)
     }
 }

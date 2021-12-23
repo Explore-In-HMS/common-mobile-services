@@ -352,4 +352,8 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun setOnCameraMoveCancelledListener(listener: CommonMap.OnCameraMoveCancelledListener) {
         map.setOnCameraMoveCanceledListener { listener.onCameraMoveCancelled() }
     }
+
+    override fun setOnMapClickListener(listener: CommonMap.OnMapClickListener) {
+        map.setOnMapClickListener { listener.onMapClick(it.toLatLng()) }
+    }
 }
