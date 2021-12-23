@@ -23,6 +23,7 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
 import com.hms.lib.commonmobileservices.mapkit.Projection
+import com.hms.lib.commonmobileservices.mapkit.model.*
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapView
@@ -30,7 +31,7 @@ import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.model.BitmapDescriptorFactory
 import com.huawei.hms.maps.model.LatLng
 import com.huawei.hms.maps.model.MarkerOptions
-import com.hms.lib.commonmobileservices.mapkit.model.*
+
 
 class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImpl(context),
     CommonMap {
@@ -367,5 +368,91 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
 
     override fun setOnMapClickListener(listener: CommonMap.OnMapClickListener) {
         map.setOnMapClickListener { listener.onMapClick(it.toLatLng()) }
+    }
+
+    override fun setOnMapLongClickListener(listener: CommonMap.OnMapLongClickListener) {
+        map.setOnMapLongClickListener { listener.onMapLongClick(it.toLatLng()) }
+    }
+
+    override fun setOnMarkerClickListener(listener: CommonMap.OnMarkerClickListener) {
+        map.setOnMarkerClickListener { listener.onMarkerClick(it.toMarker()) }
+    }
+
+    override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
+        map.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener{
+            override fun onMarkerDragStart(p0: HmsMarker?) {
+                listener.onMarkerDragStart(p0?.toMarker())
+            }
+
+            override fun onMarkerDrag(p0: HmsMarker?) {
+                listener.onMarkerDrag(p0?.toMarker())
+            }
+
+            override fun onMarkerDragEnd(p0: HmsMarker?) {
+                listener.onMarkerDragEnd(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnInfoWindowClickListener(listener: CommonMap.OnInfoWindowClickListener) {
+        map.setOnInfoWindowClickListener { listener.onInfoWindowClick(it?.toMarker()) }
+    }
+
+    override fun setOnInfoWindowLongClickListener(listener: CommonMap.OnInfoWindowLongClickListener) {
+        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it?.toMarker()) }
+    }
+
+    override fun setOnInfoWindowCloseListener(listener: CommonMap.OnInfoWindowCloseListener) {
+        map.setOnInfoWindowCloseListener { listener.onInfoWindowClose(it?.toMarker()) }
+    }
+
+    override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
+        map.setInfoWindowAdapter(object: HuaweiMap.InfoWindowAdapter{
+            override fun getInfoContents(p0: HmsMarker?): View {
+                return adapter.getInfoContents(p0?.toMarker())
+            }
+
+            override fun getInfoWindow(p0: HmsMarker?): View {
+                return adapter.getInfoWindow(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnMyLocationClickListener(listener: CommonMap.OnMyLocationClickListener) {
+        map.setOnMyLocationClickListener { listener.onMyLocationClick(it) }
+    }
+
+    override fun setOnMyLocationButtonClickListener(listener: CommonMap.OnMyLocationButtonClickListener) {
+        map.setOnMyLocationButtonClickListener { listener.onMyLocationButtonClick() }
+    }
+
+    override fun setOnMapLoadedCallback(callback: CommonMap.OnMapLoadedCallback) {
+        map.setOnMapLoadedCallback { callback.onMapLoaded() }
+    }
+
+    override fun setOnGroundOverlayClickListener(listener: CommonMap.OnGroundOverlayClickListener) {
+        map.setOnGroundOverlayClickListener { listener.onGroundOverlayClick(it.toGroundOverlay()) }
+    }
+
+    override fun setOnCircleClickListener(listener: CommonMap.OnCircleClickListener) {
+        map.setOnCircleClickListener { listener.onCircleClick(it.toCircle()) }
+    }
+
+    override fun setOnPolygonClickListener(listener: CommonMap.OnPolygonClickListener) {
+        map.setOnPolygonClickListener { listener.onPolygonClick(it.toPolygon()) }
+    }
+
+    override fun setOnPolylineClickListener(listener: CommonMap.OnPolylineClickListener) {
+        map.setOnPolylineClickListener { listener.onPolylineClick(it.toPolyline()) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback) {
+        map.snapshot { callback.onSnapshotReady(it) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback, bitmap: Bitmap) {
+        map.snapshot({ callback.onSnapshotReady(bitmap) }, bitmap)
     }
 }

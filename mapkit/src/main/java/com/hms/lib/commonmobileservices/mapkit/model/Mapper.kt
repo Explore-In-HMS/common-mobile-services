@@ -34,6 +34,9 @@ fun GmsTileOverlay.toTileOverlay(): TileOverlay = TileOverlay(this)
 fun HmsProjection.toProjection(): Projection = Projection(this)
 fun GmsProjection.toProjection(): Projection = Projection(this)
 
+fun HmsMarker.toMarker(): Marker = Marker(this)
+fun GmsMarker.toMarker(): Marker = Marker(this)
+
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
     return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
         strokeColor?.let {hmsOpts.strokeColor(it)}

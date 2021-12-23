@@ -356,4 +356,90 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun setOnMapClickListener(listener: CommonMap.OnMapClickListener) {
         map.setOnMapClickListener { listener.onMapClick(it.toLatLng()) }
     }
+
+    override fun setOnMapLongClickListener(listener: CommonMap.OnMapLongClickListener) {
+        map.setOnMapLongClickListener { listener.onMapLongClick(it.toLatLng()) }
+    }
+
+    override fun setOnMarkerClickListener(listener: CommonMap.OnMarkerClickListener) {
+        map.setOnMarkerClickListener { listener.onMarkerClick(it.toMarker()) }
+    }
+
+    override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
+        map.setOnMarkerDragListener(object: GoogleMap.OnMarkerDragListener{
+            override fun onMarkerDragStart(p0: GmsMarker?) {
+                listener.onMarkerDragStart(p0?.toMarker())
+            }
+
+            override fun onMarkerDrag(p0: GmsMarker?) {
+                listener.onMarkerDrag(p0?.toMarker())
+            }
+
+            override fun onMarkerDragEnd(p0: GmsMarker?) {
+                listener.onMarkerDragEnd(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnInfoWindowClickListener(listener: CommonMap.OnInfoWindowClickListener) {
+        map.setOnInfoWindowClickListener { listener.onInfoWindowClick(it?.toMarker()) }
+    }
+
+    override fun setOnInfoWindowLongClickListener(listener: CommonMap.OnInfoWindowLongClickListener) {
+        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it?.toMarker())  }
+    }
+
+    override fun setOnInfoWindowCloseListener(listener: CommonMap.OnInfoWindowCloseListener) {
+        map.setOnInfoWindowCloseListener { listener.onInfoWindowClose(it?.toMarker()) }
+    }
+
+    override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
+        map.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter{
+            override fun getInfoWindow(p0: GmsMarker?): View {
+                return adapter.getInfoWindow(p0?.toMarker())
+            }
+
+            override fun getInfoContents(p0: GmsMarker?): View {
+                return adapter.getInfoContents(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnMyLocationClickListener(listener: CommonMap.OnMyLocationClickListener) {
+        map.setOnMyLocationClickListener { listener.onMyLocationClick(it) }
+    }
+
+    override fun setOnMyLocationButtonClickListener(listener: CommonMap.OnMyLocationButtonClickListener) {
+        map.setOnMyLocationButtonClickListener { listener.onMyLocationButtonClick()  }
+    }
+
+    override fun setOnMapLoadedCallback(callback: CommonMap.OnMapLoadedCallback) {
+        map.setOnMapLoadedCallback { callback.onMapLoaded() }
+    }
+
+    override fun setOnGroundOverlayClickListener(listener: CommonMap.OnGroundOverlayClickListener) {
+        map.setOnGroundOverlayClickListener { listener.onGroundOverlayClick(it.toGroundOverlay()) }
+    }
+
+    override fun setOnCircleClickListener(listener: CommonMap.OnCircleClickListener) {
+        map.setOnCircleClickListener { listener.onCircleClick(it.toCircle()) }
+    }
+
+    override fun setOnPolygonClickListener(listener: CommonMap.OnPolygonClickListener) {
+        map.setOnPolygonClickListener { listener.onPolygonClick(it.toPolygon()) }
+    }
+
+    override fun setOnPolylineClickListener(listener: CommonMap.OnPolylineClickListener) {
+        map.setOnPolylineClickListener { listener.onPolylineClick(it.toPolyline()) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback) {
+        map.snapshot { callback.onSnapshotReady(it) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback, bitmap: Bitmap) {
+        map.snapshot({ p0 -> callback.onSnapshotReady(p0) }, bitmap)
+    }
 }

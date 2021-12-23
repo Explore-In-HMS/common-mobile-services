@@ -15,6 +15,7 @@ package com.hms.lib.commonmobileservices.mapkit.factory
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
@@ -91,6 +92,22 @@ interface CommonMap : UISettings {
     fun setOnCameraMoveCancelledListener(listener: OnCameraMoveCancelledListener)
     fun setOnCameraIdleListener(listener: OnCameraIdleListener)
     fun setOnMapClickListener(listener: OnMapClickListener)
+    fun setOnMapLongClickListener(listener: OnMapLongClickListener)
+    fun setOnMarkerClickListener(listener: OnMarkerClickListener)
+    fun setOnMarkerDragListener(listener: OnMarkerDragListener)
+    fun setOnInfoWindowClickListener(listener: OnInfoWindowClickListener)
+    fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener)
+    fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener)
+    fun setInfoWindowAdapter(adapter: InfoWindowAdapter)
+    fun setOnMyLocationClickListener(listener: OnMyLocationClickListener)
+    fun setOnMyLocationButtonClickListener(listener: OnMyLocationButtonClickListener)
+    fun setOnMapLoadedCallback(callback: OnMapLoadedCallback)
+    fun setOnGroundOverlayClickListener(listener: OnGroundOverlayClickListener)
+    fun setOnCircleClickListener(listener: OnCircleClickListener)
+    fun setOnPolygonClickListener(listener: OnPolygonClickListener)
+    fun setOnPolylineClickListener(listener: OnPolylineClickListener)
+    fun snapshot(callback: SnapshotReadyCallback)
+    fun snapshot(callback: SnapshotReadyCallback, bitmap: Bitmap)
 
     interface OnCameraMoveListener{
         fun onCameraMove()
@@ -117,5 +134,68 @@ interface CommonMap : UISettings {
 
     interface OnMapClickListener{
         fun onMapClick(latLng: LatLng)
+    }
+
+    interface OnMapLongClickListener{
+        fun onMapLongClick(latLng: LatLng)
+    }
+
+    interface OnMarkerClickListener{
+        fun onMarkerClick(marker: Marker?): Boolean
+    }
+
+    interface OnMarkerDragListener{
+        fun onMarkerDragStart(marker: Marker?)
+        fun onMarkerDrag(marker: Marker?)
+        fun onMarkerDragEnd(marker: Marker?)
+    }
+
+    interface OnInfoWindowClickListener {
+        fun onInfoWindowClick(marker: Marker?)
+    }
+
+    interface OnInfoWindowLongClickListener {
+        fun onInfoWindowLongClick(marker: Marker?)
+    }
+
+    interface OnInfoWindowCloseListener {
+        fun onInfoWindowClose(marker: Marker?)
+    }
+
+    interface InfoWindowAdapter{
+        fun getInfoContents(marker: Marker?): View
+        fun getInfoWindow(marker: Marker?): View
+    }
+
+    interface OnMyLocationClickListener {
+        fun onMyLocationClick(location: Location)
+    }
+
+    interface OnMyLocationButtonClickListener {
+        fun onMyLocationButtonClick(): Boolean
+    }
+
+    interface OnMapLoadedCallback {
+        fun onMapLoaded()
+    }
+
+    interface OnGroundOverlayClickListener {
+        fun onGroundOverlayClick(groundOverlay: GroundOverlay)
+    }
+
+    interface OnCircleClickListener {
+        fun onCircleClick(circle: Circle)
+    }
+
+    interface OnPolygonClickListener {
+        fun onPolygonClick(polygon: Polygon)
+    }
+
+    interface OnPolylineClickListener {
+        fun onPolylineClick(polyline: Polyline)
+    }
+
+    interface SnapshotReadyCallback {
+        fun onSnapshotReady(bitmap: Bitmap?)
     }
 }
