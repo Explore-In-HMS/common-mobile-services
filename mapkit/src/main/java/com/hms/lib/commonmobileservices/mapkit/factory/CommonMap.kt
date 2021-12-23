@@ -68,8 +68,6 @@ interface CommonMap : UISettings {
     fun onLowMemory()
     fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng): Double
     fun getCameraPosition(): CameraPosition
-    fun setOnCameraIdleListener(listener: () -> Unit)
-    fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener)
     fun getMaxZoomLevel(): Float
     fun getMinZoomLevel(): Float
     fun stopAnimation()
@@ -89,7 +87,9 @@ interface CommonMap : UISettings {
     fun setLocationSource(locationSource: LocationSource)
     fun getProjection(): Projection
     fun setOnCameraMoveListener(listener: OnCameraMoveListener)
+    fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener)
     fun setOnCameraMoveCancelledListener(listener: OnCameraMoveCancelledListener)
+    fun setOnCameraIdleListener(listener: OnCameraIdleListener)
 
     interface OnCameraMoveListener{
         fun onCameraMove()
@@ -108,5 +108,9 @@ interface CommonMap : UISettings {
 
     interface OnCameraMoveCancelledListener{
         fun onCameraMoveCancelled()
+    }
+
+    interface OnCameraIdleListener{
+        fun onCameraIdle()
     }
 }

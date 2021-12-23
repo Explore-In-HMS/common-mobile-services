@@ -176,8 +176,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         )
     }
 
-    override fun setOnCameraIdleListener(listener: () -> Unit) {
-        map.setOnCameraIdleListener { listener.invoke() }
+    override fun setOnCameraIdleListener(listener: CommonMap.OnCameraIdleListener) {
+        map.setOnCameraIdleListener { listener.onCameraIdle() }
     }
 
     override fun setOnCameraMoveStartedListener(listener: CommonMap.OnCameraMoveStartedListener) {
