@@ -27,6 +27,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
 import com.hms.lib.commonmobileservices.mapkit.Projection
@@ -470,5 +471,13 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds) {
         map.setLatLngBoundsForCameraTarget(bounds.toGmsLatLngBounds())
+    }
+
+    override fun setMapStyle(json: String) {
+        map.setMapStyle(MapStyleOptions(json))
+    }
+
+    override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
     }
 }

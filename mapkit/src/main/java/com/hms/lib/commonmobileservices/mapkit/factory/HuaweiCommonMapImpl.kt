@@ -30,6 +30,7 @@ import com.huawei.hms.maps.MapView
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.model.BitmapDescriptorFactory
 import com.huawei.hms.maps.model.LatLng
+import com.huawei.hms.maps.model.MapStyleOptions
 import com.huawei.hms.maps.model.MarkerOptions
 
 
@@ -478,5 +479,13 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
 
     override fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds) {
         map.setLatLngBoundsForCameraTarget(bounds.toHmsLatLngBounds())
+    }
+
+    override fun setMapStyle(json: String) {
+        map.setMapStyle(MapStyleOptions(json))
+    }
+
+    override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
     }
 }

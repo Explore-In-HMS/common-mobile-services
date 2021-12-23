@@ -114,6 +114,8 @@ interface CommonMap : UISettings {
     fun setMaxZoomPreference(preference: Float)
     fun resetMinMaxZoomPreference()
     fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds)
+    fun setMapStyle(json: String)
+    fun setMapStyleFromRawResource(context: Context, resourceId: Int)
 
     interface OnCameraMoveListener{
         fun onCameraMove()

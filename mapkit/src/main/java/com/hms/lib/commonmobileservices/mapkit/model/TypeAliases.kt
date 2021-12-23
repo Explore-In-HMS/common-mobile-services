@@ -42,3 +42,6 @@ typealias GmsVisibleRegion = com.google.android.gms.maps.model.VisibleRegion
 
 typealias HmsMarker = com.huawei.hms.maps.model.Marker
 typealias GmsMarker = com.google.android.gms.maps.model.Marker
+
+typealias HmsMapStyleOptions = com.huawei.hms.maps.model.MapStyleOptions
+typealias GmsMapStyleOptions = com.google.android.gms.maps.model.MapStyleOptions
