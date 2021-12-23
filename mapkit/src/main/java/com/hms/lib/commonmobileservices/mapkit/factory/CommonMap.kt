@@ -69,7 +69,7 @@ interface CommonMap : UISettings {
     fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng): Double
     fun getCameraPosition(): CameraPosition
     fun setOnCameraIdleListener(listener: () -> Unit)
-    fun setOnCameraMoveStartedListener(listener: () -> Unit)
+    fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener)
     fun getMaxZoomLevel(): Float
     fun getMinZoomLevel(): Float
     fun stopAnimation()
@@ -92,5 +92,16 @@ interface CommonMap : UISettings {
 
     interface OnCameraMoveListener{
         fun onCameraMove()
+    }
+
+    abstract class OnCameraMoveStartedListener{
+        companion object{
+            const val REASON_GESTURE: Int = 1
+            const val REASON_API_ANIMATION: Int = 2
+            const val REASON_DEVELOPER_ANIMATION: Int = 3
+        }
+
+        abstract fun onCameraMoveStarted(var1: Int)
+
     }
 }

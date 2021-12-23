@@ -161,8 +161,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         map.setOnCameraIdleListener { listener.invoke() }
     }
 
-    override fun setOnCameraMoveStartedListener(listener: () -> Unit) {
-        map.setOnCameraMoveStartedListener { listener.invoke() }
+    override fun setOnCameraMoveStartedListener(listener: CommonMap.OnCameraMoveStartedListener) {
+        map.setOnCameraMoveStartedListener {
+            listener.onCameraMoveStarted(it)
+        }
     }
 
     override fun getMaxZoomLevel(): Float {

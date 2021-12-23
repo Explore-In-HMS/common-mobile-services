@@ -180,8 +180,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         map.setOnCameraIdleListener { listener.invoke() }
     }
 
-    override fun setOnCameraMoveStartedListener(listener: () -> Unit) {
-        map.setOnCameraMoveStartedListener { listener.invoke() }
+    override fun setOnCameraMoveStartedListener(listener: CommonMap.OnCameraMoveStartedListener) {
+        map.setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it)}
     }
 
     override fun getMaxZoomLevel(): Float {
