@@ -348,4 +348,8 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
             listener.onCameraMove()
         }
     }
+
+    override fun setOnCameraMoveCancelledListener(listener: CommonMap.OnCameraMoveCancelledListener) {
+        map.setOnCameraMoveCanceledListener { listener.onCameraMoveCancelled() }
+    }
 }

@@ -360,4 +360,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
             listener.onCameraMove()
         }
     }
+
+    override fun setOnCameraMoveCancelledListener(listener: CommonMap.OnCameraMoveCancelledListener) {
+        map.setOnCameraMoveCanceledListener { listener.onCameraMoveCancelled() }
+    }
 }

@@ -89,6 +89,7 @@ interface CommonMap : UISettings {
     fun setLocationSource(locationSource: LocationSource)
     fun getProjection(): Projection
     fun setOnCameraMoveListener(listener: OnCameraMoveListener)
+    fun setOnCameraMoveCancelledListener(listener: OnCameraMoveCancelledListener)
 
     interface OnCameraMoveListener{
         fun onCameraMove()
@@ -103,5 +104,9 @@ interface CommonMap : UISettings {
 
         abstract fun onCameraMoveStarted(var1: Int)
 
+    }
+
+    interface OnCameraMoveCancelledListener{
+        fun onCameraMoveCancelled()
     }
 }
