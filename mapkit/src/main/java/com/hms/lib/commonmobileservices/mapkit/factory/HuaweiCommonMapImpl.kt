@@ -354,4 +354,10 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun getProjection(): Projection {
         return map.projection.toProjection()
     }
+
+    override fun setOnCameraMoveListener(listener: CommonMap.OnCameraMoveListener) {
+        map.setOnCameraMoveListener {
+            listener.onCameraMove()
+        }
+    }
 }

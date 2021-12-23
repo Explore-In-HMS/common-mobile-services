@@ -88,4 +88,9 @@ interface CommonMap : UISettings {
     fun setMyLocationEnabled(enabled: Boolean)
     fun setLocationSource(locationSource: LocationSource)
     fun getProjection(): Projection
+    fun setOnCameraMoveListener(listener: OnCameraMoveListener)
+
+    interface OnCameraMoveListener{
+        fun onCameraMove()
+    }
 }

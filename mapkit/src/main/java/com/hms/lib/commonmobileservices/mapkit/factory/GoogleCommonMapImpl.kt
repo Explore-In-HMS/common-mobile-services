@@ -340,4 +340,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun getProjection(): Projection {
         return map.projection.toProjection()
     }
+
+    override fun setOnCameraMoveListener(listener: CommonMap.OnCameraMoveListener) {
+        map.setOnCameraMoveListener {
+            listener.onCameraMove()
+        }
+    }
 }
