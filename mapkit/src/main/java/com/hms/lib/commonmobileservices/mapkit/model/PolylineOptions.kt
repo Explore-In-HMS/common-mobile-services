@@ -16,11 +16,11 @@ package com.hms.lib.commonmobileservices.mapkit.model
 
 class PolylineOptions {
     val points = ArrayList<LatLng>()
-    var color : Int = -16777216
-    var width : Float = 10.0F
-    var zIndex: Float = 0.0F
-    var isVisible: Boolean = true
-    var isGeodesic: Boolean = false
-    var isClickable: Boolean = false
-    var jointType: Int = 0
+    var color : Int? = -16777216
+    var width : Float? = 10.0F
+    var zIndex: Float? = 0.0F
+    var isVisible: Boolean? = true
+    var isGeodesic: Boolean? = false
+    var isClickable: Boolean? = false
+    var jointType: Int? = 0
 }

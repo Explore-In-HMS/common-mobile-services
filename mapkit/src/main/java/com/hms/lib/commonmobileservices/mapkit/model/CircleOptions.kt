@@ -16,4 +16,11 @@ package com.hms.lib.commonmobileservices.mapkit.model
 class CircleOptions {
     var center: LatLng? = null
     var radius : Double? = 0.0
+    var strokeWidth: Float? = 10.0F
+    var strokeColor: Int? = -16777216
+    var fillColor: Int? = 0
+    var zIndex: Float? = 0.0F
+    var isVisible: Boolean? = true
+    var isClickable: Boolean? = false
+
 }
