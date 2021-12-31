@@ -15,19 +15,59 @@ package com.hms.lib.commonmobileservices.analytics
 
 import android.content.Context
 import android.os.Bundle
+import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.hms.analytics.HiAnalytics
 import com.huawei.hms.analytics.HiAnalyticsTools
 
 class HMSAnalyticsImpl(context: Context) : CommonAnalytics {
 
-    private val hmsAnalytics =  HiAnalytics.getInstance(context)
+    private val hmsAnalytics = HiAnalytics.getInstance(context)
+
     init {
         HiAnalyticsTools.enableLog()
     }
-    override fun saveEvent(key: String, bundle: Bundle) {
-        hmsAnalytics.onEvent(key,bundle)
+
+    override fun setAnalyticsEnabled(enabled: Boolean) {
+        hmsAnalytics.setAnalyticsEnabled(enabled)
     }
 
+    override fun setUserId(id: String) {
+        hmsAnalytics.setUserId(id)
+    }
 
+    override fun setUserProfile(name: String, value: String) {
+        hmsAnalytics.setUserProfile(name, value)
+    }
+
+    override fun setSessionDuration(milliseconds: Long) {
+        hmsAnalytics.setSessionDuration(milliseconds)
+    }
+
+    override fun saveEvent(key: String, bundle: Bundle) {
+        hmsAnalytics.onEvent(key, bundle)
+    }
+
+    override fun clearCachedData() {
+        hmsAnalytics.clearCachedData()
+    }
+
+    override fun addDefaultEventParams(params: Bundle) {
+        hmsAnalytics.addDefaultEventParams(params)
+    }
+
+    override fun getAAID(): Work<String> {
+        val worker: Work<String> = Work()
+        hmsAnalytics.aaid
+            .addOnSuccessListener {
+                worker.onSuccess(String())
+            }
+            .addOnFailureListener {
+                worker.onFailure(it)
+            }
+            .addOnCanceledListener {
+                worker.onCanceled()
+            }
+        return worker
+    }
 
 }

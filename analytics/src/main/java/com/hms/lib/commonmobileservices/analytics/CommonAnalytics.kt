@@ -17,20 +17,39 @@ import android.content.Context
 import android.os.Bundle
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.core.Work
 
 
 interface CommonAnalytics {
 
+    fun setAnalyticsEnabled(enabled: Boolean)
+
+    fun setUserId(id: String)
+
+    fun setUserProfile(name: String, value: String)
+
+    fun setSessionDuration(milliseconds: Long)
+
     fun saveEvent(key: String, bundle: Bundle)
 
+    fun clearCachedData()
+
+    fun addDefaultEventParams(params: Bundle)
+
+    fun getAAID(): Work<String>
+
+
     companion object {
-        fun instance(context: Context, firstPriority: MobileServiceType? = null): CommonAnalytics? {
+        fun instance(
+            context: Context,
+            firstPriority: MobileServiceType? = null
+        ): CommonAnalytics? {
             return when (Device.getMobileServiceType(context, firstPriority)) {
                 MobileServiceType.HMS -> {
                     HMSAnalyticsImpl(context)
                 }
                 MobileServiceType.GMS -> {
-                    GMSAnalyticsImpl()
+                    GMSAnalyticsImpl(context)
                 }
                 MobileServiceType.NON -> null
             }
