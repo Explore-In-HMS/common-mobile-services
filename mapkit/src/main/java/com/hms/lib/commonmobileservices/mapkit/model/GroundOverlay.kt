@@ -13,9 +13,6 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import android.os.RemoteException
-import com.google.android.gms.dynamic.ObjectWrapper
-import com.google.android.gms.maps.model.RuntimeRemoteException
 import java.lang.Exception
 
 class GroundOverlay(private val groundOverlayImpl: Any) {

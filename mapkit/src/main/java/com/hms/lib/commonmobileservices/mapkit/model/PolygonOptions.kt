@@ -13,10 +13,19 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+import kotlin.collections.ArrayList
+
 class PolygonOptions()  {
-    val baseLatLngs = ArrayList<LatLng>()
-    var strokeColor : Int?=null
-    var strokeWidth : Float?=null
+    var points = ArrayList<LatLng>()
+    var holes = ArrayList<List<LatLng?>>()
+    var strokeColor : Int = -16777216
+    var strokeWidth : Float = 10.0F
+    var fillColor: Int = 0
+    var zIndex: Float = 0.0F
+    var isVisible: Boolean = true
+    var isGeodesic: Boolean = false
+    var isClickable: Boolean = false
+    var strokeJointType: Int = 0
 }
 
 

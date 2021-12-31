@@ -38,7 +38,7 @@ fun HmsMarker.toMarker(): Marker = Marker(this)
 fun GmsMarker.toMarker(): Marker = Marker(this)
 
 fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
-    return com.huawei.hms.maps.model.PolygonOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
+    return com.huawei.hms.maps.model.PolygonOptions().addAll(points.map { it.toHMSLatLng() }).also { hmsOpts->
         strokeColor?.let {hmsOpts.strokeColor(it)}
         strokeWidth?.let {hmsOpts.strokeWidth(it)}
     }
@@ -63,7 +63,7 @@ fun com.google.android.gms.maps.model.LatLng.toLatLng() : LatLng {
 
 fun PolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.model.PolygonOptions{
     return com.google.android.gms.maps.model.PolygonOptions().
-    addAll(baseLatLngs.map { it.toGMSLatLng() }).also {gmsOpts->
+    addAll(points.map { it.toGMSLatLng() }).also {gmsOpts->
         strokeColor?.let {gmsOpts.strokeColor(it)}
         strokeWidth?.let {gmsOpts.strokeWidth(it)}
     }
