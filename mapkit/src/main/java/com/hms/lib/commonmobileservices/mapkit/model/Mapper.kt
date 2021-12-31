@@ -70,17 +70,17 @@ fun PolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.model.Pol
 }
 
 fun PolylineOptions.toHMSPolylineOptions() : com.huawei.hms.maps.model.PolylineOptions {
-    return com.huawei.hms.maps.model.PolylineOptions().addAll(baseLatLngs.map { it.toHMSLatLng() }).also { hmsOpts->
-        Color?.let {hmsOpts.color(it)}
-        Width?.let {hmsOpts.width(it)}
+    return com.huawei.hms.maps.model.PolylineOptions().addAll(points.map { it.toHMSLatLng() }).also { hmsOpts->
+        color?.let {hmsOpts.color(it)}
+        width?.let {hmsOpts.width(it)}
     }
 }
 
 fun PolylineOptions.toGMSPolylineOptions() : com.google.android.gms.maps.model.PolylineOptions{
     return com.google.android.gms.maps.model.PolylineOptions().
-    addAll(baseLatLngs.map { it.toGMSLatLng() }).also {gmsOpts->
-        Color?.let {gmsOpts.color(it)}
-        Width?.let {gmsOpts.width(it)}
+    addAll(points.map { it.toGMSLatLng() }).also {gmsOpts->
+        color?.let {gmsOpts.color(it)}
+        width?.let {gmsOpts.width(it)}
     }
 }
 
