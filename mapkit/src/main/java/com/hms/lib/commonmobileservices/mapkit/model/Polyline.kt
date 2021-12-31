@@ -14,6 +14,7 @@
 
 package com.hms.lib.commonmobileservices.mapkit.model
 
+import android.os.RemoteException
 import java.lang.Exception
 
 class Polyline(val polylineImpl : Any) {
@@ -45,4 +46,137 @@ class Polyline(val polylineImpl : Any) {
         }
     }
 
+    fun getId(): String {
+
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.id
+            else -> (polylineImpl as GmsPolyline).id
+        }
+    }
+
+    fun setPoints(points: List<LatLng?>?) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.points = points?.map { it?.toHMSLatLng() }
+            is GmsPolyline -> polylineImpl.points = points?.map { it?.toGMSLatLng() }
+        }
+    }
+
+    fun getPoints(): List<LatLng> {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.points.map { it.toLatLng() }
+            else -> (polylineImpl as GmsPolyline).points.map { it.toLatLng() }
+        }
+    }
+
+    fun setWidth(width: Float) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.width = width
+            is GmsPolyline -> polylineImpl.width = width
+        }
+    }
+
+    fun getWidth(): Float {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.width
+            else -> (polylineImpl as GmsPolyline).width
+        }
+    }
+
+    fun setColor(color: Int) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.color = color
+            is GmsPolyline -> polylineImpl.color = color
+        }
+    }
+
+    fun getColor(): Int {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.color
+            else -> (polylineImpl as GmsPolyline).color
+        }
+    }
+
+    fun setJointType(type: Int) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.jointType = type
+            is GmsPolyline -> polylineImpl.jointType = type
+        }
+    }
+
+    fun getJointType(): Int {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.jointType
+            else -> (polylineImpl as GmsPolyline).jointType
+        }
+    }
+
+    fun setZIndex(zIndex: Float) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.zIndex = zIndex
+            is GmsPolyline -> polylineImpl.zIndex = zIndex
+        }
+    }
+
+    fun getZIndex(): Float {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.zIndex
+            else -> (polylineImpl as GmsPolyline).zIndex
+        }
+    }
+
+    fun setVisible(visible: Boolean) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isVisible = visible
+            is GmsPolyline -> polylineImpl.isVisible = visible
+        }
+    }
+
+    fun isVisible(): Boolean {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isVisible
+            else -> (polylineImpl as GmsPolyline).isVisible
+        }
+    }
+
+    fun setGeodesic(geodesic: Boolean) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isGeodesic = geodesic
+            is GmsPolyline -> polylineImpl.isGeodesic = geodesic
+        }
+    }
+
+    fun isGeodesic(): Boolean {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isGeodesic
+            else -> (polylineImpl as GmsPolyline).isGeodesic
+        }
+    }
+
+    fun setClickable(clickable: Boolean) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isClickable = clickable
+            is GmsPolyline -> polylineImpl.isClickable = clickable
+        }
+    }
+
+    fun isClickable(): Boolean {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.isClickable
+            else -> (polylineImpl as GmsPolyline).isClickable
+        }
+    }
+
+    fun setTag(tag: Any?) {
+        when(polylineImpl){
+            is HmsPolyline -> polylineImpl.tag = tag
+            is GmsPolyline -> polylineImpl.tag = tag
+        }
+    }
+
+    fun getTag(): Any? {
+        return when(polylineImpl){
+            is HmsPolyline -> polylineImpl.tag
+            else -> (polylineImpl as GmsPolyline).tag
+        }
+    }
 }

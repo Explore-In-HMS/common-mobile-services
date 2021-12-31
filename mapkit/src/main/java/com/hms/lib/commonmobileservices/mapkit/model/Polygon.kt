@@ -13,9 +13,6 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-
-import android.os.RemoteException
-import com.google.android.gms.maps.GoogleMap
 import java.lang.Exception
 
 class Polygon(val polygonImpl : Any) {

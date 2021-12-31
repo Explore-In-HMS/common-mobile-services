@@ -51,3 +51,6 @@ typealias GmsBitmapDescriptorFactory = com.google.android.gms.maps.model.BitmapD
 
 typealias HmsPolygon = com.huawei.hms.maps.model.Polygon
 typealias GmsPolygon = com.google.android.gms.maps.model.Polygon
+
+typealias HmsPolyline = com.huawei.hms.maps.model.Polyline
+typealias GmsPolyline = com.google.android.gms.maps.model.Polyline
