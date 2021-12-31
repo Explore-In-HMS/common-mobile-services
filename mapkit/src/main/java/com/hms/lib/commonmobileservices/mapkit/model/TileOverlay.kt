@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+import android.os.RemoteException
+import com.google.android.gms.maps.model.RuntimeRemoteException
 import java.lang.Exception
 
 class TileOverlay (private val tileOverlayImpl: Any) {
@@ -41,6 +43,76 @@ class TileOverlay (private val tileOverlayImpl: Any) {
         catch (e: Exception){
             e.printStackTrace()
             false
+        }
+    }
+
+    fun clearTileCache() {
+        when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.clearTileCache()
+            else -> (tileOverlayImpl as GmsTileOverlay).clearTileCache()
+        }
+    }
+
+    fun getId(): String {
+        return when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.id
+            else -> (tileOverlayImpl as GmsTileOverlay).id
+        }
+    }
+
+    fun setZIndex(zIndex: Float) {
+        when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.zIndex = zIndex
+            is GmsTileOverlay -> tileOverlayImpl.zIndex = zIndex
+        }
+    }
+
+    fun getZIndex(): Float {
+        return when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.zIndex
+            else -> (tileOverlayImpl as GmsTileOverlay).zIndex
+        }
+    }
+
+    fun setVisible(visible: Boolean) {
+        when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.isVisible = visible
+            is GmsTileOverlay -> tileOverlayImpl.isVisible = visible
+        }
+    }
+
+    fun isVisible(): Boolean {
+        return when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.isVisible
+            else -> (tileOverlayImpl as GmsTileOverlay).isVisible
+        }
+    }
+
+    fun setFadeIn(fadeIn: Boolean) {
+        when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.fadeIn = fadeIn
+            is GmsTileOverlay -> tileOverlayImpl.fadeIn = fadeIn
+        }
+    }
+
+    fun getFadeIn(): Boolean {
+        return when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.fadeIn
+            else -> (tileOverlayImpl as GmsTileOverlay).fadeIn
+        }
+    }
+
+    fun setTransparency(transparency: Float) {
+        when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.transparency = transparency
+            is GmsTileOverlay -> tileOverlayImpl.transparency = transparency
+        }
+    }
+
+    fun getTransparency(): Float {
+        return when(tileOverlayImpl){
+            is HmsTileOverlay -> tileOverlayImpl.transparency
+            else -> (tileOverlayImpl as GmsTileOverlay).transparency
         }
     }
 }
