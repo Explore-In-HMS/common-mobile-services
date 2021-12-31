@@ -30,7 +30,7 @@ inline fun <reified T> CommonAnalytics.saveSingleData(
         is Double -> bundle.putDouble(paramKeyGen, data)
         is Float -> bundle.putFloat(paramKeyGen, data)
         else -> {
-            Log.d("ShoppingAnalytics", "Invalid type")
+            Log.i("ShoppingAnalytics", "Invalid type")
         }
     }
     saveEvent(eventKey, bundle)
@@ -49,11 +49,10 @@ fun CommonAnalytics.saveData(eventKey: String, vararg keyDataPairs: Any) {
                 is Double -> bundle.putDouble(value as String, data)
                 is Float -> bundle.putFloat(value as String, data)
                 else -> {
-                    Log.d("ShoppingAnalytics", "Invalid type")
+                    Log.i("ShoppingAnalytics", "Invalid type")
                 }
             }
         }
     }
     saveEvent(eventKey, bundle)
 }
-
