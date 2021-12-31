@@ -54,7 +54,7 @@ class GMSAnalyticsImpl(context: Context) : CommonAnalytics {
     override fun getAAID(): Work<String> {
         val worker: Work<String> = Work()
         analytics.appInstanceId
-            .addOnSuccessListener { worker.onSuccess(String()) }
+            .addOnSuccessListener { worker.onSuccess(it) }
             .addOnFailureListener { worker.onFailure(it) }
             .addOnCanceledListener { worker.onCanceled() }
         return worker

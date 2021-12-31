@@ -59,7 +59,7 @@ class HMSAnalyticsImpl(context: Context) : CommonAnalytics {
         val worker: Work<String> = Work()
         hmsAnalytics.aaid
             .addOnSuccessListener {
-                worker.onSuccess(String())
+                worker.onSuccess(it)
             }
             .addOnFailureListener {
                 worker.onFailure(it)
