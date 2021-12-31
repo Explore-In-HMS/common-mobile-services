@@ -479,5 +479,6 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
+        BitmapDescriptorFactory.defaultMarker()
     }
 }

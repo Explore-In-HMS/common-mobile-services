@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+import android.graphics.Bitmap
+
 class GroundOverlayOptions {
     private var anchorU: Float = 0.5F
     private var anchorV: Float = 0.5F
@@ -25,6 +27,12 @@ class GroundOverlayOptions {
     private var zIndex: Float = 0.0F
     private var isClickable: Boolean = false
     private var isVisible: Boolean = true
+    private var imageResource: Int = 0
+    private var imageAsset: String? = null
+    private var imageFile: String? = null
+    private var imagePath: String? = null
+    private var imageDefaultMarker: Float = 0.0F
+    private var imageBitmap: Bitmap? = null
 
     fun getAnchorU(): Float = this.anchorU
     fun getAnchorV(): Float = this.anchorV
@@ -37,6 +45,12 @@ class GroundOverlayOptions {
     fun getZIndex(): Float = this.zIndex
     fun isClickable(): Boolean = this.isClickable
     fun isVisible(): Boolean = this.isVisible
+    fun getImageResource(): Int = imageResource
+    fun getImageAsset(): String? = imageAsset
+    fun getImageFile():String? = imageFile
+    fun getImagePath():String? = imagePath
+    fun getImageDefaultMarker(): Float = imageDefaultMarker
+    fun getImageBitmap(): Bitmap? = imageBitmap
 
     fun anchor(anchorU: Float, anchorV: Float): GroundOverlayOptions{
         this.anchorU = anchorU
@@ -84,6 +98,36 @@ class GroundOverlayOptions {
 
     fun zIndex(zIndex: Float): GroundOverlayOptions{
         this.zIndex = zIndex
+        return this
+    }
+
+    fun imageFromResource(resource: Int): GroundOverlayOptions{
+        this.imageResource = resource
+        return this
+    }
+
+    fun imageFromAsset(asset: String): GroundOverlayOptions{
+        this.imageAsset = asset
+        return this
+    }
+
+    fun imageFromFile(file: String): GroundOverlayOptions{
+        this.imageFile = file
+        return this
+    }
+
+    fun imageFromPath(path: String): GroundOverlayOptions{
+        this.imagePath = path
+        return this
+    }
+
+    fun imageDefaultMarker(var0: Float): GroundOverlayOptions{
+        this.imageDefaultMarker = var0
+        return this
+    }
+
+    fun imageFromBitmap(bitmap: Bitmap): GroundOverlayOptions{
+        this.imageBitmap = bitmap
         return this
     }
 

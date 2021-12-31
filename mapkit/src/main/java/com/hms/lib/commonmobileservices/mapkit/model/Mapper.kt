@@ -13,7 +13,7 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.google.android.gms.maps.model.Tile
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.hms.lib.commonmobileservices.mapkit.Projection
 
 fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
@@ -109,6 +109,12 @@ fun GroundOverlayOptions.toHmsGroundOverlayOptions(): HmsGroundOverlayOptions{
         options.transparency(getTransparency())
         options.visible(isVisible())
         options.zIndex(getZIndex())
+        options.image(HmsBitmapDescriptorFactory.fromResource(getImageResource()))
+        options.image(HmsBitmapDescriptorFactory.fromAsset(getImageAsset()))
+        options.image(HmsBitmapDescriptorFactory.defaultMarker(getImageDefaultMarker()))
+        options.image(HmsBitmapDescriptorFactory.fromBitmap(getImageBitmap()))
+        options.image(HmsBitmapDescriptorFactory.fromFile(getImageFile()))
+        options.image(HmsBitmapDescriptorFactory.fromPath(getImagePath()))
     }
 }
 
@@ -123,6 +129,12 @@ fun GroundOverlayOptions.toGmsGroundOverlayOptions(): GmsGroundOverlayOptions{
         options.transparency(getTransparency())
         options.visible(isVisible())
         options.zIndex(getZIndex())
+        options.image(GmsBitmapDescriptorFactory.fromResource(getImageResource()))
+        options.image(GmsBitmapDescriptorFactory.fromAsset(getImageAsset()))
+        options.image(GmsBitmapDescriptorFactory.defaultMarker(getImageDefaultMarker()))
+        options.image(GmsBitmapDescriptorFactory.fromBitmap(getImageBitmap()))
+        options.image(GmsBitmapDescriptorFactory.fromFile(getImageFile()))
+        options.image(GmsBitmapDescriptorFactory.fromPath(getImagePath()))
     }
 }
 
