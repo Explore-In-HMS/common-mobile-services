@@ -19,12 +19,12 @@ import com.hms.lib.commonmobileservices.account.common.Scope
 data class SignInUser(
     val familyName: String,
     val givenName: String,
-    val email: String,
+    val email: String?,
     val displayName: String,
     val id: String,
     val photoUrl: Uri?,
     val authServiceToken: String,
     val idToken: String,
-    val accessToken: String,
+    val accessToken: String?,
     val scopes: Set<Scope>
 )

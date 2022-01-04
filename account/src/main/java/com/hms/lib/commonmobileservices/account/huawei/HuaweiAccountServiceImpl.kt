@@ -13,13 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account.huawei
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import com.huawei.hms.support.hwid.HuaweiIdAuthManager
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
-import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
-import com.huawei.hms.support.hwid.result.AuthHuaweiId
-import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 import com.hms.lib.commonmobileservices.account.AccountService
 import com.hms.lib.commonmobileservices.account.SignInParams
 import com.hms.lib.commonmobileservices.account.SignInUser
@@ -27,6 +23,13 @@ import com.hms.lib.commonmobileservices.account.common.Mapper
 import com.hms.lib.commonmobileservices.account.util.SharedPrefHelper
 import com.hms.lib.commonmobileservices.core.ResultCallback
 import com.hms.lib.commonmobileservices.core.Work
+import com.huawei.hms.support.hwid.HuaweiIdAuthManager
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParams
+import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
+import com.huawei.hms.support.hwid.result.AuthHuaweiId
+import com.huawei.hms.support.hwid.result.HuaweiIdAuthResult
+import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
+import com.huawei.hms.support.sms.ReadSmsManager
 
 internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInParams) :
     AccountService {
@@ -63,10 +66,9 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
         task.addOnCanceledListener { callback.onCancelled() }
         task.addOnFailureListener { callback.onFailure(it) }
         task.addOnSuccessListener {
-            if(it.email!=null) {
+            if (it.email != null) {
                 sharedPrefHelper.setEmail(it.email)
-            }
-            else{
+            } else {
                 sharedPrefHelper.setEmail("")
             }
             val loginResult = mapper.map(it)
@@ -98,12 +100,42 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
 
     override fun getEmail(): String? {
         val email = sharedPrefHelper.getEmail()
-        return if(email.isEmpty()){
+        return if (email.isEmpty()) {
             null
-        }
-        else{
+        } else {
             email
         }
+    }
+
+    override fun startSmsRetriver(context: Context): Work<Unit> {
+        val worker: Work<Unit> = Work()
+
+        ReadSmsManager.start(context)
+            .addOnSuccessListener { worker.onSuccess(Unit) }
+            .addOnFailureListener { worker.onFailure(it) }
+            .addOnCanceledListener { worker.onCanceled() }
+
+        return worker
+    }
+
+    override fun startConsent(activity: Activity, phonenumber: String): Work<Unit> {
+        val worker: Work<Unit> = Work()
+
+        ReadSmsManager.startConsent(activity, phonenumber)
+            .addOnSuccessListener { worker.onSuccess(Unit) }
+            .addOnFailureListener { worker.onFailure(it) }
+            .addOnCanceledListener { worker.onCanceled() }
+
+        return worker
+    }
+
+    override fun getSignAccountId(): SignInUser? {
+        return mapper.map(HuaweiIdAuthResult().huaweiId)
+    }
+
+
+    override fun isSuccesful(): Boolean {
+        return HuaweiIdAuthResult().isSuccess
     }
 
     companion object {

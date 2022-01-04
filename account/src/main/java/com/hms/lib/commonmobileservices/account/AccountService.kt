@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.hms.lib.commonmobileservices.account.google.GoogleAccountServiceImpl
@@ -29,6 +30,11 @@ interface AccountService {
     fun signOut(): Work<Unit>
     fun cancelAuthorization(): Work<Unit>
     fun getEmail(): String?
+    fun startSmsRetriver(context: Context): Work<Unit>
+    fun startConsent(activity: Activity, phonenumber: String): Work<Unit>
+    fun getSignAccountId(): SignInUser?
+    fun isSuccesful(): Boolean
+
 
     object Factory {
         fun create(context: Context, signInParams: SignInParams): AccountService {
