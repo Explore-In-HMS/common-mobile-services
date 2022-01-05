@@ -313,35 +313,59 @@ When you don't need to location updates you can remove listener like this:
 commonLocationClient?.removeLocationUpdates()
  ```
 ## Analytics
-It is made to ease logging for your project. You can log your event with a one line of code. 
+It is made to ease logging for your project. You can log your event with a one line of code.
 ### How to use
 
-First, get the instance of common logger by calling `CommonAnalytics.instance(this)`. The function takes a context instance as a parameter. Then returns an implementation of `CommonAnalytics`. It can be the class that uses `Firebase` or `HiAnalyticsTools` for logging. 
-If you want to implement your own logger you can just implement the CommonAnalytics interface and use it instead. 
+First, get the instance of common logger by calling `CommonAnalytics.instance(this)`. The function takes a context instance as a parameter. Then returns an implementation of `CommonAnalytics`. It can be the class that uses `Firebase` or `HiAnalyticsTools` for logging.
+If you want to implement your own logger you can just implement the CommonAnalytics interface and use it instead.
 
-Then you can start logging events by using several methods. For logging single value you can call `saveSingleData` funcition of `CommonAnalytics` interface. You can log values type of `String`, `Int`, `Long`, `Double` and `Float`.
- ```kt
-CommonAnalytics.instance(this)?.saveSingleData("cartEvent", "productId", 112233)
- ```
- First, event name is required. Then you must enter a key and value sequentially.
-
- You can also log more then one key-value pair for a single event by using `saveData` function.
-```kt
-CommonAnalytics.instance(this)?.saveData(
-    "cartEvent",
-    "productId", 112233,
-    "productName", "socks",
-    "quantity", 5,
-    "discountPercentage", 23.3
-)
- ```
-Or you can log your events with classic Bundle.
+You can log your events with classic Bundle.
 ```kt
 val myEvent = Bundle().apply {
     putString("productName", "socks")
     putInt("quantity", 5)
 }
 CommonAnalytics.instance(this)?.saveEvent("cartEvent", myEvent)
+```
+You can also delete previously collected data with the "clearCachedData()" method.
+Data configured through the following APIs will be cleared:
+
+```onEvent```
+```setUserId```
+```setUserProfile```
+```addDefaultEventParams```
+
+```kt
+CommonAnalytics.instance(this)?.clearCachedData()
+```
+You can set whether to enable event tracking. If event tracking is disabled, no data is recorded or analyzed. The default value is ```true```
+```kt
+CommonAnalytics.instance(this)?.setAnalyticsEnabled(false)
+```
+User id can be assigned. When this method is called, a new session will be generated if the old value of id is not empty and is different from the new value. If you do not want to use id to identify a user (for example, when a user signs out), you must set id to null.
+```kt
+CommonAnalytics.instance(this)?.setUserId("id")
+```
+You can set user attributes. The values of user attributes remain unchanged throughout the app lifecycle and during each session. A maximum of 25 user attributes are supported. If the name of an attribute set later is the same as that of an existing attribute, the value of the existing attribute is updated.
+```kt
+CommonAnalytics.instance(this)?.setUserProfile("name", "value")
+```
+This method sets the session timeout interval. A new session will be generated when an app is running in the foreground but the interval between two adjacent events exceeds the specified timeout interval. The minimum value is 5 seconds, and the maximum value is 5 hours. If the specified value is beyond the value range, the boundary value is used. By default, the timeout interval is 1,800,000 milliseconds (that is, 30 minutes).
+```kt
+val milliseconds = 10000
+CommonAnalytics.instance(this)?.setSessionDuration(milliseconds)
+```
+You can also add default event parameters. These parameters will be added to all events except the automatically collected events. If the name of a default event parameter is the same as that of an event parameter, the event parameter will be used.
+```kt
+val params = Bundle().apply {
+    putString("productName", "keyboard")
+    putInt("quantity", 3)
+}
+CommonAnalytics.instance(this)?.addDefaultEventParams(params)
+```
+If you want to obtain AAID then you can use ```getAAID()``` method. This method returns to you AAID as a string.
+```kt
+CommonAnalytics.instance(this)?.getAAID()
 ```
 ## Credit Card Scanner
 This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
@@ -405,7 +429,6 @@ The `getWeather()` or `getBehavior()` or `getHeadset()` or `getTime()` functions
 ```kt
 fun getWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit)
 ```
-## Scan 
 ## Scan 
 Scan SDK scans and parses all major 1D and 2D barcodes, helping you quickly barcode scanning functions into your apps.
 
