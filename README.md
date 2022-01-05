@@ -746,6 +746,29 @@ accountService.onSignInActivityResult(intent,
     }
 )
 ```
+Call `signOut` to sign out of the account.
+```kt
+accountService.signOut()
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+```
+Call `startSmsRetriver` to provides the service of reading SMS messages until the service times out.(Without User Authorization)
+```kt
+accountService.startSmsRetriver(context)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+```
+Call `startConsent` to provides the service of reading SMS messages until the service times out.(After User Authorization)
+```kt
+accountService.startConsent(context,"phonenumber")
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+
+```
+
 ## Auth
 This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
 
