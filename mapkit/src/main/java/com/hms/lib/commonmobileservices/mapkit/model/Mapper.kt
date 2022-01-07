@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.hms.lib.commonmobileservices.mapkit.Projection
 
 fun com.huawei.hms.maps.model.Polygon.toPolygon() : Polygon = Polygon(this)
@@ -37,13 +36,6 @@ fun GmsProjection.toProjection(): Projection = Projection(this)
 fun HmsMarker.toMarker(): Marker = Marker(this)
 fun GmsMarker.toMarker(): Marker = Marker(this)
 
-fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
-    return com.huawei.hms.maps.model.PolygonOptions().addAll(points.map { it.toHMSLatLng() }).also { hmsOpts->
-        strokeColor?.let {hmsOpts.strokeColor(it)}
-        strokeWidth?.let {hmsOpts.strokeWidth(it)}
-    }
-}
-
 fun LatLng.toHMSLatLng() : com.huawei.hms.maps.model.LatLng {
     return com.huawei.hms.maps.model.LatLng(lat,lng)
 }
@@ -61,26 +53,62 @@ fun com.google.android.gms.maps.model.LatLng.toLatLng() : LatLng {
 }
 
 
+var holes = ArrayList<List<LatLng?>>()
+
+
+fun PolygonOptions.toHMSPolygonOptions() : com.huawei.hms.maps.model.PolygonOptions {
+    return com.huawei.hms.maps.model.PolygonOptions().addAll(points.map { it.toHMSLatLng() }).also { hmsOpts->
+        strokeColor?.let {hmsOpts.strokeColor(it)}
+        strokeWidth?.let {hmsOpts.strokeWidth(it)}
+        fillColor?.let { hmsOpts.fillColor(it) }
+        zIndex?.let { hmsOpts.zIndex(it) }
+        isVisible?.let { hmsOpts.visible(it) }
+        isGeodesic?.let { hmsOpts.geodesic(it) }
+        isClickable?.let { hmsOpts.clickable(it) }
+        strokeJointType?.let { hmsOpts.strokeJointType(it) }
+        holes?.let { hmsOpts.addHole(it.map { hole -> hole?.toHMSLatLng() }) }
+    }
+}
+
 fun PolygonOptions.toGMSPolygonOptions() : com.google.android.gms.maps.model.PolygonOptions{
     return com.google.android.gms.maps.model.PolygonOptions().
     addAll(points.map { it.toGMSLatLng() }).also {gmsOpts->
         strokeColor?.let {gmsOpts.strokeColor(it)}
         strokeWidth?.let {gmsOpts.strokeWidth(it)}
+        fillColor?.let { gmsOpts.fillColor(it) }
+        zIndex?.let { gmsOpts.zIndex(it) }
+        isVisible?.let { gmsOpts.visible(it) }
+        isGeodesic?.let { gmsOpts.geodesic(it) }
+        isClickable?.let { gmsOpts.clickable(it) }
+        strokeJointType?.let { gmsOpts.strokeJointType(it) }
+        holes?.let { gmsOpts.addHole(it.map { hole -> hole?.toGMSLatLng() }) }
     }
 }
 
 fun PolylineOptions.toHMSPolylineOptions() : com.huawei.hms.maps.model.PolylineOptions {
     return com.huawei.hms.maps.model.PolylineOptions().addAll(points.map { it.toHMSLatLng() }).also { hmsOpts->
-        color?.let {hmsOpts.color(it)}
-        width?.let {hmsOpts.width(it)}
+        color?.let { hmsOpts.color(it) }
+        width?.let { hmsOpts.width(it) }
+        zIndex?.let { hmsOpts.zIndex(it) }
+        isVisible?.let { hmsOpts.visible(it) }
+        isGeodesic?.let { hmsOpts.geodesic(it) }
+        isClickable?.let { hmsOpts.clickable(it) }
+        jointType?.let { hmsOpts.jointType(it) }
     }
 }
 
 fun PolylineOptions.toGMSPolylineOptions() : com.google.android.gms.maps.model.PolylineOptions{
     return com.google.android.gms.maps.model.PolylineOptions().
     addAll(points.map { it.toGMSLatLng() }).also {gmsOpts->
-        color?.let {gmsOpts.color(it)}
-        width?.let {gmsOpts.width(it)}
+        color?.let { gmsOpts.color(it) }
+        width?.let { gmsOpts.width(it) }
+        color?.let { gmsOpts.color(it) }
+        width?.let { gmsOpts.width(it) }
+        zIndex?.let { gmsOpts.zIndex(it) }
+        isVisible?.let { gmsOpts.visible(it) }
+        isGeodesic?.let { gmsOpts.geodesic(it) }
+        isClickable?.let { gmsOpts.clickable(it) }
+        jointType?.let { gmsOpts.jointType(it) }
     }
 }
 
@@ -88,53 +116,74 @@ fun CircleOptions.toHMSCircleOptions(): HmsCircleOptions{
     return HmsCircleOptions().also { hmsCircle ->
         radius?.let { hmsCircle.radius(it) }
         center?.let { hmsCircle.center(it.toHMSLatLng()) }
+        strokeWidth?.let { hmsCircle.strokeWidth(it) }
+        strokeColor?.let { hmsCircle.strokeColor(it) }
+        fillColor?.let { hmsCircle.fillColor(it) }
+        zIndex?.let { hmsCircle.zIndex(it) }
+        isVisible?.let { hmsCircle.visible(it) }
+        isClickable?.let { hmsCircle.clickable(it) }
     }
 }
 
 fun CircleOptions.toGmsCircleOptions(): GmsCircleOptions{
     return GmsCircleOptions().also { gmsCircle ->
         radius?.let { gmsCircle.radius(it) }
-        center?.let { gmsCircle.center(it.toGMSLatLng()) }
+        center?.let { gmsCircle.center(it.toGMSLatLng())}
+        strokeWidth?.let { gmsCircle.strokeWidth(it) }
+        strokeColor?.let { gmsCircle.strokeColor(it) }
+        fillColor?.let { gmsCircle.fillColor(it) }
+        zIndex?.let { gmsCircle.zIndex(it) }
+        isVisible?.let { gmsCircle.visible(it) }
+        isClickable?.let { gmsCircle.clickable(it) }
     }
 }
 
 fun GroundOverlayOptions.toHmsGroundOverlayOptions(): HmsGroundOverlayOptions{
-    return HmsGroundOverlayOptions().also { options ->
-        options.bearing(getBearing())
-        options.anchor(getAnchorU(), getAnchorV())
-        options.clickable(isClickable())
-        getLocation()?.let { options.position(it.toHMSLatLng(), getWidth()) }
-        getLocation()?.let { options.position(it.toHMSLatLng(), getWidth(), getHeight()) }
-        getBounds()?.let { options.positionFromBounds(it.toHmsLatLngBounds()) }
-        options.transparency(getTransparency())
-        options.visible(isVisible())
-        options.zIndex(getZIndex())
-        options.image(HmsBitmapDescriptorFactory.fromResource(getImageResource()))
-        options.image(HmsBitmapDescriptorFactory.fromAsset(getImageAsset()))
-        options.image(HmsBitmapDescriptorFactory.defaultMarker(getImageDefaultMarker()))
-        options.image(HmsBitmapDescriptorFactory.fromBitmap(getImageBitmap()))
-        options.image(HmsBitmapDescriptorFactory.fromFile(getImageFile()))
-        options.image(HmsBitmapDescriptorFactory.fromPath(getImagePath()))
+    return HmsGroundOverlayOptions().also { hmsOverlay ->
+        bearing?.let { hmsOverlay.bearing(it) }
+        anchorU?.let { au -> anchorV?.let { av -> hmsOverlay.anchor(au, av) } }
+        isClickable?.let { hmsOverlay.clickable(it) }
+
+        location?.let { location ->
+
+            if(width != null && height != null){
+                hmsOverlay.position(location.toHMSLatLng(), width!!, height!!)
+            }
+            if(width != null && height == null){
+                hmsOverlay.position(location.toHMSLatLng(), width!!)
+            }
+
+        }
+
+        bounds?.let { hmsOverlay.positionFromBounds(it.toHmsLatLngBounds()) }
+        transparency?.let { hmsOverlay.transparency(it) }
+        isVisible?.let { hmsOverlay.visible(it) }
+        zIndex?.let { hmsOverlay.zIndex(it) }
     }
 }
 
 fun GroundOverlayOptions.toGmsGroundOverlayOptions(): GmsGroundOverlayOptions{
-    return GmsGroundOverlayOptions().also { options ->
-        options.bearing(getBearing())
-        options.anchor(getAnchorU(), getAnchorV())
-        options.clickable(isClickable())
-        getLocation()?.let { options.position(it.toGMSLatLng(), getWidth()) }
-        getLocation()?.let { options.position(it.toGMSLatLng(), getWidth(), getHeight()) }
-        getBounds()?.let { options.positionFromBounds(it.toGmsLatLngBounds()) }
-        options.transparency(getTransparency())
-        options.visible(isVisible())
-        options.zIndex(getZIndex())
-        options.image(GmsBitmapDescriptorFactory.fromResource(getImageResource()))
-        options.image(GmsBitmapDescriptorFactory.fromAsset(getImageAsset()))
-        options.image(GmsBitmapDescriptorFactory.defaultMarker(getImageDefaultMarker()))
-        options.image(GmsBitmapDescriptorFactory.fromBitmap(getImageBitmap()))
-        options.image(GmsBitmapDescriptorFactory.fromFile(getImageFile()))
-        options.image(GmsBitmapDescriptorFactory.fromPath(getImagePath()))
+    return GmsGroundOverlayOptions().also { gmsOverlay ->
+        bearing?.let { gmsOverlay.bearing(it) }
+        anchorU?.let { au -> anchorV?.let { av -> gmsOverlay.anchor(au, av) } }
+        isClickable?.let { gmsOverlay.clickable(it) }
+
+        location?.let { l ->
+            width?.let { w ->
+                gmsOverlay.position(l.toGMSLatLng(), w)
+            }
+        }
+        location?.let { l ->
+            width?.let { w ->
+                height?.let { h ->
+                    gmsOverlay.position(l.toGMSLatLng(), w, h)
+                }
+            }
+        }
+        bounds?.let { gmsOverlay.positionFromBounds(it.toGmsLatLngBounds()) }
+        transparency?.let { gmsOverlay.transparency(it) }
+        isVisible?.let { gmsOverlay.visible(it) }
+        zIndex?.let { gmsOverlay.zIndex(it) }
     }
 }
 
@@ -153,20 +202,20 @@ fun LatLngBounds.toHmsLatLngBounds(): HmsLatLngBounds{
 }
 
 fun TileOverlayOptions.toHmsTileOverlayOptions(): HmsTileOverlayOptions{
-    return HmsTileOverlayOptions().also { options ->
-        options.zIndex(zIndex)
-        options.visible(isVisible)
-        options.fadeIn(fadeIn)
-        options.transparency(transparency)
+    return HmsTileOverlayOptions().also { hmsTile ->
+        zIndex?.let { hmsTile.zIndex(it) }
+        isVisible?.let { hmsTile.visible(it) }
+        fadeIn?.let { hmsTile.fadeIn(it) }
+        transparency?.let { hmsTile.transparency(it) }
     }
 }
 
 fun TileOverlayOptions.toGmsTileOverlayOptions(): GmsTileOverlayOptions{
-    return GmsTileOverlayOptions().also { options ->
-        options.zIndex(zIndex)
-        options.visible(isVisible)
-        options.fadeIn(fadeIn)
-        options.transparency(transparency)
+    return GmsTileOverlayOptions().also { gmsTile ->
+        zIndex?.let { gmsTile.zIndex(it) }
+        isVisible?.let { gmsTile.visible(it) }
+        fadeIn?.let { gmsTile.fadeIn(it) }
+        transparency?.let { gmsTile.transparency(it) }
     }
 }
 

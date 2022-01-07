@@ -17,7 +17,7 @@ import kotlin.collections.ArrayList
 
 class PolygonOptions()  {
     var points = ArrayList<LatLng>()
-    var holes = ArrayList<List<LatLng?>>()
+    var holes: Iterable<LatLng?>? = null
     var strokeColor : Int? = -16777216
     var strokeWidth : Float? = 10.0F
     var fillColor: Int? = 0
@@ -25,7 +25,7 @@ class PolygonOptions()  {
     var isVisible: Boolean? = true
     var isGeodesic: Boolean? = false
     var isClickable: Boolean? = false
-    var strokeJointType: Int = 0
+    var strokeJointType: Int? = 0
 }
 
 

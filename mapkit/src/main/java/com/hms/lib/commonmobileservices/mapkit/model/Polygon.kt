@@ -54,7 +54,7 @@ class Polygon(val polygonImpl : Any) {
     fun setPoints(points: List<LatLng?>?) {
         when(polygonImpl){
             is HmsPolygon -> polygonImpl.points = points?.map { it?.toHMSLatLng() }
-            is GmsPolygon -> polygonImpl.points = points?.map { it?.toGMSLatLng() }
+            is GmsPolygon -> polygonImpl.points = points?.map { it?.toGMSLatLng() } as MutableList<com.google.android.gms.maps.model.LatLng>
         }
     }
 
@@ -68,7 +68,7 @@ class Polygon(val polygonImpl : Any) {
     fun setHoles(holes: List<List<LatLng?>?>?) {
         when(polygonImpl){
             is HmsPolygon -> polygonImpl.holes = holes?.map { list -> list?.map { item -> item?.toHMSLatLng() } }
-            is GmsPolygon -> polygonImpl.holes = holes?.map { list -> list?.map { item -> item?.toGMSLatLng() }}
+            is GmsPolygon -> polygonImpl.holes = holes?.map { list -> list?.map { item -> item?.toGMSLatLng() }} as MutableList<MutableList<com.google.android.gms.maps.model.LatLng>>
         }
     }
 

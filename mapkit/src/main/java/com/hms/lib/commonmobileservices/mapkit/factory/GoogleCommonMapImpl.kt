@@ -278,11 +278,11 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
-        return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions()).toGroundOverlay()
+        return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions())!!.toGroundOverlay()
     }
 
     override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
-        return map.addTileOverlay(tileOverlayOptions.toGmsTileOverlayOptions()).toTileOverlay()
+        return map.addTileOverlay(tileOverlayOptions.toGmsTileOverlayOptions())!!.toTileOverlay()
     }
 
     override fun setMapType(type: Int) {
@@ -331,14 +331,15 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun setLocationSource(locationSource: LocationSource) {
         map.setLocationSource(object: com.google.android.gms.maps.LocationSource{
-            override fun activate(p0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener?) {
+            override fun activate(p0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener) {
                 locationSource.activate(object : LocationSource.OnLocationChangedListener{
                     override fun onLocationChanged(location: Location) {
-                        p0?.onLocationChanged(location)
+                        p0.onLocationChanged(location)
                     }
 
                 })
             }
+
             override fun deactivate() {
                 locationSource.deactivate()
             }
@@ -373,41 +374,41 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
 
     override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
         map.setOnMarkerDragListener(object: GoogleMap.OnMarkerDragListener{
-            override fun onMarkerDragStart(p0: GmsMarker?) {
-                listener.onMarkerDragStart(p0?.toMarker())
+            override fun onMarkerDrag(p0: com.google.android.gms.maps.model.Marker) {
+                listener.onMarkerDrag(p0.toMarker())
             }
 
-            override fun onMarkerDrag(p0: GmsMarker?) {
-                listener.onMarkerDrag(p0?.toMarker())
+            override fun onMarkerDragEnd(p0: com.google.android.gms.maps.model.Marker) {
+                listener.onMarkerDragEnd(p0.toMarker())
             }
 
-            override fun onMarkerDragEnd(p0: GmsMarker?) {
-                listener.onMarkerDragEnd(p0?.toMarker())
+            override fun onMarkerDragStart(p0: com.google.android.gms.maps.model.Marker) {
+                listener.onMarkerDragStart(p0.toMarker())
             }
 
         })
     }
 
     override fun setOnInfoWindowClickListener(listener: CommonMap.OnInfoWindowClickListener) {
-        map.setOnInfoWindowClickListener { listener.onInfoWindowClick(it?.toMarker()) }
+        map.setOnInfoWindowClickListener { listener.onInfoWindowClick(it.toMarker()) }
     }
 
     override fun setOnInfoWindowLongClickListener(listener: CommonMap.OnInfoWindowLongClickListener) {
-        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it?.toMarker())  }
+        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it.toMarker())  }
     }
 
     override fun setOnInfoWindowCloseListener(listener: CommonMap.OnInfoWindowCloseListener) {
-        map.setOnInfoWindowCloseListener { listener.onInfoWindowClose(it?.toMarker()) }
+        map.setOnInfoWindowCloseListener { listener.onInfoWindowClose(it.toMarker()) }
     }
 
     override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
         map.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter{
-            override fun getInfoWindow(p0: GmsMarker?): View {
-                return adapter.getInfoWindow(p0?.toMarker())
+            override fun getInfoContents(p0: com.google.android.gms.maps.model.Marker): View {
+                return adapter.getInfoContents(p0.toMarker())
             }
 
-            override fun getInfoContents(p0: GmsMarker?): View {
-                return adapter.getInfoContents(p0?.toMarker())
+            override fun getInfoWindow(p0: com.google.android.gms.maps.model.Marker): View {
+                return adapter.getInfoWindow(p0.toMarker())
             }
 
         })

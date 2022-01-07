@@ -15,7 +15,7 @@
 package com.hms.lib.commonmobileservices.mapkit.model
 
 class PolylineOptions {
-    val points = ArrayList<LatLng>()
+    var points = ArrayList<LatLng>()
     var color : Int? = -16777216
     var width : Float? = 10.0F
     var zIndex: Float? = 0.0F

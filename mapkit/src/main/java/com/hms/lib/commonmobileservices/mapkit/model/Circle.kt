@@ -58,7 +58,7 @@ class Circle(private val circleImpl: Any) {
     fun setCenter(center: LatLng?) {
         when(circleImpl){
             is HmsCircle -> circleImpl.center = center?.toHMSLatLng()
-            is GmsCircle -> circleImpl.center = center?.toGMSLatLng()
+            is GmsCircle -> circleImpl.center = center?.toGMSLatLng()!!
         }
     }
 
