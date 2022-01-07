@@ -13,12 +13,14 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account.google
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient
-import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.hms.lib.commonmobileservices.account.AccountService
 import com.hms.lib.commonmobileservices.account.SignInParams
 import com.hms.lib.commonmobileservices.account.SignInUser
@@ -34,7 +36,7 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
     private val mapper: Mapper<GoogleSignInAccount, SignInUser> = GoogleUserMapper()
     private val sharedPrefHelper = SharedPrefHelper(context)
     private var mGoogleSmsRetriver: SmsRetrieverClient
-    private var mGoogleSignInResult: GoogleSignInResult? = null
+    private var signInUser: SignInUser? = null
 
     init {
         val helper = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -53,7 +55,8 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
             callback.onFailure(Exception("Get last signed account failed"))
         } else {
             account.email?.let { sharedPrefHelper.setEmail(it) }
-            callback.onSuccess(mapper.map(account))
+            signInUser = mapper.map(account)
+            callback.onSuccess(signInUser)
         }
     }
 
@@ -65,7 +68,8 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         task.addOnSuccessListener {
             it.email?.let { it1 -> sharedPrefHelper.setEmail(it1) }
-            callback.onSuccess(mapper.map(task.result!!))
+            signInUser = mapper.map(task.result!!)
+            callback.onSuccess(signInUser)
         }
         task.addOnFailureListener { callback.onFailure(task.exception!!) }
         task.addOnCanceledListener { callback.onCancelled() }
@@ -87,6 +91,7 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
             .addOnSuccessListener { worker.onSuccess(Unit) }
             .addOnFailureListener { worker.onFailure(it) }
             .addOnCanceledListener { worker.onCanceled() }
+
         return worker
     }
 
@@ -99,31 +104,8 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         }
     }
 
-    override fun startSmsRetriver(context: Context): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        mGoogleSmsRetriver.startSmsRetriever().addOnSuccessListener { worker.onSuccess(Unit) }
-            .addOnFailureListener { worker.onFailure(it) }
-            .addOnCanceledListener { worker.onCanceled() }
-        return worker
-    }
-
-    override fun startConsent(activity: Activity, phonenumber: String): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        mGoogleSmsRetriver.startSmsUserConsent(phonenumber)
-            .addOnSuccessListener { worker.onSuccess(Unit) }
-            .addOnFailureListener { worker.onFailure(it) }
-            .addOnCanceledListener { worker.onCanceled() }
-        return worker
-    }
-
     override fun getSignAccountId(): SignInUser? {
-        return (mGoogleSignInResult as GoogleSignInResult).signInAccount?.let { mapper.map(it) }
+        return signInUser
     }
 
-    override fun isSuccesful(): Boolean {
-
-        return (mGoogleSignInResult as GoogleSignInResult).isSuccess
-    }
 }

@@ -25,6 +25,6 @@ data class SignInUser(
     val photoUrl: Uri?,
     val authServiceToken: String,
     val idToken: String,
-    val accessToken: String?,
+    val accessToken: String,
     val scopes: Set<Scope>
 )
