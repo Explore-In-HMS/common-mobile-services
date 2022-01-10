@@ -15,13 +15,21 @@ package com.hms.lib.commonmobileservices.location
 
 import android.Manifest
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.hms.lib.commonmobileservices.core.Work
+import com.hms.lib.commonmobileservices.location.common.CommonGeofenceReqBuilder
+import com.hms.lib.commonmobileservices.location.common.CommonGeofenceRequest
+import com.hms.lib.commonmobileservices.location.common.Geofence
+import com.hms.lib.commonmobileservices.location.common.GeofencingData
 import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
 import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
@@ -141,6 +149,39 @@ abstract class CommonLocationClient(private val activity: Activity,
             )
             mode != Settings.Secure.LOCATION_MODE_OFF
         }
+    }
+
+    abstract fun setMockMode(isMockMode : Boolean) : Work<Unit>
+    abstract fun setMockLocation(location: Location): Work<Unit>
+    abstract fun flushLocations(): Work<Unit>
+    abstract fun geofenceBuild() : Geofence
+    abstract fun setCircularArea(latitude:Double,longitude:Double,radius:Float)
+    abstract fun setExpirationDuration(expirationDuration : Long)
+    abstract fun setDwellDelayTime(dwellDelayTime: Int)
+    abstract fun setNotificationInterval(notificationInterval: Int)
+    abstract fun setReqId(reqId: String)
+    abstract fun setTriggerType(triggerType: Int)
+    abstract fun createGeofenceList(geofences: List<Geofence>) : CommonGeofenceReqBuilder
+    abstract fun setInitConversions(conversionType:Int): CommonGeofenceReqBuilder
+    abstract fun createGeofence(geofence: Geofence) : CommonGeofenceReqBuilder
+    abstract fun deleteGeofenceList(reqIdList : List<String>): Work<Unit>
+    abstract fun deleteGeofenceList(pendingIntent: PendingIntent): Work<Unit>
+    abstract fun fetchDataFromIntent(intent : Intent): GeofencingData
+    abstract fun getTriggeredGeofence() : List<Geofence>
+    abstract fun fetchGeofenceList() : List<Geofence>
+    abstract fun getConvertingLocation() : Location
+    abstract fun getErrorCode() : Int
+    abstract fun getConversion(): Int
+    abstract fun geofenceReqBuild() : CommonGeofenceRequest
+
+    abstract fun  deleteActivityConversionUpdates(pendingIntent: PendingIntent) : Work<Unit>
+    abstract fun deleteActivityIdentificationUpdates(pendingIntent: PendingIntent) : Work<Unit>
+
+
+
+    interface ResultCallback{
+        fun addOnSuccessListener()
+        fun addOnFailureListener(e: java.lang.Exception)
     }
 
 }
