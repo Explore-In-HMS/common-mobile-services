@@ -29,6 +29,8 @@ interface AccountService {
     fun signOut(): Work<Unit>
     fun cancelAuthorization(): Work<Unit>
     fun getEmail(): String?
+    fun getSignAccountId(): SignInUser?
+
 
     object Factory {
         fun create(context: Context, signInParams: SignInParams): AccountService {

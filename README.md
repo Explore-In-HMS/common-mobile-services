@@ -746,6 +746,14 @@ accountService.onSignInActivityResult(intent,
     }
 )
 ```
+Call `signOut` to sign out of the account.
+```kt
+accountService.signOut()
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+```
+
 ## Auth
 This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
 
