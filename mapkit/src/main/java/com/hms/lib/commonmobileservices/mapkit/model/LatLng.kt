@@ -13,4 +13,4 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class CommonLatLng (val lat: Double, val lng: Double)
+data class LatLng (val lat: Double, val lng: Double)

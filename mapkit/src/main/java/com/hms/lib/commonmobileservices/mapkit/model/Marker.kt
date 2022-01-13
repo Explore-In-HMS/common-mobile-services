@@ -13,36 +13,34 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.huawei.hms.maps.model.Polygon
 import java.lang.Exception
 
-class CommonPolygon(val polygonImpl : Any) {
+class Marker(val markerImpl : Any?) {
     fun hide(){
-        when (polygonImpl){
-            is Polygon -> polygonImpl.isVisible=false
-            is com.google.android.gms.maps.model.Polygon -> polygonImpl.isVisible=false
+        when (markerImpl){
+            is com.huawei.hms.maps.model.Marker -> markerImpl.isVisible=false
+            is com.google.android.gms.maps.model.Marker -> markerImpl.isVisible=false
         }
     }
 
     fun show(){
-        when (polygonImpl){
-            is Polygon -> polygonImpl.isVisible=true
-            is com.google.android.gms.maps.model.Polygon -> polygonImpl.isVisible=true
+        when (markerImpl){
+            is com.huawei.hms.maps.model.Marker -> markerImpl.isVisible=true
+            is com.google.android.gms.maps.model.Marker -> markerImpl.isVisible=true
         }
     }
 
-    fun remove() :Boolean{
+    fun remove() : Boolean{
         return try {
-            when (polygonImpl){
-                is Polygon -> polygonImpl.remove()
-                is com.google.android.gms.maps.model.Polygon -> polygonImpl.remove()
+            when (markerImpl){
+                is com.huawei.hms.maps.model.Marker -> markerImpl.remove()
+                is com.google.android.gms.maps.model.Marker -> markerImpl.remove()
             }
             true
         }
-        catch (e: Exception){
+        catch (e:Exception){
             e.printStackTrace()
             false
         }
     }
-
 }

@@ -11,15 +11,21 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.hms.lib.commonmobileservices.mapkit.helper
+package com.hms.lib.commonmobileservices.mapkit.model
 
-import com.google.maps.android.SphericalUtil
-import com.hms.lib.commonmobileservices.mapkit.model.LatLng
-import com.hms.lib.commonmobileservices.mapkit.model.toGMSLatLng
+import kotlin.collections.ArrayList
 
-class DistanceUtil {
-    // calculates distance between 2 points in meters
-    fun calculateDistance(p1:LatLng, p2:LatLng) : Double{
-        return SphericalUtil.computeDistanceBetween(p1.toGMSLatLng(),p2.toGMSLatLng())
-    }
+class PolygonOptions()  {
+    var points = ArrayList<LatLng>()
+    var holes: Iterable<LatLng?>? = null
+    var strokeColor : Int? = -16777216
+    var strokeWidth : Float? = 10.0F
+    var fillColor: Int? = 0
+    var zIndex: Float? = 0.0F
+    var isVisible: Boolean? = true
+    var isGeodesic: Boolean? = false
+    var isClickable: Boolean? = false
+    var strokeJointType: Int? = 0
 }
+
+
