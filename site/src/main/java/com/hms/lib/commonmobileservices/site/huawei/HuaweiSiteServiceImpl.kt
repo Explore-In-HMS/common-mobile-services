@@ -14,14 +14,10 @@
 
 package com.hms.lib.commonmobileservices.site.huawei
 
-import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 import com.hms.lib.commonmobileservices.core.ResultData
-import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.site.SiteService
 import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
@@ -29,10 +25,7 @@ import com.huawei.hms.site.api.SearchResultListener
 import com.huawei.hms.site.api.SearchService
 import com.huawei.hms.site.api.SearchServiceFactory
 import com.huawei.hms.site.api.model.*
-import java.lang.Exception
 import java.net.URLEncoder
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class HuaweiSiteServiceImpl(private val context: Context, apiKey: String? = null): SiteService {
 
@@ -127,7 +120,7 @@ class HuaweiSiteServiceImpl(private val context: Context, apiKey: String? = null
         val detailSearchRequest = DetailSearchRequest()
         detailSearchRequest.language = areaLanguage
         detailSearchRequest.siteId = siteID
-        detailSearchRequest.children = childrenNode
+        detailSearchRequest.isChildren = childrenNode
 
         siteService.detailSearch(detailSearchRequest, object : SearchResultListener<DetailSearchResponse> {
             override fun onSearchResult(detailSearchResponse: DetailSearchResponse?) {
@@ -158,7 +151,7 @@ class HuaweiSiteServiceImpl(private val context: Context, apiKey: String? = null
         queryAutocompleteRequest.radius = areaRadius
         queryAutocompleteRequest.language = areaLanguage
         if (childrenNode != null) {
-            queryAutocompleteRequest.children = childrenNode
+            queryAutocompleteRequest.isChildren = childrenNode
         }
 
         siteService.queryAutocomplete(queryAutocompleteRequest, object : SearchResultListener<QueryAutocompleteResponse> {
