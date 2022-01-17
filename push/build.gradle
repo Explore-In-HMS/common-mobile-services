@@ -1,8 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.huawei.hms:push:5.1.1.301'
-    implementation 'com.google.firebase:firebase-messaging-ktx:21.0.1'
+    implementation 'com.huawei.hms:push:6.1.0.300'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.0'
     api project(":core")
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
