@@ -44,7 +44,19 @@ class HuaweiAuthServiceImpl : AuthService {
 
     override fun signInWithTwitter(token: String, secret: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
+
         agcConnectAuth.signIn(TwitterAuthProvider.credentialWithToken(token, secret))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun signInwithGooglePLayGames(serverAuthCode: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        agcConnectAuth.signIn(GoogleGameAuthProvider.credentialWithToken(serverAuthCode))
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
@@ -54,6 +66,7 @@ class HuaweiAuthServiceImpl : AuthService {
 
     override fun signInWithGoogleOrHuawei(token: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
+
         agcConnectAuth.signIn(HwIdAuthProvider.credentialWithToken(token))
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }

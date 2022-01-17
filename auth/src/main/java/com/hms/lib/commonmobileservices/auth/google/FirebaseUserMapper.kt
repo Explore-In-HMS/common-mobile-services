@@ -35,6 +35,7 @@ class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
             GoogleAuthProvider.PROVIDER_ID -> ProviderType.Google
             FacebookAuthProvider.PROVIDER_ID -> ProviderType.Facebook
             TwitterAuthProvider.PROVIDER_ID -> ProviderType.Twitter
+            PlayGamesAuthProvider.PROVIDER_ID -> ProviderType.GoogleGame
             EmailAuthProvider.PROVIDER_ID -> ProviderType.Email
             else -> ProviderType.NoProvider
         }

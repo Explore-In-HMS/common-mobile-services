@@ -38,6 +38,7 @@ class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
             AGConnectAuthCredential.Facebook_Provider.toString() -> ProviderType.Facebook
             AGConnectAuthCredential.Twitter_Provider.toString() -> ProviderType.Twitter
             AGConnectAuthCredential.Email_Provider.toString() -> ProviderType.Email
+            AGConnectAuthCredential.GoogleGame_Provider.toString() -> ProviderType.GoogleGame
             else -> ProviderType.NoProvider
         }
     }

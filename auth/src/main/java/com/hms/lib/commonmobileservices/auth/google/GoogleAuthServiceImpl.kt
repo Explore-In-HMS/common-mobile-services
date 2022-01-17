@@ -52,7 +52,17 @@ class GoogleAuthServiceImpl : AuthService {
             .addOnCanceledListener { work.onCanceled() }
 
         return work
+    }
 
+    override fun signInwithGooglePLayGames(serverAuthCode: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        firebaseAuth.signInWithCredential(PlayGamesAuthProvider.getCredential(serverAuthCode))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
     }
 
     override fun signInWithGoogleOrHuawei(token: String): Work<AuthUser> {

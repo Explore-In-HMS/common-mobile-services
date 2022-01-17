@@ -20,5 +20,6 @@ enum class ProviderType(val value: String) {
     Google("google"),
     Facebook("facebook"),
     Email("email"),
-    Twitter("twitter")
+    Twitter("twitter"),
+    GoogleGame("googlegame")
 }
