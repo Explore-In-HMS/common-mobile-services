@@ -15,7 +15,6 @@ package com.hms.lib.commonmobileservices.location.factory
 
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
@@ -27,8 +26,6 @@ import com.hms.lib.commonmobileservices.location.Constants
 import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_FAIL
 import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_SUCCESS
 import com.hms.lib.commonmobileservices.location.Constants.OPEN_LOCATION_SETTING_REQUEST_CODE
-import com.hms.lib.commonmobileservices.location.common.*
-import com.hms.lib.commonmobileservices.location.common.toCommonGeofence
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.LocationResultState
@@ -36,16 +33,12 @@ import com.hms.lib.commonmobileservices.location.model.Priority
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
-import com.huawei.hms.location.Geofence
-
 
 class HuaweiLocationClientImpl(
     activity: Activity,
     lifecycle: Lifecycle,
     needBackgroundPermissions: Boolean = false,
 ) : CommonLocationClient(activity, lifecycle, needBackgroundPermissions) {
-    private var geofenceService : GeofenceService = GeofenceService(activity)
-    private var geofenceData : GeofenceData?= null
     private var activityIdentificationService = ActivityIdentificationService(activity)
     private var fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
@@ -195,98 +188,6 @@ class HuaweiLocationClientImpl(
         return worker
     }
 
-
-
-    override fun geofenceBuild() : com.hms.lib.commonmobileservices.location.common.Geofence {
-        return Geofence.Builder().build().toCommonGeofence()
-    }
-
-    override fun setCircularArea(latitude: Double, longitude: Double, radius: Float) {
-        Geofence.Builder().setRoundArea(latitude,longitude,radius)
-    }
-
-    override fun setExpirationDuration(expirationDuration: Long) {
-        Geofence.Builder().setValidContinueTime(expirationDuration)
-    }
-
-    override fun setDwellDelayTime(dwellDelayTime: Int) {
-        Geofence.Builder().setDwellDelayTime(dwellDelayTime)
-    }
-
-    override fun setNotificationInterval(notificationInterval: Int) {
-        Geofence.Builder().setNotificationInterval(notificationInterval)
-    }
-
-    override fun setReqId(reqId: String) {
-        Geofence.Builder().setUniqueId(reqId)
-    }
-
-    override fun setTriggerType(triggerType: Int) {
-        Geofence.Builder().setConversions(triggerType)
-    }
-
-
-    override fun createGeofenceList(geofences: List<com.hms.lib.commonmobileservices.location.common.Geofence>): CommonGeofenceReqBuilder {
-        return GeofenceRequest.Builder().createGeofenceList(geofences.toHMSGeofenceList()).toHMSGeofenceReqBuilder()
-    }
-
-    override fun createGeofence(geofence: com.hms.lib.commonmobileservices.location.common.Geofence): CommonGeofenceReqBuilder {
-        return GeofenceRequest.Builder().createGeofence(geofence.toHMSGeofence()).toHMSGeofenceReqBuilder()
-    }
-
-
-    override fun setInitConversions(conversionType: Int): CommonGeofenceReqBuilder {
-        return GeofenceRequest.Builder().setCoordinateType(conversionType).toHMSGeofenceReqBuilder()
-    }
-
-    override fun deleteGeofenceList(reqIdList: List<String>): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        geofenceService.deleteGeofenceList(reqIdList)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it)}
-
-        return worker
-    }
-
-    override fun deleteGeofenceList(pendingIntent: PendingIntent): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        geofenceService.deleteGeofenceList(pendingIntent)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it)}
-        return worker
-    }
-
-    override fun fetchDataFromIntent(intent: Intent): GeofencingData {
-        return GeofenceData.getDataFromIntent(intent).toCommonGeofenceData()
-
-    }
-
-    override fun getTriggeredGeofence(): List<com.hms.lib.commonmobileservices.location.common.Geofence> {
-        return (geofenceData as GeofenceData).convertingGeofenceList.map { it.toCommonGeofence() }
-    }
-
-    override fun fetchGeofenceList(): List<com.hms.lib.commonmobileservices.location.common.Geofence> {
-        return GeofenceRequest().geofences.map { it.toCommonGeofence() }
-    }
-
-    override fun getConvertingLocation(): Location {
-        return geofenceData!!.convertingLocation
-    }
-
-    override fun getErrorCode(): Int {
-        return geofenceData!!.errorCode
-    }
-
-    override fun getConversion(): Int {
-        return geofenceData!!.conversion
-    }
-
-    override fun geofenceReqBuild(): CommonGeofenceRequest {
-        return GeofenceRequest().toHMSGeofenceReq()
-    }
-
     override fun deleteActivityConversionUpdates(pendingIntent: PendingIntent): Work<Unit> {
         val worker: Work<Unit> = Work()
         activityIdentificationService.deleteActivityConversionUpdates(pendingIntent)
@@ -304,6 +205,4 @@ class HuaweiLocationClientImpl(
 
         return worker
     }
-
-
 }

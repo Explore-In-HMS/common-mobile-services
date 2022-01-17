@@ -16,7 +16,6 @@ package com.hms.lib.commonmobileservices.location.factory
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
-import android.content.Intent
 import android.content.IntentSender
 import android.location.Location
 import android.location.LocationManager
@@ -25,7 +24,6 @@ import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.tasks.Task
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.location.Constants
@@ -33,23 +31,17 @@ import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMO
 import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_SUCCESS
 import com.hms.lib.commonmobileservices.location.Constants.OPEN_LOCATION_SETTING_REQUEST_CODE
 import com.hms.lib.commonmobileservices.location.model.Priority
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.hms.lib.commonmobileservices.location.CommonLocationClient
-import com.hms.lib.commonmobileservices.location.common.*
-import com.hms.lib.commonmobileservices.location.common.toCommonGeofence
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.LocationResultState
+import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class GoogleLocationClientImpl(
     private val activity: Activity,
     lifecycle: Lifecycle,
     needBackgroundPermissions:Boolean=false
 ) : CommonLocationClient(activity,lifecycle,needBackgroundPermissions) {
-
-    private var geofenceClient : GeofencingClient = GeofencingClient(activity)
-    private var geofenceRequest : GeofencingRequest?= null
-    private var geofencingEvent : GeofencingEvent?= null
     private var activityIdentificationService = ActivityRecognitionClient(activity)
     private var fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
@@ -89,8 +81,6 @@ class GoogleLocationClientImpl(
 
 
     }
-
-
 
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
@@ -230,93 +220,6 @@ class GoogleLocationClientImpl(
                 worker.addOnFailureListener { it }
             }
         return worker
-    }
-
-    override fun geofenceBuild() : com.hms.lib.commonmobileservices.location.common.Geofence {
-        return Geofence.Builder().build().toCommonGeofence()
-    }
-
-    override fun setCircularArea(latitude: Double, longitude: Double, radius: Float) {
-        Geofence.Builder().setCircularRegion(latitude,longitude,radius)
-    }
-
-    override fun setExpirationDuration(expirationDuration: Long) {
-        Geofence.Builder().setExpirationDuration(expirationDuration)
-    }
-
-    override fun setDwellDelayTime(dwellDelayTime: Int) {
-        Geofence.Builder().setLoiteringDelay(dwellDelayTime)
-    }
-
-    override fun setNotificationInterval(notificationInterval: Int) {
-        Geofence.Builder().setNotificationResponsiveness(notificationInterval)
-    }
-
-    override fun setReqId(reqId: String) {
-        Geofence.Builder().setRequestId(reqId)
-    }
-
-    override fun setTriggerType(triggerType: Int) {
-        Geofence.Builder().setTransitionTypes(triggerType)
-    }
-
-    override fun createGeofenceList(geofences: List<com.hms.lib.commonmobileservices.location.common.Geofence>): CommonGeofenceReqBuilder {
-        return GeofencingRequest.Builder().addGeofences(geofences.toGMSGeofenceList()).toGMSGeofenceReqBuilder()
-    }
-
-    override fun setInitConversions(conversionType: Int): CommonGeofenceReqBuilder {
-        return GeofencingRequest.Builder().setInitialTrigger(conversionType).toGMSGeofenceReqBuilder()
-    }
-
-    override fun createGeofence(geofence: com.hms.lib.commonmobileservices.location.common.Geofence): CommonGeofenceReqBuilder {
-        return GeofencingRequest.Builder().addGeofence(geofence.toGMSGeofence()).toGMSGeofenceReqBuilder()
-    }
-
-    override fun deleteGeofenceList(reqIdList: List<String>): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        geofenceClient.removeGeofences(reqIdList)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it) }
-
-        return worker
-    }
-
-    override fun deleteGeofenceList(pendingIntent: PendingIntent): Work<Unit> {
-        val worker: Work<Unit> = Work()
-
-        geofenceClient.removeGeofences(pendingIntent)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it)}
-        return worker
-    }
-
-    override fun fetchDataFromIntent(intent: Intent): GeofencingData {
-        return GeofencingEvent.fromIntent(intent).toCommonGeofenceData()
-    }
-
-    override fun getTriggeredGeofence(): List<com.hms.lib.commonmobileservices.location.common.Geofence> {
-        return (geofencingEvent as GeofencingEvent).triggeringGeofences.map { it.toCommonGeofence() }
-    }
-
-    override fun fetchGeofenceList(): List<com.hms.lib.commonmobileservices.location.common.Geofence> {
-        return (geofenceRequest as GeofencingRequest).geofences.map { it.toCommonGeofence() }
-    }
-
-    override fun getConvertingLocation(): Location {
-        return geofencingEvent!!.triggeringLocation
-    }
-
-    override fun getErrorCode(): Int {
-        return geofencingEvent!!.errorCode
-    }
-
-    override fun getConversion(): Int {
-        return geofencingEvent!!.geofenceTransition
-    }
-
-    override fun geofenceReqBuild(): CommonGeofenceRequest {
-        return geofenceRequest!!.toGMSGeofenceReq()
     }
 
     override fun deleteActivityConversionUpdates(pendingIntent: PendingIntent): Work<Unit> {
