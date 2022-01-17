@@ -27,6 +27,7 @@ interface AuthService {
     fun signInWithFacebook(accessToken: String): Work<AuthUser>
     fun signInWithGoogleOrHuawei(token: String): Work<AuthUser>
     fun signInWithEmail(email: String, password: String): Work<AuthUser>
+    fun signInWithTwitter(token: String, secret: String): Work<AuthUser>
     fun signUp(
         email: String,
         password: String,

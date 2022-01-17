@@ -42,6 +42,16 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun signInWithTwitter(token: String, secret: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+        agcConnectAuth.signIn(TwitterAuthProvider.credentialWithToken(token, secret))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
     override fun signInWithGoogleOrHuawei(token: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
         agcConnectAuth.signIn(HwIdAuthProvider.credentialWithToken(token))
@@ -138,8 +148,8 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun getUser(): AuthUser? {
-        val user =agcConnectAuth.currentUser
-        return if(user == null) null else mapper.map(user)
+        val user = agcConnectAuth.currentUser
+        return if (user == null) null else mapper.map(user)
     }
 
     override fun signOut(): Work<Unit> {
@@ -159,9 +169,9 @@ class HuaweiAuthServiceImpl : AuthService {
                 .build()
             AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
                 .addOnSuccessListener { Log.v("successUpdate", "successUpdate photo") }
-                .addOnFailureListener { Log.e("errUpdate", "err photo")}
+                .addOnFailureListener { Log.e("errUpdate", "err photo") }
         } else
-               Log.e("errUpdate", "Photo Empty")
+            Log.e("errUpdate", "Photo Empty")
         return work
     }
 
@@ -173,7 +183,7 @@ class HuaweiAuthServiceImpl : AuthService {
                 .build()
             AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
                 .addOnSuccessListener { Log.v("successUpdate", "successUpdate username") }
-                .addOnFailureListener { Log.e("errUpdate", "err username")}
+                .addOnFailureListener { Log.e("errUpdate", "err username") }
         } else
             Log.e("errUpdate", "Username Empty")
         return work
@@ -221,9 +231,9 @@ class HuaweiAuthServiceImpl : AuthService {
             ).addOnSuccessListener {
                 Log.v("successUpdate", "successUpdate password")
             }
-            .addOnFailureListener {
-                Log.e("errUpdate", "err password$it")
-            }
+                .addOnFailureListener {
+                    Log.e("errUpdate", "err password$it")
+                }
         }
         return work
     }
@@ -238,9 +248,9 @@ class HuaweiAuthServiceImpl : AuthService {
             ).addOnSuccessListener {
                 Log.v("successUpdate", "successUpdate password")
             }
-            .addOnFailureListener {
-                Log.e("errUpdate", "err password$it")
-            }
+                .addOnFailureListener {
+                    Log.e("errUpdate", "err password$it")
+                }
         }
         return work
     }
@@ -253,8 +263,7 @@ class HuaweiAuthServiceImpl : AuthService {
         val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).
-        addOnFailureListener(
+            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
             TaskExecutors.uiThread(),
             { Log.e("errUpdate", "err getCode:$it") })
 
@@ -269,8 +278,7 @@ class HuaweiAuthServiceImpl : AuthService {
         val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).
-        addOnFailureListener(
+            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
             TaskExecutors.uiThread(),
             { Log.e("errUpdate", "err getCode:$it") })
 

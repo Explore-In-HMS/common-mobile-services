@@ -43,6 +43,18 @@ class GoogleAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun signInWithTwitter(token: String, secret: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        firebaseAuth.signInWithCredential(TwitterAuthProvider.getCredential(token, secret))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+
+    }
+
     override fun signInWithGoogleOrHuawei(token: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
@@ -179,11 +191,11 @@ class GoogleAuthServiceImpl : AuthService {
         countryCode: String?,
         phoneNumber: String?,
         verifyCode: String?,
-        ): Work<Unit> {
+    ): Work<Unit> {
         TODO("Not yet implemented")
     }
 
-    override fun updatePasswordwEmail(password: String?,verifyCode: String?): Work<Unit> {
+    override fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
