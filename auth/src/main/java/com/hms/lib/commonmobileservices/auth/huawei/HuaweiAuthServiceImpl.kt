@@ -313,4 +313,13 @@ class HuaweiAuthServiceImpl : AuthService {
             { Log.e("errUpdate", "err getCode:$it") })
         return work
     }
+
+    override fun deleteUser(): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        agcConnectAuth.deleteUser()
+        work.onSuccess(Unit)
+
+        return work
+    }
 }

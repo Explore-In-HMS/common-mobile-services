@@ -244,4 +244,15 @@ class GoogleAuthServiceImpl : AuthService {
     override fun getPhoneCode(var1: String?, var2: String?): Work<Unit> {
         TODO("Not yet implemented")
     }
+
+    override fun deleteUser(): Work<Unit> {
+        val work: Work<Unit> = Work()
+        firebaseAuth.currentUser!!.delete()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "User account deleted.")
+                }
+            }
+        return work
+    }
 }
