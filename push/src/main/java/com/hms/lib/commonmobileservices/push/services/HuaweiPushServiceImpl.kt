@@ -69,4 +69,8 @@ class HuaweiPushServiceImpl(private val context: Context): PushService(context) 
             .addOnCanceledListener { work.onCanceled() }
         return work
     }
+
+    override fun isAutoInitEnabled(): Boolean {
+        return hmsMessaging.isAutoInitEnabled
+    }
 }
