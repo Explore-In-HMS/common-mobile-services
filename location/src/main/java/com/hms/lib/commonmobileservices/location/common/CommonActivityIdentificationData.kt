@@ -13,7 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
-data class ActivityUpdates(
-    val activityType : Int,
-    val conversionType : Int
-)
+class CommonActivityIdentificationData {
+
+    companion object{
+        const val VEHICLE = 100
+        const val BIKE = 101
+        const val FOOT = 102
+        const val STILL = 103
+        const val OTHERS = 104
+        const val WALKING = 107
+        const val RUNNING = 108
+    }
+    var possibility: Int?=null
+    var identificationActivity:Int?=null
+}

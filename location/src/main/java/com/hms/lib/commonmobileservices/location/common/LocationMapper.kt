@@ -13,12 +13,8 @@
 // limitations under the License.
 
 package com.hms.lib.commonmobileservices.location.common
-
-import com.google.android.gms.location.GeofencingEvent
-import com.google.android.gms.location.GeofencingRequest
-import com.huawei.hms.location.ActivityConversionInfo
-import com.huawei.hms.location.GeofenceData
-import com.huawei.hms.location.GeofenceRequest
+import com.google.android.gms.location.*
+import com.huawei.hms.location.*
 
 fun GeofenceRequestRes.toHmsGeofenceReq(): GeofenceRequest{
     val builder = GeofenceRequest.Builder()
@@ -85,16 +81,80 @@ fun GeofencingEvent.toCommonGeofenceData(): GeofencingData{
 }
 
 
-fun CommonActivityConversionInfo.toHMSCommonActivityConInfo() : com.huawei.hms.location.ActivityConversionInfo {
-   return com.huawei.hms.location.ActivityConversionInfo(activityType,conversionType)
+//ActivityRecognition Mapper
+
+fun CommonActivityConversionReq.toHMSActivityConversionReq(): ActivityConversionRequest{
+    return ActivityConversionRequest(activityConversions!!.let { it -> it.map { it.toHMSActivityConversionInfo() } })
 }
 
-fun com.huawei.hms.location.ActivityConversionInfo.toCommonActivityConInfo() : CommonActivityConversionInfo {
-    return CommonActivityConversionInfo(activityType, conversionType)
+fun CommonActivityConversionReq.toGMSActivityConversionReq(): ActivityTransitionRequest{
+    return ActivityTransitionRequest(activityConversions!!.let { it -> it.map { it.toGMSActivityConversionInfo() } })
+}
+
+fun CommonActivityConversionInfo.toHMSActivityConversionInfo() : ActivityConversionInfo {
+    val activityConversionInfo = ActivityConversionInfo.Builder()
+    activityType?.let { activityConversionInfo.setActivityType(it) }
+    conversionType?.let { activityConversionInfo.setConversionType(it) }
+    return activityConversionInfo.build()
+
+}
+
+fun CommonActivityConversionInfo.toGMSActivityConversionInfo() : ActivityTransition {
+    val activityConversionInfo = ActivityTransition.Builder()
+    activityType?.let { activityConversionInfo.setActivityType(it) }
+    conversionType?.let { activityConversionInfo.setActivityTransition(it) }
+    return activityConversionInfo.build()
+}
+
+fun ActivityConversionInfo.toCommonActivityConversionInfo() : CommonActivityConversionInfo {
+    return CommonActivityConversionInfo().also { it.activityType=activityType }.also { it.conversionType=conversionType }
+}
+
+fun ActivityTransition.toCommonActivityConversionInfo() : CommonActivityConversionInfo {
+    return CommonActivityConversionInfo().also { it.activityType=activityType }.also { it.conversionType=transitionType }
+}
+
+fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActivityConversionResponse{
+    return CommonActivityConversionResponse().also { it -> it.getActivityConversionDataList = activityConversionDatas.map { it.toCommonConversionData() } }
+}
+
+fun ActivityTransitionResult.toCommonActivityConversionResponse(): CommonActivityConversionResponse{
+    return CommonActivityConversionResponse().also { it -> it.getActivityConversionDataList = transitionEvents.map { it.toCommonConversionData() } }
+}
+
+fun ActivityConversionData.toCommonConversionData(): CommonActivityConversionData{
+    return CommonActivityConversionData().also { it.getActivityType = activityType }.also { it.getConversionType= conversionType }.also { it.getElapsedTimeFromReboot = elapsedTimeFromReboot }
+}
+
+fun ActivityTransitionEvent.toCommonConversionData(): CommonActivityConversionData{
+    return CommonActivityConversionData().also { it.getActivityType = activityType }.also { it.getConversionType= transitionType }.also { it.getElapsedTimeFromReboot = elapsedRealTimeNanos }
+}
+
+fun CommonActivityIdentificationData.toHmsActivityIdentificationData(): ActivityIdentificationData{
+    return ActivityIdentificationData(possibility!!,identificationActivity!!)
+}
+
+fun CommonActivityIdentificationData.toGmsActivityIdentificationData(): DetectedActivity{
+    return DetectedActivity(possibility!!,identificationActivity!!)
+}
+
+fun ActivityIdentificationData.toCommonActivityIdentificationData(): CommonActivityIdentificationData{
+    return CommonActivityIdentificationData().also { it.possibility = possibility }.also { it.identificationActivity = identificationActivity }
+}
+
+fun DetectedActivity.toCommonActivityIdentificationData(): CommonActivityIdentificationData{
+    return CommonActivityIdentificationData().also { it.possibility = confidence }.also { it.identificationActivity = type }
+}
+
+fun ActivityIdentificationResponse.toCommonActivityIdentificationResponse(): CommonActivityIdentificationResponse{
+    return CommonActivityIdentificationResponse().also { it.activityIdentificationDataList = activityIdentificationDatas.map { it.toCommonActivityIdentificationData() } }
+        .also { it.mostActivityIdentification = mostActivityIdentification.toCommonActivityIdentificationData() }.also { it.time = time }.also { it.elapsedTimeFromReboot = elapsedTimeFromReboot }
+}
+
+fun ActivityRecognitionResult.toCommonActivityIdentificationResponse(): CommonActivityIdentificationResponse{
+    return CommonActivityIdentificationResponse().also { it.activityIdentificationDataList = probableActivities.map { it.toCommonActivityIdentificationData() } }
+        .also { it.mostActivityIdentification = mostProbableActivity.toCommonActivityIdentificationData() }.also { it.time = time }.also { it.elapsedTimeFromReboot = elapsedRealtimeMillis }
 }
 
 
-fun List<CommonActivityConversionInfo>.toHMSCommonActivityConversionInfos() : List<ActivityConversionInfo>{
-    return CommonActivityConversionReq().activityConversions!!.map { it.toHMSCommonActivityConInfo() }
-}
 

@@ -13,8 +13,8 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
-class CommonActivityConversionInfo {
-    var activityType: Int? = null
-    var conversionType: Int? = null
-
+class CommonActivityConversionData {
+    var getActivityType: Int?=null
+    var getConversionType: Int?=null
+    var getElapsedTimeFromReboot: Long?=null
 }
