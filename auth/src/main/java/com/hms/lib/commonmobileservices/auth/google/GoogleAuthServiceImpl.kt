@@ -100,7 +100,13 @@ class GoogleAuthServiceImpl : AuthService {
 
     override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+
+        firebaseAuth.currentUser!!.sendEmailVerification()
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+
         return work
     }
 
