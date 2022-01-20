@@ -56,6 +56,7 @@ interface AuthService {
     fun getCodePassword(var1: String?): Work<Unit>
     fun getPhoneCode(var1: String?, var2: String?): Work<Unit>
     fun deleteUser(): Work<Unit>
+    fun reauthenticate(credential: String?): Work<Unit>
 
     object Factory {
         fun create(context: Context): AuthService {
