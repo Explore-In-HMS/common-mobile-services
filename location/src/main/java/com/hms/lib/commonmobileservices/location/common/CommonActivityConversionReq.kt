@@ -15,5 +15,4 @@ package com.hms.lib.commonmobileservices.location.common
 
 class CommonActivityConversionReq {
     var activityConversions: List<CommonActivityConversionInfo>?=null
-
 }

@@ -13,17 +13,49 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+import android.content.Context
+import com.hms.lib.commonmobileservices.core.Device
+import com.hms.lib.commonmobileservices.core.MobileServiceType
+
 class CommonActivityIdentificationData {
 
     companion object{
-        const val VEHICLE = 100
-        const val BIKE = 101
-        const val FOOT = 102
-        const val STILL = 103
-        const val OTHERS = 104
-        const val WALKING = 107
-        const val RUNNING = 108
+
+       var VEHICLE="VEHICLE"
+       var BIKE="BIKE"
+        var FOOT="FOOT"
+        var STILL="STILL"
+        var OTHERS="OTHERS"
+        var WALKING="WALKING"
+        var RUNNING="RUNNING"
     }
+
+        fun activityType(ctx:Context,type:String):Int{
+            if(Device.getMobileServiceType(ctx) == MobileServiceType.HMS){
+                return when(type){
+                    "VEHICLE" -> 100
+                    "BIKE" -> 101
+                    "FOOT"-> 102
+                    "STILL"-> 103
+                    "OTHERS"-> 104
+                    "WALKING"-> 107
+                    "RUNNING"-> 108
+                     else -> -1
+                }
+            }else{
+                return when(type){
+                    "VEHICLE" -> 0
+                    "BIKE" -> 1
+                    "FOOT"-> 2
+                    "STILL"-> 3
+                    "OTHERS"-> 4
+                    "WALKING"-> 7
+                    "RUNNING"-> 8
+                    else -> -1
+                }
+            }
+        }
+
     var possibility: Int?=null
     var identificationActivity:Int?=null
 }

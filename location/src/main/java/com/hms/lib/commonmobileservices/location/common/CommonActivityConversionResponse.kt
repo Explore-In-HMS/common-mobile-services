@@ -27,7 +27,7 @@ class CommonActivityConversionResponse {
     fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse{
         return when(Device.getMobileServiceType(context)){
             MobileServiceType.HMS -> ActivityConversionResponse.getDataFromIntent(intent).toCommonActivityConversionResponse()
-            else -> ActivityTransitionResult.extractResult(intent).toCommonActivityConversionResponse()
+            else -> ActivityTransitionResult.extractResult(intent)!!.toCommonActivityConversionResponse()
         }
     }
 }

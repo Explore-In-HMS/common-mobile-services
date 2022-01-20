@@ -29,7 +29,7 @@ class CommonActivityIdentificationResponse {
     fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse{
         return when(Device.getMobileServiceType(context)){
             MobileServiceType.HMS -> ActivityIdentificationResponse.getDataFromIntent(intent).toCommonActivityIdentificationResponse()
-            else -> ActivityRecognitionResult.extractResult(intent).toCommonActivityIdentificationResponse()
+            else -> ActivityRecognitionResult.extractResult(intent)!!.toCommonActivityIdentificationResponse()
         }
     }
 }

@@ -14,6 +14,12 @@
 package com.hms.lib.commonmobileservices.location.common
 
 class CommonActivityConversionInfo {
+
+    companion object{
+        const val ENTER_ACTIVITY_CONVERSION = 0
+        const val EXIT_ACTIVITY_CONVERSION = 1
+    }
+
     var activityType: Int? = null
     var conversionType: Int? = null
 
