@@ -312,6 +312,252 @@ When you don't need to location updates you can remove listener like this:
  ```kt
 commonLocationClient?.removeLocationUpdates()
  ```
+  ##### Using the Mock location feature
+   To use the mock location function, go to Settings > System & updates > Developer options > Select mock location app and select the desired app. (If Developer options is   unavailable, go to Settings > About phone and tap Build number for seven consecutive times. Then, Developer options will be displayed on System & updates.)
+   You need to add necessary permission to use Mock location feature to AndroidManifest.xml file.
+  ```xml
+  <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+  ```
+  ```kt
+  fun setMockMode(isMockMode : Boolean) : Work<Unit>
+  ```
+  ```kt
+  commonLocationClient?.setMockMode(true).addOnSuccessListener {  }.addOnFailureListener {  }
+  ```
+  ```kt
+  fun setMockLocation(location: Location): Work<Unit>
+  ```
+  ```kt
+  val mockLocation = Location(LocationManager.GPS_PROVIDER)
+       mockLocation.latitude = latitude
+       mockLocation.longitude = longitude
+       commonLocationClient?.setMockLocation(mockLocation).addOnSuccessListener {  }.addOnFailureListener {  }
+  ```
+
+  ### Geofence
+   The usage of the Geofence feature is as follows.
+  To use the geofence service APIs of Location Kit, declare the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions in the AndroidManifest.xml file.
+  ```xml
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+  ```
+
+ First you have to initialize the CommonGeofenceService object.
+  ```kt
+     private var geofenceService: CommonGeofenceService? = null
+     private var geofenceList: ArrayList<Geofence>? = null
+     private var pendingIntent: PendingIntent?=null
+
+     geofenceService = CommonGeofenceService()
+     pendingIntent = getPendingIntent()
+     geofenceList = ArrayList()
+  ```
+  #### Creating and Adding a Geofence
+
+  ```kt
+  geofenceList!!.add(Geofence()
+    .also { it.uniqueId= "testGeofence" }.also { it.conversions = Geofence.ENTER_GEOFENCE_CONVERSION }
+    .also { it.validDuration = Geofence.GEOFENCE_NEVER_EXPIRE }.also { it.latitude = latitude }.also { it.longitude = longitude }
+    .also { it.radius = 20F })
+  ```
+
+  #### Create a request for adding a geofence
+
+   ```kt
+   fun createGeofenceRequest(): GeofenceRequestRes{
+         return GeofenceRequestRes().also { it.geofenceList = geofenceList }.also { it.initConversion = GeofenceRequestRes.INITIAL_TRIGGER_ENTER }
+     }
+  ```
+  You should initialize the pendingIntent object that we have created.
+    ```kt
+     private fun getPendingIntent(): PendingIntent? {
+         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+         intent.action = "com.hms.commonmobileservices.GEOFENCE"
+         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+     }
+  ```
+
+  After all this process, we need to send the request to add a geofence via `createGeofenceList()` method.
+
+  ```kt
+    fun createGeofenceList(context: Context, geofenceReq: GeofenceRequestRes,pendingIntent: PendingIntent): Work<Unit>
+  ```
+
+  ```kt
+   geofenceService.createGeofenceList(applicationContext,createGeofenceRequest(),pendingIntent)
+     .addOnSuccessListener {
+
+     }.addOnFailureListener {
+
+     }
+  ```
+  After adding Geofence, we need to create a Broadcast receiver and define it in AndroidManifest file so that Geofence can be triggered.
+
+   ```xml
+    <receiver android:name=".GeofenceBroadcastReceiver"
+       android:exported="true">
+         <intent-filter>
+ 	   <action android:name="com.hms.commonmobileservices.GEOFENCE" />
+         </intent-filter>
+    </receiver>
+   ```
+ We will be able to listen to the Geofence triggering process thanks to the Brodcast receiver.Thanks to our CommonGeofenceData class, you can get all information about the triggered event.
+
+  ```kt
+  class GeofenceBroadcastReceiver : BroadcastReceiver() {
+     override fun onReceive(context: Context?, intent: Intent) {
+         val geofenceData = CommonGeofenceData().fetchDataFromIntent(context,intent)
+         val errorCode = geofenceData.errorCode
+         val conversion = geofenceData.conversion
+         val convertingGeofenceList = geofenceData.convertingGeofenceList
+         val convertingLocation = geofenceData.convertingLocation
+         val isFailure = geofenceData.isFailure
+     }
+ }
+ ```
+  #### Remove a geofence
+
+  With the `deleteGeofenceList()` method, you can delete the previously created geofence list according to the geofence id list or according to the pending intent value.
+
+   ```kt
+   fun deleteGeofenceList(context: Context,geofenceList:List<String>):Work<Unit>
+
+   fun deleteGeofenceList(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
+
+  ```kt
+  val geofenceIdList : ArrayList<String> = ArrayList()
+  geofenceIdList.add("testGeofence")
+  geofenceService.deleteGeofenceList(applicationContext,geofenceIdList)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+  ```
+
+  ```kt
+  geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+  ```
+
+  ### Activity Recognition
+  Thanks to the Activity Recognition feature, you can follow the user's activity instantly.
+
+   To use the activity recognition service in versions earlier than Android 10, add the following permission in the AndroidManifest.xml file.
+   ```xml
+   <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION"/>
+   <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+   ```
+   To use the activity recognition service in Android 10 and later versions, add the following permission in the AndroidManifest.xml file;
+   ```xml
+   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+   ```
+   After adding the required permissions, you must create and initialize the `CommonActivityIdentificationService` object.
+   ```kt
+   private var activityIdentificationService : CommonActivityIdentificationService?=null
+   private var pendingIntent: PendingIntent? = null
+
+   activityIdentificationService = CommonActivityIdentificationService()
+   pendingIntentEdit = getPendingIntent()
+
+   private fun getPendingIntent(): PendingIntent?{
+         val intent = Intent(this, ActivityRecognitionReceiver::class.java)
+         intent.action = "com.hms.commonmobileservices.ACTIVITY_RECOGNITION"
+         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+     }
+   ```
+   With the `createActivityIdentificationUpdates()` method, the user's activities are controlled according to the specified time.
+   ```kt
+   fun createActivityIdentificationUpdates(context: Context,intervalMillis:Long, pendingIntent: PendingIntent):Work<Unit>
+   ```
+   ```kt
+   activityIdentificationService.createActivityIdentificationUpdates(applicationContext,5000,pendingIntent)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+   ```
+   You can follow to the user activities with the Broadcast Receiver we will create.
+   ```xml
+     <receiver android:name=".ActivityRecognitionReceiver"
+        android:exported="true">
+           <intent-filter>
+ 	     <action android:name="com.hms.commonmobileservices.ACTIVITY_RECOGNITION" />
+           </intent-filter>
+     </receiver>
+   ```
+    With Common `fetchDataFromIntent()` method you can get  detected activities status list.
+    ```kt
+    fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse
+    ```
+    ```kt
+    class ActivityRecognitionReceiver : BroadcastReceiver() {
+       override fun onReceive(context: Context?, intent: Intent) {
+           val activityIdentificationResponse = CommonActivityIdentificationResponse().fetchDataFromIntent(context,intent)
+           val detectedActivityList = activityIdentificationResponse.activityIdentificationDataList
+       }
+    }
+    ```
+    To Stop requesting activity identification updates, you can use `deleteActivityIdentificationUpdates()` method.
+    ```kt
+    fun deleteActivityIdentificationUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+    ```
+    ```kt
+    activityIdentificationService.deleteActivityIdentificationUpdates(applicationContext,pendingIntent)
+           .addOnSuccessListener { }
+           .addOnFailureListener { }
+    ```
+
+    #### Activity Transition
+
+    Activity transition is a process of detecting user activity converting from one to another. You can call the `createActivityConversionUpdates()` method in your app to request user activity conversion updates.
+
+    ```kt
+    fun createActivityConversionUpdates(context: Context,activityConversionReq: CommonActivityConversionReq,pendingIntent: PendingIntent):Work<Unit>
+    ```
+
+    ```kt
+    val activityConversionEnter = CommonActivityConversionInfo()
+           .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL)}
+           .also { it.conversionType = CommonActivityConversionInfo.ENTER_ACTIVITY_CONVERSION }
+    val activityConversionExit = CommonActivityConversionInfo()
+           .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL) }
+           .also { it.conversionType = CommonActivityConversionInfo.EXIT_ACTIVITY_CONVERSION }
+
+    val activityConversionList: MutableList<CommonActivityConversionInfo> = ArrayList()
+         activityConversionList.add(activityConversionEnter)
+         activityConversionList.add(activityConversionExit)
+
+    val activityConRequest = CommonActivityConversionReq()
+         activityConRequest.activityConversions = activityConversionList
+
+    activityIdentificationService.createActivityConversionUpdates(applicationContext,activityConRequest,pendingIntent)
+         .addOnSuccessListener { }
+         .addOnFailureListener { }
+    ```
+
+    You can receive the broadcast activity transition result with broadcast receiver. With Common `fetchDataFromIntent()` method you can get activity transition status.
+    ```kt
+    fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse
+    ```
+
+    ```kt
+    class ActivityRecognitionReceiver : BroadcastReceiver() {
+       override fun onReceive(context: Context?, intent: Intent) {
+           val activityTransitionResponse = CommonActivityConversionResponse().fetchDataFromIntent(context,intent)
+           val activityTransitionList = activityTransitionResponse.getActivityConversionDataList
+       }
+    }
+    ```
+    #### Stop activity transition update request
+    If you want to stop getting activity transition information, you can use `deleteActivityConversionUpdates()` method.
+    ```kt
+     fun deleteActivityConversionUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+    ```
+
+    ```kt
+    activityIdentificationService.deleteActivityConversionUpdates(applicationContext,pendingIntent)
+          .addOnSuccessListener { }
+          .addOnFailureListener { }
+    ```
 ## Analytics
 It is made to ease logging for your project. You can log your event with a one line of code. 
 ### How to use
