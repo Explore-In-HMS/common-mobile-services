@@ -59,6 +59,7 @@ interface AuthService {
     fun deleteUser(): Work<Unit>
     fun reauthenticate(credential: String?): Work<Unit>
     fun link(credential: CommonAuthCredential): Work<AuthUser>
+    fun unlink(provider: String): Work<AuthUser>
 
     object Factory {
         fun create(context: Context): AuthService {

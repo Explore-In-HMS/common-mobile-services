@@ -346,4 +346,14 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnCanceledListener { work.onCanceled() }
         return work
     }
+
+    override fun unlink(provider: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        agcConnectAuth.currentUser.unlink(provider.toInt())
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
 }

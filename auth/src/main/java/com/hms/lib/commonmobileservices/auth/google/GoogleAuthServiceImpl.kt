@@ -286,4 +286,15 @@ class GoogleAuthServiceImpl : AuthService {
 
         return work
     }
+
+    override fun unlink(provider: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        firebaseAuth.currentUser!!.unlink(provider)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
 }
