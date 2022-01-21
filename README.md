@@ -370,30 +370,28 @@ commonLocationClient?.removeLocationUpdates()
      }
   ```
   You should initialize the pendingIntent object that we have created.
-    ```kt
+   ```kt
      private fun getPendingIntent(): PendingIntent? {
          val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
          intent.action = "com.hms.commonmobileservices.GEOFENCE"
          return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
      }
-  ```
+   ```
 
-  After all this process, we need to send the request to add a geofence via `createGeofenceList()` method.
+   After all this process, we need to send the request to add a geofence via `createGeofenceList()` method.
 
-  ```kt
-    fun createGeofenceList(context: Context, geofenceReq: GeofenceRequestRes,pendingIntent: PendingIntent): Work<Unit>
-  ```
-
-  ```kt
+   ```kt
+   fun createGeofenceList(context: Context, geofenceReq: GeofenceRequestRes,pendingIntent: PendingIntent): Work<Unit>
+   ```
+   ```kt
    geofenceService.createGeofenceList(applicationContext,createGeofenceRequest(),pendingIntent)
      .addOnSuccessListener {
 
      }.addOnFailureListener {
 
      }
-  ```
-  After adding Geofence, we need to create a Broadcast receiver and define it in AndroidManifest file so that Geofence can be triggered.
-
+   ```
+   After adding Geofence, we need to create a Broadcast receiver and define it in AndroidManifest file so that Geofence can be triggered.
    ```xml
     <receiver android:name=".GeofenceBroadcastReceiver"
        android:exported="true">
@@ -414,8 +412,8 @@ commonLocationClient?.removeLocationUpdates()
          val convertingLocation = geofenceData.convertingLocation
          val isFailure = geofenceData.isFailure
      }
- }
- ```
+  }
+  ```
   #### Remove a geofence
 
   With the `deleteGeofenceList()` method, you can delete the previously created geofence list according to the geofence id list or according to the pending intent value.
@@ -426,31 +424,30 @@ commonLocationClient?.removeLocationUpdates()
    fun deleteGeofenceList(context: Context,pendingIntent: PendingIntent):Work<Unit>
    ```
 
-  ```kt
-  val geofenceIdList : ArrayList<String> = ArrayList()
-  geofenceIdList.add("testGeofence")
-  geofenceService.deleteGeofenceList(applicationContext,geofenceIdList)
+   ```kt
+   val geofenceIdList : ArrayList<String> = ArrayList()
+   geofenceIdList.add("testGeofence")
+   geofenceService.deleteGeofenceList(applicationContext,geofenceIdList)
       .addOnSuccessListener { }
       .addOnFailureListener { }
-  ```
+   ```
 
-  ```kt
-  geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
+   ```kt
+   geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
       .addOnSuccessListener { }
       .addOnFailureListener { }
-  ```
+   ```
 
   ### Activity Recognition
   Thanks to the Activity Recognition feature, you can follow the user's activity instantly.
-
-   To use the activity recognition service in versions earlier than Android 10, add the following permission in the AndroidManifest.xml file.
+  To use the activity recognition service in versions earlier than Android 10, add the following permission in the AndroidManifest.xml file.
    ```xml
-   <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION"/>
-   <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
    ```
    To use the activity recognition service in Android 10 and later versions, add the following permission in the AndroidManifest.xml file;
    ```xml
-   <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
    ```
    After adding the required permissions, you must create and initialize the `CommonActivityIdentificationService` object.
    ```kt
@@ -484,80 +481,80 @@ commonLocationClient?.removeLocationUpdates()
            </intent-filter>
      </receiver>
    ```
-    With Common `fetchDataFromIntent()` method you can get  detected activities status list.
-    ```kt
-    fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse
-    ```
-    ```kt
-    class ActivityRecognitionReceiver : BroadcastReceiver() {
+   With `fetchDataFromIntent()` method you can get  detected activities status list.
+   ```kt
+   fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse
+   ```
+   ```kt
+   class ActivityRecognitionReceiver : BroadcastReceiver() {
        override fun onReceive(context: Context?, intent: Intent) {
            val activityIdentificationResponse = CommonActivityIdentificationResponse().fetchDataFromIntent(context,intent)
            val detectedActivityList = activityIdentificationResponse.activityIdentificationDataList
        }
     }
-    ```
-    To Stop requesting activity identification updates, you can use `deleteActivityIdentificationUpdates()` method.
-    ```kt
-    fun deleteActivityIdentificationUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
-    ```
-    ```kt
-    activityIdentificationService.deleteActivityIdentificationUpdates(applicationContext,pendingIntent)
+   ```
+   To Stop requesting activity identification updates, you can use `deleteActivityIdentificationUpdates()` method.
+   ```kt
+   fun deleteActivityIdentificationUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
+   ```kt
+   activityIdentificationService.deleteActivityIdentificationUpdates(applicationContext,pendingIntent)
            .addOnSuccessListener { }
            .addOnFailureListener { }
-    ```
+   ```
 
-    #### Activity Transition
+   #### Activity Transition
 
-    Activity transition is a process of detecting user activity converting from one to another. You can call the `createActivityConversionUpdates()` method in your app to request user activity conversion updates.
+   Activity transition is a process of detecting user activity converting from one to another. You can call the `createActivityConversionUpdates()` method in your app to request user activity conversion updates.
 
-    ```kt
-    fun createActivityConversionUpdates(context: Context,activityConversionReq: CommonActivityConversionReq,pendingIntent: PendingIntent):Work<Unit>
-    ```
+   ```kt
+   fun createActivityConversionUpdates(context: Context,activityConversionReq: CommonActivityConversionReq,pendingIntent: PendingIntent):Work<Unit>
+   ```
 
-    ```kt
-    val activityConversionEnter = CommonActivityConversionInfo()
+   ```kt
+   val activityConversionEnter = CommonActivityConversionInfo()
            .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL)}
            .also { it.conversionType = CommonActivityConversionInfo.ENTER_ACTIVITY_CONVERSION }
-    val activityConversionExit = CommonActivityConversionInfo()
+   val activityConversionExit = CommonActivityConversionInfo()
            .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL) }
            .also { it.conversionType = CommonActivityConversionInfo.EXIT_ACTIVITY_CONVERSION }
 
-    val activityConversionList: MutableList<CommonActivityConversionInfo> = ArrayList()
+   val activityConversionList: MutableList<CommonActivityConversionInfo> = ArrayList()
          activityConversionList.add(activityConversionEnter)
          activityConversionList.add(activityConversionExit)
 
-    val activityConRequest = CommonActivityConversionReq()
+   val activityConRequest = CommonActivityConversionReq()
          activityConRequest.activityConversions = activityConversionList
 
-    activityIdentificationService.createActivityConversionUpdates(applicationContext,activityConRequest,pendingIntent)
+   activityIdentificationService.createActivityConversionUpdates(applicationContext,activityConRequest,pendingIntent)
          .addOnSuccessListener { }
          .addOnFailureListener { }
-    ```
+   ```
 
-    You can receive the broadcast activity transition result with broadcast receiver. With Common `fetchDataFromIntent()` method you can get activity transition status.
-    ```kt
-    fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse
-    ```
+   You can receive the broadcast activity transition result with broadcast receiver. With Common `fetchDataFromIntent()` method you can get activity transition status.
+   ```kt
+   fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse
+   ```
 
-    ```kt
-    class ActivityRecognitionReceiver : BroadcastReceiver() {
+   ```kt
+   class ActivityRecognitionReceiver : BroadcastReceiver() {
        override fun onReceive(context: Context?, intent: Intent) {
            val activityTransitionResponse = CommonActivityConversionResponse().fetchDataFromIntent(context,intent)
            val activityTransitionList = activityTransitionResponse.getActivityConversionDataList
        }
     }
-    ```
-    #### Stop activity transition update request
-    If you want to stop getting activity transition information, you can use `deleteActivityConversionUpdates()` method.
-    ```kt
-     fun deleteActivityConversionUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
-    ```
+   ```
+   #### Stop activity transition update request
+   If you want to stop getting activity transition information, you can use `deleteActivityConversionUpdates()` method.
+   ```kt
+   fun deleteActivityConversionUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
 
-    ```kt
-    activityIdentificationService.deleteActivityConversionUpdates(applicationContext,pendingIntent)
+   ```kt
+   activityIdentificationService.deleteActivityConversionUpdates(applicationContext,pendingIntent)
           .addOnSuccessListener { }
           .addOnFailureListener { }
-    ```
+   ```
 ## Analytics
 It is made to ease logging for your project. You can log your event with a one line of code. 
 ### How to use
