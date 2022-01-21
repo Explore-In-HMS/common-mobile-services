@@ -14,6 +14,13 @@
 package com.hms.lib.commonmobileservices.location.common
 
 class GeofenceRequestRes {
+
+    companion object{
+        const val INITIAL_TRIGGER_ENTER = 1
+        const val INITIAL_TRIGGER_EXIT = 2
+        const val INITIAL_TRIGGER_DWELL = 4
+    }
+
     var geofenceList : List<Geofence>?=null
     var initConversion: Int?=null
     var geofence:Geofence?=null
