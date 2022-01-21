@@ -20,8 +20,10 @@ import android.util.Log
 import com.google.firebase.auth.*
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
+import com.hms.lib.commonmobileservices.auth.common.CommonAuthCredential
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
+import com.hms.lib.commonmobileservices.auth.common.toGMSAuthCredential
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import java.util.*
@@ -268,6 +270,17 @@ class GoogleAuthServiceImpl : AuthService {
 
         firebaseAuth.currentUser!!.reauthenticate(credential)
             .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun link(credential: CommonAuthCredential): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        firebaseAuth.currentUser!!.linkWithCredential(credential.toGMSAuthCredential())
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
 
