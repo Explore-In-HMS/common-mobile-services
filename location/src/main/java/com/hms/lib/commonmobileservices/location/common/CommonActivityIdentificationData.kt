@@ -20,9 +20,8 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 class CommonActivityIdentificationData {
 
     companion object{
-
-       var VEHICLE="VEHICLE"
-       var BIKE="BIKE"
+        var VEHICLE="VEHICLE"
+        var BIKE="BIKE"
         var FOOT="FOOT"
         var STILL="STILL"
         var OTHERS="OTHERS"

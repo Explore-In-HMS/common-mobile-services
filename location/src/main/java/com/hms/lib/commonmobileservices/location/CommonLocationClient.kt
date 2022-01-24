@@ -149,7 +149,4 @@ abstract class CommonLocationClient(private val activity: Activity,
     abstract fun setMockMode(isMockMode : Boolean) : Work<Unit>
     abstract fun setMockLocation(location: Location): Work<Unit>
     abstract fun flushLocations(): Work<Unit>
-    abstract fun deleteActivityConversionUpdates(pendingIntent: PendingIntent) : Work<Unit>
-    abstract fun deleteActivityIdentificationUpdates(pendingIntent: PendingIntent) : Work<Unit>
-
 }

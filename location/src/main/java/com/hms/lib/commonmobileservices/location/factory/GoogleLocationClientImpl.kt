@@ -221,23 +221,4 @@ class GoogleLocationClientImpl(
             }
         return worker
     }
-
-    override fun deleteActivityConversionUpdates(pendingIntent: PendingIntent): Work<Unit> {
-        val worker: Work<Unit> = Work()
-        activityIdentificationService.removeActivityTransitionUpdates(pendingIntent)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it)}
-
-        return worker
-    }
-
-    override fun deleteActivityIdentificationUpdates(pendingIntent: PendingIntent): Work<Unit> {
-        val worker: Work<Unit> = Work()
-        activityIdentificationService.removeActivityUpdates(pendingIntent)
-            .addOnSuccessListener {worker.onSuccess(Unit)}
-            .addOnFailureListener { worker.onFailure(it)}
-
-        return worker
-    }
-
 }
