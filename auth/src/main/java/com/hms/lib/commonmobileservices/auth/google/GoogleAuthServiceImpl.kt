@@ -264,11 +264,10 @@ class GoogleAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reauthenticate(credential: String?): Work<Unit> {
+    override fun reauthenticate(credential: CommonAuthCredential): Work<Unit> {
         val work: Work<Unit> = Work()
-        val credential = PhoneAuthProvider.getCredential(String(), String())
 
-        firebaseAuth.currentUser!!.reauthenticate(credential)
+        firebaseAuth.currentUser!!.reauthenticate(credential.toGMSAuthCredential())
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }

@@ -17,10 +17,7 @@ package com.hms.lib.commonmobileservices.auth.huawei
 import android.util.Log
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
-import com.hms.lib.commonmobileservices.auth.common.CommonAuthCredential
-import com.hms.lib.commonmobileservices.auth.common.Mapper
-import com.hms.lib.commonmobileservices.auth.common.VerificationType
-import com.hms.lib.commonmobileservices.auth.common.toHMSAuthCredential
+import com.hms.lib.commonmobileservices.auth.common.*
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.agconnect.auth.*
@@ -325,11 +322,10 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reauthenticate(credential: String?): Work<Unit> {
+    override fun reauthenticate(credential: CommonAuthCredential): Work<Unit> {
         val work: Work<Unit> = Work()
-        val credential = PhoneAuthProvider.credentialWithPassword(String(), String(), String())
 
-        agcConnectAuth.currentUser.reauthenticate(credential)
+        agcConnectAuth.currentUser.reauthenticate(credential.toHMSPhoneAuthCredenrial())
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
