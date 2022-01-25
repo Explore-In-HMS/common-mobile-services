@@ -19,12 +19,12 @@ import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.push.model.Provider
 import com.hms.lib.commonmobileservices.push.PushService
 import com.hms.lib.commonmobileservices.push.model.Token
-import com.huawei.agconnect.config.AGConnectServicesConfig
+import com.huawei.agconnect.AGConnectOptionsBuilder
 import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 
-class HuaweiPushServiceImpl(private val context: Context): PushService(context) {
+class HuaweiPushServiceImpl(private val context: Context) : PushService(context) {
     companion object {
         private const val TAG = "HuaweiPushServiceImpl"
     }
@@ -40,7 +40,7 @@ class HuaweiPushServiceImpl(private val context: Context): PushService(context) 
             override fun run() {
                 try {
                     val appId: String =
-                        AGConnectServicesConfig.fromContext(context).getString("client/app_id")
+                        AGConnectOptionsBuilder().build(context).getString("client/app_id")
                     val token: String = HmsInstanceId.getInstance(context).getToken(appId, "HCM")
                     work.onSuccess(Token(Provider.Huawei, token))
                 } catch (e: ApiException) {
