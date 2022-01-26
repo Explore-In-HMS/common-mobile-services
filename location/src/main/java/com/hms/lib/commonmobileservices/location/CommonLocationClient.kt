@@ -15,20 +15,23 @@ package com.hms.lib.commonmobileservices.location
 
 import android.Manifest
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.Context
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
-import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
-import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.EnableGPSFinalResult
 import com.hms.lib.commonmobileservices.location.model.Priority
+import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
+import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
+import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
 
 abstract class CommonLocationClient(private val activity: Activity,
                                     lifecycle: Lifecycle,
@@ -143,4 +146,7 @@ abstract class CommonLocationClient(private val activity: Activity,
         }
     }
 
+    abstract fun setMockMode(isMockMode : Boolean) : Work<Unit>
+    abstract fun setMockLocation(location: Location): Work<Unit>
+    abstract fun flushLocations(): Work<Unit>
 }
