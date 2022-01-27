@@ -208,9 +208,25 @@ class GoogleAuthServiceImpl : AuthService {
     override fun updatePhone(
         countryCode: String?,
         phoneNumber: String?,
-        verifyCode: String?,
+        verifyCode: String?
     ): Work<Unit> {
-        TODO("Not yet implemented")
+
+        val work: Work<Unit> = Work()
+        val credential = phoneNumber?.let {
+            verifyCode?.let { it1 ->
+                PhoneAuthProvider.getCredential(
+                    it,
+                    it1
+                )
+            }
+        }
+
+        firebaseAuth.currentUser!!.updatePhoneNumber(credential!!)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
     }
 
     override fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit> {
