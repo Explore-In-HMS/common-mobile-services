@@ -322,10 +322,10 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reauthenticate(credential: CommonAuthCredential): Work<Unit> {
+    override fun reAuthenticate(credential: CommonAuthCredential): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        agcConnectAuth.currentUser.reauthenticate(credential.toHMSPhoneAuthCredenrial())
+        agcConnectAuth.currentUser.reauthenticate(credential.toHMSPhoneAuthCredential())
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }

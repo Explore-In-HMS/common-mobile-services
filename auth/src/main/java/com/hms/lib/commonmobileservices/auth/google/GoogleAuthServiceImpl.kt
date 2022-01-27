@@ -280,7 +280,7 @@ class GoogleAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reauthenticate(credential: CommonAuthCredential): Work<Unit> {
+    override fun reAuthenticate(credential: CommonAuthCredential): Work<Unit> {
         val work: Work<Unit> = Work()
 
         firebaseAuth.currentUser!!.reauthenticate(credential.toGMSAuthCredential())
