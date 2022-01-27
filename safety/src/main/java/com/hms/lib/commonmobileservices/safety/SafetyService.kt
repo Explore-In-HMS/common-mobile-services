@@ -13,26 +13,40 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety
 
-import android.app.Activity
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.safety.common.CommonMaliciousAppResponse
+import com.hms.lib.commonmobileservices.safety.common.CommonVerifyAppChecksEnabledRes
 import com.hms.lib.commonmobileservices.safety.google.GoogleSafetyServiceImpl
 import com.hms.lib.commonmobileservices.safety.huawei.HuaweiSafetyServiceImpl
 
 interface SafetyService {
 
     fun userDetect(appKey : String,callback: SafetyServiceCallback<SafetyServiceResponse>)
-    fun rootDetection(appKey: String,callback: SafetyRootDetectionCallback<RootDetectionResponse> )
+    fun rootDetection(appKey: String,callback: SafetyRootDetectionCallback<RootDetectionResponse>)
+    fun getMaliciousAppsList(callback: SafetyAppChecksCallback<CommonMaliciousAppResponse>)
+    fun isAppChecksEnabled(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
+    fun enableAppsCheck(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
 
-    interface SafetyServiceCallback<T>{
-        fun onSuccessUserDetect(result: T? = null)
+    interface SafetyServiceCallback<SafetyServiceResponse>{
+        fun onSuccessUserDetect(result: SafetyServiceResponse? = null)
         fun onFailUserDetect(e: java.lang.Exception)
     }
 
-    interface SafetyRootDetectionCallback<T>{
-        fun onSuccessRootDetect(result: T? = null)
+    interface SafetyRootDetectionCallback<RootDetectionResponse>{
+        fun onSuccessRootDetect(result: RootDetectionResponse? = null)
         fun onFailRootDetect(e: java.lang.Exception)
+    }
+
+    interface SafetyAppChecksCallback<CommonMaliciousAppResponse>{
+        fun onSuccessAppChecks(maliciousAppResponse: CommonMaliciousAppResponse? = null)
+        fun onFailAppChecks(e: java.lang.Exception)
+    }
+
+    interface SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>{
+        fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes? = null)
+        fun onFailure(e: java.lang.Exception)
     }
 
     object Factory {
