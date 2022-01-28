@@ -28,7 +28,7 @@ fun CommonAuthCredential.toHMSAuthCredential(): AGConnectAuthCredential {
     }
 }
 
-fun CommonAuthCredential.toHMSPhoneAuthCredenrial(): AGConnectAuthCredential {
+fun CommonAuthCredential.toHMSPhoneAuthCredential(): AGConnectAuthCredential {
     return signInMethod.let {
         provider.let { it1 ->
             PhoneAuthProvider.credentialWithPassword(
