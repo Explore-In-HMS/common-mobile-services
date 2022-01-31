@@ -645,7 +645,7 @@ fun enableAppsCheck(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabl
       }
   })
 ```
-You can detect malicious applications on your device with the get `getMaliciousAppsList()` method.
+You can detect malicious applications on your device with the `getMaliciousAppsList()` method.
 ```kt
 fun getMaliciousAppsList(callback: SafetyAppChecksCallback<CommonMaliciousAppResponse>)
 ```
