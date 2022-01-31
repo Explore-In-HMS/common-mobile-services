@@ -719,7 +719,7 @@ fun shutDownUrlCheck(): Work<Unit>
 ```
 ```kt
 safetyService.shutDownUrlCheck().addOnSuccessListener{
-    Log.d("CMS", "Url checks activated")
+    Log.d("CMS", "Url check is disabled")
 }.addOnFailureListener {
     Log.e("CMS", "URLCheck fail: ${it.message}")
 }
