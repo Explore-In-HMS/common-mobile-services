@@ -13,9 +13,13 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
+import com.google.android.gms.safetynet.SafeBrowsingThreat
 import com.google.android.gms.safetynet.SafetyNetApi
 import com.huawei.hms.support.api.entity.safetydetect.MaliciousAppsListResp
+import com.huawei.hms.support.api.entity.safetydetect.UrlCheckResponse
+import com.huawei.hms.support.api.entity.safetydetect.UrlCheckThreat
 import com.huawei.hms.support.api.entity.safetydetect.VerifyAppsCheckEnabledResp
+
 
 
 fun MaliciousAppsListResp.toCommonMaliciousAppList(): CommonMaliciousAppResponse{
@@ -51,4 +55,20 @@ fun VerifyAppsCheckEnabledResp.toCommonVerifyAppUserEnabled(): CommonVerifyAppCh
 
 fun SafetyNetApi.VerifyAppsUserResponse.toCommonVerifyAppUserEnabled() : CommonVerifyAppChecksEnabledRes{
     return  CommonVerifyAppChecksEnabledRes().also { it.result = isVerifyAppsEnabled }
+}
+
+fun UrlCheckResponse.toCommonURLCheck(): CommonUrlCheckRes{
+    return CommonUrlCheckRes().also { it.urlCheckThreats = urlCheckResponse.map { it.toCommonThreatType() } }
+}
+
+fun SafetyNetApi.SafeBrowsingResponse.toCommonURLCheck(): CommonUrlCheckRes{
+    return CommonUrlCheckRes().also { it.urlCheckThreats =  detectedThreats.map { it.toCommonThreatType() }}
+}
+
+fun UrlCheckThreat.toCommonThreatType(): CommonUrlCheckThreat{
+    return CommonUrlCheckThreat().also { it.urlCheckResult = urlCheckResult }
+}
+
+fun SafeBrowsingThreat.toCommonThreatType(): CommonUrlCheckThreat{
+    return CommonUrlCheckThreat().also { it.urlCheckResult = threatType }
 }

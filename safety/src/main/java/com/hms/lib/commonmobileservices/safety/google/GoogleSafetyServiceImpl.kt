@@ -20,8 +20,10 @@ import android.util.Base64
 import android.util.Log
 import com.google.android.gms.safetynet.SafetyNet
 import com.google.android.gms.safetynet.SafetyNetApi
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.SafetyService
+import com.hms.lib.commonmobileservices.safety.SafetyService.SafetyUrlCheck
 import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
 import com.hms.lib.commonmobileservices.safety.common.*
 import org.json.JSONObject
@@ -101,5 +103,38 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         }.addOnFailureListener {
             callback.onFailure(it)
         }
+    }
+
+    override fun initURLCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyNet.getClient(context).initSafeBrowsing().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
+    }
+
+    override fun urlCheck(
+        url: String,
+        appKey: String,
+        threatType: Int,
+        callback: SafetyUrlCheck<CommonUrlCheckRes>
+    ) {
+        SafetyNet.getClient(context).lookupUri(url,appKey,threatType).addOnSuccessListener {
+            callback.onAddSuccessListener(it.toCommonURLCheck())
+        }.addOnFailureListener {
+            callback.onAddFailureListener(it)
+        }
+    }
+
+    override fun shutDownUrlCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyNet.getClient(context).shutdownSafeBrowsing().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
     }
 }

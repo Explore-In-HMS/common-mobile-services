@@ -16,7 +16,9 @@ package com.hms.lib.commonmobileservices.safety
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.common.CommonMaliciousAppResponse
+import com.hms.lib.commonmobileservices.safety.common.CommonUrlCheckRes
 import com.hms.lib.commonmobileservices.safety.common.CommonVerifyAppChecksEnabledRes
 import com.hms.lib.commonmobileservices.safety.google.GoogleSafetyServiceImpl
 import com.hms.lib.commonmobileservices.safety.huawei.HuaweiSafetyServiceImpl
@@ -28,6 +30,9 @@ interface SafetyService {
     fun getMaliciousAppsList(callback: SafetyAppChecksCallback<CommonMaliciousAppResponse>)
     fun isAppChecksEnabled(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
     fun enableAppsCheck(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
+    fun initURLCheck():Work<Unit>
+    fun urlCheck(url:String,appKey: String,threatType:Int,callback:SafetyUrlCheck<CommonUrlCheckRes>)
+    fun shutDownUrlCheck(): Work<Unit>
 
     interface SafetyServiceCallback<SafetyServiceResponse>{
         fun onSuccessUserDetect(result: SafetyServiceResponse? = null)
@@ -47,6 +52,11 @@ interface SafetyService {
     interface SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>{
         fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes? = null)
         fun onFailure(e: java.lang.Exception)
+    }
+
+    interface SafetyUrlCheck<CommonUrlCheckRes>{
+        fun onAddSuccessListener(appsCheckResp: CommonUrlCheckRes? = null)
+        fun onAddFailureListener(e: java.lang.Exception)
     }
 
     object Factory {
