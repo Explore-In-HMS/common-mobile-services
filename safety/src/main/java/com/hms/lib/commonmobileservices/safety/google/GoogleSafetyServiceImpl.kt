@@ -122,9 +122,9 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         callback: SafetyUrlCheck<CommonUrlCheckRes>
     ) {
         SafetyNet.getClient(context).lookupUri(url,appKey,threatType).addOnSuccessListener {
-            callback.onAddSuccessListener(it.toCommonURLCheck())
+            callback.addOnSuccessListener(it.toCommonURLCheck())
         }.addOnFailureListener {
-            callback.onAddFailureListener(it)
+            callback.addOnFailureListener(it)
         }
     }
 

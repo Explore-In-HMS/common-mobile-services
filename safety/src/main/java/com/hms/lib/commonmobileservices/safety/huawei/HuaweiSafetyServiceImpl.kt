@@ -135,9 +135,9 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         callback: SafetyService.SafetyUrlCheck<CommonUrlCheckRes>
     ) {
         SafetyDetect.getClient(context).urlCheck(url,appKey,threatType).addOnSuccessListener {
-            callback.onAddSuccessListener(it.toCommonURLCheck())
+            callback.addOnSuccessListener(it.toCommonURLCheck())
         }.addOnFailureListener {
-            callback.onAddFailureListener(it)
+            callback.addOnFailureListener(it)
         }
     }
 

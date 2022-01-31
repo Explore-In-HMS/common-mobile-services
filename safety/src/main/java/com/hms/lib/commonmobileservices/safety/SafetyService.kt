@@ -55,8 +55,8 @@ interface SafetyService {
     }
 
     interface SafetyUrlCheck<CommonUrlCheckRes>{
-        fun onAddSuccessListener(appsCheckResp: CommonUrlCheckRes? = null)
-        fun onAddFailureListener(e: java.lang.Exception)
+        fun addOnSuccessListener(appsCheckResp: CommonUrlCheckRes? = null)
+        fun addOnFailureListener(e: java.lang.Exception)
     }
 
     object Factory {
