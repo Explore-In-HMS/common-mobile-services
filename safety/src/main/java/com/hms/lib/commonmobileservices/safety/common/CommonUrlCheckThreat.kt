@@ -24,14 +24,14 @@ class CommonUrlCheckThreat {
     }
 
     fun urlThreatType(ctx: Context, type:String):Int{
-        if(Device.getMobileServiceType(ctx) == MobileServiceType.HMS){
-            return when(type){
+        return if(Device.getMobileServiceType(ctx) == MobileServiceType.HMS){
+            when(type){
                 "MALWARE_APPLICATIONS" -> 1
                 "PHISHING" -> 3
                 else -> -1
             }
         }else{
-            return when(type){
+            when(type){
                 "MALWARE_APPLICATIONS" -> 4
                 "PHISHING" -> 5
                 else -> -1

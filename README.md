@@ -600,6 +600,130 @@ In this library, you need to call the `rootDetection` method to check whether th
             }
         })}
 ```
+#### AppChecks
+With the AppChecks feature, you can easily and quickly detect harmful applications on your device.
+You can check whether the AppChecks feature is active on your device with the `isAppChecksEnabled()` method.
+
+```kt
+fun isAppChecksEnabled(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+safetyService.isAppChecksEnabled(object : SafetyService.SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>{
+            override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+                if(appsCheckResp!=null){
+                    val result = appsCheckResp.result
+                    if(result){
+                        Log.d("CMS", "App Checks is enabled")
+                    }else{
+                        Log.d("CMS", "App Checks is disabled")
+                    }
+                }
+            }
+            override fun onFailure(e: Exception) {
+                Log.e("CMS", "App Checks Fail: ${e.message}")
+            }
+        })
+```
+If the App Checks feature is disabled, you can enable it with the `enableAppsCheck()` method.
+```kt
+fun enableAppsCheck(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+ safetyService.enableAppsCheck(object:SafetyService.SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>{
+      override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+          if(appsCheckResp!=null){
+              val result = appsCheckResp.result
+              if(result){
+                  Log.d("CMS", "App Checks enabled")
+              }else{
+                  Log.d("CMS", "App Checks not enabled")
+              }
+          }
+      }
+      override fun onFailure(e: Exception) {
+          Log.e("CMS", "App Checks Fail: ${e.message}")
+      }
+  })
+```
+You can detect malicious applications on your device with the get `getMaliciousAppsList()` method.
+```kt
+fun getMaliciousAppsList(callback: SafetyAppChecksCallback<CommonMaliciousAppResponse>)
+```
+```kt
+safetyService.getMaliciousAppsList(object:SafetyService.SafetyAppChecksCallback<CommonMaliciousAppResponse>{
+    override fun onSuccessAppChecks(maliciousAppResponse: CommonMaliciousAppResponse?){
+	 if (maliciousAppResponse != null) {
+	    val appList = maliciousAppResponse.getMaliciousAppsList
+	    if (appList?.isNotEmpty() == true){
+		Log.e("CMS", "Potentially harmful apps are installed!")
+		for (harmfulApp in appList){
+		    Log.e("CMS", "Information about a harmful app:")
+		    Log.e("CMS", "  APK: ${harmfulApp.apkPackageName}")
+		    Log.e("CMS", "  SHA-256: ${harmfulApp.apkSha256}")
+		    Log.e("CMS", "  Category: ${harmfulApp.apkCategory}")
+		 }
+	    }else{
+		  Log.d("CMS", "There are no known harmful apps installed.")
+	    }
+	  }
+    }
+    override fun onFailAppChecks(e: Exception){
+	      Log.e("CMS", "Error code: ${e.localizedMessage} -- Message: ${e.message}")
+    }
+})
+```
+#### URLCheck
+You can check whether URL addresses are safe with the URLCheck feature.
+
+To activate the URLCheck feature, you must first call the `initURLCheck()` method.
+
+```kt
+fun initURLCheck():Work<Unit>
+```
+```kt
+safetyService.initURLCheck().addOnSuccessListener{
+    Log.d("CMS", "Url checks activated")
+}.addOnFailureListener{
+    Log.e("CMS", "Url check fail: ${it.message}")
+}
+```
+You can check whether the URL you will specify is safe with the `urlCheck()` method.
+```kt
+fun urlCheck(url:String,appKey: String,threatType:Int,callback:SafetyUrlCheck<CommonUrlCheckRes>)
+```
+Appkey value is app id value in Huawei services. In Google services the app key value is API_KEY. You can create API_KEY value from Google APIs Console. [Click here](https://console.developers.google.com/apis/library) You need to activate the SafeBrowsing API feature. You can create new API_KEY from the Credentials tab.
+
+```kt
+val url = "https://github.com/Explore-In-HMS/common-mobile-services"
+safetyService.urlCheck(url,appKey,CommonUrlCheckThreat().urlThreatType(this,CommonUrlCheckThreat.MALWARE_APPLICATIONS),object:SafetyService.SafetyUrlCheck<CommonUrlCheckRes>{
+	override fun addOnSuccessListener(appsCheckResp: CommonUrlCheckRes?) {
+		if(appsCheckResp!=null){
+		    val result = appsCheckResp.urlCheckThreats
+		    if(result!!.isNotEmpty()){
+			for(urlLists in result){
+			    Log.d("CMS", "URL Check result: ${urlLists.urlCheckResult}")
+			}
+		    }else{
+			Log.d("CMS", "No threads found")
+		    }
+		}
+	    }
+	override fun addOnFailureListener(e: Exception) {
+	    Log.e("CMS", "URLCheck fail : ${e.message}")
+	}
+})
+```
+You can use the `shutDownUrlCheck()` method to disable the URLCheck feature.
+```kt
+fun shutDownUrlCheck(): Work<Unit>
+```
+```kt
+safetyService.shutDownUrlCheck().addOnSuccessListener{
+    Log.d("CMS", "Url checks activated")
+}.addOnFailureListener {
+    Log.e("CMS", "URLCheck fail: ${it.message}")
+}
+```
 
 ## Crash
 This library includes both Huawei and Google services, allowing you to make your application more secure. This library, it performs Crash Service. [Click here](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-crash-introduction-0000001055732708) for view service introduction and more description about Crash Kit features.
