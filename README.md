@@ -972,6 +972,103 @@ Common Mobile Services provide a slider push notification in Push service. If yo
 }
 ```
 
+You can use ```getToken``` method to obtain token.
+
+```kt
+        val token = HuaweiPushServiceImpl(this).getToken()
+        token.addOnSuccessListener {
+            println("token-> ${it.token}")
+        }
+```
+
+```kt
+        val token = GooglePushServiceImpl(this).getToken()
+        token.addOnSuccessListener {
+            println("token-> ${it.token}")
+        }
+```
+
+```kt subscribeToTopic``` method is subscribes to topics in asynchronous mode. The topic messaging function provided by Push Kit allows you to send messages to multiple devices whose users have subscribed to a specific topic.
+You can write messages about the topic as required, and Push Kit determines target devices and then sends messages to the devices in a reliable manner.
+The name of the topic to subscribe. Must match the following regular expression: "[a-zA-Z0-9-_.~%]{1,900}".
+You need to add a listener to listen to the operation result.
+
+```kt
+        HuaweiPushServiceImpl(this).subscribeToTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt
+        GooglePushServiceImpl(this).subscribeToTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt unsubscribeFromTopic``` method is unsubscribes in asynchronous mode from topics that are subscribed to through the subscribe method.
+You need to add a listener to listen to the operation result.
+
+```kt
+        HuaweiPushServiceImpl(this).unsubscribeFromTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt
+        GooglePushServiceImpl(this).unsubscribeFromTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt setAutoInitEnabled``` method is sets whether to enable automatic initialization.
+If the enable parameter is set to true, the SDK automatically generates an AAID and obtains a token. The token is returned through the ```kt onNewToken()``` callback method.
+
+```kt
+HuaweiPushServiceImpl(this).autoInitEnabled(true)
+```
+
+```kt
+GooglePushServiceImpl(this).autoInitEnabled(true)
+```
+
+```kt isAutoInitEnabled``` method is checks whether automatic initialization is enabled. The default value is false.
+
+```kt
+HuaweiPushServiceImpl(this).isAutoInitEnabled()
+```
+
+```kt
+GooglePushServiceImpl(this).isAutoInitEnabled()
+```
+
 ## Account
 This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
 
