@@ -44,7 +44,7 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         SafetyNet.getClient(context).verifyWithRecaptcha(appKey)
             .addOnSuccessListener(){
                 val responseToken = it.tokenResult
-                if(responseToken.isNotEmpty()){
+                if(responseToken.isNotEmpty() && responseToken!= null){
                     callback.onSuccessUserDetect(mapper.map(it))
                 }
             }.addOnFailureListener(){
@@ -77,7 +77,7 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
                 val jsonObject = JSONObject(payloadDetail)
                 callback.onSuccessRootDetect(rootDetectMapper.map(jsonObject))
             }.addOnFailureListener{ e->
-            callback.onFailRootDetect(e)
+                callback.onFailRootDetect(e)
         }
     }
 
