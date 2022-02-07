@@ -724,7 +724,7 @@ Speech to Text can recognize speech not longer than 60s and convert the input sp
 ### How to use
 The speech to text process is started with the following line of code. speechToTextResultCode is the variable that is the result of OnActivityResult. The language to be spoken in must be chosen.
 ```kt
-HuaweiGoogleSpeechToTextManager(this).performSpeechToText(this,speechToTextResultCode,"en-US")
+HuaweiGoogleSpeechToTextManager(this).performSpeechToText(this, speechToTextResultCode, "en-US", "API_KEY")
 ```
 
 After speaking is done, The result of the speech to text process gets from onActivityResult. Using the parseSpeechToTextData function, the data is converted to string format.
