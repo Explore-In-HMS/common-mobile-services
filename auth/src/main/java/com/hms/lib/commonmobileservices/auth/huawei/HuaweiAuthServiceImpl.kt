@@ -317,7 +317,9 @@ class HuaweiAuthServiceImpl : AuthService {
         val work: Work<Unit> = Work()
 
         agcConnectAuth.deleteUser()
-        work.onSuccess(Unit)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
 
         return work
     }
