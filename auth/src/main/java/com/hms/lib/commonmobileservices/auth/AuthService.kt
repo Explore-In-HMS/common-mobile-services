@@ -58,6 +58,7 @@ interface AuthService {
     fun deleteUser(): Work<Unit>
     fun reAuthenticate(email: String, password: String): Work<Unit>
     fun linkWithTwitter(token: String, secret: String): Work<AuthUser>
+    fun linkWithFacebook(accessToken: String): Work<AuthUser>
     fun unlink(provider: String): Work<AuthUser>
 
     object Factory {

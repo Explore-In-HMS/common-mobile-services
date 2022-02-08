@@ -349,6 +349,17 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun linkWithFacebook(accessToken: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = FacebookAuthProvider.credentialWithToken(accessToken)
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
     override fun unlink(provider: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
