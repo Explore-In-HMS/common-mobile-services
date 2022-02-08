@@ -324,4 +324,20 @@ class GoogleAuthServiceImpl : AuthService {
 
         return work
     }
+
+    override fun linkWithEmail(
+        email: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = EmailAuthProvider.getCredential(email, password)
+        firebaseAuth.currentUser!!.linkWithCredential(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
 }

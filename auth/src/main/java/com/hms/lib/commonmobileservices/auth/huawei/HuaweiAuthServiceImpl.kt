@@ -360,6 +360,21 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun linkWithEmail(
+        email: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = EmailAuthProvider.credentialWithVerifyCode(email, password, verifyCode)
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
     override fun unlink(provider: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
