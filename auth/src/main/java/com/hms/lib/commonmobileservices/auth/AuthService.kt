@@ -15,7 +15,6 @@
 package com.hms.lib.commonmobileservices.auth
 
 import android.content.Context
-import com.hms.lib.commonmobileservices.auth.common.CommonAuthCredential
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
 import com.hms.lib.commonmobileservices.auth.google.GoogleAuthServiceImpl
 import com.hms.lib.commonmobileservices.auth.huawei.HuaweiAuthServiceImpl
@@ -57,7 +56,7 @@ interface AuthService {
     fun getCodePassword(var1: String?): Work<Unit>
     fun getPhoneCode(var1: String?, var2: String?): Work<Unit>
     fun deleteUser(): Work<Unit>
-    fun reAuthenticate(credential: CommonAuthCredential): Work<Unit>
+    fun reAuthenticate(email: String, password: String): Work<Unit>
     fun link(credential: CommonAuthCredential): Work<AuthUser>
     fun unlink(provider: String): Work<AuthUser>
 

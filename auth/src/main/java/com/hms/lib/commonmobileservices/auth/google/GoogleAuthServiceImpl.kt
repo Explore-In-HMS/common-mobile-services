@@ -20,10 +20,8 @@ import android.util.Log
 import com.google.firebase.auth.*
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
-import com.hms.lib.commonmobileservices.auth.common.CommonAuthCredential
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
-import com.hms.lib.commonmobileservices.auth.common.toGMSAuthCredential
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import java.util.*
@@ -280,10 +278,11 @@ class GoogleAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reAuthenticate(credential: CommonAuthCredential): Work<Unit> {
+    override fun reAuthenticate(email: String, password: String): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        firebaseAuth.currentUser!!.reauthenticate(credential.toGMSAuthCredential())
+        val credential = EmailAuthProvider.getCredential(email, password)
+        firebaseAuth.currentUser!!.reauthenticate(credential)
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }

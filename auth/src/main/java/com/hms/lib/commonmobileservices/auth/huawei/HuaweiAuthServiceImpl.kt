@@ -324,10 +324,12 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun reAuthenticate(credential: CommonAuthCredential): Work<Unit> {
+    override fun reAuthenticate(email: String, password: String): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        agcConnectAuth.currentUser.reauthenticate(credential.toHMSPhoneAuthCredential())
+        val credential = EmailAuthProvider.credentialWithPassword(email, password)
+
+        agcConnectAuth.currentUser.reauthenticate(credential)
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
