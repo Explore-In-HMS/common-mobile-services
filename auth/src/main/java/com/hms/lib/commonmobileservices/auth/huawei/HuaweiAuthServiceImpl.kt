@@ -17,7 +17,8 @@ package com.hms.lib.commonmobileservices.auth.huawei
 import android.util.Log
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
-import com.hms.lib.commonmobileservices.auth.common.*
+import com.hms.lib.commonmobileservices.auth.common.Mapper
+import com.hms.lib.commonmobileservices.auth.common.VerificationType
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.agconnect.auth.*
@@ -337,10 +338,11 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun link(credential: CommonAuthCredential): Work<AuthUser> {
+    override fun linkWithTwitter(token: String, secret: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
-        agcConnectAuth.currentUser.link(credential.toHMSAuthCredential())
+        val credential = TwitterAuthProvider.credentialWithToken(token, secret)
+        agcConnectAuth.currentUser.link(credential)
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }

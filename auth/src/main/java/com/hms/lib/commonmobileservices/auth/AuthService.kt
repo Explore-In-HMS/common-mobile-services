@@ -57,7 +57,7 @@ interface AuthService {
     fun getPhoneCode(var1: String?, var2: String?): Work<Unit>
     fun deleteUser(): Work<Unit>
     fun reAuthenticate(email: String, password: String): Work<Unit>
-    fun link(credential: CommonAuthCredential): Work<AuthUser>
+    fun linkWithTwitter(token: String, secret: String): Work<AuthUser>
     fun unlink(provider: String): Work<AuthUser>
 
     object Factory {

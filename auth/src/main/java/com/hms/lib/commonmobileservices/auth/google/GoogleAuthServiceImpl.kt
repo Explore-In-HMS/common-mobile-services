@@ -290,10 +290,11 @@ class GoogleAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun link(credential: CommonAuthCredential): Work<AuthUser> {
+    override fun linkWithTwitter(token: String, secret: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
-        firebaseAuth.currentUser!!.linkWithCredential(credential.toGMSAuthCredential())
+        val credential = TwitterAuthProvider.getCredential(token, secret)
+        firebaseAuth.currentUser!!.linkWithCredential(credential)
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
