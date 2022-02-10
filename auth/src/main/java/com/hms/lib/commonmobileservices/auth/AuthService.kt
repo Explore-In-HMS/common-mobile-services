@@ -14,6 +14,7 @@
 
 package com.hms.lib.commonmobileservices.auth
 
+import android.app.Activity
 import android.content.Context
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
 import com.hms.lib.commonmobileservices.auth.google.GoogleAuthServiceImpl
@@ -54,19 +55,18 @@ interface AuthService {
     fun updatePasswordwPhone(password: String?, verifyCode: String?): Work<Unit>
     fun getCode(var1: String?): Work<Unit>
     fun getCodePassword(var1: String?): Work<Unit>
-    fun getPhoneCode(var1: String?, var2: String?): Work<Unit>
+    fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit>
     fun deleteUser(): Work<Unit>
     fun reAuthenticate(email: String, password: String): Work<Unit>
     fun linkWithTwitter(token: String, secret: String): Work<AuthUser>
     fun linkWithFacebook(accessToken: String): Work<AuthUser>
     fun unlink(provider: String): Work<AuthUser>
     fun linkWithEmail(email: String, password: String, verifyCode: String): Work<AuthUser>
-
     object Factory {
         fun create(context: Context): AuthService {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
-                    GoogleAuthServiceImpl()
+                    GoogleAuthServiceImpl(context)
                 }
                 MobileServiceType.HMS -> {
                     HuaweiAuthServiceImpl()

@@ -14,9 +14,12 @@
 
 package com.hms.lib.commonmobileservices.auth.google
 
+import android.app.Activity
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
@@ -25,12 +28,56 @@ import com.hms.lib.commonmobileservices.auth.common.VerificationType
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
-class GoogleAuthServiceImpl : AuthService {
+class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mapper: Mapper<FirebaseUser, AuthUser> = FirebaseUserMapper()
+    private lateinit var storedVerificationId: String
+    private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
+    lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+
+    companion object {
+        private const val CMS_SHARED_PREF = "CMS_Shared_Pref"
+        private const val VERIFICATION_ID = "verificationId"
+    }
+
+
+    init {
+
+
+        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onVerificationFailed(p0: FirebaseException) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCodeSent(
+                verificationId: String,
+                token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                super.onCodeSent(verificationId, token)
+                storedVerificationId = verificationId
+                resendToken = token
+
+                val preferences =
+                    context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
+                val editor = preferences.edit()
+                editor.putString(VERIFICATION_ID, storedVerificationId)
+                editor.apply()
+
+
+            }
+
+        }
+
+    }
+
 
     override fun signInWithFacebook(accessToken: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
@@ -78,7 +125,6 @@ class GoogleAuthServiceImpl : AuthService {
 
     override fun signInWithEmail(email: String, password: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
-
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -263,8 +309,18 @@ class GoogleAuthServiceImpl : AuthService {
         TODO("Not yet implemented")
     }
 
-    override fun getPhoneCode(var1: String?, var2: String?): Work<Unit> {
-        TODO("Not yet implemented")
+    override fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+            .setPhoneNumber(var1!!)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(activity)
+            .setCallbacks(callbacks)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+
+        return work
     }
 
     override fun deleteUser(): Work<Unit> {

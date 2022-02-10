@@ -14,6 +14,7 @@
 
 package com.hms.lib.commonmobileservices.auth.huawei
 
+import android.app.Activity
 import android.util.Log
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
@@ -298,7 +299,7 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun getPhoneCode(var1: String?, var2: String?): Work<Unit> {
+    override fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
