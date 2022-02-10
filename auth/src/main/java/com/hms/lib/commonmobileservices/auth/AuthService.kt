@@ -69,6 +69,12 @@ interface AuthService {
     fun linkWithFacebook(accessToken: String): Work<AuthUser>
     fun unlink(provider: String): Work<AuthUser>
     fun linkWithEmail(email: String, password: String, verifyCode: String): Work<AuthUser>
+    fun linkWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser>
     object Factory {
         fun create(context: Context): AuthService {
             return when (Device.getMobileServiceType(context)) {

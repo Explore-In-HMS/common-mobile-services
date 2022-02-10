@@ -407,4 +407,25 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnCanceledListener { work.onCanceled() }
         return work
     }
+
+    override fun linkWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = PhoneAuthProvider.credentialWithVerifyCode(
+            countryCode,
+            phoneNumber,
+            password,
+            verifyCode
+        )
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
 }
