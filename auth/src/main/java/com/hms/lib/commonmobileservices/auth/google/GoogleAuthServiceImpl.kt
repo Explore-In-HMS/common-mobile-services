@@ -133,6 +133,26 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
+    override fun signInWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
+        val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
+
+        val credential = PhoneAuthProvider.getCredential(storedVerificationId!!, verifyCode)
+        firebaseAuth.signInWithCredential(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
     override fun signUp(email: String, password: String, locale: Locale?): Work<VerificationType> {
         val work: Work<VerificationType> = Work()
 

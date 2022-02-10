@@ -30,6 +30,13 @@ interface AuthService {
     fun signInWithEmail(email: String, password: String): Work<AuthUser>
     fun signInWithTwitter(token: String, secret: String): Work<AuthUser>
     fun signInwithGooglePLayGames(serverAuthCode: String): Work<AuthUser>
+    fun signInWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser>
+
     fun signUp(
         email: String,
         password: String,
