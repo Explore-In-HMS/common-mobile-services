@@ -57,8 +57,8 @@ interface AuthService {
     fun updateUsername(username: String?): Work<Unit>
     fun updateEmail(email: String?, verifyCode: String?): Work<Unit>
     fun updatePhone(countryCode: String?, phoneNumber: String?, verifyCode: String?): Work<Unit>
-    fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit>
-    fun updatePasswordwPhone(password: String?, verifyCode: String?): Work<Unit>
+    fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit>
+    fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit>
     fun getCode(var1: String?): Work<Unit>
     fun getCodePassword(var1: String?): Work<Unit>
     fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit>

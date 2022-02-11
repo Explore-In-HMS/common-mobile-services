@@ -246,7 +246,7 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
             AGConnectAuth.getInstance().currentUser.updatePassword(
@@ -263,7 +263,7 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun updatePasswordwPhone(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
             AGConnectAuth.getInstance().currentUser.updatePassword(

@@ -278,7 +278,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
@@ -292,7 +292,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePasswordwPhone(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
