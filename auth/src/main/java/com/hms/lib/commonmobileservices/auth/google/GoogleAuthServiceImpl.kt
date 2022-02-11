@@ -276,20 +276,16 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     ): Work<Unit> {
 
         val work: Work<Unit> = Work()
-        val credential = phoneNumber?.let {
-            verifyCode?.let { it1 ->
-                PhoneAuthProvider.getCredential(
-                    it,
-                    it1
-                )
-            }
+        val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
+        val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
+
+        if (firebaseAuth.currentUser != null && storedVerificationId != null && verifyCode != null) {
+            val credential = PhoneAuthProvider.getCredential(storedVerificationId, verifyCode)
+            firebaseAuth.currentUser!!.updatePhoneNumber(credential)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
         }
-
-        firebaseAuth.currentUser!!.updatePhoneNumber(credential!!)
-            .addOnSuccessListener { work.onSuccess(Unit) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
-
         return work
     }
 
