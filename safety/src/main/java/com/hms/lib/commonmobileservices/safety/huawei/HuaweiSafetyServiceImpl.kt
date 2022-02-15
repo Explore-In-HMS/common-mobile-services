@@ -18,6 +18,7 @@ import android.content.Context
 import android.os.Build
 import android.util.Base64
 import android.util.Log
+import com.hms.lib.commonmobileservices.core.ResultCallback
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.SafetyService
@@ -44,24 +45,24 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
      */
     override fun userDetect(
         appKey: String,
-        callback: SafetyService.SafetyServiceCallback<SafetyServiceResponse>
+        callback: ResultCallback<SafetyServiceResponse>
     ) {
 
         val client = SafetyDetect.getClient(context)
         client.userDetection(appKey).addOnSuccessListener {
             val responseToken = it.responseToken
             if (responseToken.isNotEmpty()) {
-                callback.onSuccessUserDetect(mapper.map(it))
+                callback.onSuccess(mapper.map(it))
             }
         }.addOnFailureListener {
-            callback.onFailUserDetect(it)
+            callback.onFailure(it)
         }
     }
 
     @SuppressLint("LongLogTag")
     override fun rootDetection(
         appKey: String,
-        callback: SafetyService.SafetyRootDetectionCallback<RootDetectionResponse>
+        callback: ResultCallback<RootDetectionResponse>
     ) {
         val nonce = ByteArray(24)
         try {
@@ -87,22 +88,22 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
                     ), StandardCharsets.UTF_8
                 )
                 val jsonObject = JSONObject(payloadDetail)
-                callback.onSuccessRootDetect(rootDetectMapper.map(jsonObject))
+                callback.onSuccess(rootDetectMapper.map(jsonObject))
             }
             .addOnFailureListener { e ->
-                callback.onFailRootDetect(e)
+                callback.onFailure(e)
             }
     }
 
-    override fun getMaliciousAppsList(callback: SafetyService.SafetyAppChecksCallback<CommonMaliciousAppResponse>) {
+    override fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>) {
         SafetyDetect.getClient(context).maliciousAppsList.addOnSuccessListener {
-            callback.onSuccessAppChecks(it.toCommonMaliciousAppList())
+            callback.onSuccess(it.toCommonMaliciousAppList())
         }.addOnFailureListener {
-            callback.onFailAppChecks(it)
+            callback.onFailure(it)
         }
     }
 
-    override fun isAppChecksEnabled(callback: SafetyService.SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>){
+    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>){
         SafetyDetect.getClient(context).isVerifyAppsCheck.addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
         }.addOnFailureListener {
@@ -110,7 +111,7 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
-    override fun enableAppsCheck(callback: SafetyService.SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>) {
+    override fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
         SafetyDetect.getClient(context).enableAppsCheck().addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
         }.addOnFailureListener {
@@ -132,12 +133,12 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         url: String,
         appKey: String,
         threatType: Int,
-        callback: SafetyService.SafetyUrlCheck<CommonUrlCheckRes>
+        callback: ResultCallback<CommonUrlCheckRes>
     ) {
         SafetyDetect.getClient(context).urlCheck(url,appKey,threatType).addOnSuccessListener {
-            callback.addOnSuccessListener(it.toCommonURLCheck())
+            callback.onSuccess(it.toCommonURLCheck())
         }.addOnFailureListener {
-            callback.addOnFailureListener(it)
+            callback.onFailure(it)
         }
     }
 

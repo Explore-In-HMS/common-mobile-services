@@ -16,6 +16,7 @@ package com.hms.lib.commonmobileservices.safety
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.core.ResultCallback
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.common.CommonMaliciousAppResponse
 import com.hms.lib.commonmobileservices.safety.common.CommonUrlCheckRes
@@ -25,41 +26,16 @@ import com.hms.lib.commonmobileservices.safety.huawei.HuaweiSafetyServiceImpl
 
 interface SafetyService {
 
-    fun userDetect(appKey : String,callback: SafetyServiceCallback<SafetyServiceResponse>)
-    fun rootDetection(appKey: String,callback: SafetyRootDetectionCallback<RootDetectionResponse>)
-    fun getMaliciousAppsList(callback: SafetyAppChecksCallback<CommonMaliciousAppResponse>)
-    fun isAppChecksEnabled(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
-    fun enableAppsCheck(callback: SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>)
+    fun userDetect(appKey : String,callback: ResultCallback<SafetyServiceResponse>)
+    fun rootDetection(appKey: String,callback: ResultCallback<RootDetectionResponse>)
+    fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
+    fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+    fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
     fun initURLCheck():Work<Unit>
-    fun urlCheck(url:String,appKey: String,threatType:Int,callback:SafetyUrlCheck<CommonUrlCheckRes>)
+    fun urlCheck(url:String,appKey: String,threatType:Int,callback:ResultCallback<CommonUrlCheckRes>)
     fun shutDownUrlCheck(): Work<Unit>
 
-    interface SafetyServiceCallback<SafetyServiceResponse>{
-        fun onSuccessUserDetect(result: SafetyServiceResponse? = null)
-        fun onFailUserDetect(e: java.lang.Exception)
-    }
-
-    interface SafetyRootDetectionCallback<RootDetectionResponse>{
-        fun onSuccessRootDetect(result: RootDetectionResponse? = null)
-        fun onFailRootDetect(e: java.lang.Exception)
-    }
-
-    interface SafetyAppChecksCallback<CommonMaliciousAppResponse>{
-        fun onSuccessAppChecks(maliciousAppResponse: CommonMaliciousAppResponse? = null)
-        fun onFailAppChecks(e: java.lang.Exception)
-    }
-
-    interface SafetyVerifyAppsEnabled<CommonVerifyAppChecksEnabledRes>{
-        fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes? = null)
-        fun onFailure(e: java.lang.Exception)
-    }
-
-    interface SafetyUrlCheck<CommonUrlCheckRes>{
-        fun addOnSuccessListener(appsCheckResp: CommonUrlCheckRes? = null)
-        fun addOnFailureListener(e: java.lang.Exception)
-    }
-
-    object Factory {
+      object Factory {
         fun create(context: Context): SafetyService {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {

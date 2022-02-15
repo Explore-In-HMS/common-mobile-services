@@ -17,8 +17,8 @@ import com.google.android.gms.safetynet.SafetyNetApi
 import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
 import com.hms.lib.commonmobileservices.safety.common.Mapper
 
-class GoogleSafetyMapper: Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse>() {
-    override fun map(from: SafetyNetApi.RecaptchaTokenResponse): SafetyServiceResponse = SafetyServiceResponse(
-        responseToken = from.tokenResult
-    )
+class GoogleSafetyMapper: Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse?>() {
+    override fun map(from: SafetyNetApi.RecaptchaTokenResponse): SafetyServiceResponse? = from.tokenResult?.let {
+        SafetyServiceResponse(responseToken = it)
+    }
 }
