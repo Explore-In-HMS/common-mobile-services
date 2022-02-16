@@ -280,12 +280,12 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun getCode(var1: String?): Work<Unit> {
+    override fun getCode(email: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
             { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
@@ -295,12 +295,12 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun getCodePassword(var1: String?): Work<Unit> {
+    override fun getCodePassword(email: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_RESET_PASSWORD)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
             { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
@@ -310,14 +310,18 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit> {
+    override fun getPhoneCode(
+        countryCode: String?,
+        phoneNumber: String?,
+        activity: Activity
+    ): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
             .sendInterval(30)
             .build()
 
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, var2, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(countryCode, phoneNumber, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
             { Log.v("successUpdate", "successUpdate getCode") }).addOnFailureListener(

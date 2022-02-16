@@ -35,7 +35,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val mapper: Mapper<FirebaseUser, AuthUser> = FirebaseUserMapper()
-    private lateinit var storedVerificationId: String
+    private var storedVerificationId: String? = null
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
@@ -50,11 +50,11 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                TODO("Not yet implemented")
+                Log.d("GFG", "onVerificationCompleted Success")
             }
 
             override fun onVerificationFailed(p0: FirebaseException) {
-                TODO("Not yet implemented")
+                Log.d("GFG", "onVerificationFailed  $p0")
             }
 
             override fun onCodeSent(
@@ -155,8 +155,9 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
+        val user = FirebaseAuth.getInstance().currentUser
 
-        firebaseAuth.currentUser!!.sendEmailVerification()
+        user!!.sendEmailVerification()
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
@@ -306,19 +307,27 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun getCode(var1: String?): Work<Unit> {
-        TODO("Not yet implemented")
+    override fun getCode(email: String?): Work<Unit> {
+        val work: Work<Unit> = Work()
+        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        return work
     }
 
-    override fun getCodePassword(var1: String?): Work<Unit> {
-        TODO("Not yet implemented")
+    override fun getCodePassword(email: String?): Work<Unit> {
+        val work: Work<Unit> = Work()
+        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        return work
     }
 
-    override fun getPhoneCode(var1: String?, var2: String?, activity: Activity): Work<Unit> {
+    override fun getPhoneCode(
+        countryCode: String?,
+        phoneNumber: String?,
+        activity: Activity
+    ): Work<Unit> {
         val work: Work<Unit> = Work()
 
         val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-            .setPhoneNumber(var1!!)
+            .setPhoneNumber(phoneNumber!!)
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(activity)
             .setCallbacks(callbacks)
