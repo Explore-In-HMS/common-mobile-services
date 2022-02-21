@@ -14,10 +14,7 @@
 
 package com.hms.lib.commonmobileservices.auth.google
 
-import com.google.firebase.auth.EmailAuthProvider
-import com.google.firebase.auth.FacebookAuthProvider
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.hms.lib.commonmobileservices.auth.AuthUser
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.ProviderType
@@ -37,6 +34,8 @@ class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
         return when (user.providerData[1].providerId) {
             GoogleAuthProvider.PROVIDER_ID -> ProviderType.Google
             FacebookAuthProvider.PROVIDER_ID -> ProviderType.Facebook
+            TwitterAuthProvider.PROVIDER_ID -> ProviderType.Twitter
+            PlayGamesAuthProvider.PROVIDER_ID -> ProviderType.GoogleGame
             EmailAuthProvider.PROVIDER_ID -> ProviderType.Email
             else -> ProviderType.NoProvider
         }
