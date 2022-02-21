@@ -11,14 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.hms.lib.commonmobileservices.safety.google
+package com.hms.lib.commonmobileservices.safety.common
 
-import com.google.android.gms.safetynet.SafetyNetApi
-import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
-import com.hms.lib.commonmobileservices.safety.common.Mapper
-
-class GoogleSafetyMapper: Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse?>() {
-    override fun map(from: SafetyNetApi.RecaptchaTokenResponse): SafetyServiceResponse? = from.tokenResult?.let {
-        SafetyServiceResponse(responseToken = it)
-    }
+class CommonVerifyAppChecksEnabledRes{
+    var result: Boolean?=null
+    var errorReason: String?=null
+    var rtnCode: Int?=null
 }

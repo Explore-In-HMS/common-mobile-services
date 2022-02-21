@@ -810,14 +810,18 @@ To check if the user is a fake user, you need to call the `userDetect` method; A
  private var safetyService : SafetyService ?= null
  override fun onCreate(savedInstanceState: Bundle?) {
     safetyService  = SafetyService.Factory.create(applicationContext)
-    safetyService?.userDetect(appKey, object : SafetyService.SafetyServiceCallback<SafetyServiceResponse> {
-            override fun onFailUserDetect(e: Exception) {
-
-            }
-            override fun onSuccessUserDetect(result: SafetyServiceResponse?) {
-
-            }
-        })}
+    safetyService?.userDetect(appKey, object: ResultCallback<SafetyServiceResponse>{
+            override fun onSuccess(result: SafetyServiceResponse?) {
+                  if(result!= null){
+                     Log.d("CMS", result.responseToken)
+                  }
+                }
+                override fun onFailure(error: Exception) {
+                     Log.e("CMS", error.toString())
+                }
+                override fun onCancelled() {
+                    TODO("Not yet implemented")
+                }})
 ```
 
 #### Root Detection
@@ -826,22 +830,146 @@ In this library, you need to call the `rootDetection` method to check whether th
 ```kt
  override fun onCreate(savedInstanceState: Bundle?){
     safetyService  = SafetyService.Factory.create(applicationContext)
-    safetyService?.rootDetection(appKey, object : SafetyService.SafetyRootDetectionCallback<RootDetectionResponse> {
-            override fun onFailRootDetect(e: Exception) {
-                Toast.makeText(applicationContext,e.toString(),Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onSuccessRootDetect(result: RootDetectionResponse?) {
-                if(result!= null){
-                    if(result.basicIntegrity){
-                        Log.i("rootDetectionResult",result.basicIntegrity.toString())
+    safetyService?.rootDetection(appKey, object: ResultCallback<RootDetectionResponse> {
+                override fun onSuccess(result: RootDetectionResponse?) {
+                     if(result!=null){
+                        if(result.basicIntegrity){
+                           Log.d("CMS", result.toString())
+                     }
+                    }else{
+                        Log.d( "CMS","You need to install Google or Huawei Mobile Services to run application.")
                     }
-                    else{
-                        Toast.makeText(applicationContext,"You need to install Google or Huawei Mobile Services to run application.",Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(error: Exception) {
+                    Log.e("CMS", error.toString())
+                }
+                override fun onCancelled() {
+                    TODO("Not yet implemented")
+                }})
+```
+#### AppChecks
+With the AppChecks feature, you can easily and quickly detect harmful applications on your device.
+You can check whether the AppChecks feature is active on your device with the `isAppChecksEnabled()` method.
+
+```kt
+fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+safetyService.isAppChecksEnabled(object: ResultCallback<CommonVerifyAppChecksEnabledRes>{
+            override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+                if(appsCheckResp!=null){
+                    val result = appsCheckResp.result
+                    if(result){
+                        Log.d("CMS", "App Checks is enabled")
+                    }else{
+                        Log.d("CMS", "App Checks is disabled")
                     }
                 }
             }
-        })}
+            override fun onFailure(e: Exception) {
+                Log.e("CMS", "App Checks Fail: ${e.message}")
+            }
+        })
+```
+If the App Checks feature is disabled, you can enable it with the `enableAppsCheck()` method.
+```kt
+fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+ safetyService.enableAppsCheck(object: ResultCallback<CommonVerifyAppChecksEnabledRes>{
+      override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+          if(appsCheckResp!=null){
+              val result = appsCheckResp.result
+              if(result){
+                  Log.d("CMS", "App Checks enabled")
+              }else{
+                  Log.d("CMS", "App Checks not enabled")
+              }
+          }
+      }
+      override fun onFailure(e: Exception) {
+          Log.e("CMS", "App Checks Fail: ${e.message}")
+      }
+  })
+```
+You can detect malicious applications on your device with the `getMaliciousAppsList()` method.
+```kt
+fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
+```
+```kt
+safetyService.getMaliciousAppsList(object: ResultCallback<CommonMaliciousAppResponse>{
+    override fun onSuccess(maliciousAppResponse: CommonMaliciousAppResponse?){
+	 if (maliciousAppResponse != null) {
+	    val appList = maliciousAppResponse.getMaliciousAppsList
+	    if (appList?.isNotEmpty() == true){
+		Log.e("CMS", "Potentially harmful apps are installed!")
+		for (harmfulApp in appList){
+		    Log.e("CMS", "Information about a harmful app:")
+		    Log.e("CMS", "  APK: ${harmfulApp.apkPackageName}")
+		    Log.e("CMS", "  SHA-256: ${harmfulApp.apkSha256}")
+		    Log.e("CMS", "  Category: ${harmfulApp.apkCategory}")
+		 }
+	    }else{
+		  Log.d("CMS", "There are no known harmful apps installed.")
+	    }
+	  }
+    }
+    override fun onFailure(e: Exception){
+	      Log.e("CMS", "Error code: ${e.localizedMessage} -- Message: ${e.message}")
+    }
+})
+```
+#### URLCheck
+You can check whether URL addresses are safe with the URLCheck feature.
+
+To activate the URLCheck feature, you must first call the `initURLCheck()` method.
+
+```kt
+fun initURLCheck():Work<Unit>
+```
+```kt
+safetyService.initURLCheck().addOnSuccessListener{
+    Log.d("CMS", "Url checks activated")
+}.addOnFailureListener{
+    Log.e("CMS", "Url check fail: ${it.message}")
+}
+```
+You can check whether the URL you will specify is safe with the `urlCheck()` method.
+```kt
+fun urlCheck(url:String,appKey: String,threatType:Int,callback:ResultCallback<CommonUrlCheckRes>)
+```
+Appkey value is app id value in Huawei services. In Google services the app key value is API_KEY. You can create API_KEY value from Google APIs Console. [Click here](https://console.developers.google.com/apis/library) You need to activate the SafeBrowsing API feature. You can create new API_KEY from the Credentials tab.
+
+```kt
+val url = "https://github.com/Explore-In-HMS/common-mobile-services"
+safetyService.urlCheck(url,appKey,CommonUrlCheckThreat().urlThreatType(this,CommonUrlCheckThreat.MALWARE_APPLICATIONS),object:ResultCallback<CommonUrlCheckRes>{
+	override fun onSuccess(appsCheckResp: CommonUrlCheckRes?) {
+		if(appsCheckResp!=null){
+		    val result = appsCheckResp.urlCheckThreats
+		    if(result!!.isNotEmpty()){
+			for(urlLists in result){
+			    Log.d("CMS", "URL Check result: ${urlLists.urlCheckResult}")
+			}
+		    }else{
+			Log.d("CMS", "No threads found")
+		    }
+		}
+	    }
+	override fun onFailure(e: Exception) {
+	    Log.e("CMS", "URLCheck fail : ${e.message}")
+	}
+})
+```
+You can use the `shutDownUrlCheck()` method to disable the URLCheck feature.
+```kt
+fun shutDownUrlCheck(): Work<Unit>
+```
+```kt
+safetyService.shutDownUrlCheck().addOnSuccessListener{
+    Log.d("CMS", "Url check is disabled")
+}.addOnFailureListener {
+    Log.e("CMS", "URLCheck fail: ${it.message}")
+}
 ```
 
 ## Crash

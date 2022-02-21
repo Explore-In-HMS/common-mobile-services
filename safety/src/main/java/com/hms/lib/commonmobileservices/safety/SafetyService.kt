@@ -13,29 +13,29 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety
 
-import android.app.Activity
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.core.ResultCallback
+import com.hms.lib.commonmobileservices.core.Work
+import com.hms.lib.commonmobileservices.safety.common.CommonMaliciousAppResponse
+import com.hms.lib.commonmobileservices.safety.common.CommonUrlCheckRes
+import com.hms.lib.commonmobileservices.safety.common.CommonVerifyAppChecksEnabledRes
 import com.hms.lib.commonmobileservices.safety.google.GoogleSafetyServiceImpl
 import com.hms.lib.commonmobileservices.safety.huawei.HuaweiSafetyServiceImpl
 
 interface SafetyService {
 
-    fun userDetect(appKey : String,callback: SafetyServiceCallback<SafetyServiceResponse>)
-    fun rootDetection(appKey: String,callback: SafetyRootDetectionCallback<RootDetectionResponse> )
+    fun userDetect(appKey : String,callback: ResultCallback<SafetyServiceResponse>)
+    fun rootDetection(appKey: String,callback: ResultCallback<RootDetectionResponse>)
+    fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
+    fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+    fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+    fun initURLCheck():Work<Unit>
+    fun urlCheck(url:String,appKey: String,threatType:Int,callback:ResultCallback<CommonUrlCheckRes>)
+    fun shutDownUrlCheck(): Work<Unit>
 
-    interface SafetyServiceCallback<T>{
-        fun onSuccessUserDetect(result: T? = null)
-        fun onFailUserDetect(e: java.lang.Exception)
-    }
-
-    interface SafetyRootDetectionCallback<T>{
-        fun onSuccessRootDetect(result: T? = null)
-        fun onFailRootDetect(e: java.lang.Exception)
-    }
-
-    object Factory {
+      object Factory {
         fun create(context: Context): SafetyService {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {

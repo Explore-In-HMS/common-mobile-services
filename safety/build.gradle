@@ -1,7 +1,7 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.huawei.hms:safetydetect:5.0.5.302'
-    implementation 'com.google.android.gms:play-services-safetynet:17.0.0'
+    implementation 'com.huawei.hms:safetydetect:6.3.0.301'
+    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
     api project(path: ':core')
 }
