@@ -422,13 +422,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
+        if (storedVerificationId != null) {
+            val credential = PhoneAuthProvider.getCredential(storedVerificationId, verifyCode)
+            firebaseAuth.currentUser!!.linkWithCredential(credential)
+                .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
 
-        val credential = PhoneAuthProvider.getCredential(storedVerificationId!!, verifyCode)
-        firebaseAuth.currentUser!!.linkWithCredential(credential)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
-
+        }
         return work
     }
 }
