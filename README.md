@@ -1,4 +1,5 @@
 # Common Mobile Services
+[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
 
 It is a library that provides a common interface for mobile services for Android developers. Its aim is removing special mobile service dependencies for your app code.
 This has mainly two benefits:
