@@ -1221,7 +1221,7 @@ accountService.silentSignIn(object : ResultCallback<SignInUser>{
     override fun onCancelled() {}
 })
 ```
-Call `getSignInIntent` to start the `Activity` of he relevant service for the use login.
+Call `getSignInIntent` to start the `Activity` of the relevant service for the use login.
 ```kt
 accountService.getSignInIntent { intent ->
     startActivityForResult(intent, REQUEST_CODE)
@@ -1230,7 +1230,7 @@ accountService.getSignInIntent { intent ->
 Then get result from signInIntent by calling `onSignInActivityResult`. Call this function in the `onActivityResult`.
 ```kt
 accountService.onSignInActivityResult(intent, 
-    object ResultCallback<SignInUser> {
+    object: ResultCallback<SignInUser> {
         override fun onSuccess(result: SignInUser?) {}
         override fun onFailure(error: Exception) {}
         override fun onCancelled() {}

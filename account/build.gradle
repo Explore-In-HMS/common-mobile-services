@@ -1,8 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-auth:20.0.0'
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.huawei.hms:hwid:6.3.0.300'
-    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     api project(path: ':core')
 }
