@@ -28,8 +28,8 @@ internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser>() {
         displayName = from.displayName!!,
         id = from.id!!,
         photoUrl = from.photoUrl!!,
-        authServiceToken = from.idToken!!,
-        idToken = from.idToken!!,
+        authServiceToken = if (from.idToken == null) "" else from.idToken!!,
+        idToken = if (from.idToken == null) "" else from.idToken!!,
         accessToken = "",
         scopes = getGrantedScopes(from),
     )
