@@ -19,11 +19,12 @@ import android.os.Build
 import android.util.Base64
 import android.util.Log
 import com.google.android.gms.safetynet.SafetyNet
-import com.google.android.gms.safetynet.SafetyNetApi
+import com.hms.lib.commonmobileservices.core.ResultCallback
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.SafetyService
 import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
-import com.hms.lib.commonmobileservices.safety.common.Mapper
+import com.hms.lib.commonmobileservices.safety.common.*
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.security.NoSuchAlgorithmException
@@ -31,10 +32,10 @@ import java.security.SecureRandom
 
 class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
 
-    private val mapper: Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse> = GoogleSafetyMapper()
+    private val mapper: GoogleSafetyMapper = GoogleSafetyMapper()
     private val rootDetectMapper: Mapper<JSONObject, RootDetectionResponse> = GoogleRootDetectMapper()
 
-    override fun userDetect(appKey: String,callback: SafetyService.SafetyServiceCallback<SafetyServiceResponse>){
+    override fun userDetect(appKey: String,callback: ResultCallback<SafetyServiceResponse>){
 
         /**
          * App key value is the SITE_API_KEY value in Google Mobile Services.
@@ -42,17 +43,17 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         SafetyNet.getClient(context).verifyWithRecaptcha(appKey)
             .addOnSuccessListener(){
                 val responseToken = it.tokenResult
-                if(responseToken.isNotEmpty()){
-                    callback.onSuccessUserDetect(mapper.map(it))
+                if (responseToken != null && responseToken.isNotEmpty()){
+                    callback.onSuccess(mapper.map(it))
                 }
             }.addOnFailureListener(){
-                callback.onFailUserDetect(it)
+                callback.onFailure(it)
             }
     }
 
     override fun rootDetection(
         appKey: String,
-        callback: SafetyService.SafetyRootDetectionCallback<RootDetectionResponse>
+        callback: ResultCallback<RootDetectionResponse>
     ){
         val nonce = ByteArray(24)
         try {
@@ -69,13 +70,70 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         SafetyNet.getClient(context).attest(nonce, appKey)
             .addOnSuccessListener{ result ->
                 val jwsStr = result.jwsResult
-                val jwsSplit = jwsStr.split(".").toTypedArray()
-                val jwsPayloadStr = jwsSplit[1]
-                val payloadDetail = String(Base64.decode(jwsPayloadStr.toByteArray(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8)
+                val jwsSplit = jwsStr?.split(".")?.toTypedArray()
+                val jwsPayloadStr = jwsSplit?.get(1)
+                val payloadDetail = String(Base64.decode(jwsPayloadStr?.toByteArray(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8)
                 val jsonObject = JSONObject(payloadDetail)
-                callback.onSuccessRootDetect(rootDetectMapper.map(jsonObject))
-        }.addOnFailureListener{ e->
-            callback.onFailRootDetect(e)
+                callback.onSuccess(rootDetectMapper.map(jsonObject))
+            }.addOnFailureListener{ e->
+                callback.onFailure(e)
         }
+    }
+
+    override fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>) {
+        SafetyNet.getClient(context).listHarmfulApps().addOnSuccessListener {
+            callback.onSuccess(it.toCommonMaliciousAppList())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>){
+        SafetyNet.getClient(context).isVerifyAppsEnabled.addOnSuccessListener {
+            callback.onSuccess(it.toCommonVerifyAppUserEnabled())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
+        SafetyNet.getClient(context).enableVerifyApps().addOnSuccessListener {
+            callback.onSuccess(it.toCommonVerifyAppUserEnabled())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun initURLCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyNet.getClient(context).initSafeBrowsing().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
+    }
+
+    override fun urlCheck(
+        url: String,
+        appKey: String,
+        threatType: Int,
+        callback: ResultCallback<CommonUrlCheckRes>
+    ) {
+        SafetyNet.getClient(context).lookupUri(url,appKey,threatType).addOnSuccessListener {
+            callback.onSuccess(it.toCommonURLCheck())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun shutDownUrlCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyNet.getClient(context).shutdownSafeBrowsing().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
     }
 }

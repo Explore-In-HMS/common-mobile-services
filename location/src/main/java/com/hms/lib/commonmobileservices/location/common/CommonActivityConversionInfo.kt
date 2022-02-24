@@ -11,11 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.hms.lib.commonmobileservices.mapkit.model
+package com.hms.lib.commonmobileservices.location.common
 
-data class CommonCameraPosition(
-    val target: CommonLatLng,
-    val zoom: Float,
-    val tilt: Float,
-    val bearing: Float
-)
+class CommonActivityConversionInfo {
+
+    companion object{
+        const val ENTER_ACTIVITY_CONVERSION = 0
+        const val EXIT_ACTIVITY_CONVERSION = 1
+    }
+
+    var activityType: Int? = null
+    var conversionType: Int? = null
+
+}

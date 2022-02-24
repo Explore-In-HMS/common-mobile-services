@@ -5,127 +5,25 @@
       <config />
     </shared>
   </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6187ebfe-ee10-4811-a6b9-7489d56ef72a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/AnalyticsExt.kt" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/AnalyticsExt.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/CommonAnalytics.kt" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/CommonAnalytics.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/GMSAnalyticsImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/GMSAnalyticsImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/HMSAnalyticsImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/analytics/src/main/java/com/hms/lib/commonmobileservices/analytics/HMSAnalyticsImpl.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/hms/commonmobileservices/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/hms/commonmobileservices/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/adb97b19b5c868724147109fcc5b350b.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/adb97b19b5c868724147109fcc5b350b/classes/classes.dex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/e3460aa3c7eb3160749310674aca66d2.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/e3460aa3c7eb3160749310674aca66d2/classes/classes.dex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/eddfe77e31270fe781f3437accc4fb70.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/.transforms/eddfe77e31270fe781f3437accc4fb70/classes/classes.dex" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/generated/data_binding_base_class_source_out/debug/out/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationCollapsedBinding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/generated/data_binding_base_class_source_out/debug/out/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationExpandedBinding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/generated/data_binding_base_class_source_out/debug/out/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationExpandedItemBinding.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/generated/source/buildConfig/debug/com/hms/lib/commonmobileservices/push/BuildConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/aapt_friendly_merged_manifests/debug/aapt/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/aar_main_jar/debug/classes.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/aar_metadata/debug/aar-metadata.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/annotation_processor_list/debug/annotationProcessors.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/annotations_typedef_file/debug/typedefs.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compile_library_classes_jar/debug/classes.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compile_r_class_jar/debug/R.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compile_symbol_list/debug/R.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/drawable_next_button.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/drawable_prev_button.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/layout_slider_notification_collapsed.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/layout_slider_notification_expanded.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/layout_slider_notification_expanded_item.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-anydpi-v26_ic_launcher.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-anydpi-v26_ic_launcher_round.xml.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-hdpi-v4_ic_launcher.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-hdpi-v4_ic_launcher_foreground.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-hdpi-v4_ic_launcher_round.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-mdpi-v4_ic_launcher.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-mdpi-v4_ic_launcher_foreground.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-mdpi-v4_ic_launcher_round.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xhdpi-v4_ic_launcher.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xhdpi-v4_ic_launcher_round.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxhdpi-v4_ic_launcher.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxhdpi-v4_ic_launcher_foreground.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxhdpi-v4_ic_launcher_round.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxxhdpi-v4_ic_launcher.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxxhdpi-v4_ic_launcher_foreground.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/mipmap-xxxhdpi-v4_ic_launcher_round.png.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/compiled_local_resources/debug/out/raw_custom_notification_sound.mp3.flat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/data_binding_base_class_log_artifact/debug/out/com.hms.lib.commonmobileservices.push-binding_classes.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/data_binding_base_class_logs_dependency_artifacts/debug/com.hms.lib.commonmobileservices.core-binding_classes.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/data_binding_layout_info_type_package/debug/out/slider_notification_collapsed-layout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/data_binding_layout_info_type_package/debug/out/slider_notification_expanded-layout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/data_binding_layout_info_type_package/debug/out/slider_notification_expanded_item-layout.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/dataBindingGenBaseClassesDebug/base_builder_log.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/debug-mergeJavaRes/merge-state" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/mergeDebugShaders/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugAssets/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/compile-file-map.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/merged.dir/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/merger.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/stripped.dir/layout/slider_notification_collapsed.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/stripped.dir/layout/slider_notification_expanded.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/incremental/packageDebugResources/stripped.dir/layout/slider_notification_expanded_item.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/javac/debug/classes/com/hms/lib/commonmobileservices/push/BuildConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/javac/debug/classes/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationCollapsedBinding.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/javac/debug/classes/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationExpandedBinding.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/javac/debug/classes/com/hms/lib/commonmobileservices/push/databinding/SliderNotificationExpandedItemBinding.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/library_manifest/debug/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/local_only_symbol_list/debug/R-def.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/manifest_merge_blame_file/debug/manifest-merger-blame-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/merged_consumer_proguard_file/debug/proguard.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/merged_java_res/debug/out.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/navigation_json/debug/navigation.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_manifests/debug/output-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/drawable/next_button.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/drawable/prev_button.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/layout/slider_notification_collapsed.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/layout/slider_notification_expanded.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/layout/slider_notification_expanded_item.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher_foreground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-hdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher_foreground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-mdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher_foreground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher_foreground.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/mipmap-xxxhdpi-v4/ic_launcher_round.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/raw/custom_notification_sound.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/packaged_res/debug/values/values.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/runtime_library_classes_jar/debug/classes.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/kotlin/compileDebugKotlin/build-history.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/kotlin/compileDebugKotlin/last-build.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/kotlin/kaptGenerateStubsDebugKotlin/build-history.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/kotlin/kaptGenerateStubsDebugKotlin/last-build.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/outputs/aar/hipush-debug.aar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/outputs/logs/manifest-merger-debug-report.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/compileDebugJavaWithJavac/source-classes-mapping.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/kapt3/incApCache/debug/ap-classpath-entries.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/kapt3/incApCache/debug/apt-cache.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/kapt3/incApCache/debug/classpath-entries.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/kapt3/incApCache/debug/classpath-structure.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hipush/build/tmp/kapt3/incApCache/debug/java-cache.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/site/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/site/src/main/AndroidManifest.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Circle.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/CircleOptions.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/TypeAliases.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Mapper.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Mapper.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Marker.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Marker.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Polygon.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Polygon.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Polyline.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/model/Polyline.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,6 +35,13 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -156,6 +61,7 @@
     <property name="android-custom-view/Users/oguz/Desktop/common-mobile-services/scene/src/main/java/com/hms/lib/commonmobileservices/scene/faceview/ui/CommonAugmentedFaceView.kt_SELECTED" value="CommonAugmentedFaceView" />
     <property name="android-custom-view/Users/oguz/Desktop/common-mobile-services/scene/src/main/java/com/hms/lib/commonmobileservices/scene/sceneview/service/HuaweiSceneView.kt_SELECTED" value="HuaweiSceneView" />
     <property name="android-custom-view/Users/oguz/Desktop/common-mobile-services/scene/src/main/java/com/hms/lib/commonmobileservices/scene/sceneview/ui/CommonSceneView.kt_SELECTED" value="CommonSceneView" />
+    <property name="android-custom-viewD:/workspace/android/projects/common-mobile-services/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt_SELECTED" value="CommonMapView" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
@@ -240,6 +146,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>

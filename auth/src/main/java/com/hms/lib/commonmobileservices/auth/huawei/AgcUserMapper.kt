@@ -14,12 +14,12 @@
 
 package com.hms.lib.commonmobileservices.auth.huawei
 
-import com.huawei.agconnect.auth.AGConnectAuthCredential
-import com.huawei.agconnect.auth.AGConnectUser
 import com.hms.lib.commonmobileservices.auth.AuthUser
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.ProviderType
 import com.hms.lib.commonmobileservices.auth.common.ServiceType
+import com.huawei.agconnect.auth.AGConnectAuthCredential
+import com.huawei.agconnect.auth.AGConnectUser
 
 class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
     override fun map(from: AGConnectUser): AuthUser =
@@ -36,7 +36,9 @@ class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
         return when (user.providerId) {
             AGConnectAuthCredential.HMS_Provider.toString() -> ProviderType.Huawei
             AGConnectAuthCredential.Facebook_Provider.toString() -> ProviderType.Facebook
+            AGConnectAuthCredential.Twitter_Provider.toString() -> ProviderType.Twitter
             AGConnectAuthCredential.Email_Provider.toString() -> ProviderType.Email
+            AGConnectAuthCredential.GoogleGame_Provider.toString() -> ProviderType.GoogleGame
             else -> ProviderType.NoProvider
         }
     }

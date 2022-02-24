@@ -19,5 +19,7 @@ enum class ProviderType(val value: String) {
     Huawei("huawei"),
     Google("google"),
     Facebook("facebook"),
-    Email("email")
+    Email("email"),
+    Twitter("twitter"),
+    GoogleGame("googlegame")
 }

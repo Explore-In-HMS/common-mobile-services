@@ -1,4 +1,5 @@
 # Common Mobile Services
+[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
 
 It is a library that provides a common interface for mobile services for Android developers. Its aim is removing special mobile service dependencies for your app code.
 This has mainly two benefits:
@@ -312,36 +313,303 @@ When you don't need to location updates you can remove listener like this:
  ```kt
 commonLocationClient?.removeLocationUpdates()
  ```
+  ##### Using the Mock location feature
+   To use the mock location function, go to Settings > System & updates > Developer options > Select mock location app and select the desired app. (If Developer options is   unavailable, go to Settings > About phone and tap Build number for seven consecutive times. Then, Developer options will be displayed on System & updates.)
+   You need to add necessary permission to use Mock location feature to AndroidManifest.xml file.
+  ```xml
+  <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
+  ```
+  ```kt
+  fun setMockMode(isMockMode : Boolean) : Work<Unit>
+  ```
+  ```kt
+  commonLocationClient?.setMockMode(true).addOnSuccessListener {  }.addOnFailureListener {  }
+  ```
+  ```kt
+  fun setMockLocation(location: Location): Work<Unit>
+  ```
+  ```kt
+  val mockLocation = Location(LocationManager.GPS_PROVIDER)
+       mockLocation.latitude = latitude
+       mockLocation.longitude = longitude
+       commonLocationClient?.setMockLocation(mockLocation).addOnSuccessListener {  }.addOnFailureListener {  }
+  ```
+
+  ### Geofence
+   The usage of the Geofence feature is as follows.
+  To use the geofence service APIs of Location Kit, declare the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions in the AndroidManifest.xml file.
+  ```xml
+   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+   <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+  ```
+
+ First you have to initialize the CommonGeofenceService object.
+  ```kt
+     private var geofenceService: CommonGeofenceService? = null
+     private var geofenceList: ArrayList<Geofence>? = null
+     private var pendingIntent: PendingIntent?=null
+
+     geofenceService = CommonGeofenceService()
+     pendingIntent = getPendingIntent()
+     geofenceList = ArrayList()
+  ```
+  #### Creating and Adding a Geofence
+
+  ```kt
+  geofenceList!!.add(Geofence()
+    .also { it.uniqueId= "testGeofence" }.also { it.conversions = Geofence.ENTER_GEOFENCE_CONVERSION }
+    .also { it.validDuration = Geofence.GEOFENCE_NEVER_EXPIRE }.also { it.latitude = latitude }.also { it.longitude = longitude }
+    .also { it.radius = 20F })
+  ```
+
+  #### Create a request for adding a geofence
+
+   ```kt
+   fun createGeofenceRequest(): GeofenceRequestRes{
+         return GeofenceRequestRes().also { it.geofenceList = geofenceList }.also { it.initConversion = GeofenceRequestRes.INITIAL_TRIGGER_ENTER }
+     }
+  ```
+  You should initialize the pendingIntent object that we have created.
+   ```kt
+     private fun getPendingIntent(): PendingIntent? {
+         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
+         intent.action = "com.hms.commonmobileservices.GEOFENCE"
+         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+     }
+   ```
+
+   After all this process, we need to send the request to add a geofence via `createGeofenceList()` method.
+
+   ```kt
+   fun createGeofenceList(context: Context, geofenceReq: GeofenceRequestRes,pendingIntent: PendingIntent): Work<Unit>
+   ```
+   ```kt
+   geofenceService.createGeofenceList(applicationContext,createGeofenceRequest(),pendingIntent)
+     .addOnSuccessListener {
+
+     }.addOnFailureListener {
+
+     }
+   ```
+   After adding Geofence, we need to create a Broadcast receiver and define it in AndroidManifest file so that Geofence can be triggered.
+   ```xml
+    <receiver android:name=".GeofenceBroadcastReceiver"
+       android:exported="true">
+         <intent-filter>
+ 	   <action android:name="com.hms.commonmobileservices.GEOFENCE" />
+         </intent-filter>
+    </receiver>
+   ```
+ We will be able to listen to the Geofence triggering process thanks to the Brodcast receiver.Thanks to our CommonGeofenceData class, you can get all information about the triggered event.
+
+  ```kt
+  class GeofenceBroadcastReceiver : BroadcastReceiver() {
+     override fun onReceive(context: Context?, intent: Intent) {
+         val geofenceData = CommonGeofenceData().fetchDataFromIntent(context,intent)
+         val errorCode = geofenceData.errorCode
+         val conversion = geofenceData.conversion
+         val convertingGeofenceList = geofenceData.convertingGeofenceList
+         val convertingLocation = geofenceData.convertingLocation
+         val isFailure = geofenceData.isFailure
+     }
+  }
+  ```
+  #### Remove a geofence
+
+  With the `deleteGeofenceList()` method, you can delete the previously created geofence list according to the geofence id list or according to the pending intent value.
+
+   ```kt
+   fun deleteGeofenceList(context: Context,geofenceList:List<String>):Work<Unit>
+
+   fun deleteGeofenceList(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
+
+   ```kt
+   val geofenceIdList : ArrayList<String> = ArrayList()
+   geofenceIdList.add("testGeofence")
+   geofenceService.deleteGeofenceList(applicationContext,geofenceIdList)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+   ```
+
+   ```kt
+   geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+   ```
+
+  ### Activity Recognition
+  Thanks to the Activity Recognition feature, you can follow the user's activity instantly.
+  To use the activity recognition service in versions earlier than Android 10, add the following permission in the AndroidManifest.xml file.
+   ```xml
+    <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION"/>
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
+   ```
+   To use the activity recognition service in Android 10 and later versions, add the following permission in the AndroidManifest.xml file;
+   ```xml
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
+   ```
+   After adding the required permissions, you must create and initialize the `CommonActivityIdentificationService` object.
+   ```kt
+   private var activityIdentificationService : CommonActivityIdentificationService?=null
+   private var pendingIntent: PendingIntent? = null
+
+   activityIdentificationService = CommonActivityIdentificationService()
+   pendingIntentEdit = getPendingIntent()
+
+   private fun getPendingIntent(): PendingIntent?{
+         val intent = Intent(this, ActivityRecognitionReceiver::class.java)
+         intent.action = "com.hms.commonmobileservices.ACTIVITY_RECOGNITION"
+         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+     }
+   ```
+   With the `createActivityIdentificationUpdates()` method, the user's activities are controlled according to the specified time.
+   ```kt
+   fun createActivityIdentificationUpdates(context: Context,intervalMillis:Long, pendingIntent: PendingIntent):Work<Unit>
+   ```
+   ```kt
+   activityIdentificationService.createActivityIdentificationUpdates(applicationContext,5000,pendingIntent)
+      .addOnSuccessListener { }
+      .addOnFailureListener { }
+   ```
+   You can follow to the user activities with the Broadcast Receiver we will create.
+   ```xml
+     <receiver android:name=".ActivityRecognitionReceiver"
+        android:exported="true">
+           <intent-filter>
+ 	     <action android:name="com.hms.commonmobileservices.ACTIVITY_RECOGNITION" />
+           </intent-filter>
+     </receiver>
+   ```
+   With `fetchDataFromIntent()` method you can get  detected activities status list.
+   ```kt
+   fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse
+   ```
+   ```kt
+   class ActivityRecognitionReceiver : BroadcastReceiver() {
+       override fun onReceive(context: Context?, intent: Intent) {
+           val activityIdentificationResponse = CommonActivityIdentificationResponse().fetchDataFromIntent(context,intent)
+           val detectedActivityList = activityIdentificationResponse.activityIdentificationDataList
+       }
+    }
+   ```
+   To Stop requesting activity identification updates, you can use `deleteActivityIdentificationUpdates()` method.
+   ```kt
+   fun deleteActivityIdentificationUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
+   ```kt
+   activityIdentificationService.deleteActivityIdentificationUpdates(applicationContext,pendingIntent)
+           .addOnSuccessListener { }
+           .addOnFailureListener { }
+   ```
+
+   #### Activity Transition
+
+   Activity transition is a process of detecting user activity converting from one to another. You can call the `createActivityConversionUpdates()` method in your app to request user activity conversion updates.
+
+   ```kt
+   fun createActivityConversionUpdates(context: Context,activityConversionReq: CommonActivityConversionReq,pendingIntent: PendingIntent):Work<Unit>
+   ```
+
+   ```kt
+   val activityConversionEnter = CommonActivityConversionInfo()
+           .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL)}
+           .also { it.conversionType = CommonActivityConversionInfo.ENTER_ACTIVITY_CONVERSION }
+   val activityConversionExit = CommonActivityConversionInfo()
+           .also { it.activityType = CommonActivityIdentificationData().activityType(applicationContext,CommonActivityIdentificationData.STILL) }
+           .also { it.conversionType = CommonActivityConversionInfo.EXIT_ACTIVITY_CONVERSION }
+
+   val activityConversionList: MutableList<CommonActivityConversionInfo> = ArrayList()
+         activityConversionList.add(activityConversionEnter)
+         activityConversionList.add(activityConversionExit)
+
+   val activityConRequest = CommonActivityConversionReq()
+         activityConRequest.activityConversions = activityConversionList
+
+   activityIdentificationService.createActivityConversionUpdates(applicationContext,activityConRequest,pendingIntent)
+         .addOnSuccessListener { }
+         .addOnFailureListener { }
+   ```
+
+   You can receive the broadcast activity transition result with broadcast receiver. With Common `fetchDataFromIntent()` method you can get activity transition status.
+   ```kt
+   fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse
+   ```
+
+   ```kt
+   class ActivityRecognitionReceiver : BroadcastReceiver() {
+       override fun onReceive(context: Context?, intent: Intent) {
+           val activityTransitionResponse = CommonActivityConversionResponse().fetchDataFromIntent(context,intent)
+           val activityTransitionList = activityTransitionResponse.getActivityConversionDataList
+       }
+    }
+   ```
+   #### Stop activity transition update request
+   If you want to stop getting activity transition information, you can use `deleteActivityConversionUpdates()` method.
+   ```kt
+   fun deleteActivityConversionUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>
+   ```
+
+   ```kt
+   activityIdentificationService.deleteActivityConversionUpdates(applicationContext,pendingIntent)
+          .addOnSuccessListener { }
+          .addOnFailureListener { }
+   ```
 ## Analytics
-It is made to ease logging for your project. You can log your event with a one line of code. 
+It is made to ease logging for your project. You can log your event with a one line of code.
 ### How to use
 
-First, get the instance of common logger by calling `CommonAnalytics.instance(this)`. The function takes a context instance as a parameter. Then returns an implementation of `CommonAnalytics`. It can be the class that uses `Firebase` or `HiAnalyticsTools` for logging. 
-If you want to implement your own logger you can just implement the CommonAnalytics interface and use it instead. 
+First, get the instance of common logger by calling `CommonAnalytics.instance(this)`. The function takes a context instance as a parameter. Then returns an implementation of `CommonAnalytics`. It can be the class that uses `Firebase` or `HiAnalyticsTools` for logging.
+If you want to implement your own logger you can just implement the CommonAnalytics interface and use it instead.
 
-Then you can start logging events by using several methods. For logging single value you can call `saveSingleData` funcition of `CommonAnalytics` interface. You can log values type of `String`, `Int`, `Long`, `Double` and `Float`.
- ```kt
-CommonAnalytics.instance(this)?.saveSingleData("cartEvent", "productId", 112233)
- ```
- First, event name is required. Then you must enter a key and value sequentially.
-
- You can also log more then one key-value pair for a single event by using `saveData` function.
-```kt
-CommonAnalytics.instance(this)?.saveData(
-    "cartEvent",
-    "productId", 112233,
-    "productName", "socks",
-    "quantity", 5,
-    "discountPercentage", 23.3
-)
- ```
-Or you can log your events with classic Bundle.
+You can log your events with classic Bundle.
 ```kt
 val myEvent = Bundle().apply {
     putString("productName", "socks")
     putInt("quantity", 5)
 }
 CommonAnalytics.instance(this)?.saveEvent("cartEvent", myEvent)
+```
+You can also delete previously collected data with the "clearCachedData()" method.
+Data configured through the following APIs will be cleared:
+
+```onEvent```
+```setUserId```
+```setUserProfile```
+```addDefaultEventParams```
+
+```kt
+CommonAnalytics.instance(this)?.clearCachedData()
+```
+You can set whether to enable event tracking. If event tracking is disabled, no data is recorded or analyzed. The default value is ```true```
+```kt
+CommonAnalytics.instance(this)?.setAnalyticsEnabled(false)
+```
+User id can be assigned. When this method is called, a new session will be generated if the old value of id is not empty and is different from the new value. If you do not want to use id to identify a user (for example, when a user signs out), you must set id to null.
+```kt
+CommonAnalytics.instance(this)?.setUserId("id")
+```
+You can set user attributes. The values of user attributes remain unchanged throughout the app lifecycle and during each session. A maximum of 25 user attributes are supported. If the name of an attribute set later is the same as that of an existing attribute, the value of the existing attribute is updated.
+```kt
+CommonAnalytics.instance(this)?.setUserProfile("name", "value")
+```
+This method sets the session timeout interval. A new session will be generated when an app is running in the foreground but the interval between two adjacent events exceeds the specified timeout interval. The minimum value is 5 seconds, and the maximum value is 5 hours. If the specified value is beyond the value range, the boundary value is used. By default, the timeout interval is 1,800,000 milliseconds (that is, 30 minutes).
+```kt
+val milliseconds = 10000
+CommonAnalytics.instance(this)?.setSessionDuration(milliseconds)
+```
+You can also add default event parameters. These parameters will be added to all events except the automatically collected events. If the name of a default event parameter is the same as that of an event parameter, the event parameter will be used.
+```kt
+val params = Bundle().apply {
+    putString("productName", "keyboard")
+    putInt("quantity", 3)
+}
+CommonAnalytics.instance(this)?.addDefaultEventParams(params)
+```
+If you want to obtain AAID then you can use ```getAAID()``` method. This method returns to you AAID as a string.
+```kt
+CommonAnalytics.instance(this)?.getAAID()
 ```
 ## Credit Card Scanner
 This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
@@ -406,7 +674,6 @@ The `getWeather()` or `getBehavior()` or `getHeadset()` or `getTime()` functions
 fun getWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit)
 ```
 ## Scan 
-## Scan 
 Scan SDK scans and parses all major 1D and 2D barcodes, helping you quickly barcode scanning functions into your apps.
 
 ### How to use
@@ -458,7 +725,7 @@ Speech to Text can recognize speech not longer than 60s and convert the input sp
 ### How to use
 The speech to text process is started with the following line of code. speechToTextResultCode is the variable that is the result of OnActivityResult. The language to be spoken in must be chosen.
 ```kt
-HuaweiGoogleSpeechToTextManager(this).performSpeechToText(this,speechToTextResultCode,"en-US")
+HuaweiGoogleSpeechToTextManager(this).performSpeechToText(this,speechToTextResultCode,"en-US","API_KEY")
 ```
 
 After speaking is done, The result of the speech to text process gets from onActivityResult. Using the parseSpeechToTextData function, the data is converted to string format.
@@ -544,14 +811,18 @@ To check if the user is a fake user, you need to call the `userDetect` method; A
  private var safetyService : SafetyService ?= null
  override fun onCreate(savedInstanceState: Bundle?) {
     safetyService  = SafetyService.Factory.create(applicationContext)
-    safetyService?.userDetect(appKey, object : SafetyService.SafetyServiceCallback<SafetyServiceResponse> {
-            override fun onFailUserDetect(e: Exception) {
-
-            }
-            override fun onSuccessUserDetect(result: SafetyServiceResponse?) {
-
-            }
-        })}
+    safetyService?.userDetect(appKey, object: ResultCallback<SafetyServiceResponse>{
+            override fun onSuccess(result: SafetyServiceResponse?) {
+                  if(result!= null){
+                     Log.d("CMS", result.responseToken)
+                  }
+                }
+                override fun onFailure(error: Exception) {
+                     Log.e("CMS", error.toString())
+                }
+                override fun onCancelled() {
+                    TODO("Not yet implemented")
+                }})
 ```
 
 #### Root Detection
@@ -560,22 +831,146 @@ In this library, you need to call the `rootDetection` method to check whether th
 ```kt
  override fun onCreate(savedInstanceState: Bundle?){
     safetyService  = SafetyService.Factory.create(applicationContext)
-    safetyService?.rootDetection(appKey, object : SafetyService.SafetyRootDetectionCallback<RootDetectionResponse> {
-            override fun onFailRootDetect(e: Exception) {
-                Toast.makeText(applicationContext,e.toString(),Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onSuccessRootDetect(result: RootDetectionResponse?) {
-                if(result!= null){
-                    if(result.basicIntegrity){
-                        Log.i("rootDetectionResult",result.basicIntegrity.toString())
+    safetyService?.rootDetection(appKey, object: ResultCallback<RootDetectionResponse> {
+                override fun onSuccess(result: RootDetectionResponse?) {
+                     if(result!=null){
+                        if(result.basicIntegrity){
+                           Log.d("CMS", result.toString())
+                     }
+                    }else{
+                        Log.d( "CMS","You need to install Google or Huawei Mobile Services to run application.")
                     }
-                    else{
-                        Toast.makeText(applicationContext,"You need to install Google or Huawei Mobile Services to run application.",Toast.LENGTH_SHORT).show()
+                }
+                override fun onFailure(error: Exception) {
+                    Log.e("CMS", error.toString())
+                }
+                override fun onCancelled() {
+                    TODO("Not yet implemented")
+                }})
+```
+#### AppChecks
+With the AppChecks feature, you can easily and quickly detect harmful applications on your device.
+You can check whether the AppChecks feature is active on your device with the `isAppChecksEnabled()` method.
+
+```kt
+fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+safetyService.isAppChecksEnabled(object: ResultCallback<CommonVerifyAppChecksEnabledRes>{
+            override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+                if(appsCheckResp!=null){
+                    val result = appsCheckResp.result
+                    if(result){
+                        Log.d("CMS", "App Checks is enabled")
+                    }else{
+                        Log.d("CMS", "App Checks is disabled")
                     }
                 }
             }
-        })}
+            override fun onFailure(e: Exception) {
+                Log.e("CMS", "App Checks Fail: ${e.message}")
+            }
+        })
+```
+If the App Checks feature is disabled, you can enable it with the `enableAppsCheck()` method.
+```kt
+fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+```
+```kt
+ safetyService.enableAppsCheck(object: ResultCallback<CommonVerifyAppChecksEnabledRes>{
+      override fun onSuccess(appsCheckResp: CommonVerifyAppChecksEnabledRes?) {
+          if(appsCheckResp!=null){
+              val result = appsCheckResp.result
+              if(result){
+                  Log.d("CMS", "App Checks enabled")
+              }else{
+                  Log.d("CMS", "App Checks not enabled")
+              }
+          }
+      }
+      override fun onFailure(e: Exception) {
+          Log.e("CMS", "App Checks Fail: ${e.message}")
+      }
+  })
+```
+You can detect malicious applications on your device with the `getMaliciousAppsList()` method.
+```kt
+fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
+```
+```kt
+safetyService.getMaliciousAppsList(object: ResultCallback<CommonMaliciousAppResponse>{
+    override fun onSuccess(maliciousAppResponse: CommonMaliciousAppResponse?){
+	 if (maliciousAppResponse != null) {
+	    val appList = maliciousAppResponse.getMaliciousAppsList
+	    if (appList?.isNotEmpty() == true){
+		Log.e("CMS", "Potentially harmful apps are installed!")
+		for (harmfulApp in appList){
+		    Log.e("CMS", "Information about a harmful app:")
+		    Log.e("CMS", "  APK: ${harmfulApp.apkPackageName}")
+		    Log.e("CMS", "  SHA-256: ${harmfulApp.apkSha256}")
+		    Log.e("CMS", "  Category: ${harmfulApp.apkCategory}")
+		 }
+	    }else{
+		  Log.d("CMS", "There are no known harmful apps installed.")
+	    }
+	  }
+    }
+    override fun onFailure(e: Exception){
+	      Log.e("CMS", "Error code: ${e.localizedMessage} -- Message: ${e.message}")
+    }
+})
+```
+#### URLCheck
+You can check whether URL addresses are safe with the URLCheck feature.
+
+To activate the URLCheck feature, you must first call the `initURLCheck()` method.
+
+```kt
+fun initURLCheck():Work<Unit>
+```
+```kt
+safetyService.initURLCheck().addOnSuccessListener{
+    Log.d("CMS", "Url checks activated")
+}.addOnFailureListener{
+    Log.e("CMS", "Url check fail: ${it.message}")
+}
+```
+You can check whether the URL you will specify is safe with the `urlCheck()` method.
+```kt
+fun urlCheck(url:String,appKey: String,threatType:Int,callback:ResultCallback<CommonUrlCheckRes>)
+```
+Appkey value is app id value in Huawei services. In Google services the app key value is API_KEY. You can create API_KEY value from Google APIs Console. [Click here](https://console.developers.google.com/apis/library) You need to activate the SafeBrowsing API feature. You can create new API_KEY from the Credentials tab.
+
+```kt
+val url = "https://github.com/Explore-In-HMS/common-mobile-services"
+safetyService.urlCheck(url,appKey,CommonUrlCheckThreat().urlThreatType(this,CommonUrlCheckThreat.MALWARE_APPLICATIONS),object:ResultCallback<CommonUrlCheckRes>{
+	override fun onSuccess(appsCheckResp: CommonUrlCheckRes?) {
+		if(appsCheckResp!=null){
+		    val result = appsCheckResp.urlCheckThreats
+		    if(result!!.isNotEmpty()){
+			for(urlLists in result){
+			    Log.d("CMS", "URL Check result: ${urlLists.urlCheckResult}")
+			}
+		    }else{
+			Log.d("CMS", "No threads found")
+		    }
+		}
+	    }
+	override fun onFailure(e: Exception) {
+	    Log.e("CMS", "URLCheck fail : ${e.message}")
+	}
+})
+```
+You can use the `shutDownUrlCheck()` method to disable the URLCheck feature.
+```kt
+fun shutDownUrlCheck(): Work<Unit>
+```
+```kt
+safetyService.shutDownUrlCheck().addOnSuccessListener{
+    Log.d("CMS", "Url check is disabled")
+}.addOnFailureListener {
+    Log.e("CMS", "URLCheck fail: ${it.message}")
+}
 ```
 
 ## Crash
@@ -706,6 +1101,103 @@ Common Mobile Services provide a slider push notification in Push service. If yo
 }
 ```
 
+You can use ```getToken``` method to obtain token.
+
+```kt
+        val token = HuaweiPushServiceImpl(this).getToken()
+        token.addOnSuccessListener {
+            println("token-> ${it.token}")
+        }
+```
+
+```kt
+        val token = GooglePushServiceImpl(this).getToken()
+        token.addOnSuccessListener {
+            println("token-> ${it.token}")
+        }
+```
+
+```kt subscribeToTopic``` method is subscribes to topics in asynchronous mode. The topic messaging function provided by Push Kit allows you to send messages to multiple devices whose users have subscribed to a specific topic.
+You can write messages about the topic as required, and Push Kit determines target devices and then sends messages to the devices in a reliable manner.
+The name of the topic to subscribe. Must match the following regular expression: "[a-zA-Z0-9-_.~%]{1,900}".
+You need to add a listener to listen to the operation result.
+
+```kt
+        HuaweiPushServiceImpl(this).subscribeToTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt
+        GooglePushServiceImpl(this).subscribeToTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt unsubscribeFromTopic``` method is unsubscribes in asynchronous mode from topics that are subscribed to through the subscribe method.
+You need to add a listener to listen to the operation result.
+
+```kt
+        HuaweiPushServiceImpl(this).unsubscribeFromTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt
+        GooglePushServiceImpl(this).unsubscribeFromTopic("test")
+            .addOnSuccessListener { result: Unit ->
+                Log.i(TAG, "OK")
+            }
+            .addOnFailureListener { error: Exception ->
+                error.printStackTrace()
+            }
+            .addOnCanceledListener {
+                Log.i(TAG, "Cancelled")
+            }
+```
+
+```kt setAutoInitEnabled``` method is sets whether to enable automatic initialization.
+If the enable parameter is set to true, the SDK automatically generates an AAID and obtains a token. The token is returned through the ```kt onNewToken()``` callback method.
+
+```kt
+HuaweiPushServiceImpl(this).autoInitEnabled(true)
+```
+
+```kt
+GooglePushServiceImpl(this).autoInitEnabled(true)
+```
+
+```kt isAutoInitEnabled``` method is checks whether automatic initialization is enabled. The default value is false.
+
+```kt
+HuaweiPushServiceImpl(this).isAutoInitEnabled()
+```
+
+```kt
+GooglePushServiceImpl(this).isAutoInitEnabled()
+```
+
 ## Account
 This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
 
@@ -730,7 +1222,7 @@ accountService.silentSignIn(object : ResultCallback<SignInUser>{
     override fun onCancelled() {}
 })
 ```
-Call `getSignInIntent` to start the `Activity` of he relevant service for the use login.
+Call `getSignInIntent` to start the `Activity` of the relevant service for the use login.
 ```kt
 accountService.getSignInIntent { intent ->
     startActivityForResult(intent, REQUEST_CODE)
@@ -739,13 +1231,21 @@ accountService.getSignInIntent { intent ->
 Then get result from signInIntent by calling `onSignInActivityResult`. Call this function in the `onActivityResult`.
 ```kt
 accountService.onSignInActivityResult(intent, 
-    object ResultCallback<SignInUser> {
+    object: ResultCallback<SignInUser> {
         override fun onSuccess(result: SignInUser?) {}
         override fun onFailure(error: Exception) {}
         override fun onCancelled() {}
     }
 )
 ```
+Call `signOut` to sign out of the account.
+```kt
+accountService.signOut()
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+```
+
 ## Auth
 This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
 
@@ -777,6 +1277,20 @@ authService.signInWithGoogleOrHuawei(token)
 Call `signInWithEmail` to sign in with email. It needs email and password. If it is success, it returns `AuthUser`.
 ```kt
 authService.signInWithEmail(email, password)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Phone Sign in
+Call `signInWithPhone` to sign in with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithPhone(countryCode,phoneNumber,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Twitter Sign in
+Call `signInWithTwitter` to sign in with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithTwitter(token, secret)
     .addOnSuccessListener {authUser -> }
     .addOnFailureListener {}
 ```
@@ -847,7 +1361,7 @@ authService.getCodePassword(email)
 ```
 
 ```kt
-authService.getPhoneCode(country_code,phone) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
+authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
     .addOnSuccessListener {verificationType -> }
     .addOnFailureListener {}
 ```
@@ -863,15 +1377,64 @@ authService.updateEmail(email, verificationCode)
 ### Update Phone
 Call `updatePhone` to update user's phone. It needs phone. If it is success, it returns `VerificationType`.
 ```kt
-authService.updateEmail(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
+authService.updatePhone(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
     .addOnSuccessListener {verificationType -> }
     .addOnFailureListener {}
 ```
 ### Update Password
 Call `updatePassword` to update user's password. It needs password. If it is success, it returns `VerificationType`.
 ```kt
-authService.updateEmail(password, verificationCode)
+authService.updatePassword(password, verificationCode)
     .addOnSuccessListener {verificationType -> }
+    .addOnFailureListener {}
+```
+### Link With Twitter
+Call `linkWithTwitter` to link account with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithTwitter(token, secret)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Facebook
+Call `linkWithFacebook` to link account with facebook. It needs token. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithFacebook(token)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Email
+Call `linkWithEmail` to link account with email. It needs email, password and verifyCode. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithEmail(email,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Phone
+Call `linkWithPhone` to link account with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithPhone(countryCode,phoneNumber,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Unlink
+Call `unlink` to unlink account from the linked account. It needs provider. If it is success, it returns `AuthUser`.
+```kt
+authService.unlink(provider)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### ReAuthenticate
+Call `reAuthenticate` to re-authenticate users. It needs email and password.
+```kt
+authService.reAuthenticate(email,password)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Delete User
+Call `deleteUser` to delete users. It needs email and password.
+```kt
+authService.deleteUser()
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 

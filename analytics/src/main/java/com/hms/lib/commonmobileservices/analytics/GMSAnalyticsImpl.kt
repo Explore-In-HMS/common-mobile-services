@@ -13,12 +13,51 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.analytics
 
+import android.content.Context
 import android.os.Bundle
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.hms.lib.commonmobileservices.core.Work
 
-class GMSAnalyticsImpl : CommonAnalytics {
-    override fun saveEvent(key: String, bundle: Bundle) {
-        Firebase.analytics.logEvent(key, bundle)
+
+class GMSAnalyticsImpl(context: Context) : CommonAnalytics {
+
+    private val analytics = FirebaseAnalytics.getInstance(context)
+
+    override fun setAnalyticsEnabled(enabled: Boolean) {
+        analytics.setAnalyticsCollectionEnabled(enabled)
     }
+
+    override fun setUserId(id: String) {
+        analytics.setUserId(id)
+    }
+
+    override fun setUserProfile(name: String, value: String) {
+        analytics.setUserProperty(name, value)
+    }
+
+    override fun setSessionDuration(milliseconds: Long) {
+        analytics.setSessionTimeoutDuration(milliseconds)
+    }
+
+    override fun saveEvent(key: String, bundle: Bundle) {
+        analytics.logEvent(key, bundle)
+    }
+
+    override fun clearCachedData() {
+        analytics.resetAnalyticsData()
+    }
+
+    override fun addDefaultEventParams(params: Bundle) {
+        analytics.setDefaultEventParameters(params)
+    }
+
+    override fun getAAID(): Work<String> {
+        val worker: Work<String> = Work()
+        analytics.appInstanceId
+            .addOnSuccessListener { worker.onSuccess(it) }
+            .addOnFailureListener { worker.onFailure(it) }
+            .addOnCanceledListener { worker.onCanceled() }
+        return worker
+    }
+
 }

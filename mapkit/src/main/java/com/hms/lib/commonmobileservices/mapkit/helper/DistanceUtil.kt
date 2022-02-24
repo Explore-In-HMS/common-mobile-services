@@ -14,12 +14,12 @@
 package com.hms.lib.commonmobileservices.mapkit.helper
 
 import com.google.maps.android.SphericalUtil
-import com.hms.lib.commonmobileservices.mapkit.model.CommonLatLng
+import com.hms.lib.commonmobileservices.mapkit.model.LatLng
 import com.hms.lib.commonmobileservices.mapkit.model.toGMSLatLng
 
 class DistanceUtil {
     // calculates distance between 2 points in meters
-    fun calculateDistance(p1:CommonLatLng,p2:CommonLatLng) : Double{
+    fun calculateDistance(p1:LatLng, p2:LatLng) : Double{
         return SphericalUtil.computeDistanceBetween(p1.toGMSLatLng(),p2.toGMSLatLng())
     }
 }

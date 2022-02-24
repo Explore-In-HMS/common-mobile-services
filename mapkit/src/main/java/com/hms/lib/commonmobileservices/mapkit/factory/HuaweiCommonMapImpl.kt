@@ -17,17 +17,22 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityCompat
+import com.hms.lib.commonmobileservices.mapkit.LocationSource
+import com.hms.lib.commonmobileservices.mapkit.Projection
+import com.hms.lib.commonmobileservices.mapkit.model.*
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapView
 import com.huawei.hms.maps.MapsInitializer
 import com.huawei.hms.maps.model.BitmapDescriptorFactory
 import com.huawei.hms.maps.model.LatLng
+import com.huawei.hms.maps.model.MapStyleOptions
 import com.huawei.hms.maps.model.MarkerOptions
-import com.hms.lib.commonmobileservices.mapkit.model.*
+
 
 class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImpl(context),
     CommonMap {
@@ -57,11 +62,11 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         }
     }
 
-    override fun addPolygon(commonPolygonOptions: CommonPolygonOptions): CommonPolygon {
-        return map.addPolygon(commonPolygonOptions.toHMSPolygonOptions()).toCommonPolygon()
+    override fun addPolygon(polygonOptions: PolygonOptions): Polygon {
+        return map.addPolygon(polygonOptions.toHMSPolygonOptions()).toPolygon()
     }
-    override fun addPolyline(commonPolylineOptions: CommonPolylineOptions): CommonPolyline {
-        return map.addPolyline(commonPolylineOptions.toHMSPolylineOptions()).toCommonPolyline()
+    override fun addPolyline(polylineOptions: PolylineOptions): Polyline {
+        return map.addPolyline(polylineOptions.toHMSPolylineOptions()).toPolyline()
     }
     override fun addMarker(
         title: String?,
@@ -70,7 +75,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         longitude: Double,
         iconBitmap: Bitmap?,
         anchor: Pair<Float, Float>?
-    ): CommonMarker {
+    ): Marker {
         val markerOptions = MarkerOptions().apply {
             position(LatLng(latitude, longitude))
             title?.let { title(it) }
@@ -78,28 +83,28 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
             iconBitmap?.let { icon(BitmapDescriptorFactory.fromBitmap(it)) }
             anchor?.let { anchor(it.first, it.second) }
         }
-        return CommonMarker(map.addMarker(markerOptions))
+        return Marker(map.addMarker(markerOptions))
     }
 
     override fun setOnInfoWindowClickListener(
         markerClickCallback: (
             markerTitle: String?,
             markerSnippet: String?,
-            commonLatLng: CommonLatLng
+            latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng
         ) -> Unit
     ) {
         map.setOnInfoWindowClickListener { marker ->
             markerClickCallback.invoke(
                 marker.title,
                 marker.snippet,
-                marker.position.toCommonLatLng()
+                marker.position.toLatLng()
             )
         }
     }
 
-    override fun setOnMapClickListener(onClick: (commonLatLng: CommonLatLng) -> Unit) {
+    override fun setOnMapClickListener(onClick: (latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng) -> Unit) {
         map.setOnMapClickListener {
-            onClick.invoke(CommonLatLng(it.latitude, it.longitude))
+            onClick.invoke(com.hms.lib.commonmobileservices.mapkit.model.LatLng(it.latitude, it.longitude))
         }
     }
 
@@ -162,23 +167,27 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         mapView.onLowMemory()
     }
 
-    override fun getCameraPosition(): CommonCameraPosition {
+    override fun getCameraPosition(): CameraPosition {
         println("huawei map: $map")
         println("camera position huawei: ${map.cameraPosition.target}")
-        return CommonCameraPosition(
-            CommonLatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
+        return CameraPosition(
+            com.hms.lib.commonmobileservices.mapkit.model.LatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
             map.cameraPosition.zoom,
             map.cameraPosition.tilt,
             map.cameraPosition.bearing
         )
     }
 
-    override fun setOnCameraIdleListener(listener: () -> Unit) {
-        map.setOnCameraIdleListener { listener.invoke() }
+    override fun setOnCameraIdleListener(listener: CommonMap.OnCameraIdleListener) {
+        map.setOnCameraIdleListener { listener.onCameraIdle() }
     }
 
-    override fun setOnCameraMoveStartedListener(listener: () -> Unit) {
-        map.setOnCameraMoveStartedListener { listener.invoke() }
+    override fun setOnCameraMoveStartedListener(listener: CommonMap.OnCameraMoveStartedListener) {
+        map.setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it)}
+    }
+
+    override fun getMaxZoomLevel(): Float {
+        return map.maxZoomLevel
     }
 
     override fun isCompassEnabled(): Boolean {
@@ -267,4 +276,216 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         map.uiSettings.setAllGesturesEnabled(allGestureEnable!!)
     }
 
+    override fun getMinZoomLevel(): Float {
+        return map.minZoomLevel
+    }
+
+    override fun stopAnimation() {
+        map.stopAnimation()
+    }
+
+    override fun addCircle(circleOptions: CircleOptions): Circle {
+        return map.addCircle(circleOptions.toHMSCircleOptions()).toCircle()
+    }
+
+    override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
+        return map.addGroundOverlay(groundOverlayOptions.toHmsGroundOverlayOptions()).toGroundOverlay()
+    }
+
+    override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
+        return map.addTileOverlay(tileOverlayOptions.toHmsTileOverlayOptions()).toTileOverlay()
+    }
+
+    override fun setMapType(type: Int) {
+        map.mapType = type
+    }
+
+    override fun getMapType(): Int {
+        return map.mapType
+    }
+
+    override fun isTrafficEnabled(): Boolean {
+        return map.isTrafficEnabled
+    }
+
+    override fun setTrafficEnabled(enabled: Boolean) {
+        map.isTrafficEnabled = enabled
+    }
+
+    override fun isIndoorEnabled(): Boolean {
+        return map.isIndoorEnabled
+    }
+
+    override fun setIndoorEnabled(enabled: Boolean) {
+        map.isIndoorEnabled = enabled
+    }
+
+    override fun isBuildingEnabled(): Boolean {
+        return map.isBuildingsEnabled
+    }
+
+    override fun setBuildingEnabled(enabled: Boolean) {
+        map.isIndoorEnabled = enabled
+    }
+
+    override fun isMyLocationEnabled(): Boolean {
+        return map.isMyLocationEnabled
+    }
+
+    override fun setMyLocationEnabled(enabled: Boolean) {
+        map.isMyLocationEnabled = enabled
+    }
+
+    override fun setLocationSource(locationSource: LocationSource) {
+        map.setLocationSource(object : com.huawei.hms.maps.LocationSource{
+            override fun activate(p0: com.huawei.hms.maps.LocationSource.OnLocationChangedListener?) {
+                locationSource.activate(object: LocationSource.OnLocationChangedListener{
+                    override fun onLocationChanged(location: Location) {
+                        p0?.onLocationChanged(location)
+                    }
+                })
+            }
+
+            override fun deactivate() {
+                locationSource.deactivate()
+            }
+
+        })
+    }
+
+    override fun getProjection(): Projection {
+        return map.projection.toProjection()
+    }
+
+    override fun setOnCameraMoveListener(listener: CommonMap.OnCameraMoveListener) {
+        map.setOnCameraMoveListener {
+            listener.onCameraMove()
+        }
+    }
+
+    override fun setOnCameraMoveCancelledListener(listener: CommonMap.OnCameraMoveCancelledListener) {
+        map.setOnCameraMoveCanceledListener { listener.onCameraMoveCancelled() }
+    }
+
+    override fun setOnMapClickListener(listener: CommonMap.OnMapClickListener) {
+        map.setOnMapClickListener { listener.onMapClick(it.toLatLng()) }
+    }
+
+    override fun setOnMapLongClickListener(listener: CommonMap.OnMapLongClickListener) {
+        map.setOnMapLongClickListener { listener.onMapLongClick(it.toLatLng()) }
+    }
+
+    override fun setOnMarkerClickListener(listener: CommonMap.OnMarkerClickListener) {
+        map.setOnMarkerClickListener { listener.onMarkerClick(it.toMarker()) }
+    }
+
+    override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
+        map.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener{
+            override fun onMarkerDragStart(p0: HmsMarker?) {
+                listener.onMarkerDragStart(p0?.toMarker())
+            }
+
+            override fun onMarkerDrag(p0: HmsMarker?) {
+                listener.onMarkerDrag(p0?.toMarker())
+            }
+
+            override fun onMarkerDragEnd(p0: HmsMarker?) {
+                listener.onMarkerDragEnd(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnInfoWindowClickListener(listener: CommonMap.OnInfoWindowClickListener) {
+        map.setOnInfoWindowClickListener { listener.onInfoWindowClick(it?.toMarker()) }
+    }
+
+    override fun setOnInfoWindowLongClickListener(listener: CommonMap.OnInfoWindowLongClickListener) {
+        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it?.toMarker()) }
+    }
+
+    override fun setOnInfoWindowCloseListener(listener: CommonMap.OnInfoWindowCloseListener) {
+        map.setOnInfoWindowCloseListener { listener.onInfoWindowClose(it?.toMarker()) }
+    }
+
+    override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
+        map.setInfoWindowAdapter(object: HuaweiMap.InfoWindowAdapter{
+            override fun getInfoContents(p0: HmsMarker?): View {
+                return adapter.getInfoContents(p0?.toMarker())
+            }
+
+            override fun getInfoWindow(p0: HmsMarker?): View {
+                return adapter.getInfoWindow(p0?.toMarker())
+            }
+
+        })
+    }
+
+    override fun setOnMyLocationClickListener(listener: CommonMap.OnMyLocationClickListener) {
+        map.setOnMyLocationClickListener { listener.onMyLocationClick(it) }
+    }
+
+    override fun setOnMyLocationButtonClickListener(listener: CommonMap.OnMyLocationButtonClickListener) {
+        map.setOnMyLocationButtonClickListener { listener.onMyLocationButtonClick() }
+    }
+
+    override fun setOnMapLoadedCallback(callback: CommonMap.OnMapLoadedCallback) {
+        map.setOnMapLoadedCallback { callback.onMapLoaded() }
+    }
+
+    override fun setOnGroundOverlayClickListener(listener: CommonMap.OnGroundOverlayClickListener) {
+        map.setOnGroundOverlayClickListener { listener.onGroundOverlayClick(it.toGroundOverlay()) }
+    }
+
+    override fun setOnCircleClickListener(listener: CommonMap.OnCircleClickListener) {
+        map.setOnCircleClickListener { listener.onCircleClick(it.toCircle()) }
+    }
+
+    override fun setOnPolygonClickListener(listener: CommonMap.OnPolygonClickListener) {
+        map.setOnPolygonClickListener { listener.onPolygonClick(it.toPolygon()) }
+    }
+
+    override fun setOnPolylineClickListener(listener: CommonMap.OnPolylineClickListener) {
+        map.setOnPolylineClickListener { listener.onPolylineClick(it.toPolyline()) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback) {
+        map.snapshot { callback.onSnapshotReady(it) }
+    }
+
+    override fun snapshot(callback: CommonMap.SnapshotReadyCallback, bitmap: Bitmap) {
+        map.snapshot({ callback.onSnapshotReady(bitmap) }, bitmap)
+    }
+
+    override fun setPadding(var1: Int, var2: Int, var3: Int, var4: Int) {
+        map.setPadding(var1, var2, var3, var4)
+    }
+
+    override fun setContentDescription(description: String) {
+        map.setContentDescription(description)
+    }
+
+    override fun setMinZoomPreference(preference: Float) {
+        map.setMinZoomPreference(preference)
+    }
+
+    override fun setMaxZoomPreference(preference: Float) {
+        map.setMaxZoomPreference(preference)
+    }
+
+    override fun resetMinMaxZoomPreference() {
+        map.resetMinMaxZoomPreference()
+    }
+
+    override fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds) {
+        map.setLatLngBoundsForCameraTarget(bounds.toHmsLatLngBounds())
+    }
+
+    override fun setMapStyle(json: String) {
+        map.setMapStyle(MapStyleOptions(json))
+    }
+
+    override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
+        map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
+    }
 }

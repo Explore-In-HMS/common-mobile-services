@@ -15,11 +15,23 @@ package com.hms.lib.commonmobileservices.mapkit.factory
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
 import android.view.View
+import com.hms.lib.commonmobileservices.mapkit.LocationSource
+import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
 interface CommonMap : UISettings {
+
+    companion object{
+        const val MAP_TYPE_NONE = 0
+        const val MAP_TYPE_NORMAL = 1
+        const val MAP_TYPE_SATELLITE = 2
+        const val MAP_TYPE_TERRAIN = 3
+        const val MAP_TYPE_HYBRID = 4
+    }
+
     fun getMapView(): View
     fun onCreate(bundle: Bundle?)
     fun getMapAsync(onMapReadyListener: (map: CommonMap) -> Unit)
@@ -30,20 +42,20 @@ interface CommonMap : UISettings {
         longitude: Double,
         iconBitmap: Bitmap? = null,
         anchor: Pair<Float, Float>? = null
-    ): CommonMarker
+    ): Marker
 
-    fun addPolygon(commonPolygonOptions: CommonPolygonOptions): CommonPolygon
-    fun addPolyline(commonPolylineOptions: CommonPolylineOptions): CommonPolyline
+    fun addPolygon(polygonOptions: PolygonOptions): Polygon
+    fun addPolyline(polylineOptions: PolylineOptions): Polyline
 
     fun setOnInfoWindowClickListener(
         markerClickCallback: (
             markerTitle: String?,
             markerSnippet: String?,
-            commonLatLng: CommonLatLng
+            latLng: LatLng
         ) -> Unit
     )
 
-    fun setOnMapClickListener(onClick: (commonLatLng: CommonLatLng) -> Unit)
+    fun setOnMapClickListener(onClick: (latLng: LatLng) -> Unit)
     fun moveCamera(latitude: Double, longitude: Double, zoomRatio: Float)
     fun animateCamera(latitude: Double, longitude: Double, zoomRatio: Float)
     fun setMyLocationEnabled(myLocationEnabled: Boolean?, context: Context): Boolean
@@ -55,9 +67,143 @@ interface CommonMap : UISettings {
     fun onStop()
     fun onDestroy()
     fun onLowMemory()
-    fun calculateDistanceBetweenPoints(p1: CommonLatLng, p2: CommonLatLng): Double
-    fun getCameraPosition(): CommonCameraPosition
-    fun setOnCameraIdleListener(listener: () -> Unit)
-    fun setOnCameraMoveStartedListener(listener: () -> Unit)
+    fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng): Double
+    fun getCameraPosition(): CameraPosition
+    fun getMaxZoomLevel(): Float
+    fun getMinZoomLevel(): Float
+    fun stopAnimation()
+    fun addCircle(circleOptions: CircleOptions): Circle
+    fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay
+    fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay
+    fun setMapType(type: Int)
+    fun getMapType():Int
+    fun isTrafficEnabled(): Boolean
+    fun setTrafficEnabled(enabled: Boolean)
+    fun isIndoorEnabled(): Boolean
+    fun setIndoorEnabled(enabled: Boolean)
+    fun isBuildingEnabled(): Boolean
+    fun setBuildingEnabled(enabled: Boolean)
+    fun isMyLocationEnabled(): Boolean
+    fun setMyLocationEnabled(enabled: Boolean)
+    fun setLocationSource(locationSource: LocationSource)
+    fun getProjection(): Projection
+    fun setOnCameraMoveListener(listener: OnCameraMoveListener)
+    fun setOnCameraMoveStartedListener(listener: OnCameraMoveStartedListener)
+    fun setOnCameraMoveCancelledListener(listener: OnCameraMoveCancelledListener)
+    fun setOnCameraIdleListener(listener: OnCameraIdleListener)
+    fun setOnMapClickListener(listener: OnMapClickListener)
+    fun setOnMapLongClickListener(listener: OnMapLongClickListener)
+    fun setOnMarkerClickListener(listener: OnMarkerClickListener)
+    fun setOnMarkerDragListener(listener: OnMarkerDragListener)
+    fun setOnInfoWindowClickListener(listener: OnInfoWindowClickListener)
+    fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener)
+    fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener)
+    fun setInfoWindowAdapter(adapter: InfoWindowAdapter)
+    fun setOnMyLocationClickListener(listener: OnMyLocationClickListener)
+    fun setOnMyLocationButtonClickListener(listener: OnMyLocationButtonClickListener)
+    fun setOnMapLoadedCallback(callback: OnMapLoadedCallback)
+    fun setOnGroundOverlayClickListener(listener: OnGroundOverlayClickListener)
+    fun setOnCircleClickListener(listener: OnCircleClickListener)
+    fun setOnPolygonClickListener(listener: OnPolygonClickListener)
+    fun setOnPolylineClickListener(listener: OnPolylineClickListener)
+    fun snapshot(callback: SnapshotReadyCallback)
+    fun snapshot(callback: SnapshotReadyCallback, bitmap: Bitmap)
+    fun setPadding(var1: Int, var2: Int, var3: Int, var4: Int)
+    fun setContentDescription(description: String)
+    fun setMinZoomPreference(preference: Float)
+    fun setMaxZoomPreference(preference: Float)
+    fun resetMinMaxZoomPreference()
+    fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds)
+    fun setMapStyle(json: String)
+    fun setMapStyleFromRawResource(context: Context, resourceId: Int)
 
+    interface OnCameraMoveListener{
+        fun onCameraMove()
+    }
+
+    abstract class OnCameraMoveStartedListener{
+        companion object{
+            const val REASON_GESTURE: Int = 1
+            const val REASON_API_ANIMATION: Int = 2
+            const val REASON_DEVELOPER_ANIMATION: Int = 3
+        }
+
+        abstract fun onCameraMoveStarted(var1: Int)
+
+    }
+
+    interface OnCameraMoveCancelledListener{
+        fun onCameraMoveCancelled()
+    }
+
+    interface OnCameraIdleListener{
+        fun onCameraIdle()
+    }
+
+    interface OnMapClickListener{
+        fun onMapClick(latLng: LatLng)
+    }
+
+    interface OnMapLongClickListener{
+        fun onMapLongClick(latLng: LatLng)
+    }
+
+    interface OnMarkerClickListener{
+        fun onMarkerClick(marker: Marker?): Boolean
+    }
+
+    interface OnMarkerDragListener{
+        fun onMarkerDragStart(marker: Marker?)
+        fun onMarkerDrag(marker: Marker?)
+        fun onMarkerDragEnd(marker: Marker?)
+    }
+
+    interface OnInfoWindowClickListener {
+        fun onInfoWindowClick(marker: Marker?)
+    }
+
+    interface OnInfoWindowLongClickListener {
+        fun onInfoWindowLongClick(marker: Marker?)
+    }
+
+    interface OnInfoWindowCloseListener {
+        fun onInfoWindowClose(marker: Marker?)
+    }
+
+    interface InfoWindowAdapter{
+        fun getInfoContents(marker: Marker?): View
+        fun getInfoWindow(marker: Marker?): View
+    }
+
+    interface OnMyLocationClickListener {
+        fun onMyLocationClick(location: Location)
+    }
+
+    interface OnMyLocationButtonClickListener {
+        fun onMyLocationButtonClick(): Boolean
+    }
+
+    interface OnMapLoadedCallback {
+        fun onMapLoaded()
+    }
+
+    interface OnGroundOverlayClickListener {
+        fun onGroundOverlayClick(groundOverlay: GroundOverlay)
+    }
+
+    interface OnCircleClickListener {
+        fun onCircleClick(circle: Circle)
+    }
+
+    interface OnPolygonClickListener {
+        fun onPolygonClick(polygon: Polygon)
+    }
+
+    interface OnPolylineClickListener {
+        fun onPolylineClick(polyline: Polyline)
+    }
+
+    interface SnapshotReadyCallback {
+        fun onSnapshotReady(bitmap: Bitmap?)
+    }
 }

@@ -18,15 +18,14 @@ import android.content.Context
 import android.os.Build
 import android.util.Base64
 import android.util.Log
+import com.hms.lib.commonmobileservices.core.ResultCallback
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.SafetyService
 import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
-import com.hms.lib.commonmobileservices.safety.common.Mapper
-import com.huawei.hms.support.api.entity.safetydetect.SysIntegrityResp
+import com.hms.lib.commonmobileservices.safety.common.*
 import com.huawei.hms.support.api.entity.safetydetect.UserDetectResponse
 import com.huawei.hms.support.api.safetydetect.SafetyDetect
-import com.huawei.hms.support.api.safetydetect.SafetyDetectStatusCodes
-import org.json.JSONException
 import org.json.JSONObject
 import java.nio.charset.StandardCharsets
 import java.security.NoSuchAlgorithmException
@@ -36,33 +35,34 @@ import java.security.SecureRandom
 class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
 
     private val mapper: Mapper<UserDetectResponse, SafetyServiceResponse> = HuaweiSafetyMapper()
-    private val rootDetectMapper: Mapper<JSONObject, RootDetectionResponse> = HuaweiRootDetectMapper()
+    private val rootDetectMapper: Mapper<JSONObject, RootDetectionResponse> =
+        HuaweiRootDetectMapper()
 
     val TAG = "CommonMobileServicesSafetySDK"
 
-         /**
-         App key value is the app_id value in Huawei Mobile Services.
-        */
-        override fun userDetect(
-             appKey: String,
-             callback: SafetyService.SafetyServiceCallback<SafetyServiceResponse>
-         ){
+    /**
+    App key value is the app_id value in Huawei Mobile Services.
+     */
+    override fun userDetect(
+        appKey: String,
+        callback: ResultCallback<SafetyServiceResponse>
+    ) {
 
-            val client = SafetyDetect.getClient(context)
-            client.userDetection(appKey).addOnSuccessListener {
-                val responseToken = it.responseToken
-                if(responseToken.isNotEmpty()){
-                    callback.onSuccessUserDetect(mapper.map(it))
-                }
-            }.addOnFailureListener {
-                callback.onFailUserDetect(it)
+        val client = SafetyDetect.getClient(context)
+        client.userDetection(appKey).addOnSuccessListener {
+            val responseToken = it.responseToken
+            if (responseToken.isNotEmpty()) {
+                callback.onSuccess(mapper.map(it))
             }
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
     }
 
     @SuppressLint("LongLogTag")
     override fun rootDetection(
         appKey: String,
-        callback: SafetyService.SafetyRootDetectionCallback<RootDetectionResponse>
+        callback: ResultCallback<RootDetectionResponse>
     ) {
         val nonce = ByteArray(24)
         try {
@@ -81,12 +81,74 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
                 val jwsStr = result.result
                 val jwsSplit = jwsStr.split(".").toTypedArray()
                 val jwsPayloadStr = jwsSplit[1]
-                val payloadDetail = String(Base64.decode(jwsPayloadStr.toByteArray(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8)
+                val payloadDetail = String(
+                    Base64.decode(
+                        jwsPayloadStr.toByteArray(StandardCharsets.UTF_8),
+                        Base64.URL_SAFE
+                    ), StandardCharsets.UTF_8
+                )
                 val jsonObject = JSONObject(payloadDetail)
-                callback.onSuccessRootDetect(rootDetectMapper.map(jsonObject))
+                callback.onSuccess(rootDetectMapper.map(jsonObject))
             }
             .addOnFailureListener { e ->
-                callback.onFailRootDetect(e)
+                callback.onFailure(e)
             }
+    }
+
+    override fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>) {
+        SafetyDetect.getClient(context).maliciousAppsList.addOnSuccessListener {
+            callback.onSuccess(it.toCommonMaliciousAppList())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>){
+        SafetyDetect.getClient(context).isVerifyAppsCheck.addOnSuccessListener {
+            callback.onSuccess(it.toCommonVerifyAppUserEnabled())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
+        SafetyDetect.getClient(context).enableAppsCheck().addOnSuccessListener {
+            callback.onSuccess(it.toCommonVerifyAppUserEnabled())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun initURLCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyDetect.getClient(context).initUrlCheck().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
+    }
+
+    override fun urlCheck(
+        url: String,
+        appKey: String,
+        threatType: Int,
+        callback: ResultCallback<CommonUrlCheckRes>
+    ) {
+        SafetyDetect.getClient(context).urlCheck(url,appKey,threatType).addOnSuccessListener {
+            callback.onSuccess(it.toCommonURLCheck())
+        }.addOnFailureListener {
+            callback.onFailure(it)
+        }
+    }
+
+    override fun shutDownUrlCheck(): Work<Unit> {
+        val worker = Work<Unit>()
+        SafetyDetect.getClient(context).shutdownUrlCheck().addOnSuccessListener {
+            worker.onSuccess(Unit)
+        }.addOnFailureListener {
+            worker.onFailure(it)
+        }
+        return worker
     }
 }

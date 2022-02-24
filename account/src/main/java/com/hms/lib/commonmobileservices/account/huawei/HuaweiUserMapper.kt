@@ -28,9 +28,9 @@ internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser>() {
         displayName = from.displayName,
         id = from.unionId,
         photoUrl = from.avatarUri,
-        authServiceToken = from.accessToken,
-        idToken = from.idToken,
-        accessToken = from.accessToken,
+        authServiceToken = if (from.accessToken == null) "" else from.accessToken,
+        idToken = if (from.idToken == null) "" else from.idToken,
+        accessToken = if (from.accessToken == null) "" else from.accessToken,
         scopes = getGrantedScopes(from)
     )
 

@@ -14,6 +14,7 @@
 
 package com.hms.lib.commonmobileservices.auth.huawei
 
+import android.app.Activity
 import android.util.Log
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
@@ -42,8 +43,20 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun signInWithTwitter(token: String, secret: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        agcConnectAuth.signIn(TwitterAuthProvider.credentialWithToken(token, secret))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
     override fun signInWithGoogleOrHuawei(token: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
+
         agcConnectAuth.signIn(HwIdAuthProvider.credentialWithToken(token))
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -55,6 +68,28 @@ class HuaweiAuthServiceImpl : AuthService {
         val work: Work<AuthUser> = Work()
 
         agcConnectAuth.signIn(EmailAuthProvider.credentialWithPassword(email, password))
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun signInWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        agcConnectAuth.signIn(
+            PhoneAuthProvider.credentialWithPassword(
+                countryCode,
+                phoneNumber,
+                password
+            )
+        )
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
@@ -138,8 +173,8 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun getUser(): AuthUser? {
-        val user =agcConnectAuth.currentUser
-        return if(user == null) null else mapper.map(user)
+        val user = agcConnectAuth.currentUser
+        return if (user == null) null else mapper.map(user)
     }
 
     override fun signOut(): Work<Unit> {
@@ -159,9 +194,9 @@ class HuaweiAuthServiceImpl : AuthService {
                 .build()
             AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
                 .addOnSuccessListener { Log.v("successUpdate", "successUpdate photo") }
-                .addOnFailureListener { Log.e("errUpdate", "err photo")}
+                .addOnFailureListener { Log.e("errUpdate", "err photo") }
         } else
-               Log.e("errUpdate", "Photo Empty")
+            Log.e("errUpdate", "Photo Empty")
         return work
     }
 
@@ -173,7 +208,7 @@ class HuaweiAuthServiceImpl : AuthService {
                 .build()
             AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
                 .addOnSuccessListener { Log.v("successUpdate", "successUpdate username") }
-                .addOnFailureListener { Log.e("errUpdate", "err username")}
+                .addOnFailureListener { Log.e("errUpdate", "err username") }
         } else
             Log.e("errUpdate", "Username Empty")
         return work
@@ -211,7 +246,7 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun updatePasswordwEmail(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
             AGConnectAuth.getInstance().currentUser.updatePassword(
@@ -221,14 +256,14 @@ class HuaweiAuthServiceImpl : AuthService {
             ).addOnSuccessListener {
                 Log.v("successUpdate", "successUpdate password")
             }
-            .addOnFailureListener {
-                Log.e("errUpdate", "err password$it")
-            }
+                .addOnFailureListener {
+                    Log.e("errUpdate", "err password$it")
+                }
         }
         return work
     }
 
-    override fun updatePasswordwPhone(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
             AGConnectAuth.getInstance().currentUser.updatePassword(
@@ -238,58 +273,152 @@ class HuaweiAuthServiceImpl : AuthService {
             ).addOnSuccessListener {
                 Log.v("successUpdate", "successUpdate password")
             }
-            .addOnFailureListener {
-                Log.e("errUpdate", "err password$it")
-            }
+                .addOnFailureListener {
+                    Log.e("errUpdate", "err password$it")
+                }
         }
         return work
     }
 
-    override fun getCode(var1: String?): Work<Unit> {
+    override fun getCode(email: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).
-        addOnFailureListener(
+            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
             TaskExecutors.uiThread(),
             { Log.e("errUpdate", "err getCode:$it") })
 
         return work
     }
 
-    override fun getCodePassword(var1: String?): Work<Unit> {
+    override fun getCodePassword(email: String?): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_RESET_PASSWORD)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).
-        addOnFailureListener(
+            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
             TaskExecutors.uiThread(),
             { Log.e("errUpdate", "err getCode:$it") })
 
         return work
     }
 
-    override fun getPhoneCode(var1: String?, var2: String?): Work<Unit> {
+    override fun getPhoneCode(
+        countryCode: String?,
+        phoneNumber: String?,
+        activity: Activity
+    ): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
             .sendInterval(30)
             .build()
 
-        val task = AGConnectAuth.getInstance().requestVerifyCode(var1, var2, settings)
+        val task = AGConnectAuth.getInstance().requestVerifyCode(countryCode, phoneNumber, settings)
         task.addOnSuccessListener(
             TaskExecutors.uiThread(),
             { Log.v("successUpdate", "successUpdate getCode") }).addOnFailureListener(
             TaskExecutors.uiThread(),
             { Log.e("errUpdate", "err getCode:$it") })
+        return work
+    }
+
+    override fun deleteUser(): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        agcConnectAuth.deleteUser()
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun reAuthenticate(email: String, password: String): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        val credential = EmailAuthProvider.credentialWithPassword(email, password)
+
+        agcConnectAuth.currentUser.reauthenticate(credential)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun linkWithTwitter(token: String, secret: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = TwitterAuthProvider.credentialWithToken(token, secret)
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
+    override fun linkWithFacebook(accessToken: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = FacebookAuthProvider.credentialWithToken(accessToken)
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
+    override fun linkWithEmail(
+        email: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = EmailAuthProvider.credentialWithVerifyCode(email, password, verifyCode)
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
+    override fun unlink(provider: String): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        agcConnectAuth.currentUser.unlink(provider.toInt())
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+        return work
+    }
+
+    override fun linkWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<AuthUser> {
+        val work: Work<AuthUser> = Work()
+
+        val credential = PhoneAuthProvider.credentialWithVerifyCode(
+            countryCode,
+            phoneNumber,
+            password,
+            verifyCode
+        )
+        agcConnectAuth.currentUser.link(credential)
+            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
         return work
     }
 }

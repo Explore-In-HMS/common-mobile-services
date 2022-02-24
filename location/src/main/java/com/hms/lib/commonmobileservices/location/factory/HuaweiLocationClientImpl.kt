@@ -14,9 +14,13 @@
 package com.hms.lib.commonmobileservices.location.factory
 
 import android.app.Activity
+import android.app.PendingIntent
+import android.location.Location
+import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.Lifecycle
+import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.location.CommonLocationClient
 import com.hms.lib.commonmobileservices.location.Constants
 import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_FAIL
@@ -30,12 +34,12 @@ import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
 
-
 class HuaweiLocationClientImpl(
     activity: Activity,
     lifecycle: Lifecycle,
     needBackgroundPermissions: Boolean = false,
 ) : CommonLocationClient(activity, lifecycle, needBackgroundPermissions) {
+    private var activityIdentificationService = ActivityIdentificationService(activity)
     private var fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
 
@@ -146,4 +150,41 @@ class HuaweiLocationClientImpl(
         }
     }
 
+    override fun setMockMode(isMockMode: Boolean): Work<Unit> {
+        val worker: Work<Unit> = Work()
+        fusedLocationProviderClient.setMockMode(isMockMode)
+            .addOnSuccessListener {
+                worker.onSuccess(Unit)
+            }.addOnFailureListener {
+                worker.onFailure(it)
+            }
+        return worker
+    }
+
+    override fun setMockLocation(location: Location): Work<Unit> {
+        val worker: Work<Unit> = Work()
+        val mockLocation = Location(LocationManager.GPS_PROVIDER)
+        mockLocation.latitude = location.latitude
+        mockLocation.longitude = location.longitude
+        fusedLocationProviderClient.setMockLocation(mockLocation)
+            .addOnSuccessListener {
+                worker.addOnSuccessListener { }
+            }.addOnFailureListener {
+                worker.addOnFailureListener {
+                    it.message}
+            }
+
+        return worker
+    }
+
+    override fun flushLocations(): Work<Unit> {
+        val worker: Work<Unit> = Work()
+        fusedLocationProviderClient.flushLocations()
+            .addOnSuccessListener {
+                worker.addOnSuccessListener {  }
+            }.addOnFailureListener {
+                worker.addOnFailureListener { it }
+            }
+        return worker
+    }
 }

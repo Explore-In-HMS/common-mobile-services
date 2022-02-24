@@ -15,11 +15,11 @@ package com.hms.lib.commonmobileservices.mapkit.factory
 
 import android.content.Context
 import com.hms.lib.commonmobileservices.mapkit.helper.DistanceUtil
-import com.hms.lib.commonmobileservices.mapkit.model.CommonLatLng
+import com.hms.lib.commonmobileservices.mapkit.model.LatLng
 
 abstract class BaseMapImpl(context: Context) : CommonMap {
 
-    override fun calculateDistanceBetweenPoints(p1: CommonLatLng, p2: CommonLatLng) : Double{
+    override fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng) : Double{
         return DistanceUtil().calculateDistance(p1,p2)
     }
 }

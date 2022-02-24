@@ -1,5 +1,5 @@
 // Copyright 2020. Explore in HMS. All rights reserved.
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,10 +13,8 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-class CommonPolygonOptions()  {
-    val baseLatLngs = ArrayList<CommonLatLng>()
-    var strokeColor : Int?=null
-    var strokeWidth : Float?=null
+abstract class TileProvider {
+    val NO_TILE: Tile = Tile(-1, -1, null)
+
+    abstract fun getTile(var1: Int, var2: Int, var3: Int): Tile
 }
-
-

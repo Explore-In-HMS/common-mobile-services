@@ -33,6 +33,7 @@ abstract class PushService(private val context: Context) {
     abstract fun getToken(): Work<Token>
     abstract fun subscribeToTopic(topic: String): Work<Unit>
     abstract fun unsubscribeFromTopic(topic: String): Work<Unit>
+    abstract fun isAutoInitEnabled(): Boolean
 
     companion object {
         fun getInstance(context: Context): PushService {

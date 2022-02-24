@@ -58,4 +58,8 @@ class GooglePushServiceImpl(context: Context): PushService(context) {
             .addOnCanceledListener { work.onCanceled() }
         return work
     }
+
+    override fun isAutoInitEnabled(): Boolean {
+        return firebaseMessaging.isAutoInitEnabled
+    }
 }
