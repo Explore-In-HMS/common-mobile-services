@@ -44,7 +44,7 @@ apply plugin: 'com.google.gms.google-services'
 ### Step 3. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
-`latest version 2.1`
+`latest version 2.2.0`
 ### MapKit
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
