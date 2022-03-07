@@ -17,10 +17,11 @@ package com.hms.lib.commonmobileservices.speechtotext
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import com.huawei.hms.mlplugin.asr.MLAsrCaptureActivity
 import com.huawei.hms.mlplugin.asr.MLAsrCaptureConstants
 import com.hms.lib.commonmobileservices.speechtotext.manager.ISpeechToTextAPI
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.huawei.hms.mlsdk.common.MLApplication
 
@@ -32,12 +33,20 @@ class HuaweiSpeechToTextKit : ISpeechToTextAPI {
         languageCode:String,
         hmsApiKey:String
     ) {
-        activity.runWithPermissions(Manifest.permission.RECORD_AUDIO) {
+        if(ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED){
             MLApplication.getInstance().apiKey=hmsApiKey
             val intent = Intent(activity, MLAsrCaptureActivity::class.java)
                 .putExtra(MLAsrCaptureConstants.LANGUAGE, languageCode) // Example: "zh-CN": Chinese; "en-US": English; "fr-FR": French; "es-ES": Spanish; "de-DE": German; "it-IT": Italian
                 .putExtra(MLAsrCaptureConstants.FEATURE, MLAsrCaptureConstants.FEATURE_WORDFLUX)
             activity.startActivityForResult(intent, recordAudioResultCode)
+        }else{
+            val strings = arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+            )
+            ActivityCompat.requestPermissions(activity, strings, 2)
         }
     }
 

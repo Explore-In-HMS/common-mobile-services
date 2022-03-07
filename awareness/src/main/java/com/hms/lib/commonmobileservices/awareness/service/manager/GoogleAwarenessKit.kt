@@ -14,6 +14,7 @@
 package com.hms.lib.commonmobileservices.awareness.service.manager
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -27,7 +28,6 @@ import com.google.android.gms.awareness.state.HeadphoneState
 import com.google.android.gms.awareness.state.Weather
 import com.huawei.hms.kit.awareness.status.HeadsetStatus
 import com.hms.lib.commonmobileservices.awareness.model.*
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.hms.lib.commonmobileservices.core.ErrorModel
 import com.hms.lib.commonmobileservices.core.ResultData
 
@@ -46,7 +46,7 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        ){
             callback.invoke(ResultData.Failed(context.getString(R.string.missing_permission)))
             return
         }
@@ -122,10 +122,15 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
     }
 
     override fun getBehaviorAwareness(callback: (behaviorVal: ResultData<IntArray>) -> Unit) {
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            context.runWithPermissions(
-                 Manifest.permission.ACTIVITY_RECOGNITION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) {
+            if(ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACTIVITY_RECOGNITION
+                ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            ){
                 Awareness.getSnapshotClient(context).detectedActivity
                     .addOnSuccessListener { p0 ->
                         val behaviorValue: ArrayList<Int> = arrayListOf()
@@ -136,12 +141,23 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                     .addOnFailureListener {
                         callback.invoke(ResultData.Failed(context.getString(R.string.gms_awareness_error)))
                     }
+             }else{
+                val strings = arrayOf(
+                    Manifest.permission.ACTIVITY_RECOGNITION,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                ActivityCompat.requestPermissions(context as Activity, strings, 2)
             }
         }
         else{
-            context.runWithPermissions(
-                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION
-            ) {
+            if(ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ){
                 Awareness.getSnapshotClient(context).detectedActivity
                     .addOnSuccessListener { p0 ->
                         val behaviorValue: ArrayList<Int> = arrayListOf()
@@ -152,6 +168,12 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                     .addOnFailureListener {
                         callback.invoke(ResultData.Failed(context.getString(R.string.gms_awareness_error)))
                     }
+            }else{
+                val strings = arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                ActivityCompat.requestPermissions(context as Activity, strings, 2)
             }
         }
     }
@@ -161,7 +183,9 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ) {
+        ){
+            val strings = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            ActivityCompat.requestPermissions(context as Activity, strings, 2)
             callback.invoke(ResultData.Failed(context.getString(R.string.missing_permission)))
             return
         }
