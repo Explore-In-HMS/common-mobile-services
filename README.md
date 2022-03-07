@@ -242,16 +242,7 @@ This library provides a [CommonLocationClient](https://github.com/Huawei/CommonM
 
 First, initialize `CommonLocationClient`:
 ```kt
-val locationClient: CommonLocationClient = LocationFactory.getLocationClient(this,lifecycle).apply {
-    handlePermanentlyDeniedBlock ={
-        // redirect user to settings
-        showToast("Open settings and give the location permission")
-    }
-    permissionsDeniedBlock ={
-        // tell user that why this permission is required
-        showToast("You must give the location permission!!")
-    }
-}
+val locationClient: CommonLocationClient? = LocationFactory.getLocationClient(this,lifecycle)
 ```
 It needs `Activity` to handle runtime permissions, create fused client and check GPS setting is on or off. Needs `lifecycle` to manage the lifecycle of its element according to `Activity`/`Fragment` lifecycles. Finally needs to permission callbacks implemented by the application code. It covers denying permissions one time and permanently cases.
 
@@ -268,7 +259,7 @@ locationClient.enableGps{enableGPSFinalResult, error ->
 If `enableGPSFinalResult` is `EnableGPSFinalResult.ENABLED` you can use clients functions.
 Getting last known location:
 ```kt
-commonLocationClient?.getLastKnownLocation{
+locationClient?.getLastKnownLocation{
     when(it.state){
         LocationResultState.SUCCESS->{
             Toast.makeText(
@@ -289,7 +280,7 @@ commonLocationClient?.getLastKnownLocation{
  ```
  Getting location continuously:
  ```kt
- commonLocationClient?.requestLocationUpdates(priority = Priority.PRIORITY_HIGH_ACCURACY,interval = 1000){
+ locationClient?.requestLocationUpdates(priority = Priority.PRIORITY_HIGH_ACCURACY,interval = 1000){
     var message:String?=null
     when(it.state){
         LocationResultState.SUCCESS->{
@@ -311,7 +302,7 @@ commonLocationClient?.getLastKnownLocation{
 ```
 When you don't need to location updates you can remove listener like this:
  ```kt
-commonLocationClient?.removeLocationUpdates()
+locationClient?.removeLocationUpdates()
  ```
   ##### Using the Mock location feature
    To use the mock location function, go to Settings > System & updates > Developer options > Select mock location app and select the desired app. (If Developer options is   unavailable, go to Settings > About phone and tap Build number for seven consecutive times. Then, Developer options will be displayed on System & updates.)
