@@ -16,26 +16,35 @@ package com.hms.lib.commonmobileservices.scan.google
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import com.google.mlkit.vision.barcode.BarcodeScanner
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.scan.manager.IScanKitAPI
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class GoogleScanKit : IScanKitAPI {
     override fun performScan(
         activity: Activity,
         scanResultCode: Int
     ) {
-        activity.runWithPermissions(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) {
+        if(ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                activity, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED){
             activity.startActivityForResult(
                 Intent(
                     activity,
                     GoogleBarcodeScannerActivity::class.java
                 ), scanResultCode
             )
+        }else{
+            val strings = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            ActivityCompat.requestPermissions(activity, strings, 2)
         }
     }
 
