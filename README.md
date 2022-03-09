@@ -1,5 +1,5 @@
 # Common Mobile Services
-[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
+[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services) [![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
 
 It is a library that provides a common interface for mobile services for Android developers. Its aim is removing special mobile service dependencies for your app code.
 This has mainly two benefits:
@@ -23,8 +23,8 @@ buildscript {
     }
     dependencies {
     	...
-        classpath 'com.huawei.agconnect:agcp:1.3.2.301'
-        classpath 'com.google.gms:google-services:4.3.4'
+        classpath 'com.huawei.agconnect:agcp:1.6.2.300'
+        classpath 'com.google.gms:google-services:4.3.10'
     }
 }
 
