@@ -83,8 +83,6 @@ class GoogleLocationClientImpl(
 
     }
 
-
-
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
