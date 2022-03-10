@@ -15,12 +15,14 @@ package com.hms.lib.commonmobileservices.location
 
 import android.Manifest
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -29,9 +31,6 @@ import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.EnableGPSFinalResult
 import com.hms.lib.commonmobileservices.location.model.Priority
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
-import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsOptions
-import com.livinglifetechway.quickpermissions_kotlin.util.QuickPermissionsRequest
 
 abstract class CommonLocationClient(private val activity: Activity,
                                     lifecycle: Lifecycle,
@@ -62,27 +61,15 @@ abstract class CommonLocationClient(private val activity: Activity,
         })
     }
 
-    var handlePermanentlyDeniedBlock: ((QuickPermissionsRequest) -> Unit)? = null
-    var permissionsDeniedBlock: ((QuickPermissionsRequest) -> Unit)? = null
-
-    var options = QuickPermissionsOptions().apply {
-        handleRationale=false
-        handlePermanentlyDenied=true
-        permanentDeniedMethod = {
-            handlePermanentlyDeniedBlock?.invoke(it)
-        }
-        permissionsDeniedMethod ={
-            permissionsDeniedBlock?.invoke(it)
-        }
-    }
-
     private var enableGpsCallback : ((enableGPSFinalResult: EnableGPSFinalResult, error: Exception?) -> Unit)? = null
 
     fun enableGps(callback : (enableGPSFinalResult: EnableGPSFinalResult,
                               error: Exception?) -> Unit){
 
-        activity.runWithPermissions(*getLocationPermissions(),options = options){
-            enableGpsCallback=callback
+        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            enableGpsCallback = callback
             checkLocationSettings(activity){checkGpsEnabledResult, error ->
                 when(checkGpsEnabledResult){
                     CheckGpsEnabledResult.ENABLED-> callback.invoke(EnableGPSFinalResult.ENABLED,null)
@@ -104,20 +91,29 @@ abstract class CommonLocationClient(private val activity: Activity,
         }
     }
 
-    fun getLastKnownLocation(locationListener: (CommonLocationResult) -> Unit) =
-        activity.runWithPermissions(*getLocationPermissions(),options = options){
-            getLastKnownLocationCore(locationListener)
-        }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun getLastKnownLocation(locationListener: (CommonLocationResult) -> Unit){
+        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            getLastKnownLocationCore(locationListener)
+        }else{
+            ActivityCompat.requestPermissions(activity, getLocationPermissions().toTypedArray(), 2)
+        }
+    }
 
     abstract fun getLastKnownLocationCore(locationListener: (CommonLocationResult) -> Unit)
 
     fun requestLocationUpdates(
         priority: Priority?= Priority.PRIORITY_BALANCED_POWER_ACCURACY,
         interval: Long?=10000,
-        locationListener: (CommonLocationResult) -> Unit
-    ) = activity.runWithPermissions(*getLocationPermissions(),options = options){
-        requestLocationUpdatesCore(priority,interval,locationListener)
+        locationListener: (CommonLocationResult) -> Unit){
+        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            requestLocationUpdatesCore(priority,interval,locationListener)
+        }
     }
 
     abstract fun requestLocationUpdatesCore(priority: Priority?= Priority.PRIORITY_BALANCED_POWER_ACCURACY,
@@ -126,11 +122,11 @@ abstract class CommonLocationClient(private val activity: Activity,
 
     abstract fun removeLocationUpdates()
 
-    protected fun getLocationPermissions() : Array<String>{
-        val perms= mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+    protected fun getLocationPermissions() : MutableList<String> {
+        val perms = mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P && needBackgroundPermissions)
-            perms.add("android.permission.ACCESS_BACKGROUND_LOCATION")
-        return perms.toTypedArray()
+            perms.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+        return perms
     }
 
     fun isLocationEnabled(): Boolean {

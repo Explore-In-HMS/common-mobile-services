@@ -13,14 +13,16 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.factory
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
@@ -35,7 +37,6 @@ import com.hms.lib.commonmobileservices.location.CommonLocationClient
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.LocationResultState
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class GoogleLocationClientImpl(
     private val activity: Activity,
@@ -84,8 +85,7 @@ class GoogleLocationClientImpl(
 
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
-        activity.runWithPermissions(*getLocationPermissions(),options = options){
-            fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
                     locationListener.invoke(CommonLocationResult(location))
                 } ?: kotlin.run {
@@ -102,8 +102,6 @@ class GoogleLocationClientImpl(
                 )
             }
         }
-    }
-
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdatesCore(
@@ -128,20 +126,24 @@ class GoogleLocationClientImpl(
                     locationResult.let {
                         it.lastLocation
                         locationListener.invoke(CommonLocationResult(it.lastLocation))
-                        locationListener.invoke(CommonLocationResult(
-                            null, LocationResultState.LOCATION_UNAVAILABLE,
-                            Exception("location unavailable")
-                        ))
+                        locationListener.invoke(
+                            CommonLocationResult(
+                                null, LocationResultState.LOCATION_UNAVAILABLE,
+                                Exception("location unavailable")
+                            )
+                        )
                     }
                 }
 
                 override fun onLocationAvailability(p0: LocationAvailability) {
                     super.onLocationAvailability(p0)
                     p0.let {
-                        if(!it.isLocationAvailable){
-                            if(!isLocationEnabled()) locationListener.invoke(
-                                CommonLocationResult(null,
-                                LocationResultState.GPS_DISABLED,Exception("User disabled gps"))
+                        if (!it.isLocationAvailable) {
+                            if (!isLocationEnabled()) locationListener.invoke(
+                                CommonLocationResult(
+                                    null,
+                                    LocationResultState.GPS_DISABLED, Exception("User disabled gps")
+                                )
                             )
                             else locationListener.invoke(
                                 CommonLocationResult(
@@ -154,7 +156,10 @@ class GoogleLocationClientImpl(
                 }
             }
         }
-        activity.runWithPermissions(*getLocationPermissions(),options = options){
+
+        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
             fusedLocationProviderClient.requestLocationUpdates(
                 locationRequest, locationCallback!!,
                 Looper.getMainLooper()

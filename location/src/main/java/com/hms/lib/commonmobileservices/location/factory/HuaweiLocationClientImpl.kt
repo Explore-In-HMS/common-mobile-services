@@ -69,6 +69,7 @@ class HuaweiLocationClientImpl(
         interval: Long?,
         locationListener: (commonLocationResult: CommonLocationResult) -> Unit
     ) {
+
         val locationRequest = LocationRequest()
         locationRequest.interval = interval ?: 100000
         locationRequest.priority = when (priority) {

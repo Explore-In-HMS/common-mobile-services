@@ -18,11 +18,12 @@ import android.Manifest
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.speech.RecognizerIntent
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.speechtotext.manager.ISpeechToTextAPI
 import com.hms.lib.commonmobileservices.core.ResultData
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 
 class GoogleSpeechToTextKit :
     ISpeechToTextAPI {
@@ -33,7 +34,10 @@ class GoogleSpeechToTextKit :
         languageCode: String,
         hmsApiKey:String
     ) {
-        activity.runWithPermissions(Manifest.permission.RECORD_AUDIO) {
+        if(ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED){
             val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             sttIntent.putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -48,6 +52,11 @@ class GoogleSpeechToTextKit :
                 e.printStackTrace()
                 Toast.makeText(activity, "Your device does not support STT.", Toast.LENGTH_LONG).show()
             }
+        }else{
+            val strings = arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+            )
+            ActivityCompat.requestPermissions(activity, strings, 2)
         }
     }
 

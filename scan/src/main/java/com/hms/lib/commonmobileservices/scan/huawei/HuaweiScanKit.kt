@@ -16,11 +16,12 @@ package com.hms.lib.commonmobileservices.scan.huawei
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
 import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.hms.lib.commonmobileservices.scan.manager.IScanKitAPI
-import com.livinglifetechway.quickpermissions_kotlin.runWithPermissions
 import com.hms.lib.commonmobileservices.core.ResultData
 import java.lang.Exception
 
@@ -29,11 +30,23 @@ class HuaweiScanKit : IScanKitAPI  {
         activity: Activity,
         scanResultCode:Int
     ) {
-        activity.runWithPermissions(Manifest.permission.CAMERA,Manifest.permission.READ_EXTERNAL_STORAGE){
+        if(ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                activity, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED){
             val options = HmsScanAnalyzerOptions.Creator()
                 .setHmsScanTypes(HmsScan.ALL_SCAN_TYPE)
                 .create()
             ScanUtil.startScan(activity, scanResultCode, options)
+        }else{
+            val strings = arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            ActivityCompat.requestPermissions(activity, strings, 2)
         }
     }
 
