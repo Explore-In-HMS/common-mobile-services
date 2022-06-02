@@ -1,0 +1,2 @@
+com/hms/lib/commonmobileservices/identity/BuildConfig.java
+ com.hms.lib.commonmobileservices.identity.BuildConfig

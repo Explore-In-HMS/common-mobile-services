@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudioProjectsHuawei/common-mobile-services/app/src/main/res/layout/activity_main.xml" value="0.1068840579710145" />
         <entry key="mapkit/src/main/res/layout/common_map_view.xml" value="0.1" />
         <entry key="push/src/main/res/layout/notification_collapsed.xml" value="0.1" />
         <entry key="push/src/main/res/layout/notification_expanded.xml" value="0.1" />

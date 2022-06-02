@@ -15,11 +15,13 @@ package com.hms.lib.commonmobileservices.mapkit.factory
 
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.huawei.hms.maps.MapsInitializer
 
 class MapFactory {
     companion object {
         fun createAndGetMap(context: Context, type: MobileServiceType, apiKey: String?=null): CommonMap {
             return if (type == MobileServiceType.HMS) {
+                MapsInitializer.initialize(context)
                 HuaweiCommonMapImpl(context,apiKey)
             } else {
                 GoogleCommonMapImpl(context)

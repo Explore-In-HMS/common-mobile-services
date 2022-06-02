@@ -1,0 +1,13 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.hms.lib.commonmobileservices.identity"
+4    android:versionCode="4"
+5    android:versionName="2.2.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->D:\AndroidStudioProjectsHuawei\common-mobile-services\identity\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="30" />
+9-->D:\AndroidStudioProjectsHuawei\common-mobile-services\identity\src\main\AndroidManifest.xml
+10
+11</manifest>
