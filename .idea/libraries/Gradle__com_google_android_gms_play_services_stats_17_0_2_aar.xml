@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-stats:17.0.2@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de86e976cb7b4f6d56c4a14ba306c654/jetified-play-services-stats-17.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e8ba378248f089123027be387382f8a2/jetified-play-services-stats-17.0.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f8831c0ac47880da2c9dcfca03dcbd6/jetified-play-services-stats-17.0.2/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f8831c0ac47880da2c9dcfca03dcbd6/jetified-play-services-stats-17.0.2/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2f8831c0ac47880da2c9dcfca03dcbd6/jetified-play-services-stats-17.0.2/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-stats/17.0.2/c0d58b8efa926b2c607984c54fb3d274490badd1/play-services-stats-17.0.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

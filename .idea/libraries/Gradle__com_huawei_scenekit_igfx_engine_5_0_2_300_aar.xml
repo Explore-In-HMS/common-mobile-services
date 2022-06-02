@@ -4,6 +4,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8437b610998b81bee328ca290cd4750/jetified-igfx-engine-5.0.2.300/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8437b610998b81bee328ca290cd4750/jetified-igfx-engine-5.0.2.300/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f8437b610998b81bee328ca290cd4750/jetified-igfx-engine-5.0.2.300/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c28dfd84297444d31ed94339b5f94e2/jetified-igfx-engine-5.0.2.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c28dfd84297444d31ed94339b5f94e2/jetified-igfx-engine-5.0.2.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c28dfd84297444d31ed94339b5f94e2/jetified-igfx-engine-5.0.2.300/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

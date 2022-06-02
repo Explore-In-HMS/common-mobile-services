@@ -4,6 +4,11 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3b4ab55c8d10583614d2eed7ee182d2b/jetified-arenginesdk-2.12.0.1/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3b4ab55c8d10583614d2eed7ee182d2b/jetified-arenginesdk-2.12.0.1/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/3b4ab55c8d10583614d2eed7ee182d2b/jetified-arenginesdk-2.12.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21241c6e7d61300cffb67648854edd72/jetified-arenginesdk-2.12.0.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf66979e5efafc46fa6569e5c247fc60/jetified-arenginesdk-2.12.0.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0709f80cb363f3ea871d348a312c73c5/jetified-arenginesdk-2.12.0.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0709f80cb363f3ea871d348a312c73c5/jetified-arenginesdk-2.12.0.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0709f80cb363f3ea871d348a312c73c5/jetified-arenginesdk-2.12.0.1/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/arenginesdk/2.12.0.1/da39a3ee5e6b4b0d3255bfef95601890afd80709/arenginesdk-2.12.0.1-javadoc.jar!/" />

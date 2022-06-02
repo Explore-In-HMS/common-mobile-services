@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:hianalytics:6.3.2.300@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a80e70bc91c8fd7de9adec5b46fdc43b/jetified-hianalytics-6.3.2.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cc25c42dedacc0b762ce06de0e7cf1e5/jetified-hianalytics-6.3.2.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6f3150699c459cb34263e620d92e0851/jetified-hianalytics-6.3.2.300/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6f3150699c459cb34263e620d92e0851/jetified-hianalytics-6.3.2.300/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6f3150699c459cb34263e620d92e0851/jetified-hianalytics-6.3.2.300/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/hianalytics/6.3.2.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/hianalytics-6.3.2.300-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/hianalytics/6.3.2.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/hianalytics-6.3.2.300-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

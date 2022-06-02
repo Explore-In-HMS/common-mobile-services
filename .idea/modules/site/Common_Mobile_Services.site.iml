@@ -66,106 +66,10 @@
     <output-test url="file://$MODULE_DIR$/../../../site/build/intermediates/javac/debugUnitTest/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../../site">
-      <sourceFolder url="file://$MODULE_DIR$/../../../site/src/androidTest/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../site/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../../site/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../../../site/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../../site/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.13.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: junit:junit:4.12" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-integration:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup:javawriter:2.1.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: com.google.code.findbugs:jsr305:2.0.1" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.ext:junit:1.1.2@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-core:3.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:runner:1.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:core:1.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test:monitor:1.3.0@aar" level="project" />
-    <orderEntry type="library" scope="TEST" name="Gradle: androidx.test.espresso:espresso-idling-resource:3.3.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-common:2.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.annotation:annotation:1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.gson:gson:2.8.6" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-parcelize-runtime:1.4.21" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.4.21" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.4.21" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.21" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.dagger:dagger:2.27" level="project" />
-    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.auto.value:auto-value-annotations:1.6.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.libraries.places:places:2.4.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-maps:17.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.maps.android:android-maps-utils:0.6.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.databinding:viewbinding:4.1.3@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat:1.2.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-location:17.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base:17.6.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks:17.2.1@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-places-placereport:17.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-basement:17.6.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-extensions:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.fragment:fragment:1.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.core:core-ktx:1.3.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.appcompat:appcompat-resources:1.2.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.recyclerview:recyclerview:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-ui:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.drawerlayout:drawerlayout:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.viewpager:viewpager:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.legacy:legacy-support-core-utils:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.loader:loader:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.activity:activity:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable-animated:1.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.vectordrawable:vectordrawable:1.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.coordinatorlayout:coordinatorlayout:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.slidingpanelayout:slidingpanelayout:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.customview:customview:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.swiperefreshlayout:swiperefreshlayout:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.asynclayoutinflater:asynclayoutinflater:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.core:core:1.3.2@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.cursoradapter:cursoradapter:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.cardview:cardview:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-backend-cct:2.3.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-runtime:2.2.3@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.versionedparcelable:versionedparcelable:1.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-viewmodel:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-process:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-service:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-runtime:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-livedata-core:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.arch.core:core-runtime:2.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.savedstate:savedstate:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-encoders-json:16.1.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.interpolator:interpolator:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.documentfile:documentfile:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.localbroadcastmanager:localbroadcastmanager:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: androidx.print:print:1.0.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:site:5.1.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:base:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:availableupdate:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:ui:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:stats:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:device:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:log:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:update:3.0.1.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:network-grs:4.0.20.301@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:network-framework-compat:4.0.20.301@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:network-common:4.0.20.301@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:hatool:5.2.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.android.hms:security-ssl:1.1.5.306@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.android.hms:security-encrypt:1.1.5.302@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.agconnect:agconnect-core:1.4.2.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hmf:tasks:1.4.1.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.huawei.hms:componentverifysdk:11.1.0.300@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.android.volley:volley:1.2.0@aar" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.android.datatransport:transport-api:2.2.0@aar" level="project" />
-    <orderEntry type="module" module-name="Common_Mobile_Services.core" />
   </component>
 </module>

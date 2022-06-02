@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-auth:20.1.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7c5f1343b40e62f6eabc4e86a9241c8/jetified-play-services-auth-20.1.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7c5f1343b40e62f6eabc4e86a9241c8/jetified-play-services-auth-20.1.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f7c5f1343b40e62f6eabc4e86a9241c8/jetified-play-services-auth-20.1.0/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.gms/play-services-auth/20.1.0/d489fef829b0f701ae0c4da0040da38bf95e46c/play-services-auth-20.1.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

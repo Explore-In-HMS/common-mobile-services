@@ -4,6 +4,11 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60b5192ab04d8a91e7b4e594c1aed4ca/jetified-dynamic-api-1.0.13.303/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60b5192ab04d8a91e7b4e594c1aed4ca/jetified-dynamic-api-1.0.13.303/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/60b5192ab04d8a91e7b4e594c1aed4ca/jetified-dynamic-api-1.0.13.303/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/840200c4e5fa72637601b00d600e2aed/jetified-dynamic-api-1.0.13.303/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/67064d3ffa6eb9fa49031aa70ee46cfa/jetified-dynamic-api-1.0.13.303/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/910c56d83c62d39f174f9217814fdb2f/jetified-dynamic-api-1.0.13.303/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/910c56d83c62d39f174f9217814fdb2f/jetified-dynamic-api-1.0.13.303/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/910c56d83c62d39f174f9217814fdb2f/jetified-dynamic-api-1.0.13.303/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/dynamic-api/1.0.13.303/da39a3ee5e6b4b0d3255bfef95601890afd80709/dynamic-api-1.0.13.303-javadoc.jar!/" />

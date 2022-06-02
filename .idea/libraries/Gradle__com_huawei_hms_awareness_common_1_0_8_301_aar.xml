@@ -2,11 +2,17 @@
   <library name="Gradle: com.huawei.hms:awareness-common:1.0.8.301@aar">
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f543ab17b1f5b118c828c8be4e57084/jetified-awareness-common-1.0.8.301/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4edad4e4562e4d2176971bec33b6acb3/jetified-awareness-common-1.0.8.301/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f543ab17b1f5b118c828c8be4e57084/jetified-awareness-common-1.0.8.301/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f543ab17b1f5b118c828c8be4e57084/jetified-awareness-common-1.0.8.301/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/5f543ab17b1f5b118c828c8be4e57084/jetified-awareness-common-1.0.8.301/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/874840a79ece7f4449065b0087ff4416/jetified-awareness-common-1.0.8.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/109d8c1b5039eb7c3ed4140bccc1b774/jetified-awareness-common-1.0.8.301/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4edad4e4562e4d2176971bec33b6acb3/jetified-awareness-common-1.0.8.301/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4edad4e4562e4d2176971bec33b6acb3/jetified-awareness-common-1.0.8.301/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4edad4e4562e4d2176971bec33b6acb3/jetified-awareness-common-1.0.8.301/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/awareness-common/1.0.8.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/awareness-common-1.0.8.301-javadoc.jar!/" />

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:safetydetect:6.3.0.301@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/26f935fa519258b39e73fe3fa3197da8/jetified-safetydetect-6.3.0.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e7bad86cd83bcebe9864775104382fac/jetified-safetydetect-6.3.0.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d51c32099a8dbc3748bf9c4ca925b4d4/jetified-safetydetect-6.3.0.301/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d51c32099a8dbc3748bf9c4ca925b4d4/jetified-safetydetect-6.3.0.301/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d51c32099a8dbc3748bf9c4ca925b4d4/jetified-safetydetect-6.3.0.301/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/safetydetect/6.3.0.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/safetydetect-6.3.0.301-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/safetydetect/6.3.0.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/safetydetect-6.3.0.301-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

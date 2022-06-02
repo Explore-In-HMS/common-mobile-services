@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:ml-computer-sdkbase-inner:3.3.0.302@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/053acf5bd8b026b5ee5359888106dd7e/jetified-ml-computer-sdkbase-inner-3.3.0.302/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/42efbbd6548c67beda23a83122d79a22/jetified-ml-computer-sdkbase-inner-3.3.0.302/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e7f5955e1fad8dd55151f17f83a976c/jetified-ml-computer-sdkbase-inner-3.3.0.302/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e7f5955e1fad8dd55151f17f83a976c/jetified-ml-computer-sdkbase-inner-3.3.0.302/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e7f5955e1fad8dd55151f17f83a976c/jetified-ml-computer-sdkbase-inner-3.3.0.302/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/ml-computer-sdkbase-inner/3.3.0.302/da39a3ee5e6b4b0d3255bfef95601890afd80709/ml-computer-sdkbase-inner-3.3.0.302-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/ml-computer-sdkbase-inner/3.3.0.302/da39a3ee5e6b4b0d3255bfef95601890afd80709/ml-computer-sdkbase-inner-3.3.0.302-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

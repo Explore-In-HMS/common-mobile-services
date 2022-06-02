@@ -1,0 +1,20 @@
+<component name="libraryTable">
+  <library name="Gradle: com.android.volley:volley:1.2.1@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4f261365f6dce8b92e8ed39881536d5a/jetified-volley-1.2.1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d960d24ad9c60f76e1dbc89c391bcb36/jetified-volley-1.2.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/64c2871b921880c52c606b44db28aac6/jetified-volley-1.2.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4f261365f6dce8b92e8ed39881536d5a/jetified-volley-1.2.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4f261365f6dce8b92e8ed39881536d5a/jetified-volley-1.2.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4f261365f6dce8b92e8ed39881536d5a/jetified-volley-1.2.1/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.volley/volley/1.2.1/9eff5929c655bfdd9fcc88128f1a12ceb0875147/volley-1.2.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.volley/volley/1.2.1/2ca7daee038e365519360962a6c94f5486179f4a/volley-1.2.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

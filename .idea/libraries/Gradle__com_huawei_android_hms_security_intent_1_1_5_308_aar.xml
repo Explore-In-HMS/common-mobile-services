@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.android.hms:security-intent:1.1.5.308@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/744d31e6c4d0f70fc852d6996bc61c96/jetified-security-intent-1.1.5.308/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7812bd501a92cfe3f639059889381c08/jetified-security-intent-1.1.5.308/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4022585f4659f1aa386a2a7d0bc1a76b/jetified-security-intent-1.1.5.308/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4022585f4659f1aa386a2a7d0bc1a76b/jetified-security-intent-1.1.5.308/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4022585f4659f1aa386a2a7d0bc1a76b/jetified-security-intent-1.1.5.308/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.android.hms/security-intent/1.1.5.308/da39a3ee5e6b4b0d3255bfef95601890afd80709/security-intent-1.1.5.308-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.android.hms/security-intent/1.1.5.308/da39a3ee5e6b4b0d3255bfef95601890afd80709/security-intent-1.1.5.308-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

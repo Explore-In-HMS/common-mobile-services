@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.firebase:firebase-messaging-ktx:23.0.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6aeb7a586cd72ce49e457c80cc0e8c8f/jetified-firebase-messaging-ktx-23.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/435e3bf2eda70bd408136591ad75f10b/jetified-firebase-messaging-ktx-23.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c68acb4b249f62b38a683411de5da65/jetified-firebase-messaging-ktx-23.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c68acb4b249f62b38a683411de5da65/jetified-firebase-messaging-ktx-23.0.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4c68acb4b249f62b38a683411de5da65/jetified-firebase-messaging-ktx-23.0.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-messaging-ktx/23.0.0/9714ac7b294d2d3d748f95c6bb35e46cf77c397f/firebase-messaging-ktx-23.0.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.firebase/firebase-messaging-ktx/23.0.0/310d43119e748f7fcdd871e397d6aa0905f94cd6/firebase-messaging-ktx-23.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

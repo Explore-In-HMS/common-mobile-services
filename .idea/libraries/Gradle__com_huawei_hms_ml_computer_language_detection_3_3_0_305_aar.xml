@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:ml-computer-language-detection:3.3.0.305@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0a96ecfc48cc893bca4cdcb012c94f30/jetified-ml-computer-language-detection-3.3.0.305/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0a96ecfc48cc893bca4cdcb012c94f30/jetified-ml-computer-language-detection-3.3.0.305/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/0a96ecfc48cc893bca4cdcb012c94f30/jetified-ml-computer-language-detection-3.3.0.305/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/ml-computer-language-detection/3.3.0.305/da39a3ee5e6b4b0d3255bfef95601890afd80709/ml-computer-language-detection-3.3.0.305-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/ml-computer-language-detection/3.3.0.305/da39a3ee5e6b4b0d3255bfef95601890afd80709/ml-computer-language-detection-3.3.0.305-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -4,6 +4,11 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21656793a0db5b8fb7da8b18271cabee/jetified-ml-computer-dynamic-2.0.1.300/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21656793a0db5b8fb7da8b18271cabee/jetified-ml-computer-dynamic-2.0.1.300/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/21656793a0db5b8fb7da8b18271cabee/jetified-ml-computer-dynamic-2.0.1.300/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/127bfe78f23e9712c38c597c964d1fdd/jetified-ml-computer-dynamic-2.0.1.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e82f609505f9b06d89a0e9b358363c5f/jetified-ml-computer-dynamic-2.0.1.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2e87e6378065cd4075f8cf87401f6440/jetified-ml-computer-dynamic-2.0.1.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2e87e6378065cd4075f8cf87401f6440/jetified-ml-computer-dynamic-2.0.1.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2e87e6378065cd4075f8cf87401f6440/jetified-ml-computer-dynamic-2.0.1.300/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/ml-computer-dynamic/2.0.1.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/ml-computer-dynamic-2.0.1.300-javadoc.jar!/" />

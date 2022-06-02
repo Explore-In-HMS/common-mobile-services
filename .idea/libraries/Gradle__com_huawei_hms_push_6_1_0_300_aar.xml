@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:push:6.1.0.300@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/24c6fda8dc2e6bf32ac34564aa7867d6/jetified-push-6.1.0.300/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/24c6fda8dc2e6bf32ac34564aa7867d6/jetified-push-6.1.0.300/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/24c6fda8dc2e6bf32ac34564aa7867d6/jetified-push-6.1.0.300/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/push/6.1.0.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/push-6.1.0.300-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/push/6.1.0.300/da39a3ee5e6b4b0d3255bfef95601890afd80709/push-6.1.0.300-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

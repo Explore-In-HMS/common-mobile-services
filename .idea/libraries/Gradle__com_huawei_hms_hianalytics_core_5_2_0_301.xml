@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:hianalytics-core:5.2.0.301">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/hianalytics-core/5.2.0.301/ccccdea79a55a96fe46ab9b46a6030478bcdfdcd/hianalytics-core-5.2.0.301.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/hianalytics-core/5.2.0.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/hianalytics-core-5.2.0.301-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/hianalytics-core/5.2.0.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/hianalytics-core-5.2.0.301-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

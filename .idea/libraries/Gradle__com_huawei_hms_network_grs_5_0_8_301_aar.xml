@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Gradle: com.huawei.hms:network-grs:5.0.8.301@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/8553e4744ca809d43dfa589a3538c1f4/jetified-network-grs-5.0.8.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/29c7ef832854b5ff9c9024226bf04371/jetified-network-grs-5.0.8.301/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a203674239206fb7a8cd2253fa27d57b/jetified-network-grs-5.0.8.301/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a203674239206fb7a8cd2253fa27d57b/jetified-network-grs-5.0.8.301/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a203674239206fb7a8cd2253fa27d57b/jetified-network-grs-5.0.8.301/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-grs/5.0.8.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-grs-5.0.8.301-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.huawei.hms/network-grs/5.0.8.301/da39a3ee5e6b4b0d3255bfef95601890afd80709/network-grs-5.0.8.301-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
