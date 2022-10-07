@@ -20,28 +20,26 @@ import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyLog.TAG
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.site.SiteService
 import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 
 class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null): SiteService {
-    val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+    private val requestQueue: RequestQueue = Volley.newRequestQueue(context)
     private val mapper: Mapper<SiteServiceReturn, JSONObject> = GoogleSiteMapper()
     private val autocompleteMapper: Mapper<SiteServiceReturn, JSONObject> = GoogleSiteAutocompleteMapper()
 
     var googlePlacesURL: StringBuilder? = java.lang.StringBuilder("")
     var API_KEY = apiKey
     override fun getNearbyPlaces(
-        siteLat: Double?,
-        siteLng: Double?,
+        siteLat: Double,
+        siteLng: Double,
         query: String?,
         hwpoiType: String?,
         radius: Int?,
@@ -53,20 +51,19 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
     ) {
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
-        googlePlacesURL?.append("location=" + siteLat.toString() + "," + siteLng.toString())
+        googlePlacesURL?.append("location=$siteLat,$siteLng")
         googlePlacesURL?.append("&rankby=distance")
-        googlePlacesURL?.append("&type=" + hwpoiType)
-        googlePlacesURL?.append("&keyword=" + query)
+        googlePlacesURL?.append("&type=$hwpoiType")
+        googlePlacesURL?.append("&keyword=$query")
         googlePlacesURL?.append("&sensor=true")
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("&key=$API_KEY")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
+        val siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray = JSONArray()
-                    jsonArray = response.optJSONArray("results")
+                    val jsonArray =  response.optJSONArray("results")
                     if (response.getString("status").equals("OK")){
                         for (i in 0 until jsonArray.length()){
                             val currentjsonObject = jsonArray.getJSONObject(i)
@@ -88,7 +85,7 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
         {
             override fun getHeaders(): Map<String, String>  {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }
@@ -96,9 +93,9 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
     }
 
     override fun getTextSearchPlaces(
+        query: String,
         siteLat: Double?,
         siteLng: Double?,
-        query: String?,
         hwpoiType: String?,
         radius: Int?,
         language: String?,
@@ -109,20 +106,19 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
 
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/textsearch/json?")
-        googlePlacesURL?.append("location=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&radius=" + radius)
-        googlePlacesURL?.append("&type=" + hwpoiType)
-        googlePlacesURL?.append("&keyword=" + query)
+        googlePlacesURL?.append("&keyword=$query")
+        siteLat?.let { lat -> siteLng?.let { lng -> googlePlacesURL?.append("location=$lat,$lng") } }
+        radius?.let { googlePlacesURL?.append("&radius=$it") }
+        hwpoiType?.let { googlePlacesURL?.append("&type=$it") }
         googlePlacesURL?.append("&sensor=true")
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("&key=$API_KEY")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
+        val siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray? = JSONArray()
-                    jsonArray = response.optJSONArray("results")
+                    val jsonArray = response.optJSONArray("results")
                     if (response.getString("status").equals("OK")){
                         for (i in 0 until jsonArray.length()){
                             val currentjsonObject = jsonArray.getJSONObject(i)
@@ -146,7 +142,7 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
         {
             override fun getHeaders(): Map<String, String>  {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }
@@ -155,16 +151,16 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
 
     override fun getDetailSearch(
         siteID: String,
-        areaLanguage: String,
-        childrenNode: Boolean,
+        areaLanguage: String?,
+        childrenNode: Boolean?,
         callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit
     ) {
 
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/details/json?")
-        googlePlacesURL?.append("place_id=" + siteID)
-        googlePlacesURL?.append("&language=" + areaLanguage)
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("place_id=$siteID")
+        areaLanguage?.let { googlePlacesURL?.append("&language=$it") }
+        googlePlacesURL?.append("&key=$API_KEY")
 
 
         val jsonObjectRequest = JsonObjectRequest(
@@ -196,9 +192,9 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
     }
 
     override fun placeSuggestion(
+        keyword: String,
         siteLat: Double?,
         siteLng: Double?,
-        keyword: String?,
         childrenNode: Boolean?,
         areaRadius: Int?,
         areaLanguage: String?,
@@ -207,20 +203,21 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
 
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/autocomplete/json?")
-        googlePlacesURL?.append("input=" + keyword)
-        googlePlacesURL?.append("&location=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&origin=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&radius=" + areaRadius)
-        googlePlacesURL?.append("&language=" + areaLanguage)
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("input=$keyword")
+        siteLat?.let { lat -> siteLng?.let { lng ->
+            googlePlacesURL?.append("&location=$lat,$lng")
+            googlePlacesURL?.append("&origin=$lat,$lng")
+        }}
+        areaRadius?.let { googlePlacesURL?.append("&radius=$it") }
+        areaLanguage?.let { googlePlacesURL?.append("&language=$it") }
+        googlePlacesURL?.append("&key=$API_KEY")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
+        val siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray? = JSONArray()
-                    jsonArray = response.optJSONArray("predictions")
+                    val jsonArray = response.optJSONArray("predictions")
                     for (i in 0 until jsonArray.length()){
                         val currentjsonObject = jsonArray.getJSONObject(i)
                         siteServiceReturnList.add(currentjsonObject)
@@ -240,7 +237,7 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
         {
             override fun getHeaders(): Map<String, String>  {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }

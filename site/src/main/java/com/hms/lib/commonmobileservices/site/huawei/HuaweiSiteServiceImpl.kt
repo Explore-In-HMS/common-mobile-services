@@ -27,146 +27,160 @@ import com.huawei.hms.site.api.SearchServiceFactory
 import com.huawei.hms.site.api.model.*
 import java.net.URLEncoder
 
-class HuaweiSiteServiceImpl(private val context: Context, apiKey: String? = null): SiteService {
+class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteService {
 
-    private val siteService: SearchService = SearchServiceFactory.create(context, URLEncoder.encode(apiKey, "utf-8"))
+    private val siteService: SearchService =
+        SearchServiceFactory.create(context, URLEncoder.encode(apiKey, "utf-8"))
     private val mapper: Mapper<SiteServiceReturn, Site> = HuaweiSiteMapper()
 
     override fun getNearbyPlaces(
-        siteLat: Double?,
-        siteLng: Double?,
+        siteLat: Double,
+        siteLng: Double,
         keyword: String?,
         hwpoiType: String?,
         areaRadius: Int?,
         areaLanguage: String?,
-        Index: Int?,
-        Size: Int?,
-        Bounds: Boolean?,
+        pageIndex: Int?,
+        pageSize: Int?,
+        strictBounds: Boolean?,
         callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
     ) {
         val nearbySearchRequest = NearbySearchRequest()
-        nearbySearchRequest.location = siteLat?.let { siteLng?.let { it1 -> Coordinate(it, it1) } }
-        nearbySearchRequest.query = keyword
-        nearbySearchRequest.hwPoiType = hwpoiType?.let { HwLocationType.valueOf(it) }
-        nearbySearchRequest.radius = areaRadius
-        nearbySearchRequest.language = areaLanguage
-        nearbySearchRequest.pageIndex = Index
-        nearbySearchRequest.pageSize = Size
-        if (Bounds != null) {
-            nearbySearchRequest.strictBounds = Bounds
-        }
+        nearbySearchRequest.location = Coordinate(siteLat, siteLng)
+        keyword?.let { nearbySearchRequest.query = it }
+        hwpoiType?.let { nearbySearchRequest.hwPoiType = HwLocationType.valueOf(it) }
+        areaRadius?.let { nearbySearchRequest.radius = it }
+        areaLanguage?.let { nearbySearchRequest.language = it }
+        pageIndex?.let { nearbySearchRequest.pageIndex = it }
+        pageSize?.let { nearbySearchRequest.pageSize = it }
+        strictBounds?.let { nearbySearchRequest.strictBounds = it }
 
-        siteService.nearbySearch(nearbySearchRequest, object : SearchResultListener<NearbySearchResponse> {
-            override fun onSearchResult(nearbySearchResponse: NearbySearchResponse?) {
-                val siteList: List<Site>? = nearbySearchResponse?.getSites()
-                if (nearbySearchResponse == null || nearbySearchResponse.getTotalCount() <= 0 || siteList.isNullOrEmpty()) {
-                    return
+        siteService.nearbySearch(
+            nearbySearchRequest,
+            object : SearchResultListener<NearbySearchResponse> {
+                override fun onSearchResult(nearbySearchResponse: NearbySearchResponse?) {
+                    val siteList: List<Site>? = nearbySearchResponse?.sites
+                    if (nearbySearchResponse == null || nearbySearchResponse.totalCount <= 0 || siteList.isNullOrEmpty()) {
+                        return
+                    }
+                    callback.invoke(ResultData.Success(siteList.let { mapper.mapToEntityList(it) }))
                 }
-                callback.invoke(ResultData.Success(siteList?.let { mapper.mapToEntityList(it) }))
-            }
-            override fun onSearchError(searchStatus: SearchStatus) {
-                Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
-                callback.invoke(ResultData.Failed())
-            }
-        })
+
+                override fun onSearchError(searchStatus: SearchStatus) {
+                    Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
+                    callback.invoke(ResultData.Failed())
+                }
+            })
 
     }
 
 
     override fun getTextSearchPlaces(
+        keyword: String,
         siteLat: Double?,
         siteLng: Double?,
-        keyword: String?,
         hwpoiType: String?,
         areaRadius: Int?,
         areaLanguage: String?,
-        Index: Int?,
-        Size: Int?,
-        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit){
+        pageIndex: Int?,
+        pageSize: Int?,
+        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+    ) {
 
         val textSearchRequest = TextSearchRequest()
-        textSearchRequest.location = siteLat?.let { siteLng?.let { it1 -> Coordinate(it, it1) } }
         textSearchRequest.query = keyword
-        textSearchRequest.hwPoiType = hwpoiType?.let { HwLocationType.valueOf(it) }
-        textSearchRequest.radius = areaRadius
-        textSearchRequest.language = areaLanguage
-        textSearchRequest.pageIndex = Index
-        textSearchRequest.pageSize = Size
+        siteLat?.let { lat -> siteLng?.let { lng -> textSearchRequest.location = Coordinate(lat, lng) } }
+        hwpoiType?.let { textSearchRequest.hwPoiType = HwLocationType.valueOf(it) }
+        areaRadius?.let { textSearchRequest.radius = it }
+        areaLanguage?.let { textSearchRequest.language = it }
+        pageIndex?.let { textSearchRequest.pageIndex = it }
+        pageSize?.let { textSearchRequest.pageSize = it }
 
-        siteService.textSearch(textSearchRequest, object : SearchResultListener<TextSearchResponse> {
-            override fun onSearchResult(textSearchResponse: TextSearchResponse?) {
-                val siteList: List<Site>? = textSearchResponse?.getSites()
-                if (textSearchResponse == null || textSearchResponse.getTotalCount() <= 0 || siteList.isNullOrEmpty()) {
-                    return
+
+        siteService.textSearch(
+            textSearchRequest,
+            object : SearchResultListener<TextSearchResponse> {
+                override fun onSearchResult(textSearchResponse: TextSearchResponse?) {
+                    val siteList: List<Site>? = textSearchResponse?.sites
+                    if (textSearchResponse == null || textSearchResponse.totalCount <= 0 || siteList.isNullOrEmpty()) {
+                        return
+                    }
+                    callback.invoke(ResultData.Success(siteList.let { mapper.mapToEntityList(it) }))
                 }
-                callback.invoke(ResultData.Success(siteList?.let { mapper.mapToEntityList(it) }))
-            }
 
-            override fun onSearchError(searchStatus: SearchStatus) {
-                Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
-                callback.invoke(ResultData.Failed())
-            }
-        })
+                override fun onSearchError(searchStatus: SearchStatus) {
+                    Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
+                    callback.invoke(ResultData.Failed())
+                }
+            })
 
     }
 
 
     override fun getDetailSearch(
         siteID: String,
-        areaLanguage: String,
-        childrenNode: Boolean,
-        callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit){
+        areaLanguage: String?,
+        childrenNode: Boolean?,
+        callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit
+    ) {
 
         val detailSearchRequest = DetailSearchRequest()
-        detailSearchRequest.language = areaLanguage
         detailSearchRequest.siteId = siteID
-        detailSearchRequest.isChildren = childrenNode
+        areaLanguage?.let { detailSearchRequest.language = it }
+        childrenNode?.let { detailSearchRequest.isChildren = it }
 
-        siteService.detailSearch(detailSearchRequest, object : SearchResultListener<DetailSearchResponse> {
-            override fun onSearchResult(detailSearchResponse: DetailSearchResponse?) {
-                val site: Site? = detailSearchResponse?.getSite()
-                if (detailSearchResponse == null) {
-                    return
+
+        siteService.detailSearch(
+            detailSearchRequest,
+            object : SearchResultListener<DetailSearchResponse> {
+                override fun onSearchResult(detailSearchResponse: DetailSearchResponse?) {
+                    val site: Site? = detailSearchResponse?.site
+                    if (detailSearchResponse == null) {
+                        return
+                    }
+                    callback.invoke(ResultData.Success(site?.let { mapper.mapToEntity(it) }))
                 }
-                callback.invoke(ResultData.Success(site?.let { mapper.mapToEntity(it) }))
-            }
-            override fun onSearchError(searchStatus: SearchStatus) {
-                Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
-                callback.invoke(ResultData.Failed())
-            }
-        })
+
+                override fun onSearchError(searchStatus: SearchStatus) {
+                    Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
+                    callback.invoke(ResultData.Failed())
+                }
+            })
     }
 
-    override fun placeSuggestion(siteLat: Double?,
-                                         siteLng: Double?,
-                                         keyword: String?,
-                                         childrenNode: Boolean?,
-                                         areaRadius: Int?,
-                                         areaLanguage: String?,
-                                 callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit){
-
+    override fun placeSuggestion(
+        keyword: String,
+        siteLat: Double?,
+        siteLng: Double?,
+        childrenNode: Boolean?,
+        areaRadius: Int?,
+        areaLanguage: String?,
+        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+    ) {
         val queryAutocompleteRequest = QueryAutocompleteRequest()
-        queryAutocompleteRequest.location = siteLat?.let { siteLng?.let { it1 -> Coordinate(it, it1) } }
         queryAutocompleteRequest.query = keyword
-        queryAutocompleteRequest.radius = areaRadius
-        queryAutocompleteRequest.language = areaLanguage
-        if (childrenNode != null) {
-            queryAutocompleteRequest.isChildren = childrenNode
-        }
+        siteLat?.let { lat -> siteLng?.let { lng -> queryAutocompleteRequest.location = Coordinate(lat, lng) } }
+        areaRadius?.let { queryAutocompleteRequest.radius = it }
+        areaLanguage?.let { queryAutocompleteRequest.language = it }
+        childrenNode?.let { queryAutocompleteRequest.isChildren = it }
 
-        siteService.queryAutocomplete(queryAutocompleteRequest, object : SearchResultListener<QueryAutocompleteResponse> {
-            override fun onSearchResult(queryAutocompleteResponse: QueryAutocompleteResponse?) {
-                val siteList: List<Site>? = queryAutocompleteResponse?.getSites()?.toList()
-                if (queryAutocompleteResponse == null || queryAutocompleteResponse.getSites().size <= 0 || siteList.isNullOrEmpty()) {
-                    return
+        siteService.queryAutocomplete(
+            queryAutocompleteRequest,
+            object : SearchResultListener<QueryAutocompleteResponse> {
+                override fun onSearchResult(queryAutocompleteResponse: QueryAutocompleteResponse?) {
+                    val siteList: List<Site>? = queryAutocompleteResponse?.sites?.toList()
+                    if (queryAutocompleteResponse == null ||
+                        queryAutocompleteResponse.sites.isEmpty() ||
+                        siteList.isNullOrEmpty()) {
+                        return
+                    }
+                    callback.invoke(ResultData.Success(siteList.let { mapper.mapToEntityList(it) }))
                 }
-                callback.invoke(ResultData.Success(siteList?.let { mapper.mapToEntityList(it) }))
-            }
 
-            override fun onSearchError(searchStatus: SearchStatus) {
-                Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
-                callback.invoke(ResultData.Failed())
-            }
-        })
+                override fun onSearchError(searchStatus: SearchStatus) {
+                    Log.e(TAG, "onSearchError is: " + searchStatus.errorCode)
+                    callback.invoke(ResultData.Failed())
+                }
+            })
     }
 }

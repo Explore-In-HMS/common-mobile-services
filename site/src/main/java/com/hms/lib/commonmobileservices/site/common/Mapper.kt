@@ -14,13 +14,7 @@
 
 package com.hms.lib.commonmobileservices.site.common
 
-import android.content.Entity
-import com.huawei.hms.site.api.model.Coordinate
-
 abstract class Mapper<I, O> {
-    //abstract fun map(from: I): O
     abstract fun mapToEntity(from: O): I
     fun mapToEntityList(from: List<O>): List<I> = from.map { mapToEntity(it) }
 }
-
-
