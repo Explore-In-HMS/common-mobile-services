@@ -106,7 +106,7 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
 
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/textsearch/json?")
-        googlePlacesURL?.append("&keyword=$query")
+        googlePlacesURL?.append("&query=$query")
         siteLat?.let { lat -> siteLng?.let { lng -> googlePlacesURL?.append("location=$lat,$lng") } }
         radius?.let { googlePlacesURL?.append("&radius=$it") }
         hwpoiType?.let { googlePlacesURL?.append("&type=$it") }
