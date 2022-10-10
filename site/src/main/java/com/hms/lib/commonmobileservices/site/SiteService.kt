@@ -66,17 +66,11 @@ interface SiteService {
 
 
     object Factory {
-        fun create(context: Context, apiKey: String? = null): SiteService {
+        fun create(context: Context, huaweiApiKey: String, googleApiKey: String): SiteService {
             return when (Device.getMobileServiceType(context)) {
-                MobileServiceType.GMS -> {
-                    GoogleSiteServiceImpl(context, apiKey)
-                }
-                MobileServiceType.HMS -> {
-                    HuaweiSiteServiceImpl(context, apiKey)
-                }
-                else -> {
-                    throw Exception("In order to use this SDK, you should have Google Mobile Services or Huawei Mobile Services installed in your device.")
-                }
+                MobileServiceType.GMS -> GoogleSiteServiceImpl(context, googleApiKey)
+                MobileServiceType.HMS -> HuaweiSiteServiceImpl(context, huaweiApiKey)
+                else -> throw Exception("In order to use this SDK, you should have Google Mobile Services or Huawei Mobile Services installed in your device.")
             }
         }
     }
