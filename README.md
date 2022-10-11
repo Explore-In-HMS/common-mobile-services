@@ -1438,7 +1438,7 @@ This kit provides different functionalities such as nearby search, text search, 
 At first we initialize `SiteService` interface:
 
 ```
-val siteservice = SiteService.Factory.create( Context, apikey)
+val siteservice = SiteService.Factory.create(Context, huaweiApikey, googleApiKey)
 ```
 
 `Context` serves to check the mobile services availability and decide what service to run and the `apikey` serves to use the services of Site Kit or make the Places API calls.
@@ -1446,49 +1446,57 @@ val siteservice = SiteService.Factory.create( Context, apikey)
 `getNearbyPlaces` is a function that takes parameters like latitude, longitude, query or the keyword to search, hwpoiType which is the poi type you want to search (in case of using Huawei services you should be careful to enter the poi type matching the HW Poi Types from Site Kit eg. “RESTAURANT” instead of “restaurant”), radius of the area you want the results to be focused, language you want the results in, page index and page size, strict bounds to determine whether we want the location bounds to be strict or not.
 
 ``` Kotlin
-fun getNearbyPlaces(siteLat: Double?,
-                            siteLng: Double?,
-                            query: String?,
-                            hwpoiType: String?,
-                            radius: Int?,
-                            language: String?,
-                            pageIndex: Int?,
-                            pageSize: Int?,
-                            strictBounds: Boolean?,
-                    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun getNearbyPlaces(
+        siteLat: Double,
+        siteLng: Double,
+        keyword: String?,
+        hwpoiType: String?,
+        radius: Int?,
+        language: String?,
+        pageIndex: Int?,
+        pageSize: Int?,
+        strictBounds: Boolean?,
+        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+    )
  ```
 `getTextSearchPlaces` function uses almost the same parameters and performs search requests based on keyword.
 
 ```Kotlin
-fun getTextSearchPlaces(siteLat: Double?,
-                                    siteLng: Double?,
-                                    query: String?,
-                                    hwpoiType: String?,
-                                    radius: Int?,
-                                    language: String?,
-                                    pageIndex: Int?,
-                                    pageSize: Int?,
-                            callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun getTextSearchPlaces(
+    query: String,
+    siteLat: Double?,
+    siteLng: Double?,
+    hwpoiType: String?,
+    radius: Int?,
+    language: String?,
+    pageIndex: Int?,
+    pageSize: Int?,
+    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+)
 ```
 
 `placeSuggestion` function returns a list of autocompleted places based on the keyword you have entered, the location you enter, the radius you want your results to be focused on and the language of them. `childrenNode` parameter is only used by the Huawei Service to return information on the children nodes.
 
 ```Kotlin
- fun placeSuggestion(siteLat: Double?,
-                                siteLng: Double?,
-                                keyword: String?,
-                                childrenNode: Boolean?,
-                                areaRadius: Int?,
-                                areaLanguage: String?,
-                        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun placeSuggestion(
+    keyword: String,
+    siteLat: Double?,
+    siteLng: Double?,
+    childrenNode: Boolean?,
+    areaRadius: Int?,
+    areaLanguage: String?,
+    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+)
 ```
 `getDetailSearch` function is a function used to get the details of a place based on the place's ID.
 
 ```Kotlin
-fun getDetailSearch(siteID: String,
-                                areaLanguage: String,
-                                childrenNode: Boolean,
-                        callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit)
+fun getDetailSearch(
+    siteID: String,
+    areaLanguage: String?,
+    childrenNode: Boolean?,
+    callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit
+)
 ```
 `childrenNode` is also only used in case of the Huawei Services.
 
@@ -1511,7 +1519,7 @@ data class SiteServiceReturn (
 You can reach the data from `SiteServiceReturn` as a result from the callback. Final example of how to call a function is given below.
 
 ```Kotlin
-SiteService.Factory.create( context, ApiKey).getNearbyPlaces(siteLat,siteLng,query,hwpoiType,radius,language,pageIndex,pageSize,strictBounds,
+SiteService.Factory.create(Context, HuaweiApikey, GoogleApiKey).getNearbyPlaces(siteLat,siteLng,query,hwpoiType,radius,language,pageIndex,pageSize,strictBounds,
     {
         it.handleSuccess {
             it.data!![0].name //get name of first result of data
