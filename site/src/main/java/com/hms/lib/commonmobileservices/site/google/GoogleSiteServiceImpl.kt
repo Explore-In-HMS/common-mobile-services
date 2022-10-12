@@ -16,32 +16,35 @@ package com.hms.lib.commonmobileservices.site.google
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.VolleyLog.TAG
-import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.hms.lib.commonmobileservices.core.ErrorModel
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.site.SiteService
 import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
-import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
 
-class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null): SiteService {
-    val requestQueue: RequestQueue = Volley.newRequestQueue(context)
-    private val mapper: Mapper<SiteServiceReturn, JSONObject> = GoogleSiteMapper()
-    private val autocompleteMapper: Mapper<SiteServiceReturn, JSONObject> = GoogleSiteAutocompleteMapper()
+class GoogleSiteServiceImpl(
+    context: Context,
+    private val apiKey: String? = null
+) : SiteService {
+
+    private val requestQueue: RequestQueue = Volley.newRequestQueue(context)
+    private val siteMapper: Mapper<SiteServiceReturn, JSONObject> = GoogleSiteMapper()
+    private val autocompleteMapper: Mapper<SiteServiceReturn, JSONObject> =
+        GoogleSiteAutocompleteMapper()
 
     var googlePlacesURL: StringBuilder? = java.lang.StringBuilder("")
-    var API_KEY = apiKey
+
     override fun getNearbyPlaces(
-        siteLat: Double?,
-        siteLng: Double?,
+        siteLat: Double,
+        siteLng: Double,
         query: String?,
         hwpoiType: String?,
         radius: Int?,
@@ -53,42 +56,30 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
     ) {
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
-        googlePlacesURL?.append("location=" + siteLat.toString() + "," + siteLng.toString())
+        googlePlacesURL?.append("location=$siteLat,$siteLng")
         googlePlacesURL?.append("&rankby=distance")
-        googlePlacesURL?.append("&type=" + hwpoiType)
-        googlePlacesURL?.append("&keyword=" + query)
+        googlePlacesURL?.append("&type=$hwpoiType")
+        googlePlacesURL?.append("&keyword=$query")
         googlePlacesURL?.append("&sensor=true")
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("&key=$apiKey")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray = JSONArray()
-                    jsonArray = response.optJSONArray("results")
-                    if (response.getString("status").equals("OK")){
-                        for (i in 0 until jsonArray.length()){
-                            val currentjsonObject = jsonArray.getJSONObject(i)
-                            siteServiceReturnList.add(currentjsonObject)
-
-                        }
-                        callback.invoke(ResultData.Success(mapper.mapToEntityList(siteServiceReturnList)))
-                    }else if(response.getString("status").equals("ZERO_RESULTS")){
-                        Toast.makeText(context, "No results.", Toast.LENGTH_LONG).show()
-                    }
-                }catch (e: JSONException){
+                    callback.invoke(handlePlaceApiJsonArrayResult(response, siteMapper, "results"))
+                } catch (e: JSONException) {
                     Log.d(TAG, "Error adding this object" + e.message)
+                    callback.invoke(handlePlaceApiError(e))
                 }
             },
             { error ->
                 Log.d(TAG, "Error GETTING THE JSON RESULT" + error.message)
-                callback.invoke(ResultData.Failed())
-            })
-        {
-            override fun getHeaders(): Map<String, String>  {
+                callback.invoke(handlePlaceApiError(error))
+            }) {
+            override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }
@@ -96,9 +87,9 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
     }
 
     override fun getTextSearchPlaces(
+        query: String,
         siteLat: Double?,
         siteLng: Double?,
-        query: String?,
         hwpoiType: String?,
         radius: Int?,
         language: String?,
@@ -106,47 +97,37 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
         pageSize: Int?,
         callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
     ) {
-
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/textsearch/json?")
-        googlePlacesURL?.append("location=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&radius=" + radius)
-        googlePlacesURL?.append("&type=" + hwpoiType)
-        googlePlacesURL?.append("&keyword=" + query)
+        googlePlacesURL?.append("&query=$query")
+        siteLat?.let { lat -> siteLng?.let { lng -> googlePlacesURL?.append("location=$lat,$lng") } }
+        radius?.let { googlePlacesURL?.append("&radius=$it") }
+        hwpoiType?.let { googlePlacesURL?.append("&type=$it") }
         googlePlacesURL?.append("&sensor=true")
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("&key=$apiKey")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray? = JSONArray()
-                    jsonArray = response.optJSONArray("results")
-                    if (response.getString("status").equals("OK")){
-                        for (i in 0 until jsonArray.length()){
-                            val currentjsonObject = jsonArray.getJSONObject(i)
-                            siteServiceReturnList.add(currentjsonObject)
-
-                        }
-                        callback.invoke(ResultData.Success(mapper.mapToEntityList(siteServiceReturnList)))
-                    }else if(response.getString("status").equals("ZERO_RESULTS")){
-                        Toast.makeText(context, "No results.", Toast.LENGTH_LONG).show()
-                    }
-
-                }catch (e: JSONException){
+                    callback.invoke(handlePlaceApiJsonArrayResult(response, siteMapper, "results"))
+                } catch (e: JSONException) {
                     Log.d(TAG, "Error adding this object" + e.message)
+                    callback.invoke(
+                        ResultData.Failed(
+                            error = e.localizedMessage,
+                            errorModel = ErrorModel(message = e.message, exception = e)
+                        )
+                    )
                 }
-
             },
             { error ->
                 Log.d(TAG, "Error GETTING THE JSON RESULT" + error.message)
-                callback.invoke(ResultData.Failed())
-            })
-        {
-            override fun getHeaders(): Map<String, String>  {
+                callback.invoke(handlePlaceApiError(error))
+            }) {
+            override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }
@@ -155,96 +136,146 @@ class GoogleSiteServiceImpl(private val context: Context, apiKey: String? = null
 
     override fun getDetailSearch(
         siteID: String,
-        areaLanguage: String,
-        childrenNode: Boolean,
+        areaLanguage: String?,
+        childrenNode: Boolean?,
         callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit
     ) {
-
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/details/json?")
-        googlePlacesURL?.append("place_id=" + siteID)
-        googlePlacesURL?.append("&language=" + areaLanguage)
-        googlePlacesURL?.append("&key=" + API_KEY)
-
+        googlePlacesURL?.append("place_id=$siteID")
+        areaLanguage?.let { googlePlacesURL?.append("&language=$it") }
+        googlePlacesURL?.append("&key=$apiKey")
 
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    val jsonObject: JSONObject = response.getJSONObject("result")
-                    if (response.getString("status").equals("OK")) {
-                        callback.invoke(ResultData.Success(mapper.mapToEntity(jsonObject)))
-
-                    } else if (response.getString("status").equals("ZERO_RESULTS")) {
-                        Toast.makeText(context, "No results.", Toast.LENGTH_LONG).show()
-                    }
-                    else{
-                        Log.d(TAG, "Error making this request")
-                    }
-                }
-                catch (e: JSONException){
+                    callback.invoke(handlePlaceApiJsonObjectResult(response, siteMapper, "result"))
+                } catch (e: JSONException) {
                     Log.d(TAG, "Error adding this object" + e.message)
+                    callback.invoke(
+                        ResultData.Failed(
+                            error = e.localizedMessage,
+                            errorModel = ErrorModel(message = e.message, exception = e)
+                        )
+                    )
                 }
-
             },
             { error ->
                 Log.d(TAG, "Error GETTING THE JSON RESULT")
-                callback.invoke(ResultData.Failed())
+                callback.invoke(
+                    ResultData.Failed(
+                        error = error.localizedMessage,
+                        errorModel = ErrorModel(message = error.message, exception = error)
+                    )
+                )
             })
 
         requestQueue.add(jsonObjectRequest)
     }
 
     override fun placeSuggestion(
+        keyword: String,
         siteLat: Double?,
         siteLng: Double?,
-        keyword: String?,
         childrenNode: Boolean?,
         areaRadius: Int?,
         areaLanguage: String?,
         callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
-    ){
-
+    ) {
         googlePlacesURL?.clear()
         googlePlacesURL?.append("https://maps.googleapis.com/maps/api/place/autocomplete/json?")
-        googlePlacesURL?.append("input=" + keyword)
-        googlePlacesURL?.append("&location=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&origin=" + siteLat + "," + siteLng)
-        googlePlacesURL?.append("&radius=" + areaRadius)
-        googlePlacesURL?.append("&language=" + areaLanguage)
-        googlePlacesURL?.append("&key=" + API_KEY)
+        googlePlacesURL?.append("input=$keyword")
+        siteLat?.let { lat ->
+            siteLng?.let { lng ->
+                googlePlacesURL?.append("&location=$lat,$lng")
+                googlePlacesURL?.append("&origin=$lat,$lng")
+            }
+        }
+        areaRadius?.let { googlePlacesURL?.append("&radius=$it") }
+        areaLanguage?.let { googlePlacesURL?.append("&language=$it") }
+        googlePlacesURL?.append("&key=$apiKey")
 
-        var siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
         val jsonObjectRequest = object : JsonObjectRequest(
-            Request.Method.GET, googlePlacesURL.toString(), null,
+            Method.GET, googlePlacesURL.toString(), null,
             { response ->
                 try {
-                    var jsonArray : JSONArray? = JSONArray()
-                    jsonArray = response.optJSONArray("predictions")
-                    for (i in 0 until jsonArray.length()){
-                        val currentjsonObject = jsonArray.getJSONObject(i)
-                        siteServiceReturnList.add(currentjsonObject)
-
-                    }
-
-                }catch (e: JSONException){
+                    Log.d("SiteKit1", response.toString())
+                    callback.invoke(
+                        handlePlaceApiJsonArrayResult(
+                            response,
+                            autocompleteMapper,
+                            "predictions"
+                        )
+                    )
+                } catch (e: JSONException) {
                     Log.d(TAG, "Error adding this object" + e.message)
+                    callback.invoke(handlePlaceApiError(e))
                 }
-
-                callback.invoke(ResultData.Success(autocompleteMapper.mapToEntityList(siteServiceReturnList)))
             },
             { error ->
                 Log.d(TAG, "Error GETTING THE JSON RESULT" + error.message)
-                callback.invoke(ResultData.Failed())
-            })
-        {
-            override fun getHeaders(): Map<String, String>  {
+                callback.invoke(handlePlaceApiError(error))
+            }) {
+            override fun getHeaders(): Map<String, String> {
                 val params: MutableMap<String, String> = HashMap()
-                params.put("content-type", "application/json")
+                params["content-type"] = "application/json"
                 return params
             }
         }
         requestQueue.add(jsonObjectRequest)
     }
 
+    private fun handlePlaceApiJsonArrayResult(
+        response: JSONObject,
+        mapper: Mapper<SiteServiceReturn, JSONObject>,
+        jsonArrayName: String
+    ): ResultData<List<SiteServiceReturn>> {
+        val siteServiceReturnList: MutableList<JSONObject> = mutableListOf()
+        val results = response.optJSONArray(jsonArrayName)
+
+        return getPlaceApiResult(response.getString("status")) {
+            results?.let { jsonArray ->
+                for (i in 0 until jsonArray.length()) {
+                    siteServiceReturnList.add(jsonArray.getJSONObject(i))
+                }
+            }
+            ResultData.Success(mapper.mapToEntityList(siteServiceReturnList))
+        }
+    }
+
+    private fun handlePlaceApiJsonObjectResult(
+        response: JSONObject,
+        mapper: Mapper<SiteServiceReturn, JSONObject>,
+        jsonObjectName: String
+    ): ResultData<SiteServiceReturn> {
+        val result = response.optJSONObject(jsonObjectName)
+
+        return getPlaceApiResult(response.getString("status")) {
+            result?.let { jsonObject ->
+                ResultData.Success(mapper.mapToEntity(jsonObject))
+            } ?: run { ResultData.Failed("UNKNOWN_ERROR") }
+        }
+    }
+
+    private fun <T> getPlaceApiResult(
+        status: String,
+        manageSuccessState: () -> ResultData<T>
+    ): ResultData<T> {
+        return when (status) {
+            "OK" -> manageSuccessState()
+            "ZERO_RESULTS" -> ResultData.Failed("ZERO_RESULTS")
+            "INVALID_REQUEST" -> ResultData.Failed("INVALID_REQUEST")
+            "REQUEST_DENIED" -> ResultData.Failed("REQUEST_DENIED")
+            "OVER_QUERY_LIMIT" -> ResultData.Failed("OVER_QUERY_LIMIT")
+            else -> ResultData.Failed("UNKNOWN_ERROR")
+        }
+    }
+
+    private fun handlePlaceApiError(e: Exception): ResultData.Failed {
+        return ResultData.Failed(
+            error = e.localizedMessage,
+            errorModel = ErrorModel(message = e.message, exception = e)
+        )
+    }
 }
