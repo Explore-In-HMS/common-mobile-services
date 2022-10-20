@@ -53,15 +53,20 @@ interface AuthService {
     fun anonymousSignIn(): Work<AuthUser>
     fun getUser(): AuthUser?
     fun signOut(): Work<Unit>
-    fun updatePhoto(photo: String?): Work<Unit>
-    fun updateUsername(username: String?): Work<Unit>
-    fun updateEmail(email: String?, verifyCode: String?): Work<Unit>
-    fun updatePhone(countryCode: String?, phoneNumber: String?, verifyCode: String?): Work<Unit>
-    fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit>
-    fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit>
-    fun getCode(email: String?): Work<Unit>
+    fun updatePhoto(photo: String): Work<Unit>
+    fun updateUsername(username: String): Work<Unit>
+    fun updateEmail(email: String, verifyCode: String): Work<Unit>
+    fun updatePhone(
+        phoneNumber: String,
+        verifyCode: String,
+        countryCode: String? = null
+    ): Work<Unit>
+
+    fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit>
+    fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit>
+    fun getCode(email: String): Work<Unit>
     fun getCodePassword(email: String?): Work<Unit>
-    fun getPhoneCode(countryCode: String?, phoneNumber: String?, activity: Activity): Work<Unit>
+    fun getPhoneCode(phoneNumber: String, activity: Activity, countryCode: String?): Work<Unit>
     fun deleteUser(): Work<Unit>
     fun reAuthenticate(email: String, password: String): Work<Unit>
     fun linkWithTwitter(token: String, secret: String): Work<AuthUser>
@@ -74,6 +79,7 @@ interface AuthService {
         password: String,
         verifyCode: String
     ): Work<AuthUser>
+
     object Factory {
         fun create(context: Context): AuthService {
             return when (Device.getMobileServiceType(context)) {

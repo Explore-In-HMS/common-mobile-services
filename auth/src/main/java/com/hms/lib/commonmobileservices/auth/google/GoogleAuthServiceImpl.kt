@@ -211,65 +211,61 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePhoto(photo: String?): Work<Unit> {
+    override fun updatePhoto(photo: String): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (photo != null) {
-            val profileUpdates =
-                UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(photo)).build()
+        val profileUpdates = UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(photo)).build()
             user!!.updateProfile(profileUpdates)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.d(TAG, "User profile picture updated.")
                     }
                 }
-        }
+
         return work
     }
 
-    override fun updateUsername(username: String?): Work<Unit> {
+    override fun updateUsername(username: String): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (username != null) {
-            val profileUpdates =
-                UserProfileChangeRequest.Builder().setDisplayName(username).build()
-            user!!.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "Username updated.")
-                    }
-                }
-        }
-        return work
-    }
 
-    override fun updateEmail(email: String?, verifyCode: String?): Work<Unit> {
-        val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
-
-        if (email != null) {
-            user!!.updateEmail(email).addOnCompleteListener { task ->
+        val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(username).build()
+        user!!.updateProfile(profileUpdates)
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.d(TAG, "User email address updated.")
+                    Log.d(TAG, "Username updated.")
                 }
             }
+
+        return work
+    }
+
+    override fun updateEmail(email: String, verifyCode: String): Work<Unit> {
+        val work: Work<Unit> = Work()
+        val user = FirebaseAuth.getInstance().currentUser
+
+        user!!.updateEmail(email).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User email address updated.")
+            }
         }
+
         return work
     }
 
     override fun updatePhone(
-        countryCode: String?,
-        phoneNumber: String?,
-        verifyCode: String?
+        phoneNumber: String,
+        verifyCode: String,
+        countryCode: String?
     ): Work<Unit> {
 
         val work: Work<Unit> = Work()
         val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
-        if (firebaseAuth.currentUser != null && storedVerificationId != null && verifyCode != null) {
+        if (firebaseAuth.currentUser != null && storedVerificationId != null) {
             val credential = PhoneAuthProvider.getCredential(storedVerificationId, verifyCode)
             firebaseAuth.currentUser!!.updatePhoneNumber(credential)
                 .addOnSuccessListener { work.onSuccess(Unit) }
@@ -279,35 +275,34 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (password != null) {
-            user!!.updatePassword(password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User password updated.")
-                }
+
+        user!!.updatePassword(password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User password updated.")
             }
         }
+
         return work
     }
 
-    override fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
         val user = FirebaseAuth.getInstance().currentUser
 
-        if (password != null) {
-            user!!.updatePassword(password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User password updated.")
-                }
-            }
-        }
+
+        user!!.updatePassword(password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Log.d(TAG, "User password updated.")
+            }}
+
         return work
     }
 
-    override fun getCode(email: String?): Work<Unit> {
+    override fun getCode(email: String): Work<Unit> {
         val work: Work<Unit> = Work()
         work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
         return work
@@ -320,9 +315,9 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     }
 
     override fun getPhoneCode(
-        countryCode: String?,
-        phoneNumber: String?,
-        activity: Activity
+        phoneNumber: String,
+        activity: Activity,
+        countryCode: String?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
 
