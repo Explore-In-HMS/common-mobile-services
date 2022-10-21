@@ -15,21 +15,19 @@
 package com.hms.lib.commonmobileservices.auth.google
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
+import com.hms.lib.commonmobileservices.auth.exception.AuthException
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
@@ -37,47 +35,11 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     private val mapper: Mapper<FirebaseUser, AuthUser> = FirebaseUserMapper()
     private var storedVerificationId: String? = null
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
-    lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
 
     companion object {
         private const val CMS_SHARED_PREF = "CMS_Shared_Pref"
         private const val VERIFICATION_ID = "verificationId"
     }
-
-
-    init {
-
-
-        callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                Log.d("GFG", "onVerificationCompleted Success")
-            }
-
-            override fun onVerificationFailed(p0: FirebaseException) {
-                Log.d("GFG", "onVerificationFailed  $p0")
-            }
-
-            override fun onCodeSent(
-                verificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken
-            ) {
-                super.onCodeSent(verificationId, token)
-                storedVerificationId = verificationId
-                resendToken = token
-
-                val preferences =
-                    context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
-                val editor = preferences.edit()
-                editor.putString(VERIFICATION_ID, storedVerificationId)
-                editor.apply()
-
-
-            }
-
-        }
-
-    }
-
 
     override fun signInWithFacebook(accessToken: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
@@ -94,7 +56,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<AuthUser> = Work()
 
         firebaseAuth.signInWithCredential(TwitterAuthProvider.getCredential(token, secret))
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnSuccessListener { authResult ->
+                authResult.user?.let {
+                    work.onSuccess(mapper.map(it))
+                } ?: run {
+                    signOut()
+                    work.onFailure(AuthException("There is no existing user."))
+                }
+            }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
 
@@ -105,7 +74,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<AuthUser> = Work()
 
         firebaseAuth.signInWithCredential(GoogleAuthProvider.getCredential(token, null))
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnSuccessListener { authResult ->
+                authResult.user?.let {
+                    work.onSuccess(mapper.map(it))
+                } ?: run {
+                    signOut()
+                    work.onFailure(AuthException("There is no existing user."))
+                }
+            }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
 
@@ -115,7 +91,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     override fun signInWithEmail(email: String, password: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
+            .addOnSuccessListener { authResult ->
+                authResult.user?.let {
+                    work.onSuccess(mapper.map(it))
+                } ?: run {
+                    signOut()
+                    work.onFailure(AuthException("There is no existing user."))
+                }
+            }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
 
@@ -133,11 +116,21 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
-        val credential = PhoneAuthProvider.getCredential(storedVerificationId!!, verifyCode)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        storedVerificationId?.let { verificationId ->
+            val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
+            firebaseAuth.signInWithCredential(credential)
+                .addOnSuccessListener { authResult ->
+                    authResult.user?.let {
+                        work.onSuccess(mapper.map(it))
+                    } ?: run {
+                        signOut()
+                        work.onFailure(AuthException("There is no existing user."))
+                    }
+                }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -155,13 +148,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
-        user!!.sendEmailVerification()
-            .addOnSuccessListener { work.onSuccess(Unit) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.sendEmailVerification()
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
 
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -213,44 +207,50 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     override fun updatePhoto(photo: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
-        val profileUpdates = UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(photo)).build()
-            user!!.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User profile picture updated.")
-                    }
-                }
+        firebaseAuth.currentUser?.let { user ->
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setPhotoUri(Uri.parse(photo))
+                .build()
+
+            user.updateProfile(profileUpdates)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
 
     override fun updateUsername(username: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
+        firebaseAuth.currentUser?.let { user ->
+            val profileUpdates = UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build()
 
-        val profileUpdates = UserProfileChangeRequest.Builder().setDisplayName(username).build()
-        user!!.updateProfile(profileUpdates)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "Username updated.")
-                }
-            }
+            user.updateProfile(profileUpdates)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
 
     override fun updateEmail(email: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
-        user!!.updateEmail(email).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "User email address updated.")
-            }
-        }
+        firebaseAuth.currentUser?.let { user ->
+            user.updateEmail(email)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -265,39 +265,44 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
-        if (firebaseAuth.currentUser != null && storedVerificationId != null) {
-            val credential = PhoneAuthProvider.getCredential(storedVerificationId, verifyCode)
-            firebaseAuth.currentUser!!.updatePhoneNumber(credential)
-                .addOnSuccessListener { work.onSuccess(Unit) }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
-        }
+        firebaseAuth.currentUser?.let { user ->
+            storedVerificationId?.let { verificationId ->
+                val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
+                user.updatePhoneNumber(credential)
+                    .addOnSuccessListener { work.onSuccess(Unit) }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
+
+            } ?: run { work.onFailure(AuthException("Unexpected authentication error")) }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 
     override fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
+        firebaseAuth.currentUser?.let { user ->
+            user.updatePassword(password)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
 
-        user!!.updatePassword(password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "User password updated.")
-            }
-        }
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
 
     override fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        val user = FirebaseAuth.getInstance().currentUser
 
+        firebaseAuth.currentUser?.let { user ->
+            user.updatePassword(password).addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
 
-        user!!.updatePassword(password).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(TAG, "User password updated.")
-            }}
+        } ?: work.onFailure(AuthException("There is no existing user."))
 
         return work
     }
@@ -317,16 +322,38 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     override fun getPhoneCode(
         phoneNumber: String,
         activity: Activity,
-        countryCode: String?
+        countryCode: String
     ): Work<Unit> {
         val work: Work<Unit> = Work()
 
         val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-            .setPhoneNumber(phoneNumber!!)
+            .setPhoneNumber(countryCode + phoneNumber)
             .setTimeout(60L, TimeUnit.SECONDS)
             .setActivity(activity)
-            .setCallbacks(callbacks)
-            .build()
+            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(p0: PhoneAuthCredential) {}
+
+                override fun onVerificationFailed(p0: FirebaseException) {
+                    work.onFailure(ExceptionUtil.get(p0))
+                }
+
+                override fun onCodeSent(
+                    verificationId: String,
+                    token: PhoneAuthProvider.ForceResendingToken
+                ) {
+                    super.onCodeSent(verificationId, token)
+                    storedVerificationId = verificationId
+                    resendToken = token
+
+                    val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
+                    val editor = preferences.edit()
+                    editor.putString(VERIFICATION_ID, storedVerificationId)
+                    editor.apply()
+
+                    work.onSuccess(Unit)
+                }
+            }).build()
+
         PhoneAuthProvider.verifyPhoneNumber(options)
 
         return work
@@ -334,12 +361,15 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
     override fun deleteUser(): Work<Unit> {
         val work: Work<Unit> = Work()
-        firebaseAuth.currentUser!!.delete()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "User account deleted.")
-                }
-            }
+
+        firebaseAuth.currentUser?.let { user ->
+            user.delete()
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 
@@ -347,10 +377,13 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<Unit> = Work()
 
         val credential = EmailAuthProvider.getCredential(email, password)
-        firebaseAuth.currentUser!!.reauthenticate(credential)
-            .addOnSuccessListener { work.onSuccess(Unit) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.reauthenticate(credential)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -359,10 +392,19 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<AuthUser> = Work()
 
         val credential = TwitterAuthProvider.getCredential(token, secret)
-        firebaseAuth.currentUser!!.linkWithCredential(credential)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.linkWithCredential(credential)
+                .addOnSuccessListener { authResult ->
+                    authResult.user?.let {
+                        work.onSuccess(mapper.map(it))
+                    } ?: run {
+                        signOut()
+                        work.onFailure(AuthException("There is no existing user."))
+                    }
+                }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -371,10 +413,20 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<AuthUser> = Work()
 
         val credential = FacebookAuthProvider.getCredential(accessToken)
-        firebaseAuth.currentUser!!.linkWithCredential(credential)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.linkWithCredential(credential)
+                .addOnSuccessListener { authResult ->
+                    authResult.user?.let {
+                        work.onSuccess(mapper.map(it))
+                    } ?: run {
+                        signOut()
+                        work.onFailure(AuthException("There is no existing user."))
+                    }
+                }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -382,10 +434,20 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     override fun unlink(provider: String): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
-        firebaseAuth.currentUser!!.unlink(provider)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.unlink(provider)
+                .addOnSuccessListener { authResult ->
+                    authResult.user?.let {
+                        work.onSuccess(mapper.map(it))
+                    } ?: run {
+                        signOut()
+                        work.onFailure(AuthException("There is no existing user."))
+                    }
+                }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -398,10 +460,20 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val work: Work<AuthUser> = Work()
 
         val credential = EmailAuthProvider.getCredential(email, password)
-        firebaseAuth.currentUser!!.linkWithCredential(credential)
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            user.linkWithCredential(credential)
+                .addOnSuccessListener { authResult ->
+                    authResult.user?.let {
+                        work.onSuccess(mapper.map(it))
+                    } ?: run {
+                        signOut()
+                        work.onFailure(AuthException("There is no existing user."))
+                    }
+                }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
     }
@@ -417,14 +489,25 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
-        if (storedVerificationId != null) {
-            val credential = PhoneAuthProvider.getCredential(storedVerificationId, verifyCode)
-            firebaseAuth.currentUser!!.linkWithCredential(credential)
-                .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
+        firebaseAuth.currentUser?.let { user ->
+            storedVerificationId?.let { verificationId ->
+                val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
+                user.linkWithCredential(credential)
+                    .addOnSuccessListener { authResult ->
+                        authResult.user?.let {
+                            work.onSuccess(mapper.map(it))
+                        } ?: run {
+                            signOut()
+                            work.onFailure(AuthException("There is no existing user."))
+                        }
+                    }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
 
-        }
+            } ?: run { work.onFailure(AuthException("Unexpected authentication error")) }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 }

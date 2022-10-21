@@ -324,7 +324,7 @@ class HuaweiAuthServiceImpl : AuthService {
     override fun getPhoneCode(
         phoneNumber: String,
         activity: Activity,
-        countryCode: String?
+        countryCode: String
     ): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
