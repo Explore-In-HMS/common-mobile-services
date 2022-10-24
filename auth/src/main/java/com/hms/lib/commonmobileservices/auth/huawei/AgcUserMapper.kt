@@ -26,7 +26,8 @@ class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
         AuthUser(
             id = from.uid,
             displayName = from.displayName ?: "",
-            email = if (from.email == null) "" else from.email,
+            email = from.email ?: "",
+            phone = from.phone ?: "",
             photoUrl = from.photoUrl ?: "",
             serviceType = ServiceType.Huawei,
             providerType = getProvider(from)

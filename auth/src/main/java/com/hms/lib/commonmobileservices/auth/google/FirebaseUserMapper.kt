@@ -23,9 +23,10 @@ import com.hms.lib.commonmobileservices.auth.common.ServiceType
 class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
     override fun map(from: FirebaseUser): AuthUser = AuthUser(
         id = from.uid,
-        displayName = from.displayName?: "",
-        email = if (from.email == null) "" else from.email!!,
-        photoUrl = if(from.photoUrl == null) "" else from.photoUrl.toString(),
+        displayName = from.displayName ?: "",
+        email = from.email ?: "",
+        phone = from.phoneNumber ?: "",
+        photoUrl = from.photoUrl?.toString() ?: "",
         serviceType = ServiceType.Google,
         providerType = if(!from.isAnonymous) getProvider(from) else ProviderType.NoProvider
     )
