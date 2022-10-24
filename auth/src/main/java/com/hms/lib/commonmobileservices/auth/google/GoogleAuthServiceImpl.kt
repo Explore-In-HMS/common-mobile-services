@@ -146,6 +146,17 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
+    override fun signUpWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<Unit> {
+        val work: Work<Unit> = Work()
+        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        return work
+    }
+
     override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
 

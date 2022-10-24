@@ -41,6 +41,13 @@ interface AuthService {
         password: String,
         locale: Locale? = Locale.ENGLISH
     ): Work<VerificationType>
+    fun signUpWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<Unit>
+
 
     fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit>
     fun resetPassword(email: String, locale: Locale? = Locale.ENGLISH): Work<VerificationType>

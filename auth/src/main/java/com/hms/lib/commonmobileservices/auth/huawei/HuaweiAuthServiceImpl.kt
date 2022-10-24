@@ -112,6 +112,29 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
+    override fun signUpWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        val phoneUser = PhoneUser.Builder()
+            .setCountryCode(countryCode)
+            .setPhoneNumber(phoneNumber)
+            .setVerifyCode(verifyCode)
+            .setPassword(password)
+            .build()
+
+        agcConnectAuth.createUser(phoneUser)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
     override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
         val work: Work<Unit> = Work()
 
