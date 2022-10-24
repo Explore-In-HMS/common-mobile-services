@@ -30,10 +30,10 @@ interface AuthService {
     fun signInWithEmail(email: String, password: String): Work<AuthUser>
     fun signInWithTwitter(token: String, secret: String): Work<AuthUser>
     fun signInWithPhone(
-        countryCode: String,
-        phoneNumber: String,
-        password: String,
-        verifyCode: String
+        countryCode: String? = null,
+        phoneNumber: String? = null,
+        password: String? = null,
+        verifyCode: String? = null
     ): Work<AuthUser>
 
     fun signUp(
@@ -41,6 +41,7 @@ interface AuthService {
         password: String,
         locale: Locale? = Locale.ENGLISH
     ): Work<VerificationType>
+
     fun signUpWithPhone(
         countryCode: String,
         phoneNumber: String,
@@ -49,7 +50,12 @@ interface AuthService {
     ): Work<Unit>
 
 
-    fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit>
+    fun verifyCode(
+        email: String? = null,
+        password: String? = null,
+        verifyCode: String? = null
+    ): Work<Unit>
+
     fun resetPassword(email: String, locale: Locale? = Locale.ENGLISH): Work<VerificationType>
     fun verifyCodeToResetPassword(
         email: String,
@@ -62,18 +68,23 @@ interface AuthService {
     fun signOut(): Work<Unit>
     fun updatePhoto(photo: String): Work<Unit>
     fun updateUsername(username: String): Work<Unit>
-    fun updateEmail(email: String, verifyCode: String): Work<Unit>
+    fun updateEmail(email: String, verifyCode: String? = null): Work<Unit>
     fun updatePhone(
-        phoneNumber: String,
-        verifyCode: String,
-        countryCode: String? = null
+        countryCode: String? = null,
+        phoneNumber: String? = null,
+        verifyCode: String? = null
     ): Work<Unit>
 
-    fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit>
-    fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit>
+    fun updatePasswordWithEmail(password: String, verifyCode: String? = null): Work<Unit>
+    fun updatePasswordWithPhone(password: String, verifyCode: String? = null): Work<Unit>
     fun getCode(email: String): Work<Unit>
     fun getCodePassword(email: String?): Work<Unit>
-    fun getPhoneCode(phoneNumber: String, activity: Activity, countryCode: String): Work<Unit>
+    fun getPhoneCode(
+        countryCode: String,
+        phoneNumber: String,
+        activity: Activity? = null
+    ): Work<Unit>
+
     fun deleteUser(): Work<Unit>
     fun reAuthenticate(email: String, password: String): Work<Unit>
     fun linkWithTwitter(token: String, secret: String): Work<AuthUser>

@@ -106,10 +106,10 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     }
 
     override fun signInWithPhone(
-        countryCode: String,
-        phoneNumber: String,
-        password: String,
-        verifyCode: String
+        countryCode: String?,
+        phoneNumber: String?,
+        password: String?,
+        verifyCode: String?
     ): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
@@ -117,19 +117,21 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         val storedVerificationId = preferences.getString(VERIFICATION_ID, null)
 
         storedVerificationId?.let { verificationId ->
-            val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
-            firebaseAuth.signInWithCredential(credential)
-                .addOnSuccessListener { authResult ->
-                    authResult.user?.let {
-                        work.onSuccess(mapper.map(it))
-                    } ?: run {
-                        signOut()
-                        work.onFailure(AuthException("There is no existing user."))
+            verifyCode?.let { code ->
+                val credential = PhoneAuthProvider.getCredential(verificationId, code)
+                firebaseAuth.signInWithCredential(credential)
+                    .addOnSuccessListener { authResult ->
+                        authResult.user?.let {
+                            work.onSuccess(mapper.map(it))
+                        } ?: run {
+                            signOut()
+                            work.onFailure(AuthException("There is no existing user."))
+                        }
                     }
-                }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
 
+            } ?: run { work.onFailure(AuthException("Verification code can not be empty.")) }
         } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
         return work
@@ -157,7 +159,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
+    override fun verifyCode(email: String?, password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
         firebaseAuth.currentUser?.let { user ->
@@ -199,6 +201,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user!!)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -252,7 +255,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updateEmail(email: String, verifyCode: String): Work<Unit> {
+    override fun updateEmail(email: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
         firebaseAuth.currentUser?.let { user ->
@@ -267,9 +270,9 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     }
 
     override fun updatePhone(
-        phoneNumber: String,
-        verifyCode: String,
-        countryCode: String?
+        countryCode: String?,
+        phoneNumber: String?,
+        verifyCode: String?
     ): Work<Unit> {
 
         val work: Work<Unit> = Work()
@@ -278,11 +281,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
         firebaseAuth.currentUser?.let { user ->
             storedVerificationId?.let { verificationId ->
-                val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
-                user.updatePhoneNumber(credential)
-                    .addOnSuccessListener { work.onSuccess(Unit) }
-                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                    .addOnCanceledListener { work.onCanceled() }
+                verifyCode?.let { code ->
+                    val credential = PhoneAuthProvider.getCredential(verificationId, code)
+                    user.updatePhoneNumber(credential)
+                        .addOnSuccessListener { work.onSuccess(Unit) }
+                        .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                        .addOnCanceledListener { work.onCanceled() }
+
+                }?: run { work.onFailure(AuthException("Verification code can not be empty.")) }
 
             } ?: run { work.onFailure(AuthException("Unexpected authentication error")) }
 
@@ -291,7 +297,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
         firebaseAuth.currentUser?.let { user ->
@@ -305,11 +311,12 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         return work
     }
 
-    override fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
         firebaseAuth.currentUser?.let { user ->
-            user.updatePassword(password).addOnSuccessListener { work.onSuccess(Unit) }
+            user.updatePassword(password)
+                .addOnSuccessListener { work.onSuccess(Unit) }
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
@@ -331,41 +338,43 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
     }
 
     override fun getPhoneCode(
+        countryCode: String,
         phoneNumber: String,
-        activity: Activity,
-        countryCode: String
+        activity: Activity?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        val options = PhoneAuthOptions.newBuilder(firebaseAuth)
-            .setPhoneNumber(countryCode + phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(activity)
-            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(p0: PhoneAuthCredential) {}
+        activity?.let {
+            val options = PhoneAuthOptions.newBuilder(firebaseAuth)
+                .setPhoneNumber(countryCode + phoneNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(activity)
+                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(p0: PhoneAuthCredential) {}
 
-                override fun onVerificationFailed(p0: FirebaseException) {
-                    work.onFailure(ExceptionUtil.get(p0))
-                }
+                    override fun onVerificationFailed(p0: FirebaseException) {
+                        work.onFailure(ExceptionUtil.get(p0))
+                    }
 
-                override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    super.onCodeSent(verificationId, token)
-                    storedVerificationId = verificationId
-                    resendToken = token
+                    override fun onCodeSent(
+                        verificationId: String,
+                        token: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        super.onCodeSent(verificationId, token)
+                        storedVerificationId = verificationId
+                        resendToken = token
 
-                    val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
-                    val editor = preferences.edit()
-                    editor.putString(VERIFICATION_ID, storedVerificationId)
-                    editor.apply()
+                        val preferences = context.getSharedPreferences(CMS_SHARED_PREF, Context.MODE_PRIVATE)
+                        val editor = preferences.edit()
+                        editor.putString(VERIFICATION_ID, storedVerificationId)
+                        editor.apply()
 
-                    work.onSuccess(Unit)
-                }
-            }).build()
+                        work.onSuccess(Unit)
+                    }
+                }).build()
 
-        PhoneAuthProvider.verifyPhoneNumber(options)
+            PhoneAuthProvider.verifyPhoneNumber(options)
+        } ?: run { work.onFailure(AuthException("Activity can not be empty.")) }
 
         return work
     }

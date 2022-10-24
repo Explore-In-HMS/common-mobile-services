@@ -74,23 +74,31 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun signInWithPhone(
-        countryCode: String,
-        phoneNumber: String,
-        password: String,
-        verifyCode: String
+        countryCode: String?,
+        phoneNumber: String?,
+        password: String?,
+        verifyCode: String?
     ): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
-        agcConnectAuth.signIn(
-            PhoneAuthProvider.credentialWithPassword(
-                countryCode,
-                phoneNumber,
-                password
-            )
-        )
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        countryCode?.let { code ->
+            phoneNumber?.let { phone ->
+                password?.let { pass ->
+                    agcConnectAuth.signIn(
+                        PhoneAuthProvider.credentialWithPassword(
+                            code,
+                            phone,
+                            pass
+                        )
+                    )
+                        .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+                        .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                        .addOnCanceledListener { work.onCanceled() }
+
+                } ?: run { work.onFailure(AuthException("Country code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Phone number can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Password can not be empty.")) }
+
 
         return work
     }
@@ -135,19 +143,26 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
+    override fun verifyCode(email: String?, password: String?, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        val user = EmailUser.Builder()
-            .setEmail(email)
-            .setPassword(password)
-            .setVerifyCode(verifyCode)
-            .build()
+        email?.let {
+            verifyCode?.let {
+                password?.let {
+                    val user = EmailUser.Builder()
+                        .setEmail(email)
+                        .setPassword(password)
+                        .setVerifyCode(verifyCode)
+                        .build()
 
-        agcConnectAuth.createUser(user)
-            .addOnSuccessListener { work.onSuccess(Unit) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+                    agcConnectAuth.createUser(user)
+                        .addOnSuccessListener { work.onSuccess(Unit) }
+                        .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                        .addOnCanceledListener { work.onCanceled() }
+
+                } ?: run { work.onFailure(AuthException("Email can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Password can not be empty.")) }
 
         return work
     }
@@ -245,7 +260,7 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun updateEmail(email: String, verifyCode: String): Work<Unit> {
+    override fun updateEmail(email: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
 
         agcConnectAuth.currentUser?.let { user ->
@@ -260,58 +275,70 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun updatePhone(
-        phoneNumber: String,
-        verifyCode: String,
-        countryCode: String?
+        countryCode: String?,
+        phoneNumber: String?,
+        verifyCode: String?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        agcConnectAuth.currentUser?.let { user ->
-            user.updatePhone(
-                countryCode,
-                phoneNumber,
-                verifyCode
-            )
-                .addOnSuccessListener { work.onSuccess(Unit) }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
+        countryCode?.let {
+            verifyCode?.let {
+                phoneNumber?.let {
+                    agcConnectAuth.currentUser?.let { user ->
+                        user.updatePhone(
+                            countryCode,
+                            phoneNumber,
+                            verifyCode
+                        )
+                            .addOnSuccessListener { work.onSuccess(Unit) }
+                            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                            .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+                    } ?: run { work.onFailure(AuthException("There is no existing user.")) }
 
-        return work
-    }
-
-    override fun updatePasswordWithEmail(password: String, verifyCode: String): Work<Unit> {
-        val work: Work<Unit> = Work()
-
-        agcConnectAuth.currentUser?.let { user ->
-            user.updatePassword(
-                password,
-                verifyCode,
-                AGConnectAuthCredential.Email_Provider
-            )
-                .addOnSuccessListener { work.onSuccess(Unit) }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
-
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+                } ?: run { work.onFailure(AuthException("Phone number can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Country code can not be empty.")) }
 
         return work
     }
 
-    override fun updatePasswordWithPhone(password: String, verifyCode: String): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
-        agcConnectAuth.currentUser?.let { user ->
-            user.updatePassword(
-                password,
-                verifyCode,
-                AGConnectAuthCredential.Phone_Provider
-            )
-                .addOnSuccessListener { work.onSuccess(Unit) }
-                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-                .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        verifyCode?.let { code ->
+            agcConnectAuth.currentUser?.let { user ->
+                user.updatePassword(
+                    password,
+                    code,
+                    AGConnectAuthCredential.Email_Provider
+                )
+                    .addOnSuccessListener { work.onSuccess(Unit) }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
+
+            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+
+        return work
+    }
+
+    override fun updatePasswordWithPhone(password: String, verifyCode: String?): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        verifyCode?.let { code ->
+            agcConnectAuth.currentUser?.let { user ->
+                user.updatePassword(
+                    password,
+                    code,
+                    AGConnectAuthCredential.Phone_Provider
+                )
+                    .addOnSuccessListener { work.onSuccess(Unit) }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
+
+            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
 
         return work
     }
@@ -345,9 +372,9 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun getPhoneCode(
+        countryCode: String,
         phoneNumber: String,
-        activity: Activity,
-        countryCode: String
+        activity: Activity?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
