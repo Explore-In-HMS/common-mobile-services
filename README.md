@@ -1273,6 +1273,10 @@ authService.signInWithEmail(email, password)
 ```
 ### Phone Sign in
 Call `signInWithPhone` to sign in with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+
+**Firebase Auth Service** only uses the `verifyCode` parameter to login. You can get the `verifyCode` using the `getPhoneCode` method.
+**AGC Auth Service uses** `countryCode`, `phoneNumber` and `password` parameters to login. In order to use the `signInWithPhone` method by the AGC Auth Service, the phone must be registered. You can use the `signUpWithPhone` method to register.
+
 ```kt
 authService.signInWithPhone(countryCode,phoneNumber,password,verifyCode)
     .addOnSuccessListener {authUser -> }
@@ -1300,7 +1304,24 @@ authService.signUp(email, password)
     .addOnFailureListener {}
 ``` 
 
-If `VerificationType` is `CODE`, it means that an e-mail containing verificaton code has been sent to the user. Call `verifyCode` to save user with verification code. 
+If `VerificationType` is `CODE`, it means that an e-mail containing verification code has been sent to the user. Call `verifyCode` to save user with verification code. 
+```kt
+authService.verifyCode(email, password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Phone Sign up
+Call `signUpWithPhone` to sign up to **AGC Auth Service** with phone. It needs country code, phone number, password and verify code. You can get the verifyCode using the `getPhoneCode` method.
+
+This method is only used for **AGC Auth Service**.
+There is no need to register for **Firebase Auth Service.** You can login directly using the `signInWithPhone` method.
+```kt
+authService.signUp(countryCode, phoneNumber, password, verifyCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+``` 
+
+If `VerificationType` is `CODE`, it means that an e-mail containing verification code has been sent to the user. Call `verifyCode` to save user with verification code.
 ```kt
 authService.verifyCode(email, password, verificationCode)
     .addOnSuccessListener {}
@@ -1322,61 +1343,66 @@ authService.verifyCodeToResetPassword(email, newPassword, verificationCode)
 ```
 
 ### Update Username
-Call `updateUsername` to update user' s username. It needs user login. If it is success, it returns `VerificationType`.
+Call `updateUsername` to update user' s username. It needs user login.
 ```kt
 authService.updateUsername(email)
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ### Update Photo
-Call `updatePhoto` to update user' s photo. It needs user login. If it is success, it returns `VerificationType`.
+Call `updatePhoto` to update user' s photo. It needs user login.
 ```kt
 authService.updatePhoto(photo)
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ### Get Code
-Call `getCode` to get verification code. It needs email or phone number. If it is success, it returns `VerificationType`.
+Call `getCode` to get verification code. It needs email or phone number.
 ```kt
 authService.getCode(email)
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ```kt
 authService.getCodePassword(email)
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ```kt
 authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ### Update Email
-Call `updateEmail` to update user's mail. It needs email. If it is success, it returns `VerificationType`.
+Call `updateEmail` to update user's mail. It needs email. You can get the verifyCode using the `getCode` method.
 ```kt
 authService.updateEmail(email, verificationCode)
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ### Update Phone
-Call `updatePhone` to update user's phone. It needs phone. If it is success, it returns `VerificationType`.
+Call `updatePhone` to update user's phone. It needs phone. You can get the verifyCode using the `getPhoneCode` method.
 ```kt
 authService.updatePhone(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
-    .addOnSuccessListener {verificationType -> }
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 ### Update Password
-Call `updatePassword` to update user's password. It needs password. If it is success, it returns `VerificationType`.
+Call `updatePasswordWithPhone` to update user's password with phone. You can get the verifyCode using the `getPhoneCode` method.
+Call `updatePasswordWithEmail` to update user's password with email. You can get the verifyCode using the `getCode` method.
 ```kt
-authService.updatePassword(password, verificationCode)
-    .addOnSuccessListener {verificationType -> }
+authService.updatePasswordWithPhone(password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    
+authService.updatePasswordWithEmail(password, verificationCode)
+    .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 ### Link With Twitter
