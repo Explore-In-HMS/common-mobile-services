@@ -1,0 +1,8 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation 'com.huawei.hms:ml-computer-vision-object:3.7.0.301'
+    implementation 'com.google.mlkit:object-detection:17.0.0'
+    api project(':core')
+}
