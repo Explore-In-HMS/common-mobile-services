@@ -19,14 +19,13 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.objects.ObjectDetection
+import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.objectdetection.manager.IObjectDetectionAPI
-import com.huawei.hms.mlsdk.MLAnalyzerFactory
-import com.huawei.hms.mlsdk.common.MLApplication
-import com.huawei.hms.mlsdk.common.MLFrame
-import com.huawei.hms.mlsdk.objects.MLObjectAnalyzerSetting
 
-class HuaweiObjectDetectionKit : IObjectDetectionAPI {
+class GoogleObjectDetectionKit : IObjectDetectionAPI {
 
     override fun staticImageDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
@@ -39,23 +38,24 @@ class HuaweiObjectDetectionKit : IObjectDetectionAPI {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            MLApplication.getInstance().apiKey = apiKey
-            val setting = MLObjectAnalyzerSetting.Factory()
-                .setAnalyzerType(MLObjectAnalyzerSetting.TYPE_PICTURE)
-                .allowMultiResults()
-                .allowClassification()
-                .create()
-            val analyzer = MLAnalyzerFactory.getInstance().getLocalObjectAnalyzer(setting)
+            val options = ObjectDetectorOptions.Builder()
+                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
+                .enableMultipleObjects()
+                .enableClassification()
+                .build()
 
-            val frame = MLFrame.fromBitmap(bitmap)
+            val objectDetector = ObjectDetection.getClient(options)
 
-            val task = analyzer!!.asyncAnalyseFrame(frame)
+            val image = InputImage.fromBitmap(bitmap, 0)
 
-            task?.addOnSuccessListener {
-                callback.invoke(ResultData.Success(it))
-            }?.addOnFailureListener {
-                callback.invoke(ResultData.Failed())
-            }
+            objectDetector.process(image)
+                .addOnSuccessListener {
+                    callback.invoke(ResultData.Success(it))
+                }
+                .addOnFailureListener {
+                    callback.invoke(ResultData.Failed())
+                }
+
         } else {
             val strings = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,

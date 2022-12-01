@@ -24,7 +24,7 @@ interface IObjectDetectionAPI {
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
         bitmap: Bitmap,
-        hmsApiKey: String
+        apiKey: String
     )
 
 }
