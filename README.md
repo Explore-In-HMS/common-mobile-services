@@ -77,6 +77,10 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:translate:<vers
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:speechtotext:<versionName>'
 ```
+### Object Detection
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection:<versionName>'
+```
 ### Account
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versionName>'
@@ -741,7 +745,29 @@ The `parseSpeechToTextData()` function takes a callback lambda function as a par
 ```kt
 fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent, resultCode:Int)
 ```
+## Object Detection
+The object detection and tracking service can detect and track multiple objects in an image, so they can be located and classified in real time. A maximum of eight objects can be detected and tracked concurrently. The following object categories are supported: household products, fashion goods, food, places, plants, faces, and others.
 
+### How to use
+Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+```kt
+HuaweiGoogleObjectDetectionManager(this).staticImageDetection({
+                when(it) {
+                    is ResultData.Success -> {
+                       Log.d("Object detection result: ", it.data)
+                    }
+                    is ResultData.Failed -> {
+                        Log.d("error: ", error occured)
+                    }
+                }
+
+                },this,bitmap!!,apiKey
+```
+
+The `staticImageDetection()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
+```kt
+fun staticImageDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
+```
 ## Scene
 This library wraps Scene Kit views to use it in your application easily. It has IArView, IAugmentedFaceView and ISceneView interfaces which can be GoogleArView or HuaweiArView etc. It is related to your used service. Custom views created to hold these views: CommonSceneView, CommonAugmentedFaceView, CommonArView. These views also manages lifecycle events of its child views.
 
