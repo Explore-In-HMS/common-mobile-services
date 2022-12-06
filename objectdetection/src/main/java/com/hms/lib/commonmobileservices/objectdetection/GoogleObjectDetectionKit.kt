@@ -33,6 +33,11 @@ class GoogleObjectDetectionKit : IObjectDetectionAPI {
         bitmap: Bitmap,
         apiKey: String
     ) {
+        val strings = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+        )
+        ActivityCompat.requestPermissions(activity, strings, 2)
+
         if (ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
@@ -57,9 +62,6 @@ class GoogleObjectDetectionKit : IObjectDetectionAPI {
             }
 
         } else {
-            val strings = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-            )
             ActivityCompat.requestPermissions(activity, strings, 2)
             callback.invoke(ResultData.Failed("You have to give permission"))
         }
