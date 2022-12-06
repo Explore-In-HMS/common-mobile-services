@@ -48,19 +48,20 @@ class GoogleObjectDetectionKit : IObjectDetectionAPI {
 
             val image = InputImage.fromBitmap(bitmap, 0)
 
-            objectDetector.process(image)
-                .addOnSuccessListener {
+            objectDetector.process(image).let { result ->
+                result.addOnSuccessListener {
                     callback.invoke(ResultData.Success(it))
-                }
-                .addOnFailureListener {
+                }.addOnFailureListener {
                     callback.invoke(ResultData.Failed())
                 }
+            }
 
         } else {
             val strings = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
             )
             ActivityCompat.requestPermissions(activity, strings, 2)
+            callback.invoke(ResultData.Failed("You have to give permission"))
         }
     }
 }

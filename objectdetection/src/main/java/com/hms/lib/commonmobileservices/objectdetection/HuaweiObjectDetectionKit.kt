@@ -49,11 +49,15 @@ class HuaweiObjectDetectionKit : IObjectDetectionAPI {
 
             val frame = MLFrame.fromBitmap(bitmap)
 
-            val task = analyzer!!.asyncAnalyseFrame(frame)
+            val task = analyzer?.asyncAnalyseFrame(frame)
 
-            task?.addOnSuccessListener {
-                callback.invoke(ResultData.Success(it))
-            }?.addOnFailureListener {
+            task?.let { result ->
+                result.addOnSuccessListener {
+                    callback.invoke(ResultData.Success(it))
+                }.addOnFailureListener {
+                    callback.invoke(ResultData.Failed())
+                }
+            } ?: run {
                 callback.invoke(ResultData.Failed())
             }
         } else {
@@ -61,6 +65,7 @@ class HuaweiObjectDetectionKit : IObjectDetectionAPI {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
             )
             ActivityCompat.requestPermissions(activity, strings, 2)
+            callback.invoke(ResultData.Failed("You have to give permission"))
         }
     }
 }
