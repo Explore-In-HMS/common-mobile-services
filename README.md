@@ -768,6 +768,30 @@ The `staticImageDetection()` function takes a callback lambda function as a para
 ```kt
 fun staticImageDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
 ```
+
+## Face Detection
+With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
+
+### How to use
+Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+```kt
+HuaweiGoogleFaceDetectionManager(this).faceDetection({
+                when (it) {
+                    is ResultData.Success -> {
+                        Log.d("Object detection result: ", it.data)
+                    }
+                    is ResultData.Failed -> {
+                        Log.d("Object detection result: ", it.data)
+                    }
+                }
+            }, this, bitmap!!, apiKey)
+```
+
+The `faceDetection()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
+```kt
+fun faceDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
+```
+
 ## Scene
 This library wraps Scene Kit views to use it in your application easily. It has IArView, IAugmentedFaceView and ISceneView interfaces which can be GoogleArView or HuaweiArView etc. It is related to your used service. Custom views created to hold these views: CommonSceneView, CommonAugmentedFaceView, CommonArView. These views also manages lifecycle events of its child views.
 

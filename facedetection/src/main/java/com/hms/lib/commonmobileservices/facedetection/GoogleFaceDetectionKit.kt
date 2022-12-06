@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.hms.lib.commonmobileservices.objectdetection
+package com.hms.lib.commonmobileservices.facedetection
 
 import android.Manifest
 import android.app.Activity
@@ -20,14 +20,13 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import androidx.core.app.ActivityCompat
 import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.objects.ObjectDetection
-import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
+import com.google.mlkit.vision.face.FaceDetection
+import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.hms.lib.commonmobileservices.core.ResultData
-import com.hms.lib.commonmobileservices.objectdetection.manager.IObjectDetectionAPI
+import com.hms.lib.commonmobileservices.facedetection.manager.IFaceDetectionAPI
 
-class GoogleObjectDetectionKit : IObjectDetectionAPI {
-
-    override fun staticImageDetection(
+class GoogleFaceDetectionKit : IFaceDetectionAPI {
+    override fun faceDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
         bitmap: Bitmap,
@@ -43,19 +42,19 @@ class GoogleObjectDetectionKit : IObjectDetectionAPI {
                 Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            val options = ObjectDetectorOptions.Builder()
-                .setDetectorMode(ObjectDetectorOptions.SINGLE_IMAGE_MODE)
-                .enableMultipleObjects()
-                .enableClassification()
+            val highAccuracyOpts = FaceDetectorOptions.Builder()
+                .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
+                .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
                 .build()
-
-            val objectDetector = ObjectDetection.getClient(options)
 
             val image = InputImage.fromBitmap(bitmap, 0)
 
-            objectDetector.process(image).let { result ->
-                result.addOnSuccessListener {
-                    callback.invoke(ResultData.Success(it))
+            val detector = FaceDetection.getClient(highAccuracyOpts)
+
+            detector.process(image).let { result ->
+                result.addOnSuccessListener { faces ->
+                    callback.invoke(ResultData.Success(faces))
                 }.addOnFailureListener {
                     callback.invoke(ResultData.Failed())
                 }
