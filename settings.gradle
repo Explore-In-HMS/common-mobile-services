@@ -17,4 +17,5 @@ include ':scan'
 include ':scene'
 include ':identity'
 include ':objectdetection'
+include ':facedetection'
 rootProject.name = "Common Mobile Services"

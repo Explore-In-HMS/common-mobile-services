@@ -1,0 +1,8 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.google.mlkit:face-detection:16.1.5'
+    implementation 'com.huawei.hms:ml-computer-vision-face:3.7.0.301'
+    api project(':core')
+}
+
