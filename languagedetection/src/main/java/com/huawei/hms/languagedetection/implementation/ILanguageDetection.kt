@@ -1,15 +1,16 @@
 package com.huawei.hms.languagedetection.implementation
 
-import com.hms.lib.commonmobileservices.core.ResultData
+import com.huawei.hms.languagedetection.common.DetectionResult
+import com.huawei.hms.languagedetection.common.PossibleLanguage
 
 interface ILanguageDetection {
     fun detectLanguage(
         sourceText: String,
-        callback: (detectResult: ResultData<String>) -> Unit
+        callback: (detectResult: DetectionResult<String>) -> Unit
     )
     fun detectPossibleLanguages(
         sourceText: String,
-        callback: (detectResult: ResultData<List<String>>) -> Unit
+        callback: (detectResult: DetectionResult<List<PossibleLanguage>>) -> Unit
     )
     fun stopDetector()
 }

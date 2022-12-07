@@ -15,12 +15,12 @@ class LanguageDetector private constructor() {
             context: Context,
             huaweiApiKey: String,
             confidenceThreshold: Float? = null
-        ): ILanguageDetection? {
+        ): ILanguageDetection {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
                     val languageDetectionFactory =
                         LanguageDetectionFactory.createFactory<GoogleLanguageIdentification>()
-                    var googleLanguageIdentification: ILanguageDetection? = null
+                    lateinit var googleLanguageIdentification: ILanguageDetection
 
                     confidenceThreshold?.let {
                         googleLanguageIdentification = languageDetectionFactory.create(it)
@@ -32,7 +32,7 @@ class LanguageDetector private constructor() {
                     MLApplication.getInstance().apiKey = huaweiApiKey
                     val languageDetectionFactory =
                         LanguageDetectionFactory.createFactory<HuaweiLanguageDetection>()
-                    var huaweiLanguageDetection: ILanguageDetection? = null
+                    lateinit var huaweiLanguageDetection: ILanguageDetection
 
                     confidenceThreshold?.let {
                         huaweiLanguageDetection = languageDetectionFactory.create(it)
@@ -40,7 +40,7 @@ class LanguageDetector private constructor() {
 
                     huaweiLanguageDetection
                 }
-                MobileServiceType.NON -> null
+                MobileServiceType.NON -> throw IllegalArgumentException()
             }
         }
     }

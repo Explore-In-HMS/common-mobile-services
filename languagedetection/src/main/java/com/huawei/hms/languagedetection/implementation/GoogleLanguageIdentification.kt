@@ -2,7 +2,8 @@ package com.huawei.hms.languagedetection.implementation
 
 import com.google.mlkit.nl.languageid.LanguageIdentifier
 import com.hms.lib.commonmobileservices.core.ErrorModel
-import com.hms.lib.commonmobileservices.core.ResultData
+import com.huawei.hms.languagedetection.common.DetectionResult
+import com.huawei.hms.languagedetection.common.PossibleLanguage
 
 internal class GoogleLanguageIdentification(
     private val languageIdentifier: LanguageIdentifier
@@ -10,22 +11,24 @@ internal class GoogleLanguageIdentification(
 
     override fun detectLanguage(
         sourceText: String,
-        callback: (detectResult: ResultData<String>) -> Unit
+        callback: (detectResult: DetectionResult<String>) -> Unit
     ) {
         languageIdentifier.identifyLanguage(sourceText)
             .addOnSuccessListener { languageCode ->
                 if (languageCode == "und") {
                     callback(
-                        ResultData.Failed(error = "Can't identify language.")
+                        DetectionResult.Error(errorMessage = "Can't identify language.")
                     )
                 } else {
-                   callback( ResultData.Success(languageCode))
+                    callback(
+                        DetectionResult.Success(languageCode)
+                    )
                 }
             }
-            .addOnFailureListener { e->
+            .addOnFailureListener { e ->
                 callback(
-                    ResultData.Failed(
-                        error = e.localizedMessage,
+                    DetectionResult.Error(
+                        errorMessage = e.localizedMessage,
                         errorModel = ErrorModel(
                             message = e.message,
                             exception = e
@@ -37,20 +40,25 @@ internal class GoogleLanguageIdentification(
 
     override fun detectPossibleLanguages(
         sourceText: String,
-        callback: (detectResult: ResultData<List<String>>) -> Unit
+        callback: (detectResult: DetectionResult<List<PossibleLanguage>>) -> Unit
     ) {
         languageIdentifier.identifyPossibleLanguages(sourceText)
             .addOnSuccessListener { identifiedLanguages ->
                 callback(
-                    ResultData.Success(
-                        identifiedLanguages.map { it.languageTag }
+                    DetectionResult.Success(
+                        identifiedLanguages.map {
+                            PossibleLanguage(
+                                langCode = it.languageTag,
+                                confidence = it.confidence
+                            )
+                        }
                     )
                 )
             }
             .addOnFailureListener { e ->
                 callback(
-                    ResultData.Failed(
-                        error = e.localizedMessage,
+                    DetectionResult.Error(
+                        errorMessage = e.localizedMessage,
                         errorModel = ErrorModel(
                             message = e.message,
                             exception = e

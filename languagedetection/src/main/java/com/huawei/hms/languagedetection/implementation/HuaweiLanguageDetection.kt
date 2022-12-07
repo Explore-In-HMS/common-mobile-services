@@ -1,7 +1,8 @@
 package com.huawei.hms.languagedetection.implementation
 
 import com.hms.lib.commonmobileservices.core.ErrorModel
-import com.hms.lib.commonmobileservices.core.ResultData
+import com.huawei.hms.languagedetection.common.DetectionResult
+import com.huawei.hms.languagedetection.common.PossibleLanguage
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetector
 
 class HuaweiLanguageDetection(
@@ -10,15 +11,15 @@ class HuaweiLanguageDetection(
 
     override fun detectLanguage(
         sourceText: String,
-        callback: (detectResult: ResultData<String>) -> Unit
+        callback: (detectResult: DetectionResult<String>) -> Unit
     ) {
         val firstBestDetectTask = languageDetector.firstBestDetect(sourceText)
         firstBestDetectTask.addOnSuccessListener {
-            callback(ResultData.Success(it))
+            callback(DetectionResult.Success(it))
         }.addOnFailureListener { e ->
             callback(
-                ResultData.Failed(
-                    error = e.localizedMessage,
+                DetectionResult.Error(
+                    errorMessage = e.localizedMessage,
                     errorModel = ErrorModel(
                         message = e.message,
                         exception = e
@@ -30,19 +31,24 @@ class HuaweiLanguageDetection(
 
     override fun detectPossibleLanguages(
         sourceText: String,
-        callback: (detectResult: ResultData<List<String>>) -> Unit
+        callback: (detectResult: DetectionResult<List<PossibleLanguage>>) -> Unit
     ) {
         val probabilityDetectTask = languageDetector.probabilityDetect(sourceText)
         probabilityDetectTask.addOnSuccessListener { detectedLanguages ->
             callback(
-                ResultData.Success(
-                    detectedLanguages.map { it.langCode }
+                DetectionResult.Success(
+                    detectedLanguages.map {
+                        PossibleLanguage(
+                            langCode = it.langCode,
+                            confidence = it.probability
+                        )
+                    }
                 )
             )
         }.addOnFailureListener { e ->
             callback(
-                ResultData.Failed(
-                    error = e.localizedMessage,
+                DetectionResult.Error(
+                    errorMessage = e.localizedMessage,
                     errorModel = ErrorModel(
                         message = e.message,
                         exception = e
