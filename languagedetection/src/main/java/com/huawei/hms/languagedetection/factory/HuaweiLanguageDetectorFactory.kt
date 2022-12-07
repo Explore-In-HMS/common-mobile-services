@@ -5,7 +5,7 @@ import com.huawei.hms.languagedetection.implementation.ILanguageDetection
 import com.huawei.hms.mlsdk.langdetect.MLLangDetectorFactory
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetectorSetting
 
-internal class HuaweiLanguageDetectorFactory: LanguageDetectionFactory() {
+class HuaweiLanguageDetectorFactory: LanguageDetectionFactory() {
 
     override fun create(): ILanguageDetection {
         val mlRemoteLangDetector = MLLangDetectorFactory.getInstance()

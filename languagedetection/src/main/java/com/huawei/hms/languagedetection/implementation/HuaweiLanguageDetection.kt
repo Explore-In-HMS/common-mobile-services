@@ -4,7 +4,7 @@ import com.hms.lib.commonmobileservices.core.ErrorModel
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetector
 
-internal class HuaweiLanguageDetection(
+class HuaweiLanguageDetection(
     private val languageDetector: MLRemoteLangDetector
 ): ILanguageDetection {
 
