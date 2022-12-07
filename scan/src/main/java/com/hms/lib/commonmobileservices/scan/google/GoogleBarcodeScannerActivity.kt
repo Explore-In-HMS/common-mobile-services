@@ -17,9 +17,6 @@ package com.hms.lib.commonmobileservices.scan.google
 
 import android.Manifest
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -38,8 +35,8 @@ import java.io.IOException
 
 
 class GoogleBarcodeScannerActivity : AppCompatActivity() {
-    var surfaceView: SurfaceView? = null
-    var intentData = ""
+    private var surfaceView: SurfaceView? = null
+    private var intentData = ""
     private var barcodeDetector: BarcodeDetector? = null
     private var cameraSource: CameraSource? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,11 +53,13 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
         barcodeDetector = BarcodeDetector.Builder(this)
             .setBarcodeFormats(Barcode.ALL_FORMATS)
             .build()
-        cameraSource = CameraSource.Builder(this, barcodeDetector)
-            .setRequestedPreviewSize(1920, 1080)
-            .setAutoFocusEnabled(true)
-            .build()
-        surfaceView!!.holder.addCallback(object : SurfaceHolder.Callback {
+        cameraSource = barcodeDetector?.let {
+            CameraSource.Builder(this, it)
+                .setRequestedPreviewSize(1920, 1080)
+                .setAutoFocusEnabled(true)
+                .build()
+        }
+        surfaceView?.holder?.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceCreated(holder: SurfaceHolder) {
                 openCamera()
             }
@@ -99,7 +98,7 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
             return
         }
         try {
-            cameraSource!!.start(surfaceView!!.holder)
+            surfaceView?.holder?.let { cameraSource?.start(it) }
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -115,7 +114,7 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        cameraSource!!.release()
+        cameraSource?.release()
     }
 
     override fun onResume() {
@@ -129,10 +128,12 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CAMERA_PERMISSION && grantResults.size > 0) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION && grantResults.isNotEmpty()) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) finish() else openCamera()
         } else finish()
     }
 
-    private val REQUEST_CAMERA_PERMISSION = 201
+    companion object{
+        private const val REQUEST_CAMERA_PERMISSION = 201
+    }
 }
