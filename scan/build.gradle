@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 
 dependencies {
     implementation 'com.huawei.hms:scan:2.8.0.300'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:18.1.0'
     //QR Code Scanner library
