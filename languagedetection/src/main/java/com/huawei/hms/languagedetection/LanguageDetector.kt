@@ -1,0 +1,39 @@
+package com.huawei.hms.languagedetection
+
+import android.content.Context
+import com.hms.lib.commonmobileservices.core.Device
+import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.huawei.hms.languagedetection.factory.LanguageDetectionFactory
+import com.huawei.hms.languagedetection.implementation.GoogleLanguageIdentification
+import com.huawei.hms.languagedetection.implementation.HuaweiLanguageDetection
+import com.huawei.hms.languagedetection.implementation.ILanguageDetection
+
+class LanguageDetector private constructor() {
+    companion object {
+        fun getClient(context: Context, confidenceThreshold: Float?): ILanguageDetection?{
+            return when(Device.getMobileServiceType(context)){
+                MobileServiceType.GMS -> {
+                    val languageDetectionFactory = LanguageDetectionFactory.createFactory<GoogleLanguageIdentification>()
+                    var googleLanguageIdentification: ILanguageDetection? = null
+
+                    confidenceThreshold?.let {
+                        googleLanguageIdentification = languageDetectionFactory.create(it)
+                    }?: run { googleLanguageIdentification = languageDetectionFactory.create() }
+
+                    googleLanguageIdentification
+                }
+                MobileServiceType.HMS -> {
+                    val languageDetectionFactory = LanguageDetectionFactory.createFactory<HuaweiLanguageDetection>()
+                    var huaweiLanguageDetection: ILanguageDetection? = null
+
+                    confidenceThreshold?.let {
+                        huaweiLanguageDetection = languageDetectionFactory.create(it)
+                    }?: run { huaweiLanguageDetection = languageDetectionFactory.create() }
+
+                    huaweiLanguageDetection
+                }
+                MobileServiceType.NON -> null
+            }
+        }
+    }
+}
