@@ -792,6 +792,60 @@ The `faceDetection()` function takes a callback lambda function as a parameter. 
 fun faceDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
 ```
 
+## Language Detection
+The language detection service can detect the language of text. ML Kit detects languages in text and returns the language codes (the ISO 639-1 standard is used for languages, other than certain languages specified) and their respective confidences or the language code with the highest confidence.
+
+### How to use
+You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the AndroidManifest.xml file.
+```kt
+<manifest
+    ...
+    <meta-data
+        android:name="com.huawei.hms.ml.DEPENDENCY"
+        android:value= "langdetect"/>
+        
+    <meta-data
+        android:name="com.google.mlkit.vision.DEPENDENCIES"
+        android:value="langid" >
+    ...
+</manifest>
+```
+
+First, get the instance of language detection by calling `HuaweiGoogleLanguageDetector.getClient(....)` The function takes `context`, `huawei api key` and `confidence threshold` as parameters. The `confidence threshold` can be null. If you give a confidence threshold, ML Kit will use the minimum confidence threshold for language detection, otherwise it will use the default ML Kit settings.
+```kt
+val languageDetector = HuaweiGoogleLanguageDetector.getClient(context,"HUAWEI_API_KEY", confidenceThreshold?)
+```
+
+To detect the language of a string, pass the string to the detectLanguage() method.
+```kt
+languageDetector.detectLanguage("sourceText"){ detectResult ->
+            when(detectResult){
+                is DetectionResult.Success -> {
+                    Log.d("Language detection result: ", detectResult.data)
+                }
+                is DetectionResult.Error -> {
+                    Log.d("Language detection result: ", detectResult.errorMessage)
+                }
+            }
+        }
+```
+
+To get the confidence values of a string's most likely languages, pass the string to the detectPossibleLanguages() method.
+```kt
+languageDetector.detectPossibleLanguages("sourceText"){ detectResult ->
+            when(detectResult){
+                is DetectionResult.Success -> {
+                    detectResult.data.forEach { possibleLanguage ->
+                        Log.d("Language detection result: ", "${possibleLanguage.langCode} - ${possibleLanguage.confidence}")  
+                    }
+                }
+                is DetectionResult.Error -> {
+                    Log.d("Language detection result: ", detectResult.errorMessage)
+                }
+            }
+        }
+```
+
 ## Scene
 This library wraps Scene Kit views to use it in your application easily. It has IArView, IAugmentedFaceView and ISceneView interfaces which can be GoogleArView or HuaweiArView etc. It is related to your used service. Custom views created to hold these views: CommonSceneView, CommonAugmentedFaceView, CommonArView. These views also manages lifecycle events of its child views.
 
