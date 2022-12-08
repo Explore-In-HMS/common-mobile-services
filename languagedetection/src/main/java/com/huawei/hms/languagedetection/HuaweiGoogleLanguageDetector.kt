@@ -9,7 +9,7 @@ import com.huawei.hms.languagedetection.implementation.HuaweiLanguageDetection
 import com.huawei.hms.languagedetection.implementation.ILanguageDetection
 import com.huawei.hms.mlsdk.common.MLApplication
 
-class LanguageDetector private constructor() {
+class HuaweiGoogleLanguageDetector private constructor() {
     companion object {
         fun getClient(
             context: Context,
