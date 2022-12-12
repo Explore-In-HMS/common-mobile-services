@@ -23,7 +23,7 @@ import com.hms.lib.commonmobileservices.remoteconfig.huawei.HuaweiRemoteConfig
 
 interface IRemoteConfigService {
     fun setDefaultXml(xml: Int)
-    fun fetchAndApply(callback: (isTaskSuccessfull: ResultData<Boolean>) -> Unit, interval:Long)
+    fun fetchAndApply(callback: (result: ResultData<Unit>) -> Unit, interval:Long)
     fun getString(keyValue: String): String
     fun getBoolean(keyValue: String): Boolean
     fun getLong(keyValue: String): Long

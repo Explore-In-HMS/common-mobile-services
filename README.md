@@ -1740,11 +1740,11 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 
 ## Remoteconfig 
 
-Remoteconfig is a service that allows you to make theme changes or in-app changes according to the situation in your application without the need for any updates.
+Remote config is a service that allows you to make theme changes or in-app changes according to the situation in your application without the need for any updates.
 
 ### How to use
 
-First of all you shoul create a xml file as like this:
+First of all you should create a xml file as like this:
 ```
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <remoteconfig>
@@ -1753,26 +1753,26 @@ First of all you shoul create a xml file as like this:
 </PreferenceScreen>
 ```
 
-At first we initialize `RemoteConfigService` interface as like this:
+At first you initialize `RemoteConfigService` interface as like this:
 
 ```
 val remoteConfig = IRemoteConfigService.Factory.create(context)
 ```
 
 
-Than we can call `setDefaultXml` function for define default key-value xml file to service:
+Than you can call `setDefaultXml` function for define default key-value xml file to service:
 
 ```
 remoteConfig.setDefaultXml(R.xml.remote_config)
 ```
 
-For fetch the last values on the server side we have to call `fetchAndApply` funtion:
+For fetch the last values on the server side you have to call `fetchAndApply` function:
 
 ```
 remoteConfig.fetchAndApply(0)  // 0 is fetch interval time in seconds.
 ```
 
-After we fetch and aplly the changes we can get them to our local variables with `getString(keyValue)` function:
+After you fetch and apply the changes you can get them to your local variables with `getString(keyValue)` function:
 Note: There are 4 getting functions; getString(keyValue), getBoolean(keyValue), getLong(keyValue) and getDouble(keyValue) so you should use the correct one.
 ```
 var valueFromConsole = remoteConfig.getString("testValue") // testValue is my keyValue which I use it while I am searchin my value with this keyValue.

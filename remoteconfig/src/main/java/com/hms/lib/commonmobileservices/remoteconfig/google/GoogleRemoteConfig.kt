@@ -28,7 +28,7 @@ class GoogleRemoteConfig:IRemoteConfigService {
     }
 
     override fun fetchAndApply(
-        callback: (isTaskSuccessfull: ResultData<Boolean>) -> Unit,
+        callback: (result: ResultData<Unit>) -> Unit,
         interval: Long
     ) {
         val configSettings = remoteConfigSettings {

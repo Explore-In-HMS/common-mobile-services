@@ -25,7 +25,7 @@ class HuaweiRemoteConfig:IRemoteConfigService {
     }
 
     override fun fetchAndApply(
-        callback: (IsTaskSuccessfull: ResultData<Boolean>) -> Unit,
+        callback: (result: ResultData<Unit>) -> Unit,
         interval: Long
     ) {
         config.fetch(interval)
