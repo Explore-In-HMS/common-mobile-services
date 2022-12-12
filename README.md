@@ -81,6 +81,10 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:speechtotext:<v
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection:<versionName>'
 ```
+### Text Recognition
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>'
+```
 ### Account
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versionName>'
@@ -768,6 +772,28 @@ The `staticImageDetection()` function takes a callback lambda function as a para
 ```kt
 fun staticImageDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
 ```
+## Text Recognition
+The text recognition service can extract text from images of receipts, business cards, and documents. This service is useful for industries such as printing, education, and logistics. You can use it to create apps that handle data entry and check tasks.
+
+### How to use
+Parameters that should be used to use the text recognition feature; bitmap and callback. Then the text which in the image will be recognized.
+```kt
+        HuaweiGoogleTextRecognitionManager(this).textRecognition(bitmap) { result ->
+            when (result) {
+                is RecognitionResult.Success -> {
+                    Log.d("Text Recognition result: ", result.data)
+                }
+                is RecognitionResult.Error -> {
+                    Log.d("Text Recognition result: ", result.errorMessage)
+                }
+            }
+        }
+```
+The `textRecognition()` function takes a callback lambda function as a parameter. The lambda function gives us a `RecognitionResult` sealed class object.
+```kt
+fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResult<Any>) -> Unit)
+```
+
 
 ## Face Detection
 With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
