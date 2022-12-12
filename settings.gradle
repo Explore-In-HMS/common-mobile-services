@@ -19,4 +19,5 @@ include ':identity'
 include ':objectdetection'
 include ':facedetection'
 include ':languagedetection'
+include 'textrecognition'
 rootProject.name = "Common Mobile Services"
