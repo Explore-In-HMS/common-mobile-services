@@ -22,7 +22,6 @@ import com.hms.lib.commonmobileservices.textrecognition.common.RecognitionResult
 interface ITextRecognitionAPI {
 
     fun textRecognition(
-        activity: Activity,
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
         ) {

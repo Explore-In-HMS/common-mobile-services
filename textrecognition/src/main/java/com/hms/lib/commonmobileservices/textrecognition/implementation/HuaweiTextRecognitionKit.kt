@@ -26,7 +26,6 @@ import com.huawei.hms.mlsdk.text.MLLocalTextSetting
 
 class HuaweiTextRecognitionKit : ITextRecognitionAPI {
     override fun textRecognition(
-        activity: Activity,
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
     ) {

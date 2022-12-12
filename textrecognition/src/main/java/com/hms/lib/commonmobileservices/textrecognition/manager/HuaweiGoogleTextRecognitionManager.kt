@@ -33,11 +33,10 @@ class HuaweiGoogleTextRecognitionManager(context: Context) {
     }
 
     fun textRecognition(
-        activity: Activity,
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
 
     ) {
-        textRecognitionService?.textRecognition(activity, bitmap, callback)
+        textRecognitionService?.textRecognition(bitmap, callback)
     }
 }
