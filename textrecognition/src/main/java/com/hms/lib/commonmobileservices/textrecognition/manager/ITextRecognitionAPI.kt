@@ -24,7 +24,5 @@ interface ITextRecognitionAPI {
     fun textRecognition(
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
-        ) {
-
-    }
+        )
 }
