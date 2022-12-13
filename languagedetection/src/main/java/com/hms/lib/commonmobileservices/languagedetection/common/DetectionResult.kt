@@ -1,4 +1,4 @@
-package com.huawei.hms.languagedetection.common
+package com.hms.lib.commonmobileservices.languagedetection.common
 
 import com.hms.lib.commonmobileservices.core.ErrorModel
 

@@ -1,7 +1,7 @@
-package com.huawei.hms.languagedetection.factory
+package com.hms.lib.commonmobileservices.languagedetection.factory
 
-import com.huawei.hms.languagedetection.implementation.HuaweiLanguageDetection
-import com.huawei.hms.languagedetection.implementation.ILanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiLanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 import com.huawei.hms.mlsdk.langdetect.MLLangDetectorFactory
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetectorSetting
 

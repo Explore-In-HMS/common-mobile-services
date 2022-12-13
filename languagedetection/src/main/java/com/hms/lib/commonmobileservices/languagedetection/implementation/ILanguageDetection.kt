@@ -1,7 +1,7 @@
-package com.huawei.hms.languagedetection.implementation
+package com.hms.lib.commonmobileservices.languagedetection.implementation
 
-import com.huawei.hms.languagedetection.common.DetectionResult
-import com.huawei.hms.languagedetection.common.PossibleLanguage
+import com.hms.lib.commonmobileservices.languagedetection.common.DetectionResult
+import com.hms.lib.commonmobileservices.languagedetection.common.PossibleLanguage
 
 interface ILanguageDetection {
     fun detectLanguage(

@@ -1,8 +1,8 @@
-package com.huawei.hms.languagedetection.factory
+package com.hms.lib.commonmobileservices.languagedetection.factory
 
-import com.huawei.hms.languagedetection.implementation.GoogleLanguageIdentification
-import com.huawei.hms.languagedetection.implementation.HuaweiLanguageDetection
-import com.huawei.hms.languagedetection.implementation.ILanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
+import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiLanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 import java.lang.IllegalArgumentException
 
 abstract class LanguageDetectionFactory {

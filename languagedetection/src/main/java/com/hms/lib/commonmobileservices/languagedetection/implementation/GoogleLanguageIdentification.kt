@@ -1,9 +1,9 @@
-package com.huawei.hms.languagedetection.implementation
+package com.hms.lib.commonmobileservices.languagedetection.implementation
 
 import com.google.mlkit.nl.languageid.LanguageIdentifier
 import com.hms.lib.commonmobileservices.core.ErrorModel
-import com.huawei.hms.languagedetection.common.DetectionResult
-import com.huawei.hms.languagedetection.common.PossibleLanguage
+import com.hms.lib.commonmobileservices.languagedetection.common.DetectionResult
+import com.hms.lib.commonmobileservices.languagedetection.common.PossibleLanguage
 
 internal class GoogleLanguageIdentification(
     private val languageIdentifier: LanguageIdentifier

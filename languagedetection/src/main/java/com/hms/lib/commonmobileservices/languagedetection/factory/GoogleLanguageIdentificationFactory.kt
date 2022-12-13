@@ -1,9 +1,9 @@
-package com.huawei.hms.languagedetection.factory
+package com.hms.lib.commonmobileservices.languagedetection.factory
 
 import com.google.mlkit.nl.languageid.LanguageIdentification
 import com.google.mlkit.nl.languageid.LanguageIdentificationOptions
-import com.huawei.hms.languagedetection.implementation.GoogleLanguageIdentification
-import com.huawei.hms.languagedetection.implementation.ILanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
+import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 
 class GoogleLanguageDetectorFactory: LanguageDetectionFactory() {
 

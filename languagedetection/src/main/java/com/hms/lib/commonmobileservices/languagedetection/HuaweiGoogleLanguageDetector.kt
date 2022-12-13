@@ -1,12 +1,12 @@
-package com.huawei.hms.languagedetection
+package com.hms.lib.commonmobileservices.languagedetection
 
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
-import com.huawei.hms.languagedetection.factory.LanguageDetectionFactory
-import com.huawei.hms.languagedetection.implementation.GoogleLanguageIdentification
-import com.huawei.hms.languagedetection.implementation.HuaweiLanguageDetection
-import com.huawei.hms.languagedetection.implementation.ILanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.factory.LanguageDetectionFactory
+import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
+import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiLanguageDetection
+import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 import com.huawei.hms.mlsdk.common.MLApplication
 
 class HuaweiGoogleLanguageDetector private constructor() {

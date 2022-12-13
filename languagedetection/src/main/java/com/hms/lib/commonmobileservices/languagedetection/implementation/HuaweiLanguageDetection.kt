@@ -1,8 +1,8 @@
-package com.huawei.hms.languagedetection.implementation
+package com.hms.lib.commonmobileservices.languagedetection.implementation
 
 import com.hms.lib.commonmobileservices.core.ErrorModel
-import com.huawei.hms.languagedetection.common.DetectionResult
-import com.huawei.hms.languagedetection.common.PossibleLanguage
+import com.hms.lib.commonmobileservices.languagedetection.common.DetectionResult
+import com.hms.lib.commonmobileservices.languagedetection.common.PossibleLanguage
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetector
 
 class HuaweiLanguageDetection(
