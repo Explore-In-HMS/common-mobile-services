@@ -14,20 +14,42 @@
 package com.hms.lib.commonmobileservices.imageclassification.implementation
 
 import android.graphics.Bitmap
-import android.util.Log
+import com.hms.lib.commonmobileservices.core.ErrorModel
+import com.hms.lib.commonmobileservices.imageclassification.common.ClassificationResult
+import com.hms.lib.commonmobileservices.imageclassification.common.ImageLabel
 import com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer
 import com.huawei.hms.mlsdk.common.MLFrame
 
 class HuaweiImageClassification(
     private val analyzer: MLImageClassificationAnalyzer
-): IImageClassification {
-    override fun analyseImage(bitmap: Bitmap) {
+) : IImageClassification {
+    override fun analyseImage(
+        bitmap: Bitmap,
+        callback: (classificationResult: ClassificationResult<List<ImageLabel>>) -> Unit
+    ) {
         val frame = MLFrame.fromBitmap(bitmap)
         analyzer.asyncAnalyseFrame(frame)
-            .addOnSuccessListener {
-                Log.d("Classification",it.toString())
-            }.addOnFailureListener {
-                Log.d("Classification",it.localizedMessage ?: "Error")
+            .addOnSuccessListener { classification ->
+                callback(
+                    ClassificationResult.Success(
+                        classification.map {
+                            ImageLabel(
+                                name = it.name,
+                                possibility = it.possibility
+                            )
+                        }
+                    )
+                )
+            }.addOnFailureListener { e ->
+                callback(
+                    ClassificationResult.Error(
+                        errorMessage = e.localizedMessage,
+                        errorModel = ErrorModel(
+                            message = e.message,
+                            exception = e
+                        )
+                    )
+                )
             }
     }
 

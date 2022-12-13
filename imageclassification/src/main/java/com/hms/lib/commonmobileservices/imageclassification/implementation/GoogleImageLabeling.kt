@@ -14,21 +14,43 @@
 package com.hms.lib.commonmobileservices.imageclassification.implementation
 
 import android.graphics.Bitmap
-import android.util.Log
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeler
+import com.hms.lib.commonmobileservices.core.ErrorModel
+import com.hms.lib.commonmobileservices.imageclassification.common.ClassificationResult
+import com.hms.lib.commonmobileservices.imageclassification.common.ImageLabel
 
 class GoogleImageLabeling(
     private val imageLabeler: ImageLabeler
-): IImageClassification {
-    override fun analyseImage(bitmap: Bitmap) {
-        val image = InputImage.fromBitmap(bitmap,0)
+) : IImageClassification {
+    override fun analyseImage(
+        bitmap: Bitmap,
+        callback: (classificationResult: ClassificationResult<List<ImageLabel>>) -> Unit
+    ) {
+        val image = InputImage.fromBitmap(bitmap, 0)
         imageLabeler.process(image)
             .addOnSuccessListener { labels ->
-                Log.d("Labeling",labels.toString())
+                callback(
+                    ClassificationResult.Success(
+                        labels.map {
+                            ImageLabel(
+                                name = it.text,
+                                possibility = it.confidence
+                            )
+                        }
+                    )
+                )
             }
             .addOnFailureListener { e ->
-                Log.d("Labeling",e.localizedMessage ?: "Error")
+                callback(
+                    ClassificationResult.Error(
+                        errorMessage = e.localizedMessage,
+                        errorModel = ErrorModel(
+                            message = e.message,
+                            exception = e
+                        )
+                    )
+                )
             }
     }
 

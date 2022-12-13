@@ -14,8 +14,14 @@
 package com.hms.lib.commonmobileservices.imageclassification.implementation
 
 import android.graphics.Bitmap
+import com.hms.lib.commonmobileservices.imageclassification.common.ClassificationResult
+import com.hms.lib.commonmobileservices.imageclassification.common.ImageLabel
 
 interface IImageClassification {
-    fun analyseImage(bitmap: Bitmap)
+    fun analyseImage(
+        bitmap: Bitmap,
+        callback: (classificationResult: ClassificationResult<List<ImageLabel>>) -> Unit
+    )
+
     fun stopAnalyzer()
 }
