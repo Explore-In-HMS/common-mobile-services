@@ -22,4 +22,6 @@ class GoogleImageLabeling(
     override fun analyseImage(bitmap: Bitmap) {
         TODO("Not yet implemented")
     }
+
+    override fun stopAnalyzer() {}
 }

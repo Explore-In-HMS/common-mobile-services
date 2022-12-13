@@ -14,12 +14,24 @@
 package com.hms.lib.commonmobileservices.imageclassification.implementation
 
 import android.graphics.Bitmap
+import android.util.Log
 import com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer
+import com.huawei.hms.mlsdk.common.MLFrame
 
 class HuaweiImageClassification(
     private val analyzer: MLImageClassificationAnalyzer
 ): IImageClassification {
     override fun analyseImage(bitmap: Bitmap) {
-        TODO("Not yet implemented")
+        val frame = MLFrame.fromBitmap(bitmap)
+        analyzer.asyncAnalyseFrame(frame)
+            .addOnSuccessListener {
+                Log.d("Classification",it.toString())
+            }.addOnFailureListener {
+                Log.d("Classification",it.localizedMessage ?: "Error")
+            }
+    }
+
+    override fun stopAnalyzer() {
+        analyzer.stop()
     }
 }

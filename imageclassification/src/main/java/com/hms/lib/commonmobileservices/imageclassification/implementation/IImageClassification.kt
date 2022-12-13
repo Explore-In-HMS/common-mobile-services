@@ -17,4 +17,5 @@ import android.graphics.Bitmap
 
 interface IImageClassification {
     fun analyseImage(bitmap: Bitmap)
+    fun stopAnalyzer()
 }
