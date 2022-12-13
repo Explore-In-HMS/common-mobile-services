@@ -14,13 +14,22 @@
 package com.hms.lib.commonmobileservices.imageclassification.implementation
 
 import android.graphics.Bitmap
+import android.util.Log
+import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.label.ImageLabeler
 
 class GoogleImageLabeling(
     private val imageLabeler: ImageLabeler
 ): IImageClassification {
     override fun analyseImage(bitmap: Bitmap) {
-        TODO("Not yet implemented")
+        val image = InputImage.fromBitmap(bitmap,0)
+        imageLabeler.process(image)
+            .addOnSuccessListener { labels ->
+                Log.d("Labeling",labels.toString())
+            }
+            .addOnFailureListener { e ->
+                Log.d("Labeling",e.localizedMessage ?: "Error")
+            }
     }
 
     override fun stopAnalyzer() {}
