@@ -20,4 +20,6 @@ include ':objectdetection'
 include ':facedetection'
 include ':languagedetection'
 include 'textrecognition'
+include ':remoteconfig'
 rootProject.name = "Common Mobile Services"
+

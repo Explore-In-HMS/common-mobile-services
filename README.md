@@ -10,7 +10,7 @@ different services without modifying your app code.
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
 If you want to contribute don't hesitate to create PR's :)
 
-Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Account`, `Auth`, `Safety`, `Site`, `Crash`, `Push`, `Scene` and `Identity`.
+Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Account`, `Auth`, `Safety`, `Site`, `Crash`, `Push`, `Scene`, `Identity` and `Remoteconfig`.
 
 ## How to install
 
@@ -117,7 +117,10 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:site:<versionNa
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:identity:<versionName>'
 ```
-
+### Remoteconfig
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:remoteconfig:<versionName>'
+```
 ## Result Data
 Libraries usually return data in a common data wrapper class: `ResultData`. It has three states: `Success`, `Failed` and `Loading`. This wrapper class helps us to manage the data status.
 ```kt
@@ -1733,4 +1736,44 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
         }
     }
 }
+```
+
+## Remoteconfig 
+
+Remote config is a service that allows you to make theme changes or in-app changes according to the situation in your application without the need for any updates.
+
+### How to use
+
+First of all you should create a xml file as like this:
+```
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <remoteconfig>
+        <value key="testValue">testSituations</value>
+    </remoteconfig>
+</PreferenceScreen>
+```
+
+At first you initialize `RemoteConfigService` interface as like this:
+
+```
+val remoteConfig = IRemoteConfigService.Factory.create(context)
+```
+
+
+Than you can call `setDefaultXml` function for define default key-value xml file to service:
+
+```
+remoteConfig.setDefaultXml(R.xml.remote_config)
+```
+
+For fetch the last values on the server side you have to call `fetchAndApply` function:
+
+```
+remoteConfig.fetchAndApply(0)  // 0 is fetch interval time in seconds.
+```
+
+After you fetch and apply the changes you can get them to your local variables with `getString(keyValue)` function:
+Note: There are 4 getting functions; getString(keyValue), getBoolean(keyValue), getLong(keyValue) and getDouble(keyValue) so you should use the correct one.
+```
+var valueFromConsole = remoteConfig.getString("testValue") // testValue is my keyValue which I use it while I am searchin my value with this keyValue.
 ```
