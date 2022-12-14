@@ -20,13 +20,13 @@ import com.hms.lib.commonmobileservices.languagedetection.factory.LanguageDetect
 import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
 import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiLanguageDetection
 import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
+import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.mlsdk.common.MLApplication
 
 class HuaweiGoogleLanguageDetector private constructor() {
     companion object {
         fun getClient(
             context: Context,
-            huaweiApiKey: String,
             confidenceThreshold: Float? = null
         ): ILanguageDetection {
             return when (Device.getMobileServiceType(context)) {
@@ -42,7 +42,9 @@ class HuaweiGoogleLanguageDetector private constructor() {
                     googleLanguageIdentification
                 }
                 MobileServiceType.HMS -> {
-                    MLApplication.getInstance().apiKey = huaweiApiKey
+                    MLApplication.getInstance().apiKey =
+                        AGConnectServicesConfig.fromContext(context)
+                            .getString("client/api_key")
                     val languageDetectionFactory =
                         LanguageDetectionFactory.createFactory<HuaweiLanguageDetection>()
                     lateinit var huaweiLanguageDetection: ILanguageDetection

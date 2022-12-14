@@ -20,6 +20,8 @@ import com.hms.lib.commonmobileservices.imageclassification.factory.ImageClassif
 import com.hms.lib.commonmobileservices.imageclassification.implementation.GoogleImageLabeling
 import com.hms.lib.commonmobileservices.imageclassification.implementation.HuaweiImageClassification
 import com.hms.lib.commonmobileservices.imageclassification.implementation.IImageClassification
+import com.huawei.agconnect.config.AGConnectServicesConfig
+import com.huawei.hms.mlsdk.common.MLApplication
 
 class ImageClassification {
     companion object {
@@ -40,6 +42,9 @@ class ImageClassification {
                     googleImageLabeling
                 }
                 MobileServiceType.HMS -> {
+                    MLApplication.getInstance().apiKey =
+                        AGConnectServicesConfig.fromContext(context)
+                            .getString("client/api_key")
                     val imageClassificationFactory =
                         ImageClassificationFactory.createFactory<HuaweiImageClassification>()
                     lateinit var huaweiImageClassification: IImageClassification
