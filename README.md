@@ -10,7 +10,7 @@ different services without modifying your app code.
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
 If you want to contribute don't hesitate to create PR's :)
 
-Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Scene`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
+Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Scene`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
 ## How to install
 
@@ -76,6 +76,10 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:translate:<vers
 ### Speech To Text 
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:speechtotext:<versionName>'
+```
+### Text To Speech
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:texttospeech:<versionName>'
 ```
 ### Object Detection
 ```gradle
@@ -769,7 +773,29 @@ The `parseSpeechToTextData()` function takes a callback lambda function as a par
 ```kt
 fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent, resultCode:Int)
 ```
+## Text To Speech
+Text to speech (TTS) can convert text information into audio output in real time. Rich timbres are provided and the volume and speed can be adjusted (5x adjustment is supported for Chinese and English), thereby natural voices can be produced. This service uses the deep neural network (DNN) synthesis mode and can be quickly integrated through the on-device SDK to generate audio data in real time. [Click here](https://developer.huawei.com/consumer/en/doc/development/hiai-References/mlsdktts-overview-0000001050167594#section17784135144012) to view instantly supported text to speech languages and person types.
 
+### How to use
+The text to speech process is started with the following line of code. The languageCode and personType must be chosen.
+```kt
+HuaweiGoogleTextToSpeechManager(this).runTextToSpeech(
+                    "Hello, how are you?",
+                    this,
+                    API_KEY,
+                    "en-US",
+                    "en-US-st-3"
+                )
+```
+
+The `runTextToSpeech()` function takes text, activity, apiKey, languageCode, personType as a parameter. Then the text to speech process will start.
+```kt
+fun runTextToSpeech(text: String, activity: Activity, apiKey: String, languageCode: String, personType: String)
+```
+The `stopTextToSpeech()` function stops the speech process.
+```kt
+fun stopTextToSpeech()
+```
 ## Object Detection
 The object detection and tracking service can detect and track multiple objects in an image, so they can be located and classified in real time. A maximum of eight objects can be detected and tracked concurrently. The following object categories are supported: household products, fashion goods, food, places, plants, faces, and others.
 
