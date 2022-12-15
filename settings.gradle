@@ -22,5 +22,6 @@ include ':languagedetection'
 include ':imageclassification'
 include 'textrecognition'
 include ':remoteconfig'
+include ':texttospeech'
 rootProject.name = "Common Mobile Services"
 
