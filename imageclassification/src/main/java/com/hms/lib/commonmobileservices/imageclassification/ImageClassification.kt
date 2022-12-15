@@ -11,49 +11,49 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.hms.lib.commonmobileservices.languagedetection
+package com.hms.lib.commonmobileservices.imageclassification
 
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
-import com.hms.lib.commonmobileservices.languagedetection.factory.LanguageDetectionFactory
-import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
-import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiLanguageDetection
-import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
+import com.hms.lib.commonmobileservices.imageclassification.factory.ImageClassificationFactory
+import com.hms.lib.commonmobileservices.imageclassification.implementation.GoogleImageLabeling
+import com.hms.lib.commonmobileservices.imageclassification.implementation.HuaweiImageClassification
+import com.hms.lib.commonmobileservices.imageclassification.implementation.IImageClassification
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.mlsdk.common.MLApplication
 
-class HuaweiGoogleLanguageDetector private constructor() {
+class ImageClassification {
     companion object {
         fun getClient(
             context: Context,
             confidenceThreshold: Float? = null
-        ): ILanguageDetection {
+        ): IImageClassification {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
-                    val languageDetectionFactory =
-                        LanguageDetectionFactory.createFactory<GoogleLanguageIdentification>()
-                    lateinit var googleLanguageIdentification: ILanguageDetection
+                    val imageLabelingFactory =
+                        ImageClassificationFactory.createFactory<GoogleImageLabeling>()
+                    lateinit var googleImageLabeling: IImageClassification
 
                     confidenceThreshold?.let {
-                        googleLanguageIdentification = languageDetectionFactory.create(it)
-                    } ?: run { googleLanguageIdentification = languageDetectionFactory.create() }
+                        googleImageLabeling = imageLabelingFactory.create(it)
+                    } ?: run { googleImageLabeling = imageLabelingFactory.create() }
 
-                    googleLanguageIdentification
+                    googleImageLabeling
                 }
                 MobileServiceType.HMS -> {
                     MLApplication.getInstance().apiKey =
                         AGConnectServicesConfig.fromContext(context)
                             .getString("client/api_key")
-                    val languageDetectionFactory =
-                        LanguageDetectionFactory.createFactory<HuaweiLanguageDetection>()
-                    lateinit var huaweiLanguageDetection: ILanguageDetection
+                    val imageClassificationFactory =
+                        ImageClassificationFactory.createFactory<HuaweiImageClassification>()
+                    lateinit var huaweiImageClassification: IImageClassification
 
                     confidenceThreshold?.let {
-                        huaweiLanguageDetection = languageDetectionFactory.create(it)
-                    } ?: run { huaweiLanguageDetection = languageDetectionFactory.create() }
+                        huaweiImageClassification = imageClassificationFactory.create(it)
+                    } ?: run { huaweiImageClassification = imageClassificationFactory.create() }
 
-                    huaweiLanguageDetection
+                    huaweiImageClassification
                 }
                 MobileServiceType.NON -> throw IllegalArgumentException()
             }
