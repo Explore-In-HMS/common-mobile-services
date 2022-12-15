@@ -109,11 +109,16 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
                 Manifest.permission.ACCESS_COARSE_LOCATION
                 )
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) permissionList.add(Manifest.permission.ACTIVITY_RECOGNITION)
               if(ActivityCompat.checkSelfPermission(
-                    context,
-                    permissionList.toTypedArray().toString()
-                ) == PackageManager.PERMISSION_GRANTED){
+                      context, Manifest.permission.ACCESS_FINE_LOCATION
+                  ) == PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(
+                      context, Manifest.permission.ACCESS_COARSE_LOCATION
+                  ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                      context, "com.huawei.hms.permission.ACTIVITY_RECOGNITION"
+                  ) == PackageManager.PERMISSION_GRANTED && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+                  || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
+                      context, Manifest.permission.ACTIVITY_RECOGNITION
+                  ) == PackageManager.PERMISSION_GRANTED) ) ){
                 var awarenessData: AwarenessData?
                 val behaviourResultData: MutableList<Int> = mutableListOf()
                 val task = Awareness.getCaptureClient(context).behavior
