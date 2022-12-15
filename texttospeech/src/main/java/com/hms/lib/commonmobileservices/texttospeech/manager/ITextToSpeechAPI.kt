@@ -15,17 +15,17 @@
 package com.hms.lib.commonmobileservices.texttospeech.manager
 
 import android.app.Activity
-import com.hms.lib.commonmobileservices.core.ResultData
 
 interface ITextToSpeechAPI {
 
     fun runTextToSpeech(
         text: String,
-        callback: (detectedText: ResultData<String>) -> Unit,
         activity: Activity,
         apiKey: String,
         languageCode: String,
-        personType: String,
+        personType: String
     )
+
+    fun stopTextToSpeech()
 
 }

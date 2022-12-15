@@ -15,7 +15,6 @@
 package com.hms.lib.commonmobileservices.texttospeech
 
 import android.app.Activity
-import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.texttospeech.manager.ITextToSpeechAPI
 import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.tts.MLTtsConfig
@@ -23,24 +22,26 @@ import com.huawei.hms.mlsdk.tts.MLTtsEngine
 
 class HuaweiTextToSpeechKit : ITextToSpeechAPI {
 
-    private lateinit var mlTtsConfig: MLTtsConfig
-    private lateinit var mlTtsEngine: MLTtsEngine
+    companion object {
+        private val mLTtsConfig: MLTtsConfig = MLTtsConfig()
+        private lateinit var mLTtsEngine: MLTtsEngine
+    }
 
     override fun runTextToSpeech(
         text: String,
-        callback: (detectedText: ResultData<String>) -> Unit,
         activity: Activity,
         apiKey: String,
         languageCode: String,
-        personType: String,
+        personType: String
     ) {
         MLApplication.getInstance().apiKey = apiKey
-        mlTtsConfig = MLTtsConfig().setLanguage(languageCode).setPerson(personType).setSpeed(1.0f)
-            .setVolume(1.0f)
-        mlTtsEngine = MLTtsEngine(mlTtsConfig)
-        mlTtsEngine.setPlayerVolume(20)
-        mlTtsEngine.updateConfig(mlTtsConfig)
-        mlTtsEngine.speak(text, MLTtsEngine.QUEUE_APPEND)
+        mLTtsConfig.setLanguage(languageCode).setPerson(personType).setSpeed(1.0f).volume = 1.0f
+        mLTtsEngine = MLTtsEngine(mLTtsConfig)
+        mLTtsEngine.speak(text, MLTtsEngine.QUEUE_FLUSH)
     }
 
+    override fun stopTextToSpeech() {
+        mLTtsEngine.stop()
+        mLTtsEngine.shutdown()
+    }
 }

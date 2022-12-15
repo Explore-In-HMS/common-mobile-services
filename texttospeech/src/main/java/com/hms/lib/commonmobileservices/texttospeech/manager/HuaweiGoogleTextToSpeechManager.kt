@@ -18,7 +18,6 @@ import android.app.Activity
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
-import com.hms.lib.commonmobileservices.core.ResultData
 
 class HuaweiGoogleTextToSpeechManager(context: Context) {
 
@@ -35,7 +34,6 @@ class HuaweiGoogleTextToSpeechManager(context: Context) {
 
     fun runTextToSpeech(
         text: String,
-        callback: (detectedText: ResultData<String>) -> Unit,
         activity: Activity,
         apiKey: String,
         languageCode: String,
@@ -43,12 +41,15 @@ class HuaweiGoogleTextToSpeechManager(context: Context) {
     ) {
         textToSpeechService?.runTextToSpeech(
             text,
-            callback,
             activity,
             apiKey,
             languageCode,
             personType
         )
+    }
+
+    fun stopTextToSpeech() {
+        textToSpeechService?.stopTextToSpeech()
     }
 
 }

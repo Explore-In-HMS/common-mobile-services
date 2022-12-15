@@ -15,38 +15,41 @@
 package com.hms.lib.commonmobileservices.texttospeech
 
 import android.app.Activity
-import android.media.VolumeShaper.Configuration
 import android.speech.tts.TextToSpeech
-import android.speech.tts.TextToSpeech.OnInitListener
 import android.util.Log
-import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.texttospeech.manager.ITextToSpeechAPI
 import java.util.*
 
 class GoogleTextToSpeechKit : ITextToSpeechAPI {
 
-    private lateinit var tts: TextToSpeech
+    companion object {
+        private var tts: TextToSpeech? = null
+    }
 
     override fun runTextToSpeech(
         text: String,
-        callback: (detectedText: ResultData<String>) -> Unit,
         activity: Activity,
         apiKey: String,
         languageCode: String,
         personType: String
     ) {
         val localeLanguageCode = Locale(languageCode)
-        tts = TextToSpeech(activity.applicationContext
+        tts = TextToSpeech(
+            activity.applicationContext
         ) { status ->
             if (status == TextToSpeech.SUCCESS) {
-                tts.language = localeLanguageCode
-                tts.setSpeechRate(1.0f)
-                tts.speak(text, TextToSpeech.QUEUE_ADD, null,"")
+                tts?.let {
+                    it.language = localeLanguageCode
+                    it.setSpeechRate(1.0f)
+                    it.speak(text, TextToSpeech.QUEUE_FLUSH, null, "")
+                }
             } else {
                 Log.e("TTS", "Initialization Failed!")
             }
         }
-
     }
 
+    override fun stopTextToSpeech() {
+        tts?.shutdown()
+    }
 }
