@@ -16,7 +16,9 @@ package com.hms.lib.commonmobileservices.location.model
 import android.location.Location
 import java.lang.Exception
 
-data class CommonLocationResult(val location: Location?=null,
-                                val state: LocationResultState = LocationResultState.SUCCESS,
-                                val exception: Exception?=null)
+data class CommonLocationResult(
+    val location: Location? = null,
+    val state: LocationResultState = LocationResultState.SUCCESS,
+    val exception: Exception? = null
+)
 

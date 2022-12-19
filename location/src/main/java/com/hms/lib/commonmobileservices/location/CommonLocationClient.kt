@@ -21,84 +21,99 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.hms.lib.commonmobileservices.core.Work
-import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
+import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.EnableGPSFinalResult
 import com.hms.lib.commonmobileservices.location.model.Priority
 
-abstract class CommonLocationClient(private val activity: Activity,
-                                    lifecycle: Lifecycle,
-                                    private val needBackgroundPermissions: Boolean){
+abstract class CommonLocationClient(
+    private val activity: Activity,
+    lifecycle: Lifecycle,
+    private val needBackgroundPermissions: Boolean
+) {
 
-    var preferredUnsubscribeEvent=Lifecycle.Event.ON_DESTROY
+    var preferredUnsubscribeEvent = Lifecycle.Event.ON_DESTROY
 
     init {
-        lifecycle.addObserver(object : LifecycleObserver{
+        lifecycle.addObserver(object : LifecycleObserver {
 
             @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-            fun pause(){
-                if(preferredUnsubscribeEvent==Lifecycle.Event.ON_PAUSE)
+            fun pause() {
+                if (preferredUnsubscribeEvent == Lifecycle.Event.ON_PAUSE)
                     removeLocationUpdates()
             }
 
             @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-            fun stop(){
-                if(preferredUnsubscribeEvent==Lifecycle.Event.ON_STOP)
+            fun stop() {
+                if (preferredUnsubscribeEvent == Lifecycle.Event.ON_STOP)
                     removeLocationUpdates()
             }
 
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun destroy(){
-                if(preferredUnsubscribeEvent==Lifecycle.Event.ON_DESTROY)
+            fun destroy() {
+                if (preferredUnsubscribeEvent == Lifecycle.Event.ON_DESTROY)
                     removeLocationUpdates()
             }
         })
     }
 
-    private var enableGpsCallback : ((enableGPSFinalResult: EnableGPSFinalResult, error: Exception?) -> Unit)? = null
+    private var enableGpsCallback: ((enableGPSFinalResult: EnableGPSFinalResult, error: Exception?) -> Unit)? =
+        null
 
-    fun enableGps(callback : (enableGPSFinalResult: EnableGPSFinalResult,
-                              error: Exception?) -> Unit){
-
-        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+    fun enableGps(
+        callback: (
+            enableGPSFinalResult: EnableGPSFinalResult,
+            error: Exception?
+        ) -> Unit
+    ) {
+        if (hasLocationPermission(activity)) {
             enableGpsCallback = callback
-            checkLocationSettings(activity){checkGpsEnabledResult, error ->
-                when(checkGpsEnabledResult){
-                    CheckGpsEnabledResult.ENABLED-> callback.invoke(EnableGPSFinalResult.ENABLED,null)
-                    CheckGpsEnabledResult.ERROR -> callback.invoke(EnableGPSFinalResult.FAILED,error)
+            checkLocationSettings(activity) { checkGpsEnabledResult, error ->
+                when (checkGpsEnabledResult) {
+                    CheckGpsEnabledResult.ENABLED -> callback.invoke(
+                        EnableGPSFinalResult.ENABLED,
+                        null
+                    )
+                    CheckGpsEnabledResult.ERROR -> callback.invoke(
+                        EnableGPSFinalResult.FAILED,
+                        error
+                    )
                 }
             }
+        } else {
+            enableGpsCallback = null
+            callback.invoke(
+                EnableGPSFinalResult.FAILED,
+                Exception("No permissions")
+            )
         }
     }
 
-    abstract fun checkLocationSettings(activity: Activity,callback: (checkGpsEnabledResult: CheckGpsEnabledResult,
-                                                                     error: Exception?) -> Unit)
+    abstract fun checkLocationSettings(
+        activity: Activity, callback: (
+            checkGpsEnabledResult: CheckGpsEnabledResult,
+            error: Exception?
+        ) -> Unit
+    )
 
-    fun handleResolutionResult(resultCode: Int){
-        when(resultCode){
+    fun handleResolutionResult(resultCode: Int) {
+        when (resultCode) {
             Activity.RESULT_OK ->             // All required changes were successfully made
-                enableGpsCallback?.invoke(EnableGPSFinalResult.ENABLED,null)
+                enableGpsCallback?.invoke(EnableGPSFinalResult.ENABLED, null)
             Activity.RESULT_CANCELED ->             // The user was asked to change settings, but chose not to
-                enableGpsCallback?.invoke(EnableGPSFinalResult.USER_CANCELLED,null)
+                enableGpsCallback?.invoke(EnableGPSFinalResult.USER_CANCELLED, null)
         }
     }
 
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    fun getLastKnownLocation(locationListener: (CommonLocationResult) -> Unit){
-        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
+    fun getLastKnownLocation(locationListener: (CommonLocationResult) -> Unit) {
+        if (hasLocationPermission(activity)) {
             getLastKnownLocationCore(locationListener)
-        }else{
+        } else {
             ActivityCompat.requestPermissions(activity, getLocationPermissions().toTypedArray(), 2)
         }
     }
@@ -106,25 +121,29 @@ abstract class CommonLocationClient(private val activity: Activity,
     abstract fun getLastKnownLocationCore(locationListener: (CommonLocationResult) -> Unit)
 
     fun requestLocationUpdates(
-        priority: Priority?= Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-        interval: Long?=10000,
-        locationListener: (CommonLocationResult) -> Unit){
-        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            requestLocationUpdatesCore(priority,interval,locationListener)
+        priority: Priority? = Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+        interval: Long? = 10000,
+        locationListener: (CommonLocationResult) -> Unit
+    ) {
+        if (hasLocationPermission(activity)) {
+            requestLocationUpdatesCore(priority, interval, locationListener)
         }
     }
 
-    abstract fun requestLocationUpdatesCore(priority: Priority?= Priority.PRIORITY_BALANCED_POWER_ACCURACY,
-                                            interval: Long?=10000,
-                                            locationListener: (CommonLocationResult) -> Unit)
+    abstract fun requestLocationUpdatesCore(
+        priority: Priority? = Priority.PRIORITY_BALANCED_POWER_ACCURACY,
+        interval: Long? = 10000,
+        locationListener: (CommonLocationResult) -> Unit
+    )
 
     abstract fun removeLocationUpdates()
 
-    protected fun getLocationPermissions() : MutableList<String> {
-        val perms = mutableListOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P && needBackgroundPermissions)
+    protected fun getLocationPermissions(): MutableList<String> {
+        val perms = mutableListOf(
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P && needBackgroundPermissions)
             perms.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
         return perms
     }
@@ -142,7 +161,34 @@ abstract class CommonLocationClient(private val activity: Activity,
         }
     }
 
-    abstract fun setMockMode(isMockMode : Boolean) : Work<Unit>
+    private fun hasLocationPermission(activity: Activity): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+                    || ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            return ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+    }
+
+
+    abstract fun setMockMode(isMockMode: Boolean): Work<Unit>
     abstract fun setMockLocation(location: Location): Work<Unit>
     abstract fun flushLocations(): Work<Unit>
 }

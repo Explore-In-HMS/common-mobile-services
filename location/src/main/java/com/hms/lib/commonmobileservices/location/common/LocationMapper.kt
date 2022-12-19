@@ -106,14 +106,6 @@ fun CommonActivityConversionInfo.toGMSActivityConversionInfo() : ActivityTransit
     return activityConversionInfo.build()
 }
 
-fun ActivityConversionInfo.toCommonActivityConversionInfo() : CommonActivityConversionInfo {
-    return CommonActivityConversionInfo().also { it.activityType=activityType }.also { it.conversionType=conversionType }
-}
-
-fun ActivityTransition.toCommonActivityConversionInfo() : CommonActivityConversionInfo {
-    return CommonActivityConversionInfo().also { it.activityType=activityType }.also { it.conversionType=transitionType }
-}
-
 fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActivityConversionResponse{
     return CommonActivityConversionResponse().also { it -> it.getActivityConversionDataList = activityConversionDatas.map { it.toCommonConversionData() } }
 }
@@ -128,14 +120,6 @@ fun ActivityConversionData.toCommonConversionData(): CommonActivityConversionDat
 
 fun ActivityTransitionEvent.toCommonConversionData(): CommonActivityConversionData{
     return CommonActivityConversionData().also { it.getActivityType = activityType }.also { it.getConversionType= transitionType }.also { it.getElapsedTimeFromReboot = elapsedRealTimeNanos }
-}
-
-fun CommonActivityIdentificationData.toHmsActivityIdentificationData(): ActivityIdentificationData{
-    return ActivityIdentificationData(possibility!!,identificationActivity!!)
-}
-
-fun CommonActivityIdentificationData.toGmsActivityIdentificationData(): DetectedActivity{
-    return DetectedActivity(possibility!!,identificationActivity!!)
 }
 
 fun ActivityIdentificationData.toCommonActivityIdentificationData(): CommonActivityIdentificationData{

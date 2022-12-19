@@ -14,17 +14,12 @@
 package com.hms.lib.commonmobileservices.location.factory
 
 import android.app.Activity
-import android.app.PendingIntent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.location.CommonLocationClient
-import com.hms.lib.commonmobileservices.location.Constants
-import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_FAIL
-import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_SUCCESS
 import com.hms.lib.commonmobileservices.location.Constants.OPEN_LOCATION_SETTING_REQUEST_CODE
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
@@ -39,7 +34,6 @@ class HuaweiLocationClientImpl(
     lifecycle: Lifecycle,
     needBackgroundPermissions: Boolean = false,
 ) : CommonLocationClient(activity, lifecycle, needBackgroundPermissions) {
-    private var activityIdentificationService = ActivityIdentificationService(activity)
     private var fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
 
@@ -49,7 +43,7 @@ class HuaweiLocationClientImpl(
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
                 locationListener.invoke(CommonLocationResult(location))
-            } ?: kotlin.run {
+            } ?: run {
                 locationListener.invoke(
                     CommonLocationResult(
                         null, LocationResultState.NO_LAST_LOCATION,
@@ -69,7 +63,6 @@ class HuaweiLocationClientImpl(
         interval: Long?,
         locationListener: (commonLocationResult: CommonLocationResult) -> Unit
     ) {
-
         val locationRequest = LocationRequest()
         locationRequest.interval = interval ?: 100000
         locationRequest.priority = when (priority) {
@@ -85,18 +78,18 @@ class HuaweiLocationClientImpl(
                 override fun onLocationResult(locationResult: LocationResult?) {
                     locationResult?.let {
                         locationListener.invoke(CommonLocationResult(it.lastLocation))
-                    } ?: kotlin.run {
+                    } ?: run {
                         locationListener.invoke(
                             CommonLocationResult(
                                 null, LocationResultState.FAIL,
-                                Exception("null location")
+                                Exception("location unavailable")
                             )
                         )
                     }
-
                 }
             }
         }
+
         fusedLocationProviderClient.requestLocationUpdates(
             locationRequest, locationCallback,
             Looper.getMainLooper()
@@ -110,43 +103,36 @@ class HuaweiLocationClientImpl(
     override fun removeLocationUpdates() {
         locationCallback?.let {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
-                .addOnSuccessListener {
-                    locationCallback = null
-                    Log.i(
-                        Constants.TAG,
-                        CURRENT_LOCATION_REMOVE_SUCCESS
-                    )
-                }.addOnFailureListener { err ->
-                    Log.i(
-                        Constants.TAG,
-                        CURRENT_LOCATION_REMOVE_FAIL + err.message
-                    )
-                }
+                .addOnSuccessListener { locationCallback = null }
         }
     }
 
     override fun checkLocationSettings(
         activity: Activity,
-        callback: (checkGpsEnabledResult: CheckGpsEnabledResult, error: Exception?) -> Unit
+        callback: (
+            checkGpsEnabledResult: CheckGpsEnabledResult,
+            error: Exception?
+        ) -> Unit
     ) {
         val settingsClient = LocationServices.getSettingsClient(activity)
         val locationSettingRequest = LocationSettingsRequest.Builder().apply {
             addLocationRequest(LocationRequest())
         }.build()
+
         settingsClient.checkLocationSettings(locationSettingRequest).addOnSuccessListener {
             callback.invoke(CheckGpsEnabledResult.ENABLED, null)
-        }.addOnFailureListener {
-            (it as? ApiException)?.let {
-                if (it.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-                    (it as ResolvableApiException).startResolutionForResult(
+        }.addOnFailureListener { exception ->
+            (exception as? ApiException)?.let { apiException ->
+                if (apiException.statusCode == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                    (apiException as ResolvableApiException).startResolutionForResult(
                         activity,
                         OPEN_LOCATION_SETTING_REQUEST_CODE
                     )
                 } else {
-                    callback.invoke(CheckGpsEnabledResult.ERROR, it)
+                    callback.invoke(CheckGpsEnabledResult.ERROR, apiException)
                 }
-            } ?: kotlin.run {
-                callback.invoke(CheckGpsEnabledResult.ERROR, it)
+            } ?: run {
+                callback.invoke(CheckGpsEnabledResult.ERROR, exception)
             }
         }
     }
@@ -169,10 +155,9 @@ class HuaweiLocationClientImpl(
         mockLocation.longitude = location.longitude
         fusedLocationProviderClient.setMockLocation(mockLocation)
             .addOnSuccessListener {
-                worker.addOnSuccessListener { }
+                worker.onSuccess(Unit)
             }.addOnFailureListener {
-                worker.addOnFailureListener {
-                    it.message}
+                worker.onFailure(it)
             }
 
         return worker
@@ -182,10 +167,11 @@ class HuaweiLocationClientImpl(
         val worker: Work<Unit> = Work()
         fusedLocationProviderClient.flushLocations()
             .addOnSuccessListener {
-                worker.addOnSuccessListener {  }
+                worker.onSuccess(Unit)
             }.addOnFailureListener {
-                worker.addOnFailureListener { it }
+                worker.onFailure(it)
             }
+
         return worker
     }
 }

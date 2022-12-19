@@ -13,95 +13,44 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.factory
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.IntentSender
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
-import android.util.Log
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.tasks.Task
 import com.hms.lib.commonmobileservices.core.Work
-import com.hms.lib.commonmobileservices.location.Constants
-import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_FAIL
-import com.hms.lib.commonmobileservices.location.Constants.CURRENT_LOCATION_REMOVE_SUCCESS
-import com.hms.lib.commonmobileservices.location.Constants.OPEN_LOCATION_SETTING_REQUEST_CODE
-import com.hms.lib.commonmobileservices.location.model.Priority
 import com.hms.lib.commonmobileservices.location.CommonLocationClient
+import com.hms.lib.commonmobileservices.location.Constants.OPEN_LOCATION_SETTING_REQUEST_CODE
 import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
 import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.LocationResultState
+import com.hms.lib.commonmobileservices.location.model.Priority
 
 class GoogleLocationClientImpl(
-    private val activity: Activity,
+    activity: Activity,
     lifecycle: Lifecycle,
-    needBackgroundPermissions:Boolean=false
-) : CommonLocationClient(activity,lifecycle,needBackgroundPermissions) {
-    private var activityIdentificationService = ActivityRecognitionClient(activity)
+    needBackgroundPermissions: Boolean = false
+) : CommonLocationClient(activity, lifecycle, needBackgroundPermissions) {
     private var fusedLocationProviderClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(activity)
 
     var locationCallback: LocationCallback? = null
 
-    override fun checkLocationSettings(
-        activity: Activity,
-        callback: (checkGpsEnabledResult: CheckGpsEnabledResult, error: Exception?) -> Unit
-    ) {
-        val locationRequest = LocationRequest.create()
-        locationRequest.interval = 100000
-        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-
-        val builder = LocationSettingsRequest.Builder()
-            .addLocationRequest(locationRequest)
-
-        val client: SettingsClient = LocationServices.getSettingsClient(activity)
-        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
-
-        task.addOnSuccessListener { locationSettingsResponse ->
-            callback.invoke(CheckGpsEnabledResult.ENABLED, null)
-        }
-
-        task.addOnFailureListener { exception ->
-            if (exception is ResolvableApiException) {
-                try {
-                    exception.startResolutionForResult(
-                        activity,
-                        OPEN_LOCATION_SETTING_REQUEST_CODE
-                    )
-                } catch (sendEx: IntentSender.SendIntentException) {
-                    // Ignore the error.
-                }
-            } else callback.invoke(CheckGpsEnabledResult.ERROR, exception)
-        }
-
-
-    }
-
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
-                location?.let {
-                    locationListener.invoke(CommonLocationResult(location))
-                } ?: kotlin.run {
-                    locationListener.invoke(
-                        CommonLocationResult(
-                            null, LocationResultState.NO_LAST_LOCATION,
-                            Exception("no last known location")
-                        )
-                    )
-                }
-            }.addOnFailureListener { err ->
-                locationListener.invoke(
-                    CommonLocationResult(null, LocationResultState.FAIL, err)
-                )
-            }
+            locationListener.invoke(CommonLocationResult(location))
+        }.addOnFailureListener { err ->
+            locationListener.invoke(
+                CommonLocationResult(null, LocationResultState.FAIL, err)
+            )
         }
+    }
 
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdatesCore(
@@ -123,10 +72,19 @@ class GoogleLocationClientImpl(
         if (locationCallback == null) {
             locationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
-                    locationResult.let {
-                        it.lastLocation
-                        locationListener.invoke(CommonLocationResult(it.lastLocation))
-                        locationListener.invoke(
+                    locationListener.invoke(CommonLocationResult(locationResult.lastLocation))
+                }
+
+                override fun onLocationAvailability(locationAvailability: LocationAvailability) {
+                    super.onLocationAvailability(locationAvailability)
+                    if (!locationAvailability.isLocationAvailable) {
+                        if (!isLocationEnabled()) locationListener.invoke(
+                            CommonLocationResult(
+                                null,
+                                LocationResultState.GPS_DISABLED, Exception("User disabled gps")
+                            )
+                        )
+                        else locationListener.invoke(
                             CommonLocationResult(
                                 null, LocationResultState.LOCATION_UNAVAILABLE,
                                 Exception("location unavailable")
@@ -134,58 +92,57 @@ class GoogleLocationClientImpl(
                         )
                     }
                 }
-
-                override fun onLocationAvailability(p0: LocationAvailability) {
-                    super.onLocationAvailability(p0)
-                    p0.let {
-                        if (!it.isLocationAvailable) {
-                            if (!isLocationEnabled()) locationListener.invoke(
-                                CommonLocationResult(
-                                    null,
-                                    LocationResultState.GPS_DISABLED, Exception("User disabled gps")
-                                )
-                            )
-                            else locationListener.invoke(
-                                CommonLocationResult(
-                                    null, LocationResultState.LOCATION_UNAVAILABLE,
-                                    Exception("location unavailable")
-                                )
-                            )
-                        }
-                    }
-                }
             }
         }
 
-        if(ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            || ActivityCompat.checkSelfPermission(activity,Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            fusedLocationProviderClient.requestLocationUpdates(
-                locationRequest, locationCallback!!,
-                Looper.getMainLooper()
-            ).addOnFailureListener { err ->
-                locationListener.invoke(
-                    CommonLocationResult(null, LocationResultState.FAIL, err)
-                )
-            }
+        fusedLocationProviderClient.requestLocationUpdates(
+            locationRequest, locationCallback!!,
+            Looper.getMainLooper()
+        ).addOnFailureListener { err ->
+            locationListener.invoke(
+                CommonLocationResult(null, LocationResultState.FAIL, err)
+            )
         }
     }
 
     override fun removeLocationUpdates() {
-        locationCallback?.let {
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback!!)
-                .addOnSuccessListener {
-                    locationCallback = null
-                    Log.i(
-                        Constants.TAG,
-                        CURRENT_LOCATION_REMOVE_SUCCESS
+        locationCallback?.let { callback ->
+            fusedLocationProviderClient.removeLocationUpdates(callback)
+                .addOnSuccessListener { locationCallback = null }
+        }
+    }
+
+    override fun checkLocationSettings(
+        activity: Activity,
+        callback: (
+            checkGpsEnabledResult: CheckGpsEnabledResult,
+            error: Exception?
+        ) -> Unit
+    ) {
+        val locationRequest = LocationRequest.create()
+        locationRequest.interval = 100000
+        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+
+        val client: SettingsClient = LocationServices.getSettingsClient(activity)
+        val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+        task.addOnSuccessListener {
+            callback.invoke(CheckGpsEnabledResult.ENABLED, null)
+        }.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException) {
+                try {
+                    exception.startResolutionForResult(
+                        activity,
+                        OPEN_LOCATION_SETTING_REQUEST_CODE
                     )
-                }.addOnFailureListener { err ->
-                    Log.i(
-                        Constants.TAG,
-                        CURRENT_LOCATION_REMOVE_FAIL + err.message
-                    )
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    // Ignore the error.
+                    callback.invoke(CheckGpsEnabledResult.ERROR, exception)
                 }
+            } else callback.invoke(CheckGpsEnabledResult.ERROR, exception)
         }
     }
 
@@ -209,20 +166,20 @@ class GoogleLocationClientImpl(
         mockLocation.longitude = location.longitude
         fusedLocationProviderClient.setMockLocation(mockLocation)
             .addOnSuccessListener {
-                worker.addOnSuccessListener {  }
+                worker.onSuccess(Unit)
             }.addOnFailureListener {
-                worker.addOnFailureListener { it.message }
+                worker.onFailure(it)
             }
         return worker
     }
 
-    override fun flushLocations():Work<Unit> {
+    override fun flushLocations(): Work<Unit> {
         val worker: Work<Unit> = Work()
         fusedLocationProviderClient.flushLocations()
             .addOnSuccessListener {
-                worker.addOnSuccessListener {  }
+                worker.onSuccess(Unit)
             }.addOnFailureListener {
-                worker.addOnFailureListener { it }
+                worker.onFailure(it)
             }
         return worker
     }
