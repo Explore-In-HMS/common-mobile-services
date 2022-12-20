@@ -13,66 +13,99 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
-import com.google.android.gms.location.ActivityRecognitionClient
+import com.google.android.gms.location.ActivityRecognition
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.hms.location.ActivityIdentificationService
 
-class CommonActivityIdentificationService{
+class CommonActivityIdentificationService {
 
-    fun createActivityConversionUpdates(context: Context,activityConversionReq: CommonActivityConversionReq,pendingIntent: PendingIntent):Work<Unit>{
+    @SuppressLint("MissingPermission")
+    fun createActivityConversionUpdates(
+        context: Context,
+        activityConversionReq: CommonActivityConversionReq,
+        pendingIntent: PendingIntent
+    ): Work<Unit> {
         val worker: Work<Unit> = Work()
-        when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityIdentificationService(context).createActivityConversionUpdates(activityConversionReq.toHMSActivityConversionReq(),pendingIntent)
+        when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityIdentificationService(context).createActivityConversionUpdates(
+                activityConversionReq.toHMSActivityConversionReq(),
+                pendingIntent
+            )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
-            else -> ActivityRecognitionClient(context).requestActivityTransitionUpdates(activityConversionReq.toGMSActivityConversionReq(),pendingIntent)
+                .addOnFailureListener { worker.onFailure(it) }
+            else -> ActivityRecognition.getClient(context).requestActivityTransitionUpdates(
+                activityConversionReq.toGMSActivityConversionReq(),
+                pendingIntent
+            )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
+                .addOnFailureListener { worker.onFailure(it) }
         }
         return worker
     }
 
-    fun createActivityIdentificationUpdates(context: Context,intervalMillis:Long, pendingIntent: PendingIntent):Work<Unit>{
+    @SuppressLint("MissingPermission")
+    fun createActivityIdentificationUpdates(
+        context: Context,
+        intervalMillis: Long,
+        pendingIntent: PendingIntent
+    ): Work<Unit> {
         val worker: Work<Unit> = Work()
-        when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityIdentificationService(context).createActivityIdentificationUpdates(intervalMillis,pendingIntent)
+        when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityIdentificationService(context).createActivityIdentificationUpdates(
+                intervalMillis,
+                pendingIntent
+            )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
-            else -> ActivityRecognitionClient(context).requestActivityUpdates(intervalMillis,pendingIntent)
+                .addOnFailureListener { worker.onFailure(it) }
+            else -> ActivityRecognition.getClient(context)
+                .requestActivityUpdates(intervalMillis, pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
+                .addOnFailureListener { worker.onFailure(it) }
         }
         return worker
     }
 
-    fun deleteActivityConversionUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>{
+    @SuppressLint("MissingPermission")
+    fun deleteActivityConversionUpdates(
+        context: Context,
+        pendingIntent: PendingIntent
+    ): Work<Unit> {
         val worker: Work<Unit> = Work()
-        when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityIdentificationService(context).deleteActivityConversionUpdates(pendingIntent)
+        when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityIdentificationService(context).deleteActivityConversionUpdates(
+                pendingIntent
+            )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
-            else -> ActivityRecognitionClient(context).removeActivityTransitionUpdates(pendingIntent)
+                .addOnFailureListener { worker.onFailure(it) }
+            else -> ActivityRecognition.getClient(context)
+                .removeActivityTransitionUpdates(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { it.message }
+                .addOnFailureListener { worker.onFailure(it) }
         }
         return worker
     }
 
-    fun deleteActivityIdentificationUpdates(context: Context,pendingIntent: PendingIntent):Work<Unit>{
+    @SuppressLint("MissingPermission")
+    fun deleteActivityIdentificationUpdates(
+        context: Context,
+        pendingIntent: PendingIntent
+    ): Work<Unit> {
         val worker: Work<Unit> = Work()
-        when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityIdentificationService(context).deleteActivityIdentificationUpdates(pendingIntent)
+        when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityIdentificationService(context).deleteActivityIdentificationUpdates(
+                pendingIntent
+            )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { worker.addOnFailureListener { it.message } }
-            else -> ActivityRecognitionClient(context).removeActivityUpdates(pendingIntent)
+                .addOnFailureListener { worker.onFailure(it) }
+            else -> ActivityRecognition.getClient(context).removeActivityUpdates(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
-                .addOnFailureListener { it.message }
+                .addOnFailureListener { worker.onFailure(it) }
         }
         return worker
     }
-
 }

@@ -26,10 +26,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.hms.lib.commonmobileservices.core.Work
-import com.hms.lib.commonmobileservices.location.model.CheckGpsEnabledResult
-import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
-import com.hms.lib.commonmobileservices.location.model.EnableGPSFinalResult
-import com.hms.lib.commonmobileservices.location.model.Priority
+import com.hms.lib.commonmobileservices.location.model.*
 
 abstract class CommonLocationClient(
     private val activity: Activity,
@@ -127,6 +124,13 @@ abstract class CommonLocationClient(
     ) {
         if (hasLocationPermission(activity)) {
             requestLocationUpdatesCore(priority, interval, locationListener)
+        } else {
+            locationListener.invoke(
+                CommonLocationResult(
+                    null,
+                    LocationResultState.LOCATION_UNAVAILABLE, Exception("No location permission")
+                )
+            )
         }
     }
 
