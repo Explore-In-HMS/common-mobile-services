@@ -15,6 +15,7 @@
 package com.hms.lib.commonmobileservices.push.services
 
 import android.content.Context
+import android.text.TextUtils
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.push.model.Provider
 import com.hms.lib.commonmobileservices.push.PushService
@@ -42,7 +43,9 @@ class HuaweiPushServiceImpl(private val context: Context) : PushService(context)
                     val appId: String =
                         AGConnectOptionsBuilder().build(context).getString("client/app_id")
                     val token: String = HmsInstanceId.getInstance(context).getToken(appId, "HCM")
-                    work.onSuccess(Token(Provider.Huawei, token))
+                    if (!TextUtils.isEmpty(token)){
+                        work.onSuccess(Token(Provider.Huawei, token))
+                    }
                 } catch (e: ApiException) {
                     work.onFailure(e)
                 }

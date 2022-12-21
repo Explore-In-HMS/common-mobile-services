@@ -53,10 +53,10 @@ class HMSPushService : HmsMessageService() {
                     Bundle().also { it.putSerializable("message", remoteMessage) })
             } else {
                 try {
-                    val data: JSONObject = JSONObject(message.data.toString())
+                    val jsonData = JSONObject(message.data.toString())
                     val sliderPushNotificationMainModel: SliderPushNotification =
                         Gson().fromJson(
-                            data.toString(),
+                            jsonData.toString(),
                             SliderPushNotification::class.java
                         )
                     SliderPushNotificationUtil.show(this, sliderPushNotificationMainModel)
