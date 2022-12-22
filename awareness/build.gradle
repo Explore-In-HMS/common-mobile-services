@@ -4,6 +4,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-awareness:17.1.0' // Don't upgrade the version. Weather API deprecated from upper version.
     implementation 'com.huawei.hms:awareness:3.4.0.302'
     implementation 'com.huawei.hms:location:6.8.0.300'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation "androidx.work:work-runtime-ktx:2.7.1"
     api project(":core")
 }
