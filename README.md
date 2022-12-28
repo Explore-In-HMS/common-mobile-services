@@ -1849,7 +1849,9 @@ remoteConfig.setDefaultXml(R.xml.remote_config)
 For fetch the last values on the server side you have to call `fetchAndApply` function:
 
 ```
-remoteConfig.fetchAndApply(0)  // 0 is fetch interval time in seconds.
+remoteConfig.fetchAndApply({
+            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
+},0)  // Toast message is to show the callback to the user and 0 is fetch interval time in seconds.
 ```
 
 After you fetch and apply the changes you can get them to your local variables with `getString(keyValue)` function:
