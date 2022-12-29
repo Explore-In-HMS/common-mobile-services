@@ -33,7 +33,7 @@ import com.hms.lib.commonmobileservices.mapkit.LocationSource
 import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.hms.lib.commonmobileservices.mapkit.model.*
 
-class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
+class GoogleCommonMapImpl(private val context: Context) : BaseMapImpl() {
 
     private var mapView: MapView = MapView(context)
 
@@ -46,7 +46,6 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     override fun onCreate(bundle: Bundle?) {
         mapView.onCreate(bundle)
     }
-
 
     override fun getMapAsync(onMapReadyListener: (map: CommonMap) -> Unit) {
         mapView.getMapAsync {
@@ -105,7 +104,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), zoomRatio))
     }
 
-    override fun setMyLocationEnabled(myLocationEnabled: Boolean?, context: Context): Boolean {
+    override fun setMyLocationEnabled(myLocationEnabled: Boolean?): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -116,8 +115,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         ) {
             return false
         }
-        map.isMyLocationEnabled = myLocationEnabled!!
-        return true
+        myLocationEnabled?.let {
+            map.isMyLocationEnabled = it
+            return true
+        }?: run { return false }
     }
 
     override fun clear() {
@@ -153,7 +154,10 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun getCameraPosition(): CameraPosition = CameraPosition(
-        com.hms.lib.commonmobileservices.mapkit.model.LatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
+        com.hms.lib.commonmobileservices.mapkit.model.LatLng(
+            map.cameraPosition.target.latitude,
+            map.cameraPosition.target.longitude
+        ),
         map.cameraPosition.zoom,
         map.cameraPosition.tilt,
         map.cameraPosition.bearing
@@ -177,13 +181,12 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         return map.minZoomLevel
     }
 
-
     override fun isCompassEnabled(): Boolean {
         return map.uiSettings.isCompassEnabled
     }
 
     override fun setCompassEnabled(compassEnabled: Boolean?) {
-        map.uiSettings.isCompassEnabled = compassEnabled!!
+        compassEnabled?.let { map.uiSettings.isCompassEnabled = it }
     }
 
     override fun isIndoorLevelPickerEnabled(): Boolean {
@@ -191,7 +194,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setIndoorLevelPickerEnabled(indoorLevelPickerEnabled: Boolean?) {
-        map.uiSettings.isIndoorLevelPickerEnabled = indoorLevelPickerEnabled!!
+        indoorLevelPickerEnabled?.let { map.uiSettings.isIndoorLevelPickerEnabled = it }
     }
 
     override fun isMapToolbarEnabled(): Boolean {
@@ -199,7 +202,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setMapToolbarEnabled(mapToolbarEnabled: Boolean?) {
-        map.uiSettings.isMapToolbarEnabled = mapToolbarEnabled!!
+        mapToolbarEnabled?.let { map.uiSettings.isMapToolbarEnabled = it }
     }
 
     override fun isMyLocationButtonEnabled(): Boolean {
@@ -207,7 +210,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setMyLocationButtonEnabled(myLocationButtonEnabled: Boolean?) {
-        map.uiSettings.isMyLocationButtonEnabled = myLocationButtonEnabled!!
+        myLocationButtonEnabled?.let { map.uiSettings.isMyLocationButtonEnabled = it }
     }
 
     override fun isRotateGesturesEnabled(): Boolean {
@@ -215,7 +218,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setRotateGesturesEnabled(rotateGesturesEnabled: Boolean?) {
-        map.uiSettings.isRotateGesturesEnabled = rotateGesturesEnabled!!
+        rotateGesturesEnabled?.let { map.uiSettings.isRotateGesturesEnabled = it }
     }
 
     override fun isScrollGesturesEnabled(): Boolean {
@@ -223,7 +226,9 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setScrollGesturesEnabled(scrollGesturesEnabled: Boolean?) {
-        map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = scrollGesturesEnabled!!
+        scrollGesturesEnabled?.let {
+            map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = it
+        }
     }
 
     override fun isScrollGesturesEnabledDuringRotateOrZoom(): Boolean {
@@ -231,8 +236,9 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setScrollGesturesEnabledDuringRotateOrZoom(scrollGesturesEnabledDuringRotateOrZoom: Boolean?) {
-        map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom =
-            scrollGesturesEnabledDuringRotateOrZoom!!
+        scrollGesturesEnabledDuringRotateOrZoom?.let {
+            map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = it
+        }
     }
 
     override fun isTiltGesturesEnabled(): Boolean {
@@ -240,7 +246,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setTiltGesturesEnabled(tiltGesturesEnabled: Boolean?) {
-        map.uiSettings.isTiltGesturesEnabled = tiltGesturesEnabled!!
+        tiltGesturesEnabled?.let { map.uiSettings.isTiltGesturesEnabled = it }
     }
 
     override fun isZoomControlsEnabled(): Boolean {
@@ -248,7 +254,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setZoomControlsEnabled(zoomControlsEnabled: Boolean?) {
-        map.uiSettings.isZoomControlsEnabled = zoomControlsEnabled!!
+        zoomControlsEnabled?.let { map.uiSettings.isZoomControlsEnabled = it }
     }
 
     override fun isZoomGesturesEnabled(): Boolean {
@@ -260,12 +266,17 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setAllGesturesEnabled(allGestureEnable: Boolean?) {
-        map.uiSettings.setAllGesturesEnabled(allGestureEnable!!)
+        allGestureEnable?.let { map.uiSettings.setAllGesturesEnabled(it) }
     }
 
     override fun setOnMapClickListener(onClick: (latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng) -> Unit) {
         map.setOnMapClickListener {
-            onClick.invoke(com.hms.lib.commonmobileservices.mapkit.model.LatLng(it.latitude, it.longitude))
+            onClick.invoke(
+                com.hms.lib.commonmobileservices.mapkit.model.LatLng(
+                    it.latitude,
+                    it.longitude
+                )
+            )
         }
     }
 
@@ -278,7 +289,8 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
-        return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions())!!.toGroundOverlay()
+        return map.addGroundOverlay(groundOverlayOptions.toGmsGroundOverlayOptions())!!
+            .toGroundOverlay()
     }
 
     override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
@@ -321,18 +333,20 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         return map.isMyLocationEnabled
     }
 
-    @RequiresPermission(anyOf = [
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION"
-    ])
+    @RequiresPermission(
+        anyOf = [
+            "android.permission.ACCESS_COARSE_LOCATION",
+            "android.permission.ACCESS_FINE_LOCATION"
+        ]
+    )
     override fun setMyLocationEnabled(enabled: Boolean) {
         map.isMyLocationEnabled = enabled
     }
 
     override fun setLocationSource(locationSource: LocationSource) {
-        map.setLocationSource(object: com.google.android.gms.maps.LocationSource{
+        map.setLocationSource(object : com.google.android.gms.maps.LocationSource {
             override fun activate(p0: com.google.android.gms.maps.LocationSource.OnLocationChangedListener) {
-                locationSource.activate(object : LocationSource.OnLocationChangedListener{
+                locationSource.activate(object : LocationSource.OnLocationChangedListener {
                     override fun onLocationChanged(location: Location) {
                         p0.onLocationChanged(location)
                     }
@@ -373,7 +387,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
-        map.setOnMarkerDragListener(object: GoogleMap.OnMarkerDragListener{
+        map.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
             override fun onMarkerDrag(p0: com.google.android.gms.maps.model.Marker) {
                 listener.onMarkerDrag(p0.toMarker())
             }
@@ -385,7 +399,6 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
             override fun onMarkerDragStart(p0: com.google.android.gms.maps.model.Marker) {
                 listener.onMarkerDragStart(p0.toMarker())
             }
-
         })
     }
 
@@ -394,7 +407,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setOnInfoWindowLongClickListener(listener: CommonMap.OnInfoWindowLongClickListener) {
-        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it.toMarker())  }
+        map.setOnInfoWindowLongClickListener { listener.onInfoWindowLongClick(it.toMarker()) }
     }
 
     override fun setOnInfoWindowCloseListener(listener: CommonMap.OnInfoWindowCloseListener) {
@@ -402,7 +415,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
-        map.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter{
+        map.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
             override fun getInfoContents(p0: com.google.android.gms.maps.model.Marker): View {
                 return adapter.getInfoContents(p0.toMarker())
             }
@@ -419,7 +432,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
     }
 
     override fun setOnMyLocationButtonClickListener(listener: CommonMap.OnMyLocationButtonClickListener) {
-        map.setOnMyLocationButtonClickListener { listener.onMyLocationButtonClick()  }
+        map.setOnMyLocationButtonClickListener { listener.onMyLocationButtonClick() }
     }
 
     override fun setOnMapLoadedCallback(callback: CommonMap.OnMapLoadedCallback) {
@@ -478,7 +491,7 @@ class GoogleCommonMapImpl(context: Context) : BaseMapImpl(context) {
         map.setMapStyle(MapStyleOptions(json))
     }
 
-    override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
+    override fun setMapStyleFromRawResource(resourceId: Int) {
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
         BitmapDescriptorFactory.defaultMarker()
     }

@@ -24,6 +24,7 @@ import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
 import com.hms.lib.commonmobileservices.mapkit.Projection
 import com.hms.lib.commonmobileservices.mapkit.model.*
+import com.hms.lib.commonmobileservices.mapkit.model.LatLng as CommonLatLng
 import com.huawei.hms.maps.CameraUpdateFactory
 import com.huawei.hms.maps.HuaweiMap
 import com.huawei.hms.maps.MapView
@@ -33,9 +34,10 @@ import com.huawei.hms.maps.model.LatLng
 import com.huawei.hms.maps.model.MapStyleOptions
 import com.huawei.hms.maps.model.MarkerOptions
 
-
-class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImpl(context),
-    CommonMap {
+class HuaweiCommonMapImpl(
+    private val context: Context,
+    apiKey: String? = null
+) : BaseMapImpl() {
 
     private var mapView: MapView = MapView(context)
 
@@ -43,7 +45,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
 
     init {
         apiKey?.let {
-            MapsInitializer.setApiKey(it);
+            MapsInitializer.setApiKey(it)
         }
     }
 
@@ -65,9 +67,11 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     override fun addPolygon(polygonOptions: PolygonOptions): Polygon {
         return map.addPolygon(polygonOptions.toHMSPolygonOptions()).toPolygon()
     }
+
     override fun addPolyline(polylineOptions: PolylineOptions): Polyline {
         return map.addPolyline(polylineOptions.toHMSPolylineOptions()).toPolyline()
     }
+
     override fun addMarker(
         title: String?,
         snippet: String?,
@@ -90,7 +94,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         markerClickCallback: (
             markerTitle: String?,
             markerSnippet: String?,
-            latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng
+            latLng: CommonLatLng
         ) -> Unit
     ) {
         map.setOnInfoWindowClickListener { marker ->
@@ -102,9 +106,9 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         }
     }
 
-    override fun setOnMapClickListener(onClick: (latLng: com.hms.lib.commonmobileservices.mapkit.model.LatLng) -> Unit) {
+    override fun setOnMapClickListener(onClick: (latLng: CommonLatLng) -> Unit) {
         map.setOnMapClickListener {
-            onClick.invoke(com.hms.lib.commonmobileservices.mapkit.model.LatLng(it.latitude, it.longitude))
+            onClick.invoke(CommonLatLng(it.latitude, it.longitude))
         }
     }
 
@@ -120,7 +124,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         )
     }
 
-    override fun setMyLocationEnabled(myLocationEnabled: Boolean?, context: Context): Boolean {
+    override fun setMyLocationEnabled(myLocationEnabled: Boolean?): Boolean {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -131,8 +135,10 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         ) {
             return false
         }
-        map.isMyLocationEnabled = myLocationEnabled!!
-        return true
+        myLocationEnabled?.let {
+            map.isMyLocationEnabled = it
+            return true
+        }?: run { return false }
     }
 
     override fun clear() {
@@ -171,7 +177,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         println("huawei map: $map")
         println("camera position huawei: ${map.cameraPosition.target}")
         return CameraPosition(
-            com.hms.lib.commonmobileservices.mapkit.model.LatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
+            CommonLatLng(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude),
             map.cameraPosition.zoom,
             map.cameraPosition.tilt,
             map.cameraPosition.bearing
@@ -183,7 +189,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setOnCameraMoveStartedListener(listener: CommonMap.OnCameraMoveStartedListener) {
-        map.setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it)}
+        map.setOnCameraMoveStartedListener { listener.onCameraMoveStarted(it) }
     }
 
     override fun getMaxZoomLevel(): Float {
@@ -195,16 +201,15 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setCompassEnabled(compassEnabled: Boolean?) {
-        map.uiSettings.isCompassEnabled = compassEnabled!!
+        compassEnabled?.let { map.uiSettings.isCompassEnabled = it }
     }
 
     override fun isIndoorLevelPickerEnabled(): Boolean {
         return map.uiSettings.isIndoorLevelPickerEnabled
-
     }
 
     override fun setIndoorLevelPickerEnabled(indoorLevelPickerEnabled: Boolean?) {
-        map.uiSettings.isIndoorLevelPickerEnabled = indoorLevelPickerEnabled!!
+        indoorLevelPickerEnabled?.let { map.uiSettings.isIndoorLevelPickerEnabled = it }
     }
 
     override fun isMapToolbarEnabled(): Boolean {
@@ -212,7 +217,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setMapToolbarEnabled(mapToolbarEnabled: Boolean?) {
-        map.uiSettings.isMapToolbarEnabled = mapToolbarEnabled!!
+        mapToolbarEnabled?.let { map.uiSettings.isMapToolbarEnabled = it }
     }
 
     override fun isMyLocationButtonEnabled(): Boolean {
@@ -220,7 +225,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setMyLocationButtonEnabled(myLocationButtonEnabled: Boolean?) {
-        map.uiSettings.isMyLocationButtonEnabled = myLocationButtonEnabled!!
+        myLocationButtonEnabled?.let { map.uiSettings.isMyLocationButtonEnabled = it }
     }
 
     override fun isRotateGesturesEnabled(): Boolean {
@@ -228,7 +233,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setRotateGesturesEnabled(rotateGesturesEnabled: Boolean?) {
-        map.uiSettings.isRotateGesturesEnabled = rotateGesturesEnabled!!
+        rotateGesturesEnabled?.let { map.uiSettings.isRotateGesturesEnabled = it }
     }
 
     override fun isScrollGesturesEnabled(): Boolean {
@@ -236,7 +241,9 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setScrollGesturesEnabled(scrollGesturesEnabled: Boolean?) {
-        map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = scrollGesturesEnabled!!
+        scrollGesturesEnabled?.let {
+            map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = it
+        }
     }
 
     override fun isScrollGesturesEnabledDuringRotateOrZoom(): Boolean {
@@ -244,8 +251,9 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setScrollGesturesEnabledDuringRotateOrZoom(scrollGesturesEnabledDuringRotateOrZoom: Boolean?) {
-        map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom =
-            scrollGesturesEnabledDuringRotateOrZoom!!
+        scrollGesturesEnabledDuringRotateOrZoom?.let {
+            map.uiSettings.isScrollGesturesEnabledDuringRotateOrZoom = it
+        }
     }
 
     override fun isTiltGesturesEnabled(): Boolean {
@@ -253,7 +261,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setTiltGesturesEnabled(tiltGesturesEnabled: Boolean?) {
-        map.uiSettings.isTiltGesturesEnabled = tiltGesturesEnabled!!
+        tiltGesturesEnabled?.let { map.uiSettings.isTiltGesturesEnabled = it }
     }
 
     override fun isZoomControlsEnabled(): Boolean {
@@ -261,7 +269,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setZoomControlsEnabled(zoomControlsEnabled: Boolean?) {
-        map.uiSettings.isZoomControlsEnabled = zoomControlsEnabled!!
+        zoomControlsEnabled?.let { map.uiSettings.isZoomControlsEnabled = it }
     }
 
     override fun isZoomGesturesEnabled(): Boolean {
@@ -273,7 +281,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setAllGesturesEnabled(allGestureEnable: Boolean?) {
-        map.uiSettings.setAllGesturesEnabled(allGestureEnable!!)
+        allGestureEnable?.let { map.uiSettings.setAllGesturesEnabled(it) }
     }
 
     override fun getMinZoomLevel(): Float {
@@ -289,7 +297,8 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun addGroundOverlay(groundOverlayOptions: GroundOverlayOptions): GroundOverlay {
-        return map.addGroundOverlay(groundOverlayOptions.toHmsGroundOverlayOptions()).toGroundOverlay()
+        return map.addGroundOverlay(groundOverlayOptions.toHmsGroundOverlayOptions())
+            .toGroundOverlay()
     }
 
     override fun addTileOverlay(tileOverlayOptions: TileOverlayOptions): TileOverlay {
@@ -337,9 +346,9 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setLocationSource(locationSource: LocationSource) {
-        map.setLocationSource(object : com.huawei.hms.maps.LocationSource{
+        map.setLocationSource(object : com.huawei.hms.maps.LocationSource {
             override fun activate(p0: com.huawei.hms.maps.LocationSource.OnLocationChangedListener?) {
-                locationSource.activate(object: LocationSource.OnLocationChangedListener{
+                locationSource.activate(object : LocationSource.OnLocationChangedListener {
                     override fun onLocationChanged(location: Location) {
                         p0?.onLocationChanged(location)
                     }
@@ -380,7 +389,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setOnMarkerDragListener(listener: CommonMap.OnMarkerDragListener) {
-        map.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener{
+        map.setOnMarkerDragListener(object : HuaweiMap.OnMarkerDragListener {
             override fun onMarkerDragStart(p0: HmsMarker?) {
                 listener.onMarkerDragStart(p0?.toMarker())
             }
@@ -409,7 +418,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
     }
 
     override fun setInfoWindowAdapter(adapter: CommonMap.InfoWindowAdapter) {
-        map.setInfoWindowAdapter(object: HuaweiMap.InfoWindowAdapter{
+        map.setInfoWindowAdapter(object : HuaweiMap.InfoWindowAdapter {
             override fun getInfoContents(p0: HmsMarker?): View {
                 return adapter.getInfoContents(p0?.toMarker())
             }
@@ -485,7 +494,7 @@ class HuaweiCommonMapImpl(context: Context, apiKey: String? = null) : BaseMapImp
         map.setMapStyle(MapStyleOptions(json))
     }
 
-    override fun setMapStyleFromRawResource(context: Context, resourceId: Int) {
+    override fun setMapStyleFromRawResource(resourceId: Int) {
         map.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, resourceId))
     }
 }

@@ -14,5 +14,6 @@
 package com.hms.lib.commonmobileservices.location.model
 
 enum class CheckGpsEnabledResult {
-    ENABLED,ERROR
+    ENABLED,
+    ERROR
 }

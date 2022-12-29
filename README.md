@@ -10,7 +10,7 @@ different services without modifying your app code.
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
 If you want to contribute don't hesitate to create PR's :)
 
-Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Account`, `Auth`, `Safety`, `Site`, `Crash`, `Push`, `Scene` and `Identity`.
+Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Scene`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
 ## How to install
 
@@ -77,6 +77,30 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:translate:<vers
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:speechtotext:<versionName>'
 ```
+### Text To Speech
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:texttospeech:<versionName>'
+```
+### Object Detection
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection:<versionName>'
+```
+### Text Recognition
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>'
+```
+### Face Detection
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:facedetection:<versionName>'
+```
+### Language Detection
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:languagedetection:<versionName>'
+```
+### Image Classification
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:imageclassification:<versionName>'
+```
 ### Account
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versionName>'
@@ -109,7 +133,10 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:site:<versionNa
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:identity:<versionName>'
 ```
-
+### Remote Config
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:remoteconfig:<versionName>'
+```
 ## Result Data
 Libraries usually return data in a common data wrapper class: `ResultData`. It has three states: `Success`, `Failed` and `Loading`. This wrapper class helps us to manage the data status.
 ```kt
@@ -547,6 +574,7 @@ locationClient?.removeLocationUpdates()
           .addOnSuccessListener { }
           .addOnFailureListener { }
    ```
+
 ## Analytics
 It is made to ease logging for your project. You can log your event with a one line of code.
 ### How to use
@@ -602,6 +630,7 @@ If you want to obtain AAID then you can use ```getAAID()``` method. This method 
 ```kt
 CommonAnalytics.instance(this)?.getAAID()
 ```
+
 ## Credit Card Scanner
 This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
 
@@ -638,6 +667,7 @@ data class ScanError(
     }
 }
 ```
+
 ## Awareness
 Awareness SDK provides your app with the ability to obtain contextual information including users' behavior, audio device status, weather, and current time. Depending on the situation, this information can be obtained in certain instantly.
 
@@ -664,6 +694,7 @@ The `getWeather()` or `getBehavior()` or `getHeadset()` or `getTime()` functions
 ```kt
 fun getWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit)
 ```
+
 ## Scan 
 Scan SDK scans and parses all major 1D and 2D barcodes, helping you quickly barcode scanning functions into your apps.
 
@@ -710,6 +741,7 @@ The `performTranslate()` function takes a callback lambda function as a paramete
 ```kt
 fun performTranslate(callback: (translateValue: ResultData<String>) -> Unit, translatingText:String, targetLanguageCode:String, activity: Activity, apiKey:String)
 ```
+
 ## Speech To Text  
 Speech to Text can recognize speech not longer than 60s and convert the input speech into text in real time. This service uses industry-leading deep learning technologies to achieve a recognition accuracy of over 95%. Currently, Mandarin Chinese (including Chinese-English bilingual speech), English, French, German, Spanish, and Italian can be recognized. [Click here](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-References-V1/language-0000001058780607-V1)  to view instantly supported speech to text languages and language codes.
 
@@ -740,6 +772,457 @@ After speaking is done, The result of the speech to text process gets from onAct
 The `parseSpeechToTextData()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
 ```kt
 fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent, resultCode:Int)
+```
+## Text To Speech
+Text to speech (TTS) can convert text information into audio output in real time. Rich timbres are provided and the volume and speed can be adjusted (5x adjustment is supported for Chinese and English), thereby natural voices can be produced. This service uses the deep neural network (DNN) synthesis mode and can be quickly integrated through the on-device SDK to generate audio data in real time. [Click here](https://developer.huawei.com/consumer/en/doc/development/hiai-References/mlsdktts-overview-0000001050167594#section17784135144012) to view instantly supported text to speech languages and person types.
+
+### How to use
+The text to speech process is started with the following line of code. The languageCode and personType must be chosen.
+```kt
+HuaweiGoogleTextToSpeechManager(this).runTextToSpeech(
+                    "Hello, how are you?",
+                    this,
+                    API_KEY,
+                    "en-US",
+                    "en-US-st-3"
+                )
+```
+
+The `runTextToSpeech()` function takes text, activity, apiKey, languageCode, personType as a parameter. Then the text to speech process will start.
+```kt
+fun runTextToSpeech(text: String, activity: Activity, apiKey: String, languageCode: String, personType: String)
+```
+The `stopTextToSpeech()` function stops the speech process.
+```kt
+fun stopTextToSpeech()
+```
+## Object Detection
+The object detection and tracking service can detect and track multiple objects in an image, so they can be located and classified in real time. A maximum of eight objects can be detected and tracked concurrently. The following object categories are supported: household products, fashion goods, food, places, plants, faces, and others.
+
+### How to use
+Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+```kt
+HuaweiGoogleObjectDetectionManager(this).staticImageDetection({
+                when(it) {
+                    is ResultData.Success -> {
+                       Log.d("Object detection result: ", it.data)
+                    }
+                    is ResultData.Failed -> {
+                        Log.d("error: ", error occured)
+                    }
+                }
+
+                },this,bitmap!!,apiKey
+```
+
+The `staticImageDetection()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
+```kt
+fun staticImageDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
+```
+
+## Text Recognition
+The text recognition service can extract text from images of receipts, business cards, and documents. This service is useful for industries such as printing, education, and logistics. You can use it to create apps that handle data entry and check tasks.
+
+### How to use
+Parameters that should be used to use the text recognition feature; bitmap and callback. Then the text which in the image will be recognized.
+```kt
+        HuaweiGoogleTextRecognitionManager(this).textRecognition(bitmap) { result ->
+            when (result) {
+                is RecognitionResult.Success -> {
+                    Log.d("Text Recognition result: ", result.data)
+                }
+                is RecognitionResult.Error -> {
+                    Log.d("Text Recognition result: ", result.errorMessage)
+                }
+            }
+        }
+```
+The `textRecognition()` function takes a callback lambda function as a parameter. The lambda function gives us a `RecognitionResult` sealed class object.
+```kt
+fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResult<Any>) -> Unit)
+```
+
+## Face Detection
+With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
+
+### How to use
+Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+```kt
+HuaweiGoogleFaceDetectionManager(this).faceDetection({
+                when (it) {
+                    is ResultData.Success -> {
+                        Log.d("Object detection result: ", it.data)
+                    }
+                    is ResultData.Failed -> {
+                        Log.d("Object detection result: ", it.data)
+                    }
+                }
+            }, this, bitmap!!, apiKey)
+```
+
+The `faceDetection()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
+```kt
+fun faceDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
+```
+
+## Language Detection
+The language detection service can detect the language of text. ML Kit detects languages in text and returns the language codes (the ISO 639-1 standard is used for languages, other than certain languages specified) and their respective confidences or the language code with the highest confidence.
+
+### How to use
+You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the AndroidManifest.xml file.
+```kt
+<manifest
+    ...
+    <meta-data
+        android:name="com.huawei.hms.ml.DEPENDENCY"
+        android:value= "langdetect"/>
+        
+    <meta-data
+        android:name="com.google.mlkit.vision.DEPENDENCIES"
+        android:value="langid" >
+    ...
+</manifest>
+```
+
+First, get the instance of language detection by calling `HuaweiGoogleLanguageDetector.getClient(....)` The function takes `context` and `confidence threshold` as parameters. The `confidence threshold` can be null. If you give a confidence threshold, ML Kit will use the minimum confidence threshold for language detection, otherwise it will use the default ML Kit settings.
+```kt
+val languageDetector = HuaweiGoogleLanguageDetector.getClient(context, confidenceThreshold?)
+```
+
+To detect the language of a string, pass the string to the detectLanguage() method.
+```kt
+languageDetector.detectLanguage("sourceText"){ detectResult ->
+            when(detectResult){
+                is DetectionResult.Success -> {
+                    Log.d("Language detection result: ", detectResult.data)
+                }
+                is DetectionResult.Error -> {
+                    Log.d("Language detection result: ", detectResult.errorMessage)
+                }
+            }
+        }
+```
+
+To get the confidence values of a string's most likely languages, pass the string to the detectPossibleLanguages() method.
+```kt
+languageDetector.detectPossibleLanguages("sourceText"){ detectResult ->
+            when(detectResult){
+                is DetectionResult.Success -> {
+                    detectResult.data.forEach { possibleLanguage ->
+                        Log.d("Language detection result: ", "${possibleLanguage.langCode} - ${possibleLanguage.confidence}")  
+                    }
+                }
+                is DetectionResult.Error -> {
+                    Log.d("Language detection result: ", detectResult.errorMessage)
+                }
+            }
+        }
+```
+
+## Image Classification
+The image classification service classifies elements in images into intuitive categories, such as people, objects, environments, activities, or artwork, to define image themes and application scenarios.
+
+### How to use
+You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the AndroidManifest.xml file.
+```kt
+<manifest
+    ...
+    <meta-data
+        android:name="com.huawei.hms.ml.DEPENDENCY"
+        android:value= "label"/>
+        
+    <meta-data
+        android:name="com.google.mlkit.vision.DEPENDENCIES"
+        android:value="ica" >
+    ...
+</manifest>
+```
+
+First, get the instance of image classification by calling `ImageClassification.getClient(....)` The function takes `context` and `confidence threshold` as parameters. The `confidence threshold` can be null. If you give a confidence threshold, ML Kit will use the minimum confidence threshold for image classification, otherwise it will use the default ML Kit settings.
+```kt
+val imageClassification = ImageClassification.getClient(context,confidenceThreshold?)
+```
+
+To classify the image, pass the bitmap to the analyseImage() method.
+```kt
+imageClassification.analyseImage(bitmap){ classificationResult ->
+            when(classificationResult){
+                is ClassificationResult.Success -> {
+                    Log.d("Image Classification result: ", classificationResult.data)
+                }
+                is ClassificationResult.Error -> {
+                    Log.d("Image Classification result: ", classificationResult.errorMessage)
+                }
+            }
+        }
+```
+
+## Account
+This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
+
+### How to use
+
+First, initialize `AccountService`:
+```kt
+val accountService = AccountService.Factory.create(
+        context,
+        SignInParams.Builder()
+            .requestEmail()
+            .create()
+)
+```
+It needs `Context` to check mobile services availability and provide proper mobile service type. Needs `SignInParams` to get permission from user to get extra information like email.
+
+Then call `silentSignIn` to get last signed account. If result is success and there is no signed account it returns `null`.
+```kt
+accountService.silentSignIn(object : ResultCallback<SignInUser>{
+    override fun onSuccess(result: SignInUser?) {}
+    override fun onFailure(error: Exception) {}
+    override fun onCancelled() {}
+})
+```
+Call `getSignInIntent` to start the `Activity` of the relevant service for the use login.
+```kt
+accountService.getSignInIntent { intent ->
+    startActivityForResult(intent, REQUEST_CODE)
+}
+```
+Then get result from signInIntent by calling `onSignInActivityResult`. Call this function in the `onActivityResult`.
+```kt
+accountService.onSignInActivityResult(intent, 
+    object: ResultCallback<SignInUser> {
+        override fun onSuccess(result: SignInUser?) {}
+        override fun onFailure(error: Exception) {}
+        override fun onCancelled() {}
+    }
+)
+```
+Call `signOut` to sign out of the account.
+```kt
+accountService.signOut()
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    .addOnCanceledListener {}
+```
+
+## Auth
+This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
+
+### How to use
+
+First, initialize `AuthService`:
+```kt
+val authService = AuthService.Factory.create(context)
+```
+It needs `Context` to check mobile services availability and provide proper mobile service type.
+
+Then get last signed user by calling `getUser()`. If there is no signed user it will return `null`
+
+### Facebook Sign in
+Call `signInWithFacebook` to sign in with facebook account. It needs token which you get from facebook sdk. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithFacebook(token)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Huawei or Google Sign in
+Call `signInWithGoogleOrHuawei` to sign in with google or huawei account. It needs token which you get from account sdk. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithGoogleOrHuawei(token)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Email Sign in
+Call `signInWithEmail` to sign in with email. It needs email and password. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithEmail(email, password)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Phone Sign in
+Call `signInWithPhone` to sign in with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+
+**Firebase Auth Service** only uses the `verifyCode` parameter to login. You can get the `verifyCode` using the `getPhoneCode` method.
+**AGC Auth Service uses** `countryCode`, `phoneNumber` and `password` parameters to login. In order to use the `signInWithPhone` method by the AGC Auth Service, the phone must be registered. You can use the `signUpWithPhone` method to register.
+
+```kt
+authService.signInWithPhone(countryCode,phoneNumber,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Twitter Sign in
+Call `signInWithTwitter` to sign in with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
+```kt
+authService.signInWithTwitter(token, secret)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Anonymous Sign in
+Call `anonymousSignIn` to sign in with an anonymous account that generated by Auth Service Server. It doesn't need any information. If it is success, it returns `AuthUser`.
+```kt
+authService.anonymousSignIn()
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+``` 
+### Email Sign up
+Call `signUp` to sign up with email. It needs email and password. If it is success, it returns `VerificationType`.
+```kt
+authService.signUp(email, password)
+    .addOnSuccessListener {verificationType -> }
+    .addOnFailureListener {}
+``` 
+
+If `VerificationType` is `CODE`, it means that an e-mail containing verification code has been sent to the user. Call `verifyCode` to save user with verification code.
+```kt
+authService.verifyCode(email, password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Phone Sign up
+Call `signUpWithPhone` to sign up to **AGC Auth Service** with phone. It needs country code, phone number, password and verify code. You can get the verifyCode using the `getPhoneCode` method.
+
+This method is only used for **AGC Auth Service**.
+There is no need to register for **Firebase Auth Service.** You can login directly using the `signInWithPhone` method.
+```kt
+authService.signUp(countryCode, phoneNumber, password, verifyCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+``` 
+
+If `VerificationType` is `CODE`, it means that an e-mail containing verification code has been sent to the user. Call `verifyCode` to save user with verification code.
+```kt
+authService.verifyCode(email, password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Reset password
+Call `resetPassword` to reset user' s password. It needs email. If it is success, it returns `VerificationType`.
+```kt
+authService.resetPassword(email)
+    .addOnSuccessListener {verificationType -> }
+    .addOnFailureListener {}
+``` 
+
+If verification type is `LINK`, it means that an e-mail containing link to reset password has been sent to the user. If `VerificationType` is `CODE`, it means that an e-mail containing verificaton code has been sent to the user. Call `verifyCodeToResetPassword` to reset user' s password.
+```kt
+authService.verifyCodeToResetPassword(email, newPassword, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+### Update Username
+Call `updateUsername` to update user' s username. It needs user login.
+```kt
+authService.updateUsername(email)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+### Update Photo
+Call `updatePhoto` to update user' s photo. It needs user login.
+```kt
+authService.updatePhoto(photo)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+### Get Code
+Call `getCode` to get verification code. It needs new email or new phone number.
+```kt
+authService.getCode(newEmail)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+```kt
+authService.getCodePassword(newEmail)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+```kt
+authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+
+### Update Email
+Call `updateEmail` to update user's mail. The e-mail address to be changed is needed. You can get the verifyCode using the `getCode` method.
+```kt
+authService.updateEmail(newEmail, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+#### Note: Only a user who has signed in within 5 minutes can change their email address. If such a requirement is not met, reauthenticate the user and then try again.
+
+
+### Update Phone
+Call `updatePhone` to update user's phone. It needs phone. You can get the verifyCode using the `getPhoneCode` method.
+```kt
+authService.updatePhone(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Update Password
+Call `updatePasswordWithPhone` to update user's password with phone. You can get the verifyCode using the `getPhoneCode` method.
+Call `updatePasswordWithEmail` to update user's password with email. You can get the verifyCode using the `getCode` method.
+```kt
+authService.updatePasswordWithPhone(password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+    
+authService.updatePasswordWithEmail(password, verificationCode)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Link With Twitter
+Call `linkWithTwitter` to link account with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithTwitter(token, secret)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Facebook
+Call `linkWithFacebook` to link account with facebook. It needs token. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithFacebook(token)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Email
+Call `linkWithEmail` to link account with email. It needs email, password and verifyCode. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithEmail(email,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Link With Phone
+Call `linkWithPhone` to link account with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+```kt
+authService.linkWithPhone(countryCode,phoneNumber,password,verifyCode)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### Unlink
+Call `unlink` to unlink account from the linked account. It needs provider. If it is success, it returns `AuthUser`.
+```kt
+authService.unlink(provider)
+    .addOnSuccessListener {authUser -> }
+    .addOnFailureListener {}
+```
+### ReAuthenticate
+Call `reAuthenticate` to re-authenticate users. It needs email and password.
+```kt
+authService.reAuthenticate(email,password)
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
+```
+### Delete User
+Call `deleteUser` to delete users. It needs email and password.
+```kt
+authService.deleteUser()
+    .addOnSuccessListener {}
+    .addOnFailureListener {}
 ```
 
 ## Scene
@@ -1005,7 +1488,6 @@ It needs `Context` to check mobile services availability and provide proper mobi
     enableCrashCollection(enable: Boolean)
 ```
 
-
 ## Push
 HMS Push Kit is messaging service. Push Kit helps you quickly and efficiently reach users. By integrating Push Kit, you can send messages to your apps on users' devices in real time. [Click here](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060) for view service introduction and more description about Push Kit features.
 
@@ -1189,246 +1671,6 @@ HuaweiPushServiceImpl(this).isAutoInitEnabled()
 GooglePushServiceImpl(this).isAutoInitEnabled()
 ```
 
-## Account
-This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
-
-### How to use
-
-First, initialize `AccountService`:
-```kt
-val accountService = AccountService.Factory.create(
-        context,
-        SignInParams.Builder()
-            .requestEmail()
-            .create()
-)
-```
-It needs `Context` to check mobile services availability and provide proper mobile service type. Needs `SignInParams` to get permission from user to get extra information like email.
-
-Then call `silentSignIn` to get last signed account. If result is success and there is no signed account it returns `null`.
-```kt
-accountService.silentSignIn(object : ResultCallback<SignInUser>{
-    override fun onSuccess(result: SignInUser?) {}
-    override fun onFailure(error: Exception) {}
-    override fun onCancelled() {}
-})
-```
-Call `getSignInIntent` to start the `Activity` of the relevant service for the use login.
-```kt
-accountService.getSignInIntent { intent ->
-    startActivityForResult(intent, REQUEST_CODE)
-}
-```
-Then get result from signInIntent by calling `onSignInActivityResult`. Call this function in the `onActivityResult`.
-```kt
-accountService.onSignInActivityResult(intent, 
-    object: ResultCallback<SignInUser> {
-        override fun onSuccess(result: SignInUser?) {}
-        override fun onFailure(error: Exception) {}
-        override fun onCancelled() {}
-    }
-)
-```
-Call `signOut` to sign out of the account.
-```kt
-accountService.signOut()
-    .addOnSuccessListener {}
-    .addOnFailureListener {}
-    .addOnCanceledListener {}
-```
-
-## Auth
-This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
-
-### How to use
-
-First, initialize `AuthService`:
-```kt
-val authService = AuthService.Factory.create(context)
-```
-It needs `Context` to check mobile services availability and provide proper mobile service type.
-
-Then get last signed user by calling `getUser()`. If there is no signed user it will return `null`
-
-### Facebook Sign in
-Call `signInWithFacebook` to sign in with facebook account. It needs token which you get from facebook sdk. If it is success, it returns `AuthUser`.
-```kt
-authService.signInWithFacebook(token)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Huawei or Google Sign in
-Call `signInWithGoogleOrHuawei` to sign in with google or huawei account. It needs token which you get from account sdk. If it is success, it returns `AuthUser`.
-```kt
-authService.signInWithGoogleOrHuawei(token)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Email Sign in
-Call `signInWithEmail` to sign in with email. It needs email and password. If it is success, it returns `AuthUser`.
-```kt
-authService.signInWithEmail(email, password)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Phone Sign in
-Call `signInWithPhone` to sign in with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
-```kt
-authService.signInWithPhone(countryCode,phoneNumber,password,verifyCode)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Twitter Sign in
-Call `signInWithTwitter` to sign in with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
-```kt
-authService.signInWithTwitter(token, secret)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Anonymous Sign in
-Call `anonymousSignIn` to sign in with an anonymous account that generated by Auth Service Server. It doesn't need any information. If it is success, it returns `AuthUser`.
-```kt
-authService.anonymousSignIn()
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-``` 
-### Email Sign up
-Call `signUp` to sign up with email. It needs email and password. If it is success, it returns `VerificationType`.
-```kt
-authService.signUp(email, password)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-``` 
-
-If `VerificationType` is `CODE`, it means that an e-mail containing verificaton code has been sent to the user. Call `verifyCode` to save user with verification code. 
-```kt
-authService.verifyCode(email, password, verificationCode)
-    .addOnSuccessListener {}
-    .addOnFailureListener {}
-```
-### Reset password
-Call `resetPassword` to reset user' s password. It needs email. If it is success, it returns `VerificationType`.
-```kt
-authService.resetPassword(email)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-``` 
-
-If verification type is `LINK`, it means that an e-mail containing link to reset password has been sent to the user. If `VerificationType` is `CODE`, it means that an e-mail containing verificaton code has been sent to the user. Call `verifyCodeToResetPassword` to reset user' s password. 
-```kt
-authService.verifyCodeToResetPassword(email, newPassword, verificationCode)
-    .addOnSuccessListener {}
-    .addOnFailureListener {}
-```
-
-### Update Username
-Call `updateUsername` to update user' s username. It needs user login. If it is success, it returns `VerificationType`.
-```kt
-authService.updateUsername(email)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-### Update Photo
-Call `updatePhoto` to update user' s photo. It needs user login. If it is success, it returns `VerificationType`.
-```kt
-authService.updatePhoto(photo)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-### Get Code
-Call `getCode` to get verification code. It needs email or phone number. If it is success, it returns `VerificationType`.
-```kt
-authService.getCode(email)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-```kt
-authService.getCodePassword(email)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-```kt
-authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-### Update Email
-Call `updateEmail` to update user's mail. It needs email. If it is success, it returns `VerificationType`.
-```kt
-authService.updateEmail(email, verificationCode)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-
-### Update Phone
-Call `updatePhone` to update user's phone. It needs phone. If it is success, it returns `VerificationType`.
-```kt
-authService.updatePhone(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-### Update Password
-Call `updatePassword` to update user's password. It needs password. If it is success, it returns `VerificationType`.
-```kt
-authService.updatePassword(password, verificationCode)
-    .addOnSuccessListener {verificationType -> }
-    .addOnFailureListener {}
-```
-### Link With Twitter
-Call `linkWithTwitter` to link account with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
-```kt
-authService.linkWithTwitter(token, secret)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Link With Facebook
-Call `linkWithFacebook` to link account with facebook. It needs token. If it is success, it returns `AuthUser`.
-```kt
-authService.linkWithFacebook(token)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Link With Email
-Call `linkWithEmail` to link account with email. It needs email, password and verifyCode. If it is success, it returns `AuthUser`.
-```kt
-authService.linkWithEmail(email,password,verifyCode)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Link With Phone
-Call `linkWithPhone` to link account with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
-```kt
-authService.linkWithPhone(countryCode,phoneNumber,password,verifyCode)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### Unlink
-Call `unlink` to unlink account from the linked account. It needs provider. If it is success, it returns `AuthUser`.
-```kt
-authService.unlink(provider)
-    .addOnSuccessListener {authUser -> }
-    .addOnFailureListener {}
-```
-### ReAuthenticate
-Call `reAuthenticate` to re-authenticate users. It needs email and password.
-```kt
-authService.reAuthenticate(email,password)
-    .addOnSuccessListener {}
-    .addOnFailureListener {}
-```
-### Delete User
-Call `deleteUser` to delete users. It needs email and password.
-```kt
-authService.deleteUser()
-    .addOnSuccessListener {}
-    .addOnFailureListener {}
-```
-
 ## Site Kit
 
 This kit provides different functionalities such as nearby search, text search, place details and place autocomplete. You can use these functions for both Google Services using Places API and Huawei Services using Site Kit.
@@ -1438,7 +1680,7 @@ This kit provides different functionalities such as nearby search, text search, 
 At first we initialize `SiteService` interface:
 
 ```
-val siteservice = SiteService.Factory.create( Context, apikey)
+val siteservice = SiteService.Factory.create(Context, huaweiApikey, googleApiKey)
 ```
 
 `Context` serves to check the mobile services availability and decide what service to run and the `apikey` serves to use the services of Site Kit or make the Places API calls.
@@ -1446,49 +1688,57 @@ val siteservice = SiteService.Factory.create( Context, apikey)
 `getNearbyPlaces` is a function that takes parameters like latitude, longitude, query or the keyword to search, hwpoiType which is the poi type you want to search (in case of using Huawei services you should be careful to enter the poi type matching the HW Poi Types from Site Kit eg. “RESTAURANT” instead of “restaurant”), radius of the area you want the results to be focused, language you want the results in, page index and page size, strict bounds to determine whether we want the location bounds to be strict or not.
 
 ``` Kotlin
-fun getNearbyPlaces(siteLat: Double?,
-                            siteLng: Double?,
-                            query: String?,
-                            hwpoiType: String?,
-                            radius: Int?,
-                            language: String?,
-                            pageIndex: Int?,
-                            pageSize: Int?,
-                            strictBounds: Boolean?,
-                    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun getNearbyPlaces(
+        siteLat: Double,
+        siteLng: Double,
+        keyword: String?,
+        hwpoiType: String?,
+        radius: Int?,
+        language: String?,
+        pageIndex: Int?,
+        pageSize: Int?,
+        strictBounds: Boolean?,
+        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+    )
  ```
 `getTextSearchPlaces` function uses almost the same parameters and performs search requests based on keyword.
 
 ```Kotlin
-fun getTextSearchPlaces(siteLat: Double?,
-                                    siteLng: Double?,
-                                    query: String?,
-                                    hwpoiType: String?,
-                                    radius: Int?,
-                                    language: String?,
-                                    pageIndex: Int?,
-                                    pageSize: Int?,
-                            callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun getTextSearchPlaces(
+    query: String,
+    siteLat: Double?,
+    siteLng: Double?,
+    hwpoiType: String?,
+    radius: Int?,
+    language: String?,
+    pageIndex: Int?,
+    pageSize: Int?,
+    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+)
 ```
 
 `placeSuggestion` function returns a list of autocompleted places based on the keyword you have entered, the location you enter, the radius you want your results to be focused on and the language of them. `childrenNode` parameter is only used by the Huawei Service to return information on the children nodes.
 
 ```Kotlin
- fun placeSuggestion(siteLat: Double?,
-                                siteLng: Double?,
-                                keyword: String?,
-                                childrenNode: Boolean?,
-                                areaRadius: Int?,
-                                areaLanguage: String?,
-                        callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit)
+fun placeSuggestion(
+    keyword: String,
+    siteLat: Double?,
+    siteLng: Double?,
+    childrenNode: Boolean?,
+    areaRadius: Int?,
+    areaLanguage: String?,
+    callback: (SiteToReturnResult: ResultData<List<SiteServiceReturn>>) -> Unit
+)
 ```
 `getDetailSearch` function is a function used to get the details of a place based on the place's ID.
 
 ```Kotlin
-fun getDetailSearch(siteID: String,
-                                areaLanguage: String,
-                                childrenNode: Boolean,
-                        callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit)
+fun getDetailSearch(
+    siteID: String,
+    areaLanguage: String?,
+    childrenNode: Boolean?,
+    callback: (SiteToReturnResult: ResultData<SiteServiceReturn>) -> Unit
+)
 ```
 `childrenNode` is also only used in case of the Huawei Services.
 
@@ -1511,14 +1761,13 @@ data class SiteServiceReturn (
 You can reach the data from `SiteServiceReturn` as a result from the callback. Final example of how to call a function is given below.
 
 ```Kotlin
-SiteService.Factory.create( context, ApiKey).getNearbyPlaces(siteLat,siteLng,query,hwpoiType,radius,language,pageIndex,pageSize,strictBounds,
+SiteService.Factory.create(Context, HuaweiApikey, GoogleApiKey).getNearbyPlaces(siteLat,siteLng,query,hwpoiType,radius,language,pageIndex,pageSize,strictBounds,
     {
         it.handleSuccess {
             it.data!![0].name //get name of first result of data
         }
     })
 ```
-
 
 ## Identity Kit
 
@@ -1569,4 +1818,46 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
         }
     }
 }
+```
+
+## Remote Config 
+
+Remote config is a service that allows you to make theme changes or in-app changes according to the situation in your application without the need for any updates.
+
+### How to use
+
+First of all you should create a xml file as like this:
+```
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <remoteconfig>
+        <value key="testValue">testSituations</value>
+    </remoteconfig>
+</PreferenceScreen>
+```
+
+At first you initialize `RemoteConfigService` interface as like this:
+
+```
+val remoteConfig = IRemoteConfigService.Factory.create(context)
+```
+
+
+Than you can call `setDefaultXml` function for define default key-value xml file to service:
+
+```
+remoteConfig.setDefaultXml(R.xml.remote_config)
+```
+
+For fetch the last values on the server side you have to call `fetchAndApply` function:
+
+```
+remoteConfig.fetchAndApply({
+            Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
+},0)  // Toast message is to show the callback to the user and 0 is fetch interval time in seconds.
+```
+
+After you fetch and apply the changes you can get them to your local variables with `getString(keyValue)` function:
+Note: There are 4 getting functions; getString(keyValue), getBoolean(keyValue), getLong(keyValue) and getDouble(keyValue) so you should use the correct one.
+```
+var valueFromConsole = remoteConfig.getString("testValue") // testValue is my keyValue which I use it while I am searchin my value with this keyValue.
 ```

@@ -1,7 +1,7 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.huawei.agconnect:agconnect-crash:1.6.0.300'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.8'
+    implementation 'com.huawei.agconnect:agconnect-crash:1.7.2.300'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.13'
     api project(":core")
 }

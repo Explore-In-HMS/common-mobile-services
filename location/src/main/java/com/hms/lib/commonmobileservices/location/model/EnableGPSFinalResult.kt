@@ -14,5 +14,7 @@
 package com.hms.lib.commonmobileservices.location.model
 
 enum class EnableGPSFinalResult {
-    ENABLED,FAILED,USER_CANCELLED
+    ENABLED,
+    FAILED,
+    USER_CANCELLED
 }

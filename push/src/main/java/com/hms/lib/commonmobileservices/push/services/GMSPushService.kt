@@ -53,10 +53,10 @@ class GMSPushService : FirebaseMessagingService() {
                     Bundle().also { it.putSerializable("message", remoteMessage) })
             } else {
                 try {
-                    val data: JSONObject = JSONObject(data.toString())
+                    val jsonData = JSONObject(data.toString())
                     val sliderPushNotificationMainModel: SliderPushNotification =
                         Gson().fromJson(
-                            data.toString(),
+                            jsonData.toString(),
                             SliderPushNotification::class.java
                         )
                     SliderPushNotificationUtil.show(this, sliderPushNotificationMainModel)

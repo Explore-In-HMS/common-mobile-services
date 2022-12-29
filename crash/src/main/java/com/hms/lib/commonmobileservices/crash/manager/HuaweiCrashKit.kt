@@ -32,51 +32,51 @@ class HuaweiCrashKit(var context: Context) : CrashService {
         AGConnectCrash.getInstance().testIt(context)
     }
 
-    override fun log(var1: String) {
-        AGConnectCrash.getInstance().log(var1)
+    override fun log(log: String) {
+        AGConnectCrash.getInstance().log(log)
     }
 
-    override fun log(var1: Int, var2: String) {
-        AGConnectCrash.getInstance().log(var1, var2)
+    override fun log(log1: Int, log2: String) {
+        AGConnectCrash.getInstance().log(log1, log2)
     }
 
-    override fun setCustomKey(var1: String, var2: String) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: String) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Boolean) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Boolean) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Double) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Double) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Float) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Float) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Int) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Int) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Long) {
-        AGConnectCrash.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Long) {
+        AGConnectCrash.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKeys(var1: CustomKeysAndValues) {
+    override fun setCustomKeys(keysAndValues: CustomKeysAndValues) {
         //
     }
 
-    override fun setUserId(var1: String) {
-        AGConnectCrash.getInstance().setUserId(var1)
+    override fun setUserId(id: String) {
+        AGConnectCrash.getInstance().setUserId(id)
     }
 
-    override fun recordException(var1: Throwable) {
-        AGConnectCrash.getInstance().recordException(var1)
+    override fun recordException(throwable: Throwable) {
+        AGConnectCrash.getInstance().recordException(throwable)
     }
 
-    override fun enableCrashCollection(enable: Boolean) {
-        AGConnectCrash.getInstance().enableCrashCollection(enable)
+    override fun enableCrashCollection(enabled: Boolean) {
+        AGConnectCrash.getInstance().enableCrashCollection(enabled)
     }
 }

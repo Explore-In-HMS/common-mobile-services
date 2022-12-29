@@ -15,17 +15,15 @@
 package com.hms.lib.commonmobileservices.auth.huawei
 
 import android.app.Activity
-import android.util.Log
 import com.hms.lib.commonmobileservices.auth.AuthService
 import com.hms.lib.commonmobileservices.auth.AuthUser
 import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.VerificationType
+import com.hms.lib.commonmobileservices.auth.exception.AuthException
 import com.hms.lib.commonmobileservices.auth.exception.ExceptionUtil
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.agconnect.auth.*
-import com.huawei.hmf.tasks.TaskExecutors
 import java.util.*
-
 
 class HuaweiAuthServiceImpl : AuthService {
 
@@ -76,23 +74,31 @@ class HuaweiAuthServiceImpl : AuthService {
     }
 
     override fun signInWithPhone(
-        countryCode: String,
-        phoneNumber: String,
-        password: String,
-        verifyCode: String
+        countryCode: String?,
+        phoneNumber: String?,
+        password: String?,
+        verifyCode: String?
     ): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
 
-        agcConnectAuth.signIn(
-            PhoneAuthProvider.credentialWithPassword(
-                countryCode,
-                phoneNumber,
-                password
-            )
-        )
-            .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
-            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
-            .addOnCanceledListener { work.onCanceled() }
+        countryCode?.let { code ->
+            phoneNumber?.let { phone ->
+                password?.let { pass ->
+                    agcConnectAuth.signIn(
+                        PhoneAuthProvider.credentialWithPassword(
+                            code,
+                            phone,
+                            pass
+                        )
+                    )
+                        .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
+                        .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                        .addOnCanceledListener { work.onCanceled() }
+
+                } ?: run { work.onFailure(AuthException("Country code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Phone number can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Password can not be empty.")) }
+
 
         return work
     }
@@ -106,7 +112,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .locale(locale)
             .build()
 
-        EmailAuthProvider.requestVerifyCode(email, settings)
+        agcConnectAuth.requestVerifyCode(email, settings)
             .addOnSuccessListener { work.onSuccess(VerificationType.CODE) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
@@ -114,19 +120,49 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun verifyCode(email: String, password: String, verifyCode: String): Work<Unit> {
+    override fun signUpWithPhone(
+        countryCode: String,
+        phoneNumber: String,
+        password: String,
+        verifyCode: String
+    ): Work<Unit> {
         val work: Work<Unit> = Work()
 
-        val user = EmailUser.Builder()
-            .setEmail(email)
-            .setPassword(password)
+        val phoneUser = PhoneUser.Builder()
+            .setCountryCode(countryCode)
+            .setPhoneNumber(phoneNumber)
             .setVerifyCode(verifyCode)
+            .setPassword(password)
             .build()
 
-        agcConnectAuth.createUser(user)
+        agcConnectAuth.createUser(phoneUser)
             .addOnSuccessListener { work.onSuccess(Unit) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
+        return work
+    }
+
+    override fun verifyCode(email: String?, password: String?, verifyCode: String?): Work<Unit> {
+        val work: Work<Unit> = Work()
+
+        email?.let {
+            verifyCode?.let {
+                password?.let {
+                    val user = EmailUser.Builder()
+                        .setEmail(email)
+                        .setPassword(password)
+                        .setVerifyCode(verifyCode)
+                        .build()
+
+                    agcConnectAuth.createUser(user)
+                        .addOnSuccessListener { work.onSuccess(Unit) }
+                        .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                        .addOnCanceledListener { work.onCanceled() }
+
+                } ?: run { work.onFailure(AuthException("Email can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Password can not be empty.")) }
 
         return work
     }
@@ -140,7 +176,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .locale(locale)
             .build()
 
-        EmailAuthProvider.requestVerifyCode(email, settings)
+        agcConnectAuth.requestVerifyCode(email, settings)
             .addOnSuccessListener { work.onSuccess(VerificationType.CODE) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
@@ -165,10 +201,12 @@ class HuaweiAuthServiceImpl : AuthService {
 
     override fun anonymousSignIn(): Work<AuthUser> {
         val work: Work<AuthUser> = Work()
+
         agcConnectAuth.signInAnonymously()
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -186,44 +224,53 @@ class HuaweiAuthServiceImpl : AuthService {
         return work
     }
 
-    override fun updatePhoto(photo: String?): Work<Unit> {
+    override fun updatePhoto(photo: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && photo != null) {
+
+        agcConnectAuth.currentUser?.let { user ->
             val userProfile = ProfileRequest.Builder()
                 .setPhotoUrl(photo)
                 .build()
-            AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
-                .addOnSuccessListener { Log.v("successUpdate", "successUpdate photo") }
-                .addOnFailureListener { Log.e("errUpdate", "err photo") }
-        } else
-            Log.e("errUpdate", "Photo Empty")
+
+            user.updateProfile(userProfile)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 
-    override fun updateUsername(username: String?): Work<Unit> {
+    override fun updateUsername(username: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && username != null) {
+
+        agcConnectAuth.currentUser?.let { user ->
             val userProfile = ProfileRequest.Builder()
                 .setDisplayName(username)
                 .build()
-            AGConnectAuth.getInstance().currentUser.updateProfile(userProfile)
-                .addOnSuccessListener { Log.v("successUpdate", "successUpdate username") }
-                .addOnFailureListener { Log.e("errUpdate", "err username") }
-        } else
-            Log.e("errUpdate", "Username Empty")
+
+            user.updateProfile(userProfile)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 
-    override fun updateEmail(email: String?, verifyCode: String?): Work<Unit> {
+    override fun updateEmail(email: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && email != null && verifyCode != null) {
-            AGConnectAuth.getInstance().currentUser.updateEmail(email, verifyCode)
-                .addOnSuccessListener(
-                    TaskExecutors.uiThread(),
-                    { Log.v("successUpdate", "successUpdate Email") }).addOnFailureListener(
-                    TaskExecutors.uiThread(),
-                    { Log.e("errUpdate", "err Email:$it") })
-        }
+
+        agcConnectAuth.currentUser?.let { user ->
+            user.updateEmail(email, verifyCode)
+                .addOnSuccessListener { work.onSuccess(Unit) }
+                .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                .addOnCanceledListener { work.onCanceled() }
+
+        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
         return work
     }
 
@@ -233,64 +280,79 @@ class HuaweiAuthServiceImpl : AuthService {
         verifyCode: String?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && countryCode != null && phoneNumber != null && verifyCode != null) {
-            AGConnectAuth.getInstance().currentUser.updatePhone(
-                countryCode,
-                phoneNumber,
-                verifyCode
-            ).addOnSuccessListener(TaskExecutors.uiThread(),
-                { Log.v("successUpdate", "successUpdate phone") }).addOnFailureListener(
-                TaskExecutors.uiThread(),
-                { Log.e("errUpdate", "err phone:$it") })
-        }
+
+        countryCode?.let {
+            verifyCode?.let {
+                phoneNumber?.let {
+                    agcConnectAuth.currentUser?.let { user ->
+                        user.updatePhone(
+                            countryCode,
+                            phoneNumber,
+                            verifyCode
+                        )
+                            .addOnSuccessListener { work.onSuccess(Unit) }
+                            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                            .addOnCanceledListener { work.onCanceled() }
+
+                    } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+
+                } ?: run { work.onFailure(AuthException("Phone number can not be empty.")) }
+            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+        } ?: run { work.onFailure(AuthException("Country code can not be empty.")) }
+
         return work
     }
 
-    override fun updatePasswordWithEmail(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithEmail(password: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
-            AGConnectAuth.getInstance().currentUser.updatePassword(
-                password,
-                verifyCode,
-                AGConnectAuthCredential.Email_Provider
-            ).addOnSuccessListener {
-                Log.v("successUpdate", "successUpdate password")
-            }
-                .addOnFailureListener {
-                    Log.e("errUpdate", "err password$it")
-                }
-        }
+
+        verifyCode?.let { code ->
+            agcConnectAuth.currentUser?.let { user ->
+                user.updatePassword(
+                    password,
+                    code,
+                    AGConnectAuthCredential.Email_Provider
+                )
+                    .addOnSuccessListener { work.onSuccess(Unit) }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
+
+            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+
         return work
     }
 
-    override fun updatePasswordWithPhone(password: String?, verifyCode: String?): Work<Unit> {
+    override fun updatePasswordWithPhone(password: String, verifyCode: String?): Work<Unit> {
         val work: Work<Unit> = Work()
-        if (AGConnectAuth.getInstance().currentUser != null && password != null && verifyCode != null) {
-            AGConnectAuth.getInstance().currentUser.updatePassword(
-                password,
-                verifyCode,
-                AGConnectAuthCredential.Phone_Provider
-            ).addOnSuccessListener {
-                Log.v("successUpdate", "successUpdate password")
-            }
-                .addOnFailureListener {
-                    Log.e("errUpdate", "err password$it")
-                }
-        }
+
+        verifyCode?.let { code ->
+            agcConnectAuth.currentUser?.let { user ->
+                user.updatePassword(
+                    password,
+                    code,
+                    AGConnectAuthCredential.Phone_Provider
+                )
+                    .addOnSuccessListener { work.onSuccess(Unit) }
+                    .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+                    .addOnCanceledListener { work.onCanceled() }
+
+            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+
         return work
     }
 
-    override fun getCode(email: String?): Work<Unit> {
+    override fun getCode(email: String): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_REGISTER_LOGIN)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
-        task.addOnSuccessListener(
-            TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
-            TaskExecutors.uiThread(),
-            { Log.e("errUpdate", "err getCode:$it") })
+
+        agcConnectAuth.requestVerifyCode(email, settings)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
 
         return work
     }
@@ -300,20 +362,19 @@ class HuaweiAuthServiceImpl : AuthService {
         val settings = VerifyCodeSettings.newBuilder()
             .action(VerifyCodeSettings.ACTION_RESET_PASSWORD)
             .build()
-        val task = AGConnectAuth.getInstance().requestVerifyCode(email, settings)
-        task.addOnSuccessListener(
-            TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "success getCode") }).addOnFailureListener(
-            TaskExecutors.uiThread(),
-            { Log.e("errUpdate", "err getCode:$it") })
+
+        agcConnectAuth.requestVerifyCode(email, settings)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
 
         return work
     }
 
     override fun getPhoneCode(
-        countryCode: String?,
-        phoneNumber: String?,
-        activity: Activity
+        countryCode: String,
+        phoneNumber: String,
+        activity: Activity?
     ): Work<Unit> {
         val work: Work<Unit> = Work()
         val settings = VerifyCodeSettings.newBuilder()
@@ -321,12 +382,11 @@ class HuaweiAuthServiceImpl : AuthService {
             .sendInterval(30)
             .build()
 
-        val task = AGConnectAuth.getInstance().requestVerifyCode(countryCode, phoneNumber, settings)
-        task.addOnSuccessListener(
-            TaskExecutors.uiThread(),
-            { Log.v("successUpdate", "successUpdate getCode") }).addOnFailureListener(
-            TaskExecutors.uiThread(),
-            { Log.e("errUpdate", "err getCode:$it") })
+        agcConnectAuth.requestVerifyCode(countryCode, phoneNumber, settings)
+            .addOnSuccessListener { work.onSuccess(Unit) }
+            .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
+            .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -362,6 +422,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -373,6 +434,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -388,6 +450,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -398,6 +461,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 
@@ -419,6 +483,7 @@ class HuaweiAuthServiceImpl : AuthService {
             .addOnSuccessListener { work.onSuccess(mapper.map(it.user)) }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
             .addOnCanceledListener { work.onCanceled() }
+
         return work
     }
 }

@@ -14,11 +14,16 @@
 
 package com.hms.lib.commonmobileservices.translate.manager
 
-import com.hms.lib.commonmobileservices.translate.HuaweiTranslate
 import com.hms.lib.commonmobileservices.core.MobileServiceType
+import com.hms.lib.commonmobileservices.translate.GoogleTranslate
+import com.hms.lib.commonmobileservices.translate.HuaweiTranslate
 
 class TranslateFactory {
     fun getTranslateService(type: MobileServiceType): ITranslateAPI? {
-        return HuaweiTranslate()
+        return if (MobileServiceType.HMS === type) {
+            HuaweiTranslate()
+        } else {
+            GoogleTranslate()
+        }
     }
 }

@@ -21,11 +21,11 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.location.GeofenceData
 
 
-class CommonGeofenceData{
-  fun fetchDataFromIntent(context: Context?,intent: Intent): GeofencingData{
-      return when(Device.getMobileServiceType(context!!)){
-          MobileServiceType.HMS -> GeofenceData.getDataFromIntent(intent).toCommonGeofenceData()
-          else -> GeofencingEvent.fromIntent(intent).toCommonGeofenceData()
-      }
-  }
+class CommonGeofenceData {
+    fun fetchDataFromIntent(context: Context, intent: Intent): GeofencingData? {
+        return when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> GeofenceData.getDataFromIntent(intent).toCommonGeofenceData()
+            else -> GeofencingEvent.fromIntent(intent)?.toCommonGeofenceData()
+        }
+    }
 }

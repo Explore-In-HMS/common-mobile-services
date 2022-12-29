@@ -1,0 +1,8 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.huawei.hms:ml-computer-vision-ocr:3.7.0.302'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:18.0.2'
+    api project(":core")
+}
+

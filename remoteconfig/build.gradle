@@ -1,0 +1,7 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.google.firebase:firebase-config-ktx:21.2.0'
+    implementation 'com.huawei.agconnect:agconnect-remoteconfig-ktx:1.7.3.300'
+    api project(":core")
+}

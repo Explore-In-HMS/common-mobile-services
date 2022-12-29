@@ -24,12 +24,20 @@ class LocationFactory {
         fun getLocationClient(
             activity: Activity,
             lifecycle: Lifecycle,
-            needBackgroundPermissions:Boolean=false,
+            needBackgroundPermissions: Boolean = false,
             preferredType: MobileServiceType? = null
         ): CommonLocationClient? {
-            return when (preferredType ?: Device.getMobileServiceType(activity,preferredType)) {
-                MobileServiceType.HMS -> HuaweiLocationClientImpl(activity,lifecycle,needBackgroundPermissions)
-                MobileServiceType.GMS -> GoogleLocationClientImpl(activity,lifecycle,needBackgroundPermissions)
+            return when (preferredType ?: Device.getMobileServiceType(activity, preferredType)) {
+                MobileServiceType.HMS -> HuaweiLocationClientImpl(
+                    activity,
+                    lifecycle,
+                    needBackgroundPermissions
+                )
+                MobileServiceType.GMS -> GoogleLocationClientImpl(
+                    activity,
+                    lifecycle,
+                    needBackgroundPermissions
+                )
                 MobileServiceType.NON -> null
             }
         }
