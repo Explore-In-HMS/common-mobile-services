@@ -1127,15 +1127,15 @@ authService.updatePhoto(photo)
 ```
 
 ### Get Code
-Call `getCode` to get verification code. It needs email or phone number.
+Call `getCode` to get verification code. It needs new email or new phone number.
 ```kt
-authService.getCode(email)
+authService.getCode(newEmail)
     .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
 
 ```kt
-authService.getCodePassword(email)
+authService.getCodePassword(newEmail)
     .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
@@ -1147,12 +1147,14 @@ authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Tu
 ```
 
 ### Update Email
-Call `updateEmail` to update user's mail. It needs email. You can get the verifyCode using the `getCode` method.
+Call `updateEmail` to update user's mail. The e-mail address to be changed is needed. You can get the verifyCode using the `getCode` method.
 ```kt
-authService.updateEmail(email, verificationCode)
+authService.updateEmail(newEmail, verificationCode)
     .addOnSuccessListener {}
     .addOnFailureListener {}
 ```
+#### Note: Only a user who has signed in within 5 minutes can change their email address. If such a requirement is not met, reauthenticate the user and then try again.
+
 
 ### Update Phone
 Call `updatePhone` to update user's phone. It needs phone. You can get the verifyCode using the `getPhoneCode` method.
