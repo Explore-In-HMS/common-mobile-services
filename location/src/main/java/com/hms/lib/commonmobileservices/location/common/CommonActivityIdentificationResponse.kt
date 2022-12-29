@@ -21,15 +21,20 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.location.ActivityIdentificationResponse
 
 class CommonActivityIdentificationResponse {
-    var activityIdentificationDataList: List<CommonActivityIdentificationData>?=null
-    var mostActivityIdentification: CommonActivityIdentificationData?=null
-    var time: Long?=null
-    var elapsedTimeFromReboot: Long?=null
+    var activityIdentificationDataList: List<CommonActivityIdentificationData>? = null
+    var mostActivityIdentification: CommonActivityIdentificationData? = null
+    var time: Long? = null
+    var elapsedTimeFromReboot: Long? = null
 
-    fun fetchDataFromIntent(context:Context, intent:Intent): CommonActivityIdentificationResponse{
-        return when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityIdentificationResponse.getDataFromIntent(intent).toCommonActivityIdentificationResponse()
-            else -> ActivityRecognitionResult.extractResult(intent)!!.toCommonActivityIdentificationResponse()
+    fun fetchDataFromIntent(
+        context: Context,
+        intent: Intent
+    ): CommonActivityIdentificationResponse? {
+        return when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityIdentificationResponse.getDataFromIntent(intent)
+                .toCommonActivityIdentificationResponse()
+            else -> ActivityRecognitionResult.extractResult(intent)
+                ?.toCommonActivityIdentificationResponse()
         }
     }
 }

@@ -21,6 +21,7 @@ data class AuthUser(
     val id: String,
     val displayName: String,
     val email: String,
+    val phone: String,
     val photoUrl: String,
     val serviceType: ServiceType,
     val providerType: ProviderType

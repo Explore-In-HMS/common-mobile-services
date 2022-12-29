@@ -16,7 +16,6 @@ package com.hms.lib.commonmobileservices.site.google
 
 import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
-import com.huawei.hms.site.api.model.Site
 import org.json.JSONObject
 
 class GoogleSiteAutocompleteMapper: Mapper<SiteServiceReturn, JSONObject>() {
@@ -48,7 +47,7 @@ class GoogleSiteAutocompleteMapper: Mapper<SiteServiceReturn, JSONObject>() {
         }
         else{
             ArrayList()
-            },
+        },
         averagePrice = if (from.has("price_level")){
             from.getString("price_level").toDouble()
         }else{

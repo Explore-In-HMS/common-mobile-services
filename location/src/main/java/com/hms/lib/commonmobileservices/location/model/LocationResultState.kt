@@ -14,5 +14,9 @@
 package com.hms.lib.commonmobileservices.location.model
 
 enum class LocationResultState {
-    SUCCESS,FAIL,LOCATION_UNAVAILABLE,GPS_DISABLED,NO_LAST_LOCATION
+    SUCCESS,
+    FAIL,
+    LOCATION_UNAVAILABLE,
+    GPS_DISABLED,
+    NO_LAST_LOCATION
 }

@@ -1,0 +1,7 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.huawei.hms:ml-computer-voice-tts:3.7.0.303'
+    api project(":core")
+}
+

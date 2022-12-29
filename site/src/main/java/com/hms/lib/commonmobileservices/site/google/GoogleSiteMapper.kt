@@ -16,7 +16,6 @@ package com.hms.lib.commonmobileservices.site.google
 
 import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
-import com.huawei.hms.site.api.model.Site
 import org.json.JSONObject
 
 class GoogleSiteMapper: Mapper<SiteServiceReturn, JSONObject>() {
@@ -29,15 +28,15 @@ class GoogleSiteMapper: Mapper<SiteServiceReturn, JSONObject>() {
             from.getString("international_phone_number")
         }
         else{
-               "No phone Number"
-            },
+            "No phone Number"
+        },
         formatAddress = if(from.has("formatted_address")){
             from.getString("formatted_address")
         }else if(from.has("vicinity")){
             from.getString("vicinity")
         }else{
-             "No Formatted Address"
-             },
+            "No Formatted Address"
+        },
         distance = null,
         image = if (from.has("photos")){
             val array = from.getJSONArray("photos")
@@ -54,12 +53,12 @@ class GoogleSiteMapper: Mapper<SiteServiceReturn, JSONObject>() {
         averagePrice = if (from.has("price_level")){
             from.getString("price_level").toDouble()
         }else{
-             0.00
-             },
+            0.00
+        },
         point = if (from.has("rating")) {
             from.getString("rating").toDouble()
         }else{
-          0.00
+            0.00
         },
     )
 }

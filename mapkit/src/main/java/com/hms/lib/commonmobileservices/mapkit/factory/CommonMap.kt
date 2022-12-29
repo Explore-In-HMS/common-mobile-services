@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.factory
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
@@ -58,7 +57,7 @@ interface CommonMap : UISettings {
     fun setOnMapClickListener(onClick: (latLng: LatLng) -> Unit)
     fun moveCamera(latitude: Double, longitude: Double, zoomRatio: Float)
     fun animateCamera(latitude: Double, longitude: Double, zoomRatio: Float)
-    fun setMyLocationEnabled(myLocationEnabled: Boolean?, context: Context): Boolean
+    fun setMyLocationEnabled(myLocationEnabled: Boolean?): Boolean
     fun clear()
     fun onSaveInstanceState(bundle: Bundle)
     fun onStart()
@@ -115,7 +114,7 @@ interface CommonMap : UISettings {
     fun resetMinMaxZoomPreference()
     fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds)
     fun setMapStyle(json: String)
-    fun setMapStyleFromRawResource(context: Context, resourceId: Int)
+    fun setMapStyleFromRawResource(resourceId: Int)
 
     interface OnCameraMoveListener{
         fun onCameraMove()

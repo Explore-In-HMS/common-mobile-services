@@ -29,55 +29,55 @@ class GoogleCrashKit(var context: Context) : CrashService {
     }
 
     override fun testIt(context: Context) {
+        throw RuntimeException("Test Crash")
+    }
+
+    override fun log(log: String) {
+        FirebaseCrashlytics.getInstance().log(log)
+    }
+
+    override fun log(log1: Int, log2: String) {
         //
     }
 
-    override fun log(var1: String) {
-        FirebaseCrashlytics.getInstance().log(var1)
+    override fun setCustomKey(key: String, value: String) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun log(var1: Int, var2: String) {
-        //
+    override fun setCustomKey(key: String, value: Boolean) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: String) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Double) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Boolean) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Float) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Double) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Int) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Float) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKey(key: String, value: Long) {
+        FirebaseCrashlytics.getInstance().setCustomKey(key, value)
     }
 
-    override fun setCustomKey(var1: String, var2: Int) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setCustomKeys(keysAndValues: CustomKeysAndValues) {
+        FirebaseCrashlytics.getInstance().setCustomKeys(keysAndValues)
     }
 
-    override fun setCustomKey(var1: String, var2: Long) {
-        FirebaseCrashlytics.getInstance().setCustomKey(var1, var2)
+    override fun setUserId(id: String) {
+        FirebaseCrashlytics.getInstance().setUserId(id)
     }
 
-    override fun setCustomKeys(var1: CustomKeysAndValues) {
-        FirebaseCrashlytics.getInstance().setCustomKeys(var1)
+    override fun recordException(throwable: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(throwable)
     }
 
-    override fun setUserId(var1: String) {
-        FirebaseCrashlytics.getInstance().setUserId(var1)
-    }
-
-    override fun recordException(var1: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(var1)
-    }
-
-    override fun enableCrashCollection(enable: Boolean) {
-        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(enable)
+    override fun enableCrashCollection(enabled: Boolean) {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(enabled)
     }
 
 }
