@@ -148,7 +148,7 @@ sealed class ResultData<out T>{
 ```
 ## MapKit
 
-This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
+This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
 
 ### How to use
 
@@ -262,7 +262,7 @@ interface UISettings {
 
 ## Location
 
-This library provides a [CommonLocationClient](https://github.com/Huawei/CommonMobileServices/blob/master/location/src/main/java/com/hms/lib/commonmobileservices/location/CommonLocationClient.kt). It is a base class for GMS `FusedLocationProviderClient` and HMS `FusedLocationProviderClient`. This library handles enabling GPS and getting location permissions at runtime.
+This library provides a [CommonLocationClient](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/location/src/main/java/com/hms/lib/commonmobileservices/location/CommonLocationClient.kt). It is a base class for GMS `FusedLocationProviderClient` and HMS `FusedLocationProviderClient`. This library handles enabling GPS and getting location permissions at runtime.
 
 
 ### How to use
