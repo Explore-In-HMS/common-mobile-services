@@ -10,7 +10,7 @@ different services without modifying your app code.
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
 If you want to contribute don't hesitate to create PR's :)
 
-Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Scene`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
+Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
 ## How to install
 
@@ -44,7 +44,7 @@ apply plugin: 'com.google.gms.google-services'
 ### Step 3. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
-`latest version 2.2.1`
+`latest version 2.2.2`
 ### MapKit
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
@@ -109,10 +109,6 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versio
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:auth:<versionName>'
 ```
-### Scene
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:scene:<versionName>'
-```
 ### Safety
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:safety:<versionName>'
@@ -148,7 +144,7 @@ sealed class ResultData<out T>{
 ```
 ## MapKit
 
-This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Huawei/CommonMobileServices/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
+This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
 
 ### How to use
 
@@ -262,7 +258,7 @@ interface UISettings {
 
 ## Location
 
-This library provides a [CommonLocationClient](https://github.com/Huawei/CommonMobileServices/blob/master/location/src/main/java/com/hms/lib/commonmobileservices/location/CommonLocationClient.kt). It is a base class for GMS `FusedLocationProviderClient` and HMS `FusedLocationProviderClient`. This library handles enabling GPS and getting location permissions at runtime.
+This library provides a [CommonLocationClient](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/location/src/main/java/com/hms/lib/commonmobileservices/location/CommonLocationClient.kt). It is a base class for GMS `FusedLocationProviderClient` and HMS `FusedLocationProviderClient`. This library handles enabling GPS and getting location permissions at runtime.
 
 
 ### How to use
@@ -725,21 +721,76 @@ fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit
 ```
 
 ## Translate 
-It provides a very simple use of the translate feature. Currently 39 different languages ​​are supported. [Click here](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides-V5/ml-resource-0000001050038188-V5)  to view instantly supported languages.
+With the support of an on-device model, the on-device translation service can translate text from the source language into the target language.
 
 ### How to use
-Parameters that should be used to use the translate feature; context, text to be translated, huawei api key and language code to be translated to whatever language is used.
+First, get the instance of language detection by calling `Translator.getClient(context)` The function takes `context` as parameter.
 ```kt
-HuaweiGoogleTranslateManager(this).performTranslate({
-            it.handleSuccess {
-                Log.d("Translate result: ", it.data.toString())
-            }
-        },"How are you today?","fr",this,huaweiAPIKey)
+val translator = Translator.getClient(this)
 ```
 
-The `performTranslate()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
+To translate a string of text, pass the text, source language and target language to  `translate(...)` method
 ```kt
-fun performTranslate(callback: (translateValue: ResultData<String>) -> Unit, translatingText:String, targetLanguageCode:String, activity: Activity, apiKey:String)
+translator.translate("text","source-lang","target-lang"){ translateResult ->
+    when(translateResult){
+        is TranslateResult.Success -> {
+            Log.d("Translate result: ", translateResult.translatedText)
+        }
+        is TranslateResult.Error -> {
+            //Handle exception -> translateResult.exception
+        }
+    }
+}
+```
+
+Make sure the required translation model has been downloaded to the device.
+```kt
+translator.requiresModelDownload("lang-code"){ requiresModelDownloadResult ->
+    when(requiresModelDownloadResult){
+        is RequiresModelDownloadResult.Required -> {
+            //You have to download the model to be able to translate
+        }
+        is RequiresModelDownloadResult.NotRequired -> {
+            //You can translate text
+        }
+        is RequiresModelDownloadResult.Error -> {
+            //Handle exception -> requiresModelDownloadResult.exception
+        }
+    }
+}
+```
+
+On-device models can be download.
+```kt
+translator.downloadModel("lang-code"){ downloadModelResult ->
+    when(downloadModelResult){
+        is DownloadModelResult.Success -> {
+            //Model Downloaded
+        }
+        is DownloadModelResult.Error -> {
+            //Handle exception -> downloadModelResult.exception
+        }
+    }
+}
+```
+
+Delete an unnecessary model package.
+```kt
+translator.deleteModel("lang-code"){ deleteModelResult ->
+    when(deleteModelResult){
+        is DeleteModelResult.Success -> {
+            //Model Deleted
+        }
+        is DeleteModelResult.Error -> {
+            //Handle exception -> deleteModelResult.exception
+        }
+    }
+}
+```
+
+Ensure that the `close()` method is called when the Translator object will no longer be used.
+```kt
+translator.close()
 ```
 
 ## Speech To Text  
@@ -1223,53 +1274,6 @@ Call `deleteUser` to delete users. It needs email and password.
 authService.deleteUser()
     .addOnSuccessListener {}
     .addOnFailureListener {}
-```
-
-## Scene
-This library wraps Scene Kit views to use it in your application easily. It has IArView, IAugmentedFaceView and ISceneView interfaces which can be GoogleArView or HuaweiArView etc. It is related to your used service. Custom views created to hold these views: CommonSceneView, CommonAugmentedFaceView, CommonArView. These views also manages lifecycle events of its child views.
-
----
-> **_Note:_**  *In this version we implemented only Huawei views. But you can implement your own view according to your service.*
----
-
-### How to use
-First you need to add ".gltf" type model under the assets folder. Then, you need to add these common views to your layout file according to your usecase. After that you need to pass the params to the init method of this common view. For example, for CommonAugmentedFaceView, you need "FaceViewParams" object to pass your `init()` method of your view. And you can hide or show the render object by using the `load()`, `clear()` functions of common view.
-
-```kt
-buttonLoad.setOnClickListener {
-    (renderView as CommonView).load()
-}
-```
-Also you can use all views in one layout file according to your usecase.
-
-```kt
-when (viewType) {
-    ViewType.AR_VIEW -> {
-        tempRenderView = CommonArView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-        makeToastMessage("Move the camera around yourself until the plane dots appear")
-    }
-    ViewType.FACE_VIEW -> {
-        tempRenderView = CommonAugmentedFaceView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-    }
-    ViewType.SCENE_VIEW -> {
-        tempRenderView = CommonSceneView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-    }
-}
-```
-If you want to listen OpenGL functions of these views, you can set the callback for these views.
-```kt
-commonArView.onArViewCallback(object : ArViewCallback, () -> Unit {
-    override fun onSurfaceChanged(gL10: GL10?, width: Int, height: Int) {}
-
-    override fun onDrawFrame(gL10: GL10?) {}
-
-        .
-        .
-        .
-})
 ```
 
 ## Safety
