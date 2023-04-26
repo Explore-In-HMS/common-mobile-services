@@ -11,12 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.hms.lib.commonmobileservices.translate.common
 
-package com.hms.lib.commonmobileservices.translate.manager
-
-import android.app.Activity
-import com.hms.lib.commonmobileservices.core.ResultData
-
-interface ITranslateAPI {
-    fun performTranslate(callback: (translateValue: ResultData<String>) -> Unit, translatingText:String, targetLanguageCode:String, activity: Activity, apiKey:String)
+sealed interface DownloadModelResult {
+    object Success : DownloadModelResult
+    data class Error(val exception: Exception) : DownloadModelResult
 }

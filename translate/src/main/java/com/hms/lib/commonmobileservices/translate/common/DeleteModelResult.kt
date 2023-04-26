@@ -11,19 +11,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+package com.hms.lib.commonmobileservices.translate.common
 
-package com.hms.lib.commonmobileservices.translate.manager
-
-import com.hms.lib.commonmobileservices.core.MobileServiceType
-import com.hms.lib.commonmobileservices.translate.GoogleTranslate
-import com.hms.lib.commonmobileservices.translate.HuaweiTranslate
-
-class TranslateFactory {
-    fun getTranslateService(type: MobileServiceType): ITranslateAPI? {
-        return if (MobileServiceType.HMS === type) {
-            HuaweiTranslate()
-        } else {
-            GoogleTranslate()
-        }
-    }
+sealed interface DeleteModelResult {
+    object Success : DeleteModelResult
+    data class Error(val exception: Exception) : DeleteModelResult
 }
