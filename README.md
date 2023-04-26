@@ -1225,53 +1225,6 @@ authService.deleteUser()
     .addOnFailureListener {}
 ```
 
-## Scene
-This library wraps Scene Kit views to use it in your application easily. It has IArView, IAugmentedFaceView and ISceneView interfaces which can be GoogleArView or HuaweiArView etc. It is related to your used service. Custom views created to hold these views: CommonSceneView, CommonAugmentedFaceView, CommonArView. These views also manages lifecycle events of its child views.
-
----
-> **_Note:_**  *In this version we implemented only Huawei views. But you can implement your own view according to your service.*
----
-
-### How to use
-First you need to add ".gltf" type model under the assets folder. Then, you need to add these common views to your layout file according to your usecase. After that you need to pass the params to the init method of this common view. For example, for CommonAugmentedFaceView, you need "FaceViewParams" object to pass your `init()` method of your view. And you can hide or show the render object by using the `load()`, `clear()` functions of common view.
-
-```kt
-buttonLoad.setOnClickListener {
-    (renderView as CommonView).load()
-}
-```
-Also you can use all views in one layout file according to your usecase.
-
-```kt
-when (viewType) {
-    ViewType.AR_VIEW -> {
-        tempRenderView = CommonArView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-        makeToastMessage("Move the camera around yourself until the plane dots appear")
-    }
-    ViewType.FACE_VIEW -> {
-        tempRenderView = CommonAugmentedFaceView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-    }
-    ViewType.SCENE_VIEW -> {
-        tempRenderView = CommonSceneView(requireContext())
-        tempRenderView.init(commonData = renderParams.params)
-    }
-}
-```
-If you want to listen OpenGL functions of these views, you can set the callback for these views.
-```kt
-commonArView.onArViewCallback(object : ArViewCallback, () -> Unit {
-    override fun onSurfaceChanged(gL10: GL10?, width: Int, height: Int) {}
-
-    override fun onDrawFrame(gL10: GL10?) {}
-
-        .
-        .
-        .
-})
-```
-
 ## Safety
 This library includes both Huawei and Google services, allowing you to make your application more secure. This library, it performs necessary checks about whether users are fake users and device security. [Click here](https://developer.huawei.com/consumer/en/hms/huawei-safetydetectkit/) for view service introduction and more description about Safety Detect Kit features.
 
