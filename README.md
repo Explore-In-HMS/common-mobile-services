@@ -10,7 +10,7 @@ different services without modifying your app code.
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
 If you want to contribute don't hesitate to create PR's :)
 
-Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Scene`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
+Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
 ## How to install
 
@@ -44,7 +44,7 @@ apply plugin: 'com.google.gms.google-services'
 ### Step 3. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
-`latest version 2.2.1`
+`latest version 2.2.2`
 ### MapKit
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
@@ -108,10 +108,6 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versio
 ### Auth
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:auth:<versionName>'
-```
-### Scene
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:scene:<versionName>'
 ```
 ### Safety
 ```gradle
