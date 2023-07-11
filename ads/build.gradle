@@ -1,0 +1,6 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+
+    api project(':core')
+}
