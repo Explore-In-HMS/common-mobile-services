@@ -25,3 +25,4 @@ include ':texttospeech'
 rootProject.name = "Common Mobile Services"
 
 include ':ads'
+include ':rewarded'
