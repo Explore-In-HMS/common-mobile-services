@@ -10,10 +10,10 @@ abstract class RewardedAdFactory {
     abstract fun create(): IRewardedAd
 
     companion object {
-        inline fun <reified T : IRewardedAd> createFactory(rewardedAd: Any): RewardedAdFactory {
+        inline fun <reified T : IRewardedAd, reified K> createFactory(rewardedAd: K): RewardedAdFactory {
             when (T::class) {
                 HuaweiRewardedAd::class -> {
-                    return when (rewardedAd) {
+                    return when (K::class) {
                         com.huawei.hms.ads.reward.RewardAd::class -> {
                             HuaweiRewardedAdFactory(rewardedAd as RewardAd)
                         }
@@ -24,7 +24,7 @@ abstract class RewardedAdFactory {
                     }
                 }
                 GoogleRewardedAd::class -> {
-                    return when (rewardedAd) {
+                    return when (K::class) {
                         com.google.android.gms.ads.rewarded.RewardedAd::class -> {
                             GoogleRewardedAdFactory(rewardedAd as RewardedAd)
                         }
