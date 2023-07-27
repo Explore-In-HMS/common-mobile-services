@@ -89,6 +89,12 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>'
 ```
+ ### Ads
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:ads:<versionName>'
+implementation 'com.google.android.gms:play-services-ads:22.2.0'
+implementation 'com.huawei.hms:ads-prime:3.4.62.302'
+```
 ### Face Detection
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:facedetection:<versionName>'
@@ -891,6 +897,55 @@ Parameters that should be used to use the text recognition feature; bitmap and c
 The `textRecognition()` function takes a callback lambda function as a parameter. The lambda function gives us a `RecognitionResult` sealed class object.
 ```kt
 fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResult<Any>) -> Unit)
+```
+
+## Ads
+Allows you to show ads in your app. 
+
+### Rewarded Ad
+Rewarded ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
+You can specify the reward values associated with the ad units in your app and set different rewards for different ad units. Users will receive the reward for interacting with the ad without needing to install anything.
+
+#### How to use
+Create an IRewardedAd variable in order to get instance when ads showing is ready.
+```kt
+    private lateinit var rewardedAd: IRewardedAd
+```
+First, you need to call static 'load()' function to get rewarded ad instance. 
+By passing 'context', 'hmsAd_ID', 'gmsAd_ID' and 'RewardedAdLoadCallback' you will get IRewardedAd instance in order to show ad.
+```kt
+    RewardedAd.load(
+        this,
+        "testx9dtjwj8hp",
+        "ca-app-pub-3940256099942544/5224354917",
+        object : RewardedAdLoadCallback {
+            override fun onAdLoadFailed(adError: String) {
+                 Log.e("main", adError)
+            }
+            override fun onRewardedAdLoaded(rewardedAd: IRewardedAd) {
+                rewardedAd = rewardedAd
+            }
+        }
+    )
+```
+Call `show()` function whenever you want to show ad. 
+You need to pass 'context' and 'UserRewardEarnedListener' params in order to get reward after user watched the ad.
+You can get reward value by calling 'getAmount()' function.  
+```kt
+    rewardedAd.show(    
+        this,
+        object : UserRewardEarnedListener {
+            override fun onUserEarnedReward(item: IRewardItem) {
+                Log.d("main", "${item.getAmount()} ${item.getTypeOrName()}")
+            }
+        }
+    )
+```
+In Addition you need add your ca-app-pub value in androidmanifest.xml
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
 ## Face Detection
