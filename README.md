@@ -19,8 +19,8 @@ Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`
 - [Table of Contents](#table-of-contents)
   - [How to install](#how-to-install)
     - [Step 1. Add the JitPack repository, Huawei repo and classpaths to your build file](#step-1-add-the-jitpack-repository-huawei-repo-and-classpaths-to-your-build-file)
-    - [Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header.](#step-2-get-the-agconnect-servicesjson-file-from-the-agc-console-and-google-servicesjson-file-from-firebase-console-then-place-it-under-the-app-module-and-add-plugins-to-app-level-gradle-file-header)
-    - [Step 3. Add the dependency for module(s):](#step-3-add-the-dependency-for-modules)
+    - [Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header](#step-2-get-the-agconnect-servicesjson-file-from-the-agc-console-and-google-servicesjson-file-from-firebase-console-then-place-it-under-the-app-module-and-add-plugins-to-app-level-gradle-file-header)
+    - [Step 3. Add the dependency for module(s)](#step-3-add-the-dependency-for-modules)
     - [MapKit](#mapkit)
     - [Location](#location)
     - [Analytics](#analytics)
@@ -151,14 +151,14 @@ allprojects {
 }
 ```
 
-### Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header.
+### Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header
 
 ```gradle
 apply plugin: 'com.huawei.agconnect'
 apply plugin: 'com.google.gms.google-services'
 ```
 
-### Step 3. Add the dependency for module(s):
+### Step 3. Add the dependency for module(s)
 
 com.github.Explore-In-HMS.common-mobile-services
 
