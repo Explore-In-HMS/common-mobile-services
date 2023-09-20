@@ -30,13 +30,13 @@ Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`
     - [Usage](#usage-1)
       - [Getting location continuously](#getting-location-continuously)
       - [Using the Mock location feature](#using-the-mock-location-feature)
-    - [Geofence](#geofence)
-      - [Creating and Adding a Geofence](#creating-and-adding-a-geofence)
-      - [Create a request for adding a geofence](#create-a-request-for-adding-a-geofence)
-      - [Remove a geofence](#remove-a-geofence)
-    - [Activity Recognition](#activity-recognition)
-      - [Activity Transition](#activity-transition)
-      - [Stop activity transition update request](#stop-activity-transition-update-request)
+      - [Geofence](#geofence)
+        - [Creating and Adding a Geofence](#creating-and-adding-a-geofence)
+        - [Create a request for adding a geofence](#create-a-request-for-adding-a-geofence)
+        - [Remove a geofence](#remove-a-geofence)
+      - [Activity Recognition](#activity-recognition)
+        - [Activity Transition](#activity-transition)
+        - [Stop activity transition update request](#stop-activity-transition-update-request)
   - [Analytics](#analytics)
     - [Download](#download-3)
     - [Usage](#usage-2)
@@ -466,7 +466,7 @@ val mockLocation = Location(LocationManager.GPS_PROVIDER)
      commonLocationClient?.setMockLocation(mockLocation).addOnSuccessListener {  }.addOnFailureListener {  }
 ```
 
-### Geofence
+#### Geofence
 
 The usage of the Geofence feature is as follows.
 To use the geofence service APIs of Location Kit, declare the `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` permissions in the `AndroidManifest.xml` file.
@@ -489,7 +489,7 @@ First you have to initialize the `CommonGeofenceService` object.
    geofenceList = ArrayList()
 ```
 
-#### Creating and Adding a Geofence
+##### Creating and Adding a Geofence
 
 ```kt
 geofenceList!!.add(Geofence()
@@ -498,7 +498,7 @@ geofenceList!!.add(Geofence()
   .also { it.radius = 20F })
 ```
 
-#### Create a request for adding a geofence
+##### Create a request for adding a geofence
 
 ```kt
 fun createGeofenceRequest(): GeofenceRequestRes{
@@ -557,7 +557,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
 }
 ```
 
-#### Remove a geofence
+##### Remove a geofence
 
 With the `deleteGeofenceList()` method, you can delete the previously created geofence list according to the geofence id list or according to the pending intent value.
 
@@ -581,7 +581,7 @@ geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
    .addOnFailureListener { }
 ```
 
-### Activity Recognition
+#### Activity Recognition
 
 Thanks to the Activity Recognition feature, you can follow the user's activity instantly.
 To use the activity recognition service in versions earlier than Android 10, add the following permission in the `AndroidManifest.xml` file.
@@ -663,7 +663,7 @@ activityIdentificationService.deleteActivityIdentificationUpdates(applicationCon
         .addOnFailureListener { }
 ```
 
-#### Activity Transition
+##### Activity Transition
 
 Activity transition is a process of detecting user activity converting from one to another. You can call the `createActivityConversionUpdates()` method in your app to request user activity conversion updates.
 
@@ -706,7 +706,7 @@ class ActivityRecognitionReceiver : BroadcastReceiver() {
  }
 ```
 
-#### Stop activity transition update request
+##### Stop activity transition update request
 
 If you want to stop getting activity transition information, you can use `deleteActivityConversionUpdates()` method.
 
