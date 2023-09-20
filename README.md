@@ -13,42 +13,23 @@ If you want to contribute don't hesitate to create PR's :)
 
 Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
-# Table of Contents
+## Table of Contents
 
 - [Common Mobile Services](#common-mobile-services)
-- [Table of Contents](#table-of-contents)
+  - [Table of Contents](#table-of-contents)
   - [How to install](#how-to-install)
-    - [Step 1. Add the JitPack repository, Huawei repo and classpaths to your build file](#step-1-add-the-jitpack-repository-huawei-repo-and-classpaths-to-your-build-file)
-    - [Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header](#step-2-get-the-agconnect-servicesjson-file-from-the-agc-console-and-google-servicesjson-file-from-firebase-console-then-place-it-under-the-app-module-and-add-plugins-to-app-level-gradle-file-header)
-    - [Step 3. Add the dependency for module(s)](#step-3-add-the-dependency-for-modules)
-    - [MapKit](#mapkit)
-    - [Location](#location)
-    - [Analytics](#analytics)
-    - [Credit Card Scanner](#credit-card-scanner)
-    - [Awareness](#awareness)
-    - [Scan](#scan)
-    - [Translate](#translate)
-    - [Speech To Text](#speech-to-text)
-    - [Text To Speech](#text-to-speech)
-    - [Object Detection](#object-detection)
-    - [Text Recognition](#text-recognition)
-    - [Face Detection](#face-detection)
-    - [Language Detection](#language-detection)
-    - [Image Classification](#image-classification)
-    - [Account](#account)
-    - [Auth](#auth)
-    - [Safety](#safety)
-    - [Crash](#crash)
-    - [Push](#push)
-    - [Site](#site)
-    - [Identity](#identity)
-    - [Remote Config](#remote-config)
+    - [Add gradle repositories](#add-gradle-repositories)
+    - [Configure app information](#configure-app-information)
+    - [Download](#download)
   - [Result Data](#result-data)
-  - [MapKit](#mapkit-1)
-    - [How to use](#how-to-use)
-  - [Location](#location-1)
-    - [How to use](#how-to-use-1)
-        - [Using the Mock location feature](#using-the-mock-location-feature)
+  - [MapKit](#mapkit)
+    - [Download](#download-1)
+    - [Usage](#usage)
+  - [Location](#location)
+    - [Download](#download-2)
+    - [Usage](#usage-1)
+      - [Getting location continuously](#getting-location-continuously)
+      - [Using the Mock location feature](#using-the-mock-location-feature)
     - [Geofence](#geofence)
       - [Creating and Adding a Geofence](#creating-and-adding-a-geofence)
       - [Create a request for adding a geofence](#create-a-request-for-adding-a-geofence)
@@ -56,87 +37,109 @@ Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`
     - [Activity Recognition](#activity-recognition)
       - [Activity Transition](#activity-transition)
       - [Stop activity transition update request](#stop-activity-transition-update-request)
-  - [Analytics](#analytics-1)
-    - [How to use](#how-to-use-2)
-  - [Credit Card Scanner](#credit-card-scanner-1)
-    - [How to use](#how-to-use-3)
-  - [Awareness](#awareness-1)
-    - [How to use](#how-to-use-4)
-  - [Scan](#scan-1)
-    - [How to use](#how-to-use-5)
-  - [Translate](#translate-1)
-    - [How to use](#how-to-use-6)
-  - [Speech To Text](#speech-to-text-1)
-    - [How to use](#how-to-use-7)
-  - [Text To Speech](#text-to-speech-1)
-    - [How to use](#how-to-use-8)
-  - [Object Detection](#object-detection-1)
-    - [How to use](#how-to-use-9)
-  - [Text Recognition](#text-recognition-1)
-    - [How to use](#how-to-use-10)
-  - [Face Detection](#face-detection-1)
-    - [How to use](#how-to-use-11)
-  - [Language Detection](#language-detection-1)
-    - [How to use](#how-to-use-12)
-  - [Image Classification](#image-classification-1)
-    - [How to use](#how-to-use-13)
-  - [Account](#account-1)
-    - [How to use](#how-to-use-14)
-  - [Auth](#auth-1)
-    - [How to use](#how-to-use-15)
-    - [Facebook Sign in](#facebook-sign-in)
-    - [Huawei or Google Sign in](#huawei-or-google-sign-in)
-    - [Email Sign in](#email-sign-in)
-    - [Phone Sign in](#phone-sign-in)
-    - [Twitter Sign in](#twitter-sign-in)
-    - [Anonymous Sign in](#anonymous-sign-in)
-    - [Email Sign up](#email-sign-up)
-    - [Phone Sign up](#phone-sign-up)
-    - [Reset password](#reset-password)
-    - [Update Username](#update-username)
-    - [Update Photo](#update-photo)
-    - [Get Code](#get-code)
-    - [Update Email](#update-email)
-      - [Note: Only a user who has signed in within 5 minutes can change their email address. If such a requirement is not met, reauthenticate the user and then try again.](#note-only-a-user-who-has-signed-in-within-5-minutes-can-change-their-email-address-if-such-a-requirement-is-not-met-reauthenticate-the-user-and-then-try-again)
-    - [Update Phone](#update-phone)
-    - [Update Password](#update-password)
-    - [Link With Twitter](#link-with-twitter)
-    - [Link With Facebook](#link-with-facebook)
-    - [Link With Email](#link-with-email)
-    - [Link With Phone](#link-with-phone)
-    - [Unlink](#unlink)
-    - [ReAuthenticate](#reauthenticate)
-    - [Delete User](#delete-user)
-  - [Safety](#safety-1)
-    - [How To Use](#how-to-use-16)
+  - [Analytics](#analytics)
+    - [Download](#download-3)
+    - [Usage](#usage-2)
+  - [Credit Card Scanner](#credit-card-scanner)
+    - [Download](#download-4)
+    - [Usage](#usage-3)
+  - [Awareness](#awareness)
+    - [Download](#download-5)
+    - [Usage](#usage-4)
+  - [Scan](#scan)
+    - [Download](#download-6)
+    - [Usage](#usage-5)
+  - [Translate](#translate)
+    - [Download](#download-7)
+    - [Usage](#usage-6)
+  - [Speech To Text](#speech-to-text)
+    - [Download](#download-8)
+    - [Usage](#usage-7)
+  - [Text To Speech](#text-to-speech)
+    - [Download](#download-9)
+    - [Usage](#usage-8)
+  - [Object Detection](#object-detection)
+    - [Download](#download-10)
+    - [Usage](#usage-9)
+  - [Text Recognition](#text-recognition)
+    - [Download](#download-11)
+    - [Usage](#usage-10)
+  - [Face Detection](#face-detection)
+    - [Download](#download-12)
+    - [Usage](#usage-11)
+  - [Language Detection](#language-detection)
+    - [Download](#download-13)
+    - [Usage](#usage-12)
+  - [Image Classification](#image-classification)
+    - [Download](#download-14)
+    - [Usage](#usage-13)
+  - [Account](#account)
+    - [Download](#download-15)
+    - [Usage](#usage-14)
+  - [Auth](#auth)
+    - [Download](#download-16)
+    - [Usage](#usage-15)
+      - [Facebook Sign in](#facebook-sign-in)
+      - [Huawei or Google Sign in](#huawei-or-google-sign-in)
+      - [Email Sign in](#email-sign-in)
+      - [Phone Sign in](#phone-sign-in)
+      - [Twitter Sign in](#twitter-sign-in)
+      - [Anonymous Sign in](#anonymous-sign-in)
+      - [Email Sign up](#email-sign-up)
+      - [Phone Sign up](#phone-sign-up)
+      - [Reset password](#reset-password)
+      - [Update Username](#update-username)
+      - [Update Photo](#update-photo)
+      - [Get Code](#get-code)
+      - [Update Email](#update-email)
+      - [Update Phone](#update-phone)
+      - [Update Password](#update-password)
+      - [Link With Twitter](#link-with-twitter)
+      - [Link With Facebook](#link-with-facebook)
+      - [Link With Email](#link-with-email)
+      - [Link With Phone](#link-with-phone)
+      - [Unlink](#unlink)
+      - [ReAuthenticate](#reauthenticate)
+      - [Delete User](#delete-user)
+  - [Safety](#safety)
+    - [Download](#download-17)
+    - [Usage](#usage-16)
       - [User Detection](#user-detection)
       - [Root Detection](#root-detection)
       - [AppChecks](#appchecks)
       - [URLCheck](#urlcheck)
-  - [Crash](#crash-1)
-    - [How To Use](#how-to-use-17)
-    - [Functions](#functions)
-  - [Push](#push-1)
-    - [How To Use](#how-to-use-18)
+  - [Crash](#crash)
+    - [Download](#download-18)
+    - [Usage](#usage-17)
+      - [Available functions](#available-functions)
+  - [Push](#push)
+    - [Download](#download-19)
+    - [Usage](#usage-18)
+      - [Slider Push Notification](#slider-push-notification)
   - [Site Kit](#site-kit)
-    - [How to use](#how-to-use-19)
+    - [Download](#download-20)
+    - [Usage](#usage-19)
   - [Identity Kit](#identity-kit)
-    - [How to use](#how-to-use-20)
-  - [Remote Config](#remote-config-1)
-    - [How to use](#how-to-use-21)
+    - [Download](#download-21)
+    - [Usage](#usage-20)
+  - [Remote Config](#remote-config)
+    - [Download](#download-22)
+    - [Usage](#usage-21)
 
 ## How to install
 
-### Step 1. Add the JitPack repository, Huawei repo and classpaths to your build file
+### Add gradle repositories
+
+Add the JitPack repository, Huawei repo and classpaths to your build file
 
 ```gradle
 buildscript {
     repositories {
-    	...
+        //...
         maven {url 'https://developer.huawei.com/repo/'}
     }
     dependencies {
-    	...
+        //...
         classpath 'com.huawei.agconnect:agcp:1.7.1.300'
         classpath 'com.google.gms:google-services:4.3.14'
     }
@@ -144,157 +147,62 @@ buildscript {
 
 allprojects {
     repositories {
-	...
-	maven { url 'https://jitpack.io' }
-	maven { url "https://developer.huawei.com/repo/" }
+        //...
+        maven { url 'https://jitpack.io' }
+        maven { url "https://developer.huawei.com/repo/" }
     }
 }
 ```
 
-### Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header
+### Configure app information
+
+1. Get the `agconnect-services.json` file from the AGC Console and place in the `app` folder
+1. Get the `google-services.json` file from the Firebase Console and place in the `app` folder
+1. Add Google and Huawei gradle plugins to `App` level `build.gradle`
 
 ```gradle
 apply plugin: 'com.huawei.agconnect'
 apply plugin: 'com.google.gms.google-services'
 ```
 
-### Step 3. Add the dependency for module(s)
+### Download
 
-com.github.Explore-In-HMS.common-mobile-services
+**Latest version: [2.2.2](https://github.com/Explore-In-HMS/common-mobile-services/releases)**
 
-`latest version 2.2.2`
+Add dependencies as required to your app.
 
-### MapKit
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
-```
-
-### Location
+> Google, Firebase and Huawei dependencies are included so you do NOT need to declare them manually.
 
 ```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:location:<versionName>'
+dependencies {
+    //...
+    def cms_version = "2.2.2"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:mapkit:$cms_version"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:location:$cms_version"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:analytics:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:creditcardscanner:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:awareness:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:scan:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:translate:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:speechtotext:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:texttospeech:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:objectdetection:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:textrecognition:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:facedetection:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:languagedetection:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:imageclassification:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:account:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:auth:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:safety:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:crash:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:push:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:site:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:identity:$cms_ver"
+    implementation "com.github.Explore-In-HMS.common-mobile-services:remoteconfig:$cms_ver"
+}
 ```
 
-### Analytics
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:analytics:<versionName>'
-```
-
-### Credit Card Scanner
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:creditcardscanner:<versionName>'
-```
-
-### Awareness
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:awareness:<versionName>'
-```
-
-### Scan
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:scan:<versionName>'
-```
-
-### Translate
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:translate:<versionName>'
-```
-
-### Speech To Text
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:speechtotext:<versionName>'
-```
-
-### Text To Speech
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:texttospeech:<versionName>'
-```
-
-### Object Detection
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection:<versionName>'
-```
-
-### Text Recognition
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>'
-```
-
-### Face Detection
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:facedetection:<versionName>'
-```
-
-### Language Detection
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:languagedetection:<versionName>'
-```
-
-### Image Classification
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:imageclassification:<versionName>'
-```
-
-### Account
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versionName>'
-```
-
-### Auth
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:auth:<versionName>'
-```
-
-### Safety
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:safety:<versionName>'
-```
-
-### Crash
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:crash:<versionName>'
-```
-
-### Push
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:push:<versionName>'
-```
-
-### Site
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:site:<versionName>'
-```
-
-### Identity
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:identity:<versionName>'
-```
-
-### Remote Config
-
-```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:remoteconfig:<versionName>'
-```
+_**You only need to add the specific modules your app will use**_
 
 ## Result Data
 
@@ -310,11 +218,20 @@ sealed class ResultData<out T>{
 
 ## MapKit
 
+<details> 
 This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
 
-### How to use
+### Download
 
-First add Google Map api key to Manifest.xml.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>"
+```
+
+### Usage
+
+First add Google Map api key to `Manifest.xml`
 
 ```xml
 <meta-data
@@ -322,7 +239,7 @@ First add Google Map api key to Manifest.xml.
     android:value="xxx-xxx"/>
 ```
 
-Add CommonMapView to your layout file
+Add `CommonMapView` to your layout file
 
 ```xml
 <com.hms.commonmobileservices.mapkit.CommonMapView
@@ -429,11 +346,23 @@ interface UISettings {
 }
 ```
 
+</details>
+
 ## Location
+
+<details>
 
 This library provides a [CommonLocationClient](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/location/src/main/java/com/hms/lib/commonmobileservices/location/CommonLocationClient.kt). It is a base class for GMS `FusedLocationProviderClient` and HMS `FusedLocationProviderClient`. This library handles enabling GPS and getting location permissions at runtime.
 
-### How to use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:location:<versionName>"
+```
+
+### Usage
 
 First, initialize `CommonLocationClient`:
 
@@ -479,7 +408,7 @@ locationClient?.getLastKnownLocation{
  }
 ```
 
-Getting location continuously:
+#### Getting location continuously
 
 ```kt
 locationClient?.requestLocationUpdates(priority = Priority.PRIORITY_HIGH_ACCURACY,interval = 1000){
@@ -509,10 +438,10 @@ When you don't need to location updates you can remove listener like this:
 locationClient?.removeLocationUpdates()
 ```
 
-##### Using the Mock location feature
+#### Using the Mock location feature
 
-To use the mock location function, go to Settings > System & updates > Developer options > Select mock location app and select the desired app. (If Developer options is unavailable, go to Settings > About phone and tap Build number for seven consecutive times. Then, Developer options will be displayed on System & updates.)
-You need to add necessary permission to use Mock location feature to AndroidManifest.xml file.
+To use the mock location function, go to **Settings** > **System & updates** > **Developer options** > Select mock location app and select the desired app. (If Developer options is unavailable, go to **Settings** > **About phone** and tap **Build number** for seven consecutive times. Then, Developer options will be displayed in **System & updates**.)
+You need to add necessary permission to use Mock location feature to `AndroidManifest.xml` file.
 
 ```xml
 <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION"/>
@@ -540,7 +469,7 @@ val mockLocation = Location(LocationManager.GPS_PROVIDER)
 ### Geofence
 
 The usage of the Geofence feature is as follows.
-To use the geofence service APIs of Location Kit, declare the ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions in the AndroidManifest.xml file.
+To use the geofence service APIs of Location Kit, declare the `ACCESS_FINE_LOCATION` and `ACCESS_COARSE_LOCATION` permissions in the `AndroidManifest.xml` file.
 
 ```xml
  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -548,7 +477,7 @@ To use the geofence service APIs of Location Kit, declare the ACCESS_FINE_LOCATI
  <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 ```
 
-First you have to initialize the CommonGeofenceService object.
+First you have to initialize the `CommonGeofenceService` object.
 
 ```kt
    private var geofenceService: CommonGeofenceService? = null
@@ -602,7 +531,7 @@ geofenceService.createGeofenceList(applicationContext,createGeofenceRequest(),pe
   }
 ```
 
-After adding Geofence, we need to create a Broadcast receiver and define it in AndroidManifest file so that Geofence can be triggered.
+After adding Geofence, we need to create a Broadcast receiver and define it in `AndroidManifest.xml` file so that Geofence can be triggered.
 
 ```xml
  <receiver android:name=".GeofenceBroadcastReceiver"
@@ -613,7 +542,7 @@ After adding Geofence, we need to create a Broadcast receiver and define it in A
  </receiver>
 ```
 
-We will be able to listen to the Geofence triggering process thanks to the Brodcast receiver.Thanks to our CommonGeofenceData class, you can get all information about the triggered event.
+We will be able to listen to the Geofence triggering process thanks to the Broadcast receiver.Thanks to our `CommonGeofenceData` class, you can get all information about the triggered event.
 
 ```kt
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
@@ -655,14 +584,14 @@ geofenceService.deleteGeofenceList(applicationContext,pendingIntent)
 ### Activity Recognition
 
 Thanks to the Activity Recognition feature, you can follow the user's activity instantly.
-To use the activity recognition service in versions earlier than Android 10, add the following permission in the AndroidManifest.xml file.
+To use the activity recognition service in versions earlier than Android 10, add the following permission in the `AndroidManifest.xml` file.
 
 ```xml
  <uses-permission android:name="com.huawei.hms.permission.ACTIVITY_RECOGNITION"/>
  <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION"/>
 ```
 
-To use the activity recognition service in Android 10 and later versions, add the following permission in the AndroidManifest.xml file;
+To use the activity recognition service in Android 10 and later versions, add the following permission in the `AndroidManifest.xml` file;
 
 ```xml
  <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
@@ -702,7 +631,7 @@ You can follow to the user activities with the Broadcast Receiver we will create
   <receiver android:name=".ActivityRecognitionReceiver"
      android:exported="true">
         <intent-filter>
-	     <action android:name="com.hms.commonmobileservices.ACTIVITY_RECOGNITION" />
+        <action android:name="com.hms.commonmobileservices.ACTIVITY_RECOGNITION" />
         </intent-filter>
   </receiver>
 ```
@@ -791,11 +720,23 @@ activityIdentificationService.deleteActivityConversionUpdates(applicationContext
        .addOnFailureListener { }
 ```
 
+</details>
+
 ## Analytics
+
+<details>
 
 It is made to ease logging for your project. You can log your event with a one line of code.
 
-### How to use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:analytics:<versionName>"
+```
+
+### Usage
 
 First, get the instance of common logger by calling `CommonAnalytics.instance(this)`. The function takes a context instance as a parameter. Then returns an implementation of `CommonAnalytics`. It can be the class that uses `Firebase` or `HiAnalyticsTools` for logging.
 If you want to implement your own logger you can just implement the CommonAnalytics interface and use it instead.
@@ -810,7 +751,7 @@ val myEvent = Bundle().apply {
 CommonAnalytics.instance(this)?.saveEvent("cartEvent", myEvent)
 ```
 
-You can also delete previously collected data with the "clearCachedData()" method.
+You can also delete previously collected data with the `clearCachedData()` method.
 Data configured through the following APIs will be cleared:
 
 `onEvent`
@@ -857,17 +798,29 @@ val params = Bundle().apply {
 CommonAnalytics.instance(this)?.addDefaultEventParams(params)
 ```
 
-If you want to obtain AAID then you can use `getAAID()` method. This method returns to you AAID as a string.
+If you want to obtain **AAID** then you can use `getAAID()` method. This method returns to you **AAID** as a string.
 
 ```kt
 CommonAnalytics.instance(this)?.getAAID()
 ```
 
+</details>
+
 ## Credit Card Scanner
 
-This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
+<details>
 
-### How to use
+This library reads a credit card with device camera. It uses Huawei `ML-Card-Bcr` library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
+
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:creditcardscanner:<versionName>"
+```
+
+### Usage
 
 Get `CreditCardScanner` instance and call `scan()` function like this:
 
@@ -906,13 +859,25 @@ data class ScanError(
 }
 ```
 
+</details>
+
 ## Awareness
 
-Awareness SDK provides your app with the ability to obtain contextual information including users' behavior, audio device status, weather, and current time. Depending on the situation, this information can be obtained in certain instantly.
+<details>
 
-### How to use
+Awareness SDK provides your app with the ability to obtain contextual information including user's behavior, audio device status, weather, and current time. Depending on the situation, this information can be obtained in certain instantly.
 
-To use Google Awareness Api Key, you need to get Google Awareness Api Key. With this Api Key, add the code block to your Manifest.xml file as follows.
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:awareness:<versionName>"
+```
+
+### Usage
+
+To use Google Awareness Api Key, you need to get Google Awareness Api Key. With this Api Key, add the code block to your `AndroidManifest.xml` file as follows.
 
 ```xml
 <meta-data
@@ -938,19 +903,31 @@ The `getWeather()` or `getBehavior()` or `getHeadset()` or `getTime()` functions
 fun getWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit)
 ```
 
+</details>
+
 ## Scan
+
+<details>
 
 Scan SDK scans and parses all major 1D and 2D barcodes, helping you quickly barcode scanning functions into your apps.
 
-### How to use
+### Download
 
-The scan process is started with the following line of code. scanBarcodeResultCode is the variable that is the result of OnActivityResult.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:scan:<versionName>"
+```
+
+### Usage
+
+The scan process is started with the following line of code. `scanBarcodeResultCode` is the variable that is the result of OnActivityResult.
 
 ```kt
 HuaweiGoogleScanManager(this).performScan(this,scanBarcodeResultCode)
 ```
 
-After scanning is done, The result of the scanning process gets from onActivityResult. Using the parseScanToTextData function, the data is converted to string format.
+After scanning is done, The result of the scanning process gets from `onActivityResult`. Using the `parseScanToTextData` function, the data is converted to string format.
 
 ```kt
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -973,11 +950,24 @@ The `parseScanToTextData()` function takes a callback lambda function as a param
 fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit, activity: Activity, data:Intent)
 ```
 
+</details>
+
 ## Translate
+
+<details>
 
 With the support of an on-device model, the on-device translation service can translate text from the source language into the target language.
 
-### How to use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+Add the dependency to App level `build.gradle`
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:translate:<versionName>"
+```
+
+### Usage
 
 First, get the instance of language detection by calling `Translator.getClient(context)` The function takes `context` as parameter.
 
@@ -1054,19 +1044,31 @@ Ensure that the `close()` method is called when the Translator object will no lo
 translator.close()
 ```
 
+</details>
+
 ## Speech To Text
+
+<details>
 
 Speech to Text can recognize speech not longer than 60s and convert the input speech into text in real time. This service uses industry-leading deep learning technologies to achieve a recognition accuracy of over 95%. Currently, Mandarin Chinese (including Chinese-English bilingual speech), English, French, German, Spanish, and Italian can be recognized. [Click here](https://developer.huawei.com/consumer/en/doc/development/HMS-Plugin-References-V1/language-0000001058780607-V1) to view instantly supported speech to text languages and language codes.
 
-### How to use
+### Download
 
-The speech to text process is started with the following line of code. speechToTextResultCode is the variable that is the result of OnActivityResult. The language to be spoken in must be chosen.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:speechtotext:<versionName>"
+```
+
+### Usage
+
+The speech to text process is started with the following line of code. `speechToTextResultCode` is the variable that is the result of `OnActivityResult`. The language to be spoken in must be chosen.
 
 ```kt
 HuaweiGoogleSpeechToTextManager(this).performSpeechToText(this,speechToTextResultCode,"en-US","API_KEY")
 ```
 
-After speaking is done, The result of the speech to text process gets from onActivityResult. Using the parseSpeechToTextData function, the data is converted to string format.
+After speaking is done, The result of the speech to text process gets from `onActivityResult`. Using the `parseSpeechToTextData` function, the data is converted to string format.
 
 ```kt
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -1091,13 +1093,25 @@ The `parseSpeechToTextData()` function takes a callback lambda function as a par
 fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent, resultCode:Int)
 ```
 
+</details>
+
 ## Text To Speech
+
+<details>
 
 Text to speech (TTS) can convert text information into audio output in real time. Rich timbres are provided and the volume and speed can be adjusted (5x adjustment is supported for Chinese and English), thereby natural voices can be produced. This service uses the deep neural network (DNN) synthesis mode and can be quickly integrated through the on-device SDK to generate audio data in real time. [Click here](https://developer.huawei.com/consumer/en/doc/development/hiai-References/mlsdktts-overview-0000001050167594#section17784135144012) to view instantly supported text to speech languages and person types.
 
-### How to use
+### Download
 
-The text to speech process is started with the following line of code. The languageCode and personType must be chosen.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:texttospeech:<versionName>"
+```
+
+### Usage
+
+The text to speech process is started with the following line of code. The `languageCode` and `personType` must be chosen.
 
 ```kt
 HuaweiGoogleTextToSpeechManager(this).runTextToSpeech(
@@ -1109,7 +1123,7 @@ HuaweiGoogleTextToSpeechManager(this).runTextToSpeech(
                 )
 ```
 
-The `runTextToSpeech()` function takes text, activity, apiKey, languageCode, personType as a parameter. Then the text to speech process will start.
+The `runTextToSpeech()` function takes `text`, `activity`, `apiKey`, `languageCode`, `personType` as a parameters. Then the text to speech process will start.
 
 ```kt
 fun runTextToSpeech(text: String, activity: Activity, apiKey: String, languageCode: String, personType: String)
@@ -1121,13 +1135,25 @@ The `stopTextToSpeech()` function stops the speech process.
 fun stopTextToSpeech()
 ```
 
+</details>
+
 ## Object Detection
+
+<details>
 
 The object detection and tracking service can detect and track multiple objects in an image, so they can be located and classified in real time. A maximum of eight objects can be detected and tracked concurrently. The following object categories are supported: household products, fashion goods, food, places, plants, faces, and others.
 
-### How to use
+### Download
 
-Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:objectdetection:<versionName>"
+```
+
+### Usage
+
+Parameters that should be used to use the object detection feature: `callback`, `context`, `bitmap`, `apiKey`. Then the objects which in the picture will be detected.
 
 ```kt
 HuaweiGoogleObjectDetectionManager(this).staticImageDetection({
@@ -1140,7 +1166,7 @@ HuaweiGoogleObjectDetectionManager(this).staticImageDetection({
                     }
                 }
 
-                },this,bitmap!!,apiKey
+                }, this, bitmap!!, apiKey)
 ```
 
 The `staticImageDetection()` function takes a callback lambda function as a parameter. The lambda function gives us a `ResultData` sealed class object.
@@ -1149,13 +1175,25 @@ The `staticImageDetection()` function takes a callback lambda function as a para
 fun staticImageDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
 ```
 
+</details>
+
 ## Text Recognition
+
+<details>
 
 The text recognition service can extract text from images of receipts, business cards, and documents. This service is useful for industries such as printing, education, and logistics. You can use it to create apps that handle data entry and check tasks.
 
-### How to use
+### Download
 
-Parameters that should be used to use the text recognition feature; bitmap and callback. Then the text which in the image will be recognized.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>"
+```
+
+### Usage
+
+Parameters that should be used to use the text recognition feature: `bitmap` and `callback`. Then the text which in the image will be recognized.
 
 ```kt
         HuaweiGoogleTextRecognitionManager(this).textRecognition(bitmap) { result ->
@@ -1176,13 +1214,25 @@ The `textRecognition()` function takes a callback lambda function as a parameter
 fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResult<Any>) -> Unit)
 ```
 
+</details>
+
 ## Face Detection
+
+<details>
 
 With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
 
-### How to use
+### Download
 
-Parameters that should be used to use the object detection feature; callback, context, bitmap, api key. Then the objects which in the picture will be detected.
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:facedetection:<versionName>"
+```
+
+### Usage
+
+Parameters that should be used to use the object detection feature: `callback`, `context`, `bitmap`, `apiKey`. Then the objects which in the picture will be detected.
 
 ```kt
 HuaweiGoogleFaceDetectionManager(this).faceDetection({
@@ -1203,17 +1253,29 @@ The `faceDetection()` function takes a callback lambda function as a parameter. 
 fun faceDetection(callback: (detectedValue: ResultData<List<Any>>) -> Unit, activity: Activity, bitmap: Bitmap, apiKey: String)
 ```
 
+</details>
+
 ## Language Detection
 
-The language detection service can detect the language of text. ML Kit detects languages in text and returns the language codes (the ISO 639-1 standard is used for languages, other than certain languages specified) and their respective confidences or the language code with the highest confidence.
+<details>
 
-### How to use
+The language detection service can detect the language of text. ML Kit detects languages in text and returns the language codes (the **ISO 639-1** standard is used for languages, other than certain languages specified) and their respective confidences or the language code with the highest confidence.
 
-You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the AndroidManifest.xml file.
+### Download
 
-```kt
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:languagedetection:<versionName>"
+```
+
+### Usage
+
+You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the `AndroidManifest.xml` file.
+
+```xml
 <manifest
-    ...
+    <!-- ... -->
     <meta-data
         android:name="com.huawei.hms.ml.DEPENDENCY"
         android:value= "langdetect"/>
@@ -1221,7 +1283,7 @@ You can configure your app to automatically download the model to the device aft
     <meta-data
         android:name="com.google.mlkit.vision.DEPENDENCIES"
         android:value="langid" >
-    ...
+    <!-- ... -->
 </manifest>
 ```
 
@@ -1231,7 +1293,7 @@ First, get the instance of language detection by calling `HuaweiGoogleLanguageDe
 val languageDetector = HuaweiGoogleLanguageDetector.getClient(context, confidenceThreshold?)
 ```
 
-To detect the language of a string, pass the string to the detectLanguage() method.
+To detect the language of a string, pass the string to the `detectLanguage()` method.
 
 ```kt
 languageDetector.detectLanguage("sourceText"){ detectResult ->
@@ -1246,7 +1308,7 @@ languageDetector.detectLanguage("sourceText"){ detectResult ->
         }
 ```
 
-To get the confidence values of a string's most likely languages, pass the string to the detectPossibleLanguages() method.
+To get the confidence values of a string's most likely languages, pass the string to the `detectPossibleLanguages()` method.
 
 ```kt
 languageDetector.detectPossibleLanguages("sourceText"){ detectResult ->
@@ -1263,17 +1325,29 @@ languageDetector.detectPossibleLanguages("sourceText"){ detectResult ->
         }
 ```
 
+</details>
+
 ## Image Classification
+
+<details>
 
 The image classification service classifies elements in images into intuitive categories, such as people, objects, environments, activities, or artwork, to define image themes and application scenarios.
 
-### How to use
+### Download
 
-You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the AndroidManifest.xml file.
+Add the dependency to your `app` level `build.gradle` if you haven't already
 
-```kt
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:imageclassification:<versionName>"
+```
+
+### Usage
+
+You can configure your app to automatically download the model to the device after your app is installed from the Play Store or AppGallery. Add the following statements to the `AndroidManifest.xml` file.
+
+```xml
 <manifest
-    ...
+    <!-- ... -->
     <meta-data
         android:name="com.huawei.hms.ml.DEPENDENCY"
         android:value= "label"/>
@@ -1281,7 +1355,7 @@ You can configure your app to automatically download the model to the device aft
     <meta-data
         android:name="com.google.mlkit.vision.DEPENDENCIES"
         android:value="ica" >
-    ...
+    <!-- ... -->
 </manifest>
 ```
 
@@ -1306,11 +1380,23 @@ imageClassification.analyseImage(bitmap){ classificationResult ->
         }
 ```
 
+</details>
+
 ## Account
+
+<details>
 
 This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
 
-### How to use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:account:<versionName>"
+```
+
+### Usage
 
 First, initialize `AccountService`:
 
@@ -1364,11 +1450,23 @@ accountService.signOut()
     .addOnCanceledListener {}
 ```
 
+</details>
+
 ## Auth
+
+<details>
 
 This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
 
-### How to use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:auth:<versionName>"
+```
+
+### Usage
 
 First, initialize `AuthService`:
 
@@ -1380,7 +1478,7 @@ It needs `Context` to check mobile services availability and provide proper mobi
 
 Then get last signed user by calling `getUser()`. If there is no signed user it will return `null`
 
-### Facebook Sign in
+#### Facebook Sign in
 
 Call `signInWithFacebook` to sign in with facebook account. It needs token which you get from facebook sdk. If it is success, it returns `AuthUser`.
 
@@ -1390,7 +1488,7 @@ authService.signInWithFacebook(token)
     .addOnFailureListener {}
 ```
 
-### Huawei or Google Sign in
+#### Huawei or Google Sign in
 
 Call `signInWithGoogleOrHuawei` to sign in with google or huawei account. It needs token which you get from account sdk. If it is success, it returns `AuthUser`.
 
@@ -1400,7 +1498,7 @@ authService.signInWithGoogleOrHuawei(token)
     .addOnFailureListener {}
 ```
 
-### Email Sign in
+#### Email Sign in
 
 Call `signInWithEmail` to sign in with email. It needs email and password. If it is success, it returns `AuthUser`.
 
@@ -1410,7 +1508,7 @@ authService.signInWithEmail(email, password)
     .addOnFailureListener {}
 ```
 
-### Phone Sign in
+#### Phone Sign in
 
 Call `signInWithPhone` to sign in with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
 
@@ -1423,7 +1521,7 @@ authService.signInWithPhone(countryCode,phoneNumber,password,verifyCode)
     .addOnFailureListener {}
 ```
 
-### Twitter Sign in
+#### Twitter Sign in
 
 Call `signInWithTwitter` to sign in with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
 
@@ -1433,7 +1531,7 @@ authService.signInWithTwitter(token, secret)
     .addOnFailureListener {}
 ```
 
-### Anonymous Sign in
+#### Anonymous Sign in
 
 Call `anonymousSignIn` to sign in with an anonymous account that generated by Auth Service Server. It doesn't need any information. If it is success, it returns `AuthUser`.
 
@@ -1443,7 +1541,7 @@ authService.anonymousSignIn()
     .addOnFailureListener {}
 ```
 
-### Email Sign up
+#### Email Sign up
 
 Call `signUp` to sign up with email. It needs email and password. If it is success, it returns `VerificationType`.
 
@@ -1461,7 +1559,7 @@ authService.verifyCode(email, password, verificationCode)
     .addOnFailureListener {}
 ```
 
-### Phone Sign up
+#### Phone Sign up
 
 Call `signUpWithPhone` to sign up to **AGC Auth Service** with phone. It needs country code, phone number, password and verify code. You can get the verifyCode using the `getPhoneCode` method.
 
@@ -1482,7 +1580,7 @@ authService.verifyCode(email, password, verificationCode)
     .addOnFailureListener {}
 ```
 
-### Reset password
+#### Reset password
 
 Call `resetPassword` to reset user' s password. It needs email. If it is success, it returns `VerificationType`.
 
@@ -1492,7 +1590,7 @@ authService.resetPassword(email)
     .addOnFailureListener {}
 ```
 
-If verification type is `LINK`, it means that an e-mail containing link to reset password has been sent to the user. If `VerificationType` is `CODE`, it means that an e-mail containing verificaton code has been sent to the user. Call `verifyCodeToResetPassword` to reset user' s password.
+If verification type is `LINK`, it means that an e-mail containing link to reset password has been sent to the user. If `VerificationType` is `CODE`, it means that an e-mail containing verification code has been sent to the user. Call `verifyCodeToResetPassword` to reset user' s password.
 
 ```kt
 authService.verifyCodeToResetPassword(email, newPassword, verificationCode)
@@ -1500,7 +1598,7 @@ authService.verifyCodeToResetPassword(email, newPassword, verificationCode)
     .addOnFailureListener {}
 ```
 
-### Update Username
+#### Update Username
 
 Call `updateUsername` to update user' s username. It needs user login.
 
@@ -1510,7 +1608,7 @@ authService.updateUsername(email)
     .addOnFailureListener {}
 ```
 
-### Update Photo
+#### Update Photo
 
 Call `updatePhoto` to update user' s photo. It needs user login.
 
@@ -1520,7 +1618,7 @@ authService.updatePhoto(photo)
     .addOnFailureListener {}
 ```
 
-### Get Code
+#### Get Code
 
 Call `getCode` to get verification code. It needs new email or new phone number.
 
@@ -1542,7 +1640,7 @@ authService.getPhoneCode(country_code,phone,activity) //country_code ex: like Tu
     .addOnFailureListener {}
 ```
 
-### Update Email
+#### Update Email
 
 Call `updateEmail` to update user's mail. The e-mail address to be changed is needed. You can get the verifyCode using the `getCode` method.
 
@@ -1552,11 +1650,11 @@ authService.updateEmail(newEmail, verificationCode)
     .addOnFailureListener {}
 ```
 
-#### Note: Only a user who has signed in within 5 minutes can change their email address. If such a requirement is not met, reauthenticate the user and then try again.
+**_Note: Only a user who has signed in within 5 minutes can change their email address. If such a requirement is not met, reauthenticate the user and then try again._**
 
-### Update Phone
+#### Update Phone
 
-Call `updatePhone` to update user's phone. It needs phone. You can get the verifyCode using the `getPhoneCode` method.
+Call `updatePhone` to update user's phone. It needs phone. You can get the `verifyCode` using the `getPhoneCode` method.
 
 ```kt
 authService.updatePhone(country_code, phone, verificationCode) //country_code ex: like Turkey: +90 then phone: 532xxxxxx
@@ -1564,10 +1662,10 @@ authService.updatePhone(country_code, phone, verificationCode) //country_code ex
     .addOnFailureListener {}
 ```
 
-### Update Password
+#### Update Password
 
-Call `updatePasswordWithPhone` to update user's password with phone. You can get the verifyCode using the `getPhoneCode` method.
-Call `updatePasswordWithEmail` to update user's password with email. You can get the verifyCode using the `getCode` method.
+Call `updatePasswordWithPhone` to update user's password with phone. You can get the `verifyCode` using the `getPhoneCode` method.
+Call `updatePasswordWithEmail` to update user's password with email. You can get the `verifyCode` using the `getCode` method.
 
 ```kt
 authService.updatePasswordWithPhone(password, verificationCode)
@@ -1579,9 +1677,9 @@ authService.updatePasswordWithEmail(password, verificationCode)
     .addOnFailureListener {}
 ```
 
-### Link With Twitter
+#### Link With Twitter
 
-Call `linkWithTwitter` to link account with twitter. It needs token and secret. If it is success, it returns `AuthUser`.
+Call `linkWithTwitter` to link account with twitter. It needs `token` and `secret`. If it is successful, it returns `AuthUser`.
 
 ```kt
 authService.linkWithTwitter(token, secret)
@@ -1589,9 +1687,9 @@ authService.linkWithTwitter(token, secret)
     .addOnFailureListener {}
 ```
 
-### Link With Facebook
+#### Link With Facebook
 
-Call `linkWithFacebook` to link account with facebook. It needs token. If it is success, it returns `AuthUser`.
+Call `linkWithFacebook` to link account with facebook. It needs `token`. If it is successful, it returns `AuthUser`.
 
 ```kt
 authService.linkWithFacebook(token)
@@ -1599,9 +1697,9 @@ authService.linkWithFacebook(token)
     .addOnFailureListener {}
 ```
 
-### Link With Email
+#### Link With Email
 
-Call `linkWithEmail` to link account with email. It needs email, password and verifyCode. If it is success, it returns `AuthUser`.
+Call `linkWithEmail` to link account with email. It needs `email`, `password` and `verifyCode`. If it is successful, it returns `AuthUser`.
 
 ```kt
 authService.linkWithEmail(email,password,verifyCode)
@@ -1609,9 +1707,9 @@ authService.linkWithEmail(email,password,verifyCode)
     .addOnFailureListener {}
 ```
 
-### Link With Phone
+#### Link With Phone
 
-Call `linkWithPhone` to link account with phone. It needs countryCode, phoneNumber, password and verifyCode. If it is success, it returns `AuthUser`.
+Call `linkWithPhone` to link account with phone. It needs `countryCode`, `phoneNumber`, `password` and verifyCode. If it is successful, it returns `AuthUser`.
 
 ```kt
 authService.linkWithPhone(countryCode,phoneNumber,password,verifyCode)
@@ -1619,9 +1717,9 @@ authService.linkWithPhone(countryCode,phoneNumber,password,verifyCode)
     .addOnFailureListener {}
 ```
 
-### Unlink
+#### Unlink
 
-Call `unlink` to unlink account from the linked account. It needs provider. If it is success, it returns `AuthUser`.
+Call `unlink` to unlink account from the linked account. It needs `provider`. If it is successful, it returns `AuthUser`.
 
 ```kt
 authService.unlink(provider)
@@ -1629,9 +1727,9 @@ authService.unlink(provider)
     .addOnFailureListener {}
 ```
 
-### ReAuthenticate
+#### ReAuthenticate
 
-Call `reAuthenticate` to re-authenticate users. It needs email and password.
+Call `reAuthenticate` to re-authenticate users. It needs `email` and `password`.
 
 ```kt
 authService.reAuthenticate(email,password)
@@ -1639,9 +1737,9 @@ authService.reAuthenticate(email,password)
     .addOnFailureListener {}
 ```
 
-### Delete User
+#### Delete User
 
-Call `deleteUser` to delete users. It needs email and password.
+Call `deleteUser` to delete users. It needs `email` and `password`.
 
 ```kt
 authService.deleteUser()
@@ -1649,17 +1747,29 @@ authService.deleteUser()
     .addOnFailureListener {}
 ```
 
+</details>
+
 ## Safety
+
+<details>
 
 This library includes both Huawei and Google services, allowing you to make your application more secure. This library, it performs necessary checks about whether users are fake users and device security. [Click here](https://developer.huawei.com/consumer/en/hms/huawei-safetydetectkit/) for view service introduction and more description about Safety Detect Kit features.
 
-### How To Use
+### Download
+
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:safety:<versionName>"
+```
+
+### Usage
 
 You need to initialize `SafetyService` interface as follows;
 
 #### User Detection
 
-To check if the user is a fake user, you need to call the `userDetect` method; Appkey value is app id value in Huawei services. In Google services the app key value is SITE_API_KEY. You can create SITE_API_KEY value from reCAPTCHA Admin Console. [Click here](https://www.google.com/recaptcha/about/)
+To check if the user is a fake user, you need to call the `userDetect` method; `AppKey` is same as **AppId** value in Huawei services. In Google services the `appKey` value is same as `SITE_API_KEY`. You can create `SITE_API_KEY` value from **reCAPTCHA** Admin Console. [Click here](https://www.google.com/recaptcha/about/)
 
 ```kt
  private var safetyService : SafetyService ?= null
@@ -1681,7 +1791,7 @@ To check if the user is a fake user, you need to call the `userDetect` method; A
 
 #### Root Detection
 
-In this library, you need to call the `rootDetection` method to check whether the device is safe or not. Appkey value is app id value in Huawei services. In Google services the app key value is API_KEY. You can create API_KEY value from Google APIs Console. [Click here](https://console.developers.google.com/apis/library)
+In this library, you need to call the `rootDetection` method to check whether the device is safe or not. `AppKey` value is **AppId** value in Huawei services. In Google services the `appKey` value is `API_KEY`. You can create `API_KEY` value from Google APIs Console. [Click here](https://console.developers.google.com/apis/library)
 
 ```kt
  override fun onCreate(savedInstanceState: Bundle?){
@@ -1764,23 +1874,23 @@ fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
 ```kt
 safetyService.getMaliciousAppsList(object: ResultCallback<CommonMaliciousAppResponse>{
     override fun onSuccess(maliciousAppResponse: CommonMaliciousAppResponse?){
-	 if (maliciousAppResponse != null) {
-	    val appList = maliciousAppResponse.getMaliciousAppsList
-	    if (appList?.isNotEmpty() == true){
-		Log.e("CMS", "Potentially harmful apps are installed!")
-		for (harmfulApp in appList){
-		    Log.e("CMS", "Information about a harmful app:")
-		    Log.e("CMS", "  APK: ${harmfulApp.apkPackageName}")
-		    Log.e("CMS", "  SHA-256: ${harmfulApp.apkSha256}")
-		    Log.e("CMS", "  Category: ${harmfulApp.apkCategory}")
-		 }
-	    }else{
-		  Log.d("CMS", "There are no known harmful apps installed.")
-	    }
-	  }
+     if (maliciousAppResponse != null) {
+        val appList = maliciousAppResponse.getMaliciousAppsList
+        if (appList?.isNotEmpty() == true){
+        Log.e("CMS", "Potentially harmful apps are installed!")
+        for (harmfulApp in appList){
+            Log.e("CMS", "Information about a harmful app:")
+            Log.e("CMS", "  APK: ${harmfulApp.apkPackageName}")
+            Log.e("CMS", "  SHA-256: ${harmfulApp.apkSha256}")
+            Log.e("CMS", "  Category: ${harmfulApp.apkCategory}")
+         }
+        }else{
+          Log.d("CMS", "There are no known harmful apps installed.")
+        }
+      }
     }
     override fun onFailure(e: Exception){
-	      Log.e("CMS", "Error code: ${e.localizedMessage} -- Message: ${e.message}")
+          Log.e("CMS", "Error code: ${e.localizedMessage} -- Message: ${e.message}")
     }
 })
 ```
@@ -1814,21 +1924,21 @@ Appkey value is app id value in Huawei services. In Google services the app key 
 ```kt
 val url = "https://github.com/Explore-In-HMS/common-mobile-services"
 safetyService.urlCheck(url,appKey,CommonUrlCheckThreat().urlThreatType(this,CommonUrlCheckThreat.MALWARE_APPLICATIONS),object:ResultCallback<CommonUrlCheckRes>{
-	override fun onSuccess(appsCheckResp: CommonUrlCheckRes?) {
-		if(appsCheckResp!=null){
-		    val result = appsCheckResp.urlCheckThreats
-		    if(result!!.isNotEmpty()){
-			for(urlLists in result){
-			    Log.d("CMS", "URL Check result: ${urlLists.urlCheckResult}")
-			}
-		    }else{
-			Log.d("CMS", "No threads found")
-		    }
-		}
-	    }
-	override fun onFailure(e: Exception) {
-	    Log.e("CMS", "URLCheck fail : ${e.message}")
-	}
+    override fun onSuccess(appsCheckResp: CommonUrlCheckRes?) {
+        if(appsCheckResp!=null){
+            val result = appsCheckResp.urlCheckThreats
+            if(result!!.isNotEmpty()){
+            for(urlLists in result){
+                Log.d("CMS", "URL Check result: ${urlLists.urlCheckResult}")
+            }
+            }else{
+            Log.d("CMS", "No threads found")
+            }
+        }
+        }
+    override fun onFailure(e: Exception) {
+        Log.e("CMS", "URLCheck fail : ${e.message}")
+    }
 })
 ```
 
@@ -1846,25 +1956,55 @@ safetyService.shutDownUrlCheck().addOnSuccessListener{
 }
 ```
 
+</details>
+
 ## Crash
+
+<details>
 
 This library includes both Huawei and Google services, allowing you to make your application more secure. This library, it performs Crash Service. [Click here](https://developer.huawei.com/consumer/en/doc/development/AppGallery-connect-Guides/agc-crash-introduction-0000001055732708) for view service introduction and more description about Crash Kit features.
 
-### How To Use
+### Download
 
-First of all, you have to add root gradle 'classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'' & app gradle 'apply plugin: 'com.google.firebase.crashlytics'';
+Add the dependency to your `app` level `build.gradle` if you haven't already
 
-```kt
-val crashService = CrashService.Factory.create(context)
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:crash:<versionName>"
 ```
+
+### Usage
+
+1. declare Crashlytics plugin dependency in `Project` level `build.gradle`:
+
+   ```gradle
+   buildscript {
+       //..
+       dependencies {
+           //...
+           classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
+       }
+   }
+   ```
+
+2. Add Crashlytics plugin to `App` level `build.gradle`:
+
+   ```gradle
+   apply plugin: 'com.google.firebase.crashlytics'
+   ```
+
+3. Create Crash service instance
+
+   ```kt
+       val crashService = CrashService.Factory.create(context)
+   ```
 
 It needs `Context` to check mobile services availability and provide proper mobile service type.
 
-### Functions
+#### Available functions
+
+you can use the `crashService` instance to call any of the available functions, example `crashService.testIt(context)`
 
 ```kt
-    //You can reach just write with "crashService." all of functions:
-
     testIt(context: Context)
 
     log(var1: String)
@@ -1892,13 +2032,25 @@ It needs `Context` to check mobile services availability and provide proper mobi
     enableCrashCollection(enable: Boolean)
 ```
 
+</details>
+
 ## Push
+
+<details>
 
 HMS Push Kit is messaging service. Push Kit helps you quickly and efficiently reach users. By integrating Push Kit, you can send messages to your apps on users' devices in real time. [Click here](https://developer.huawei.com/consumer/en/doc/development/HMSCore-Guides/service-introduction-0000001050040060) for view service introduction and more description about Push Kit features.
 
-### How To Use
+### Download
 
-First of all, you have to create Services extends by HMS and GMS Messaging;
+Add the dependency to your `app` level `build.gradle` if you haven't already
+
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:push:<versionName>"
+```
+
+### Usage
+
+Create services that extends Huawei and Google Messaging services
 
 ```kt
 class HMSPushService : HmsMessageService() {
@@ -1934,7 +2086,7 @@ class GMSPushService : FirebaseMessagingService() {
 }
 ```
 
-After that you have to add your services into AndroidManifest.xml file and don't forget to add meta-data lines for auto init enabled;
+Next, declare the services in `AndroidManifest.xml` file, and add meta-data lines to enable automatic initialization
 
 ```xml
 <!-- HMS Push Service -->
@@ -1966,9 +2118,9 @@ After that you have to add your services into AndroidManifest.xml file and don't
 </receiver>
 ```
 
-Common Mobile Services provide a slider push notification in Push service. If you want to use that feature you should send data-message like this;
+#### Slider Push Notification
 
-![Slider Push Notification - Sample](https://git.huawei.com/hms---turkey-dtse-branch/team-2/CommonMobileServices/uploads/d4649d6cc7d70901829c9bc32dc116a7/spn_gif.gif)
+Common Mobile Services provide a slider push notification in Push service. If you want to use that feature you should send data-message like this
 
 ```json
 {
@@ -1980,7 +2132,7 @@ Common Mobile Services provide a slider push notification in Push service. If yo
 }
 ```
 
-You can use `getToken` method to obtain token.
+You can use `getToken` method to obtain push registration token.
 
 ```kt
         val token = HuaweiPushServiceImpl(this).getToken()
@@ -1996,7 +2148,7 @@ You can use `getToken` method to obtain token.
         }
 ```
 
-`kt subscribeToTopic` method is subscribes to topics in asynchronous mode. The topic messaging function provided by Push Kit allows you to send messages to multiple devices whose users have subscribed to a specific topic.
+`subscribeToTopic` method subscribes to topics in asynchronous mode. The topic messaging function provided by Push Kit allows you to send messages to multiple devices whose users have subscribed to a specific topic.
 You can write messages about the topic as required, and Push Kit determines target devices and then sends messages to the devices in a reliable manner.
 The name of the topic to subscribe. Must match the following regular expression: "[a-zA-Z0-9-_.~%]{1,900}".
 You need to add a listener to listen to the operation result.
@@ -2027,7 +2179,8 @@ You need to add a listener to listen to the operation result.
             }
 ```
 
-`kt unsubscribeFromTopic` method is unsubscribes in asynchronous mode from topics that are subscribed to through the subscribe method.
+`unsubscribeFromTopic` method unsubscribes from topics in asynchronous mode that are subscribed to through the `subscribe` method.
+
 You need to add a listener to listen to the operation result.
 
 ```kt
@@ -2056,8 +2209,8 @@ You need to add a listener to listen to the operation result.
             }
 ```
 
-`kt setAutoInitEnabled` method is sets whether to enable automatic initialization.
-If the enable parameter is set to true, the SDK automatically generates an AAID and obtains a token. The token is returned through the `kt onNewToken()` callback method.
+`setAutoInitEnabled` method lets you enable or disable Push service automatic initialization.
+If you enable it, then the SDK automatically generates an **AAID** and obtains a token. The token is returned through the `onNewToken()` callback method.
 
 ```kt
 HuaweiPushServiceImpl(this).autoInitEnabled(true)
@@ -2067,7 +2220,7 @@ HuaweiPushServiceImpl(this).autoInitEnabled(true)
 GooglePushServiceImpl(this).autoInitEnabled(true)
 ```
 
-`kt isAutoInitEnabled` method is checks whether automatic initialization is enabled. The default value is false.
+`isAutoInitEnabled` method checks whether automatic initialization is enabled. The default value is false.
 
 ```kt
 HuaweiPushServiceImpl(this).isAutoInitEnabled()
@@ -2077,21 +2230,33 @@ HuaweiPushServiceImpl(this).isAutoInitEnabled()
 GooglePushServiceImpl(this).isAutoInitEnabled()
 ```
 
+</details>
+
 ## Site Kit
+
+<details>
 
 This kit provides different functionalities such as nearby search, text search, place details and place autocomplete. You can use these functions for both Google Services using Places API and Huawei Services using Site Kit.
 
-### How to use
+### Download
 
-At first we initialize `SiteService` interface:
+Add the dependency to your `app` level `build.gradle` if you haven't already
 
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:site:<versionName>"
 ```
-val siteservice = SiteService.Factory.create(Context, huaweiApikey, googleApiKey)
+
+### Usage
+
+First, create `SiteService` instance
+
+```kt
+val siteservice = SiteService.Factory.create(Context, huaweiApiKey, googleApiKey)
 ```
 
-`Context` serves to check the mobile services availability and decide what service to run and the `apikey` serves to use the services of Site Kit or make the Places API calls.
+`Context` is required to check the available mobile services on the device, and `apiKey` is required to access the services of Site Kit or make Google Places API calls.
 
-`getNearbyPlaces` is a function that takes parameters like latitude, longitude, query or the keyword to search, hwpoiType which is the poi type you want to search (in case of using Huawei services you should be careful to enter the poi type matching the HW Poi Types from Site Kit eg. “RESTAURANT” instead of “restaurant”), radius of the area you want the results to be focused, language you want the results in, page index and page size, strict bounds to determine whether we want the location bounds to be strict or not.
+`getNearbyPlaces` is a function that takes parameters like `latitude`, `longitude`, `query` or `keyword` to search, `hwpoiType` which is the poi type you want to search (in case of using Huawei services you should be careful to enter the poi type matching the **HW Poi** Types from Site Kit, e.g. “RESTAURANT” instead of “restaurant”), `radius` of the area you want the results to be focused, `language` you want the results in, `pageIndex` and `pageSize` for pagination, `strictBounds` to determine whether we want the location bounds to be strict or not, and a `callback` that will receive the results.
 
 ```Kotlin
 fun getNearbyPlaces(
@@ -2124,7 +2289,7 @@ fun getTextSearchPlaces(
 )
 ```
 
-`placeSuggestion` function returns a list of autocompleted places based on the keyword you have entered, the location you enter, the radius you want your results to be focused on and the language of them. `childrenNode` parameter is only used by the Huawei Service to return information on the children nodes.
+`placeSuggestion` function returns a list of autocompleted places based on the keyword you have entered, the `location` you enter, the `radius` you want your results to be focused on and the `language` of them. `childrenNode` parameter is only used by the Huawei Service to return information on the children nodes.
 
 ```Kotlin
 fun placeSuggestion(
@@ -2179,29 +2344,41 @@ SiteService.Factory.create(Context, HuaweiApikey, GoogleApiKey).getNearbyPlaces(
     })
 ```
 
+</details>
+
 ## Identity Kit
+
+<details>
 
 HUAWEI Identity Kit provides unified address management services for users, including adding, editing, deleting, and querying addresses, and enables the users to authorize apps to access their addresses through a single tap on the screen.
 
-Note: Identity Kit just working on HMS devices. GMS Identity service was deprecated.
+**_Note: Identity Kit only works on HMS devices. GMS Identity service is deprecated._**
 
-### How to use
+### Download
 
-At first we initialize `IdentityServices` interface as like this:
+Add the dependency to your `app` level `build.gradle` if you haven't already
 
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:identity:<versionName>"
 ```
+
+### Usage
+
+First, create `IdentityServices` instance
+
+```kt
 val identityService = IdentityService.Factory.create(context)
 ```
 
-Than we can call `getUserAddress` function for obtain user's updated and detailed address information:
+Then call `getUserAddress` function to obtain user's updated and detailed address information
 
-```
+```kt
 identityService!!.getUserAddress()
 ```
 
-For catch the address details we have to listen `onActivityResult` override function with our response code:
+User's address details will be received in `onActivityResult` method
 
-```
+```kt
 override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
     when (requestCode) {
@@ -2228,15 +2405,27 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
 }
 ```
 
+</details>
+
 ## Remote Config
+
+<details>
 
 Remote config is a service that allows you to make theme changes or in-app changes according to the situation in your application without the need for any updates.
 
-### How to use
+### Download
 
-First of all you should create a xml file as like this:
+Add the dependency to your `app` level `build.gradle` if you haven't already
 
+```gradle
+implementation "com.github.Explore-In-HMS.common-mobile-services:remoteconfig:<versionName>"
 ```
+
+### Usage
+
+First, define a set of parameters and their default values in an xml resource file stored in `res/xml` folder
+
+```xml
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <remoteconfig>
         <value key="testValue">testSituations</value>
@@ -2244,29 +2433,30 @@ First of all you should create a xml file as like this:
 </PreferenceScreen>
 ```
 
-At first you initialize `RemoteConfigService` interface as like this:
+Next, create `RemoteConfigService` instance
 
-```
+```kt
 val remoteConfig = IRemoteConfigService.Factory.create(context)
 ```
 
-Than you can call `setDefaultXml` function for define default key-value xml file to service:
+then set the default key-value by calling `setDefaultXml` and pass the xml file created in pervious step
 
-```
+```kt
 remoteConfig.setDefaultXml(R.xml.remote_config)
 ```
 
-For fetch the last values on the server side you have to call `fetchAndApply` function:
+To fetch the latest values from the server, call the method `fetchAndApply`
 
-```
+```kt
 remoteConfig.fetchAndApply({
             Toast.makeText(this, "success", Toast.LENGTH_SHORT).show()
 },0)  // Toast message is to show the callback to the user and 0 is fetch interval time in seconds.
 ```
 
-After you fetch and apply the changes you can get them to your local variables with `getString(keyValue)` function:
-Note: There are 4 getting functions; getString(keyValue), getBoolean(keyValue), getLong(keyValue) and getDouble(keyValue) so you should use the correct one.
+After fetching and applying the changes, retrieve the values using one the getter methods: `getString(keyValue)`, `getBoolean(keyValue)`, `getLong(keyValue)` and `getDouble(keyValue)`
 
+```kt
+var valueFromConsole = remoteConfig.getString("testValue")
 ```
-var valueFromConsole = remoteConfig.getString("testValue") // testValue is my keyValue which I use it while I am searchin my value with this keyValue.
-```
+
+</details>
