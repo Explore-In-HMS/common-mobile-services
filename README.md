@@ -219,7 +219,10 @@ sealed class ResultData<out T>{
 ## MapKit
 
 <details> 
-This library wraps a mapview to use it in application code. It has [CommonMap](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt) interface which can be [GoogleCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
+	
+This library wraps a mapview to use it in application code.
+It has [CommonMap](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/CommonMap.kt)
+interface which can be [GoogleCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/GoogleCommonMapImpl.kt) or [HMSCommonMapImpl](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/factory/HuaweiCommonMapImpl.kt). A custom view created to hold these map views: [CommonMapView](https://github.com/Explore-In-HMS/common-mobile-services/blob/master/mapkit/src/main/java/com/hms/lib/commonmobileservices/mapkit/CommonMapView.kt). This view also manages lifecycle events of its map.
 
 ### Download
 
