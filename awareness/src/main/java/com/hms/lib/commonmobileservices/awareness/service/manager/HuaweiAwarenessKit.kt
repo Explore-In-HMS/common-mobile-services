@@ -20,7 +20,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
-import com.alperenbabagil.commonmobileservices.R
+import com.hms.lib.commonmobileservices.R
 import com.huawei.hms.kit.awareness.Awareness
 import com.huawei.hms.kit.awareness.status.BehaviorStatus
 import com.huawei.hms.kit.awareness.status.HeadsetStatus
@@ -39,12 +39,14 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
     }
 
     override fun getTimeAwareness(callback: (timeVal: ResultData<IntArray>) -> Unit) {
-        if(ActivityCompat.checkSelfPermission(
-            context,
-            Manifest.permission.ACCESS_FINE_LOCATION
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED){
+            && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             var awarenessData: AwarenessData?
             val timeResultData: MutableList<Int> = mutableListOf()
             val task = Awareness.getCaptureClient(this.context)
@@ -67,7 +69,7 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
             }.addOnFailureListener {
                 callback.invoke(ResultData.Failed(context.getString(R.string.hms_awareness_error)))
             }
-        }else{
+        } else {
             val strings = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
@@ -100,25 +102,27 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
 
     override fun getBehaviorAwareness(callback: (behaviorVal: ResultData<IntArray>) -> Unit) {
         try {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N){
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
                 callback.invoke(ResultData.Failed(error = context.getString(R.string.hms_awareness_error)))
                 return
             }
-            val permissionList = mutableListOf("com.huawei.hms.permission.ACTIVITY_RECOGNITION",
+            val permissionList = mutableListOf(
+                "com.huawei.hms.permission.ACTIVITY_RECOGNITION",
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-                )
+            )
 
-              if(ActivityCompat.checkSelfPermission(
-                      context, Manifest.permission.ACCESS_FINE_LOCATION
-                  ) == PackageManager.PERMISSION_GRANTED&& ActivityCompat.checkSelfPermission(
-                      context, Manifest.permission.ACCESS_COARSE_LOCATION
-                  ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                      context, "com.huawei.hms.permission.ACTIVITY_RECOGNITION"
-                  ) == PackageManager.PERMISSION_GRANTED && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
-                  || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
-                      context, Manifest.permission.ACTIVITY_RECOGNITION
-                  ) == PackageManager.PERMISSION_GRANTED) ) ){
+            if (ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context, "com.huawei.hms.permission.ACTIVITY_RECOGNITION"
+                ) == PackageManager.PERMISSION_GRANTED && (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
+                        || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.ACTIVITY_RECOGNITION
+                ) == PackageManager.PERMISSION_GRANTED))
+            ) {
                 var awarenessData: AwarenessData?
                 val behaviourResultData: MutableList<Int> = mutableListOf()
                 val task = Awareness.getCaptureClient(context).behavior
@@ -139,21 +143,27 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
                 }.addOnFailureListener {
                     callback.invoke(ResultData.Failed(context.getString(R.string.hms_awareness_error)))
                 }
-            }else{
-                  ActivityCompat.requestPermissions(context as Activity, permissionList.toTypedArray(), 2)
-              }
+            } else {
+                ActivityCompat.requestPermissions(
+                    context as Activity,
+                    permissionList.toTypedArray(),
+                    2
+                )
+            }
         } catch (e: Exception) {
             callback.invoke(ResultData.Failed(context.getString(R.string.hms_awareness_error)))
         }
     }
 
-    override fun getWeatherAwareness(callback: (weatherVal: ResultData<IntArray>) -> Unit){
-        if(ActivityCompat.checkSelfPermission(
+    override fun getWeatherAwareness(callback: (weatherVal: ResultData<IntArray>) -> Unit) {
+        if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED){
+            && ActivityCompat.checkSelfPermission(
+                context, Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             var awarenessData: AwarenessData?
             val weatherResultData: MutableList<Int> = mutableListOf()
             val task = Awareness.getCaptureClient(context).weatherByDevice
@@ -174,7 +184,7 @@ class HuaweiAwarenessKit(var context: Context) : IAwarenessAPI {
             }.addOnFailureListener {
                 callback.invoke(ResultData.Failed(context.getString(R.string.hms_awareness_error)))
             }
-        }else{
+        } else {
             val strings = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION

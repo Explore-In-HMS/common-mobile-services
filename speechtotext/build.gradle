@@ -1,7 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation "com.huawei.hms:ml-computer-voice-asr-plugin:3.7.0.301"
+    implementation "com.huawei.hms:ml-computer-voice-asr-plugin:${libs.hms.asr}"
     api project(":core")
 }
 

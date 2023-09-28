@@ -1,9 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.huawei.hms:push:6.5.0.300'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.1'
-    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation "com.huawei.hms:push:${libs.hms.push}"
+    implementation "com.google.firebase:firebase-messaging-ktx:${libs.gms.push}"
+    implementation "androidx.work:work-runtime-ktx:${libs.other.work}"
     api project(":core")
-    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.squareup.picasso:picasso:${libs.other.picasso}"
 }

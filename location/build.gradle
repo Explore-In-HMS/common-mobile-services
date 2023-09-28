@@ -1,8 +1,9 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.huawei.hms:location:6.8.0.300'
-    api project(':core')
+    implementation "com.huawei.hms:location:${libs.hms.location}"
+    implementation "com.google.android.gms:play-services-location:${libs.gms.location}"
+    api project(":core")
 }
 

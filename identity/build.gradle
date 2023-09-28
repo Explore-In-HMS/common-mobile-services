@@ -1,7 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    api project(path: ':core')
+    api project(path: ":core")
 
-    implementation 'com.huawei.hms:identity:5.1.0.300'
+    implementation "com.huawei.hms:identity:${libs.hms.identity}"
 }

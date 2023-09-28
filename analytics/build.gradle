@@ -1,8 +1,9 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.huawei.hms:hianalytics:6.3.2.300'
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.2'
-    api project(path: ':core')
+    implementation "com.huawei.hms:hianalytics:${libs.hms.analytics}"
+    implementation "com.google.firebase:firebase-analytics-ktx:${libs.gms.analytics}"
+    api project(path: ":core")
 }
 

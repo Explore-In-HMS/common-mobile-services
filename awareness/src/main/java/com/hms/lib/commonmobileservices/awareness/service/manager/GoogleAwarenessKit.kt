@@ -20,12 +20,12 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
-import com.alperenbabagil.commonmobileservices.R
 import com.google.android.gms.awareness.Awareness
 import com.google.android.gms.awareness.fence.TimeFence
 import com.google.android.gms.awareness.snapshot.TimeIntervalsResponse
 import com.google.android.gms.awareness.state.HeadphoneState
 import com.google.android.gms.awareness.state.Weather
+import com.hms.lib.commonmobileservices.R
 import com.huawei.hms.kit.awareness.status.HeadsetStatus
 import com.hms.lib.commonmobileservices.awareness.model.*
 import com.hms.lib.commonmobileservices.core.ErrorModel

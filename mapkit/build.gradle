@@ -1,11 +1,12 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
     //Huawei Services
-    api 'com.huawei.hms:maps:6.6.1.301'
+    api "com.huawei.hms:maps:${libs.hms.maps}"
     //Google Services
-    api 'com.google.android.gms:play-services-maps:18.1.0'
-    api 'com.google.maps.android:android-maps-utils:0.6.2'
-    api project(':core')
+    api "com.google.android.gms:play-services-maps:${libs.gms.maps}"
+    api "com.google.maps.android:android-maps-utils:${libs.gms.mapsUtils}"
+    api project(":core")
 }
 

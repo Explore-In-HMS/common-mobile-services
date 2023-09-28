@@ -1,7 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.google.firebase:firebase-config-ktx:21.2.0'
-    implementation 'com.huawei.agconnect:agconnect-remoteconfig-ktx:1.7.3.300'
+    implementation "com.huawei.agconnect:agconnect-remoteconfig-ktx:${libs.hms.remoteConfig}"
+    implementation "com.google.firebase:firebase-config-ktx:${libs.gms.remoteConfig}"
     api project(":core")
 }

@@ -1,10 +1,11 @@
 apply from: "$project.rootDir/base_sdk.gradle"
-apply plugin: 'kotlin-kapt'
+def libs = project.libs
+
+apply plugin: "kotlin-kapt"
 
 dependencies {
-    implementation 'com.google.firebase:firebase-auth:21.1.0'
-    implementation 'com.huawei.agconnect:agconnect-auth:1.7.2.300'
-    implementation 'com.google.android.material:material:1.5.0-alpha02'
-    api project(':core')
+    implementation "com.google.firebase:firebase-auth:${libs.gms.firebaseAuth}"
+    implementation "com.huawei.agconnect:agconnect-auth:${libs.hms.agAuth}"
+    implementation "com.google.android.material:material:${libs.other.material}"
+    api project(":core")
 }
-

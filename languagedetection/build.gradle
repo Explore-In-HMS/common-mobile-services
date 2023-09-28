@@ -1,7 +1,7 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.huawei.hms:ml-computer-language-detection:3.7.0.301'
-    implementation 'com.google.android.gms:play-services-mlkit-language-id:17.0.0'
+    implementation "com.huawei.hms:ml-computer-language-detection:${libs.hms.languageDetection}"
+    implementation "com.google.android.gms:play-services-mlkit-language-id:${libs.gms.languageId}"
     api project(":core")
 }

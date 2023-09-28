@@ -1,11 +1,11 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.google.android.gms:play-services-awareness:17.1.0' // Don't upgrade the version. Weather API deprecated from upper version.
-    implementation 'com.huawei.hms:awareness:3.4.0.302'
-    implementation 'com.huawei.hms:location:6.8.0.300'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation "com.google.android.gms:play-services-awareness:${libs.gms.awareness}" // Don"t upgrade the version. Weather API deprecated from upper version.
+    implementation "com.huawei.hms:awareness:${libs.hms.awareness}"
+    implementation "com.huawei.hms:location:${libs.hms.location}"
+    implementation "com.google.android.gms:play-services-location:${libs.gms.location}"
+    implementation "androidx.work:work-runtime-ktx:${libs.other.work}"
     api project(":core")
 }
-

@@ -1,10 +1,11 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.huawei.hms:base:5.2.0.300'
-    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    implementation "com.huawei.hms:base:${libs.hms.base}"
+    implementation "com.google.android.gms:play-services-base:${libs.gms.base}"
 
-    api 'com.google.code.gson:gson:2.8.6'
+    api "com.google.code.gson:gson:${libs.other.gson}"
 
 }
 

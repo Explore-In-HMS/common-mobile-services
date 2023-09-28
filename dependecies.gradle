@@ -1,0 +1,78 @@
+ext.libs = [
+        hms : [
+                base:"5.2.0.300",
+                agAuth:"1.7.2.300",
+
+                hwid:"6.7.0.300",
+                analytics:"6.3.2.300",
+
+                awareness:"3.4.0.302"    ,
+                crash:"1.7.2.300",
+                cardBcr:"3.7.0.302",
+                faceDetection:"3.7.0.301",
+                identity:"5.1.0.300",
+                imageClassification:"3.7.0.301",
+                languageDetection:"3.7.0.301",
+                location:"6.8.0.300",
+                map:"6.6.1.301",
+                objectDetection:"3.7.0.301",
+                push:"6.5.0.300",
+                remoteConfig:"1.7.3.300",
+                safety:"6.7.0.300",
+                scan:"2.8.0.300",
+                site:"6.4.0.304",
+                asr:"3.7.0.301",
+                textRecognition:"3.7.0.302",
+                textToSpeech:"3.7.0.303",
+
+                mlComputerTranslate:"3.6.0.312",
+
+        ],
+        gms :[
+
+                base:"17.6.0",
+
+                firebaseAuth:"21.1.0",
+                playServicesAuth :"20.3.0",
+                authApiPhone:"18.0.1",
+                analytics:"20.0.2",
+
+                // Don"t upgrade the version. Weather API deprecated from upper version.
+                awareness:"17.1.0"    ,
+
+                crashlytics:"18.2.13",
+                faceDetection:"16.1.5",
+                imageLabeling:"16.0.8",
+                languageId:"17.0.0",
+                location:"21.0.1",
+                map:"18.1.0",
+                mapUtils:"0.6.2",
+                objectDetection:"17.0.0",
+                push:"23.0.1",
+                remoteConfig:"21.2.0",
+                safety:"18.0.1",
+                barcodeScanning:"18.1.0",
+                playServicesVision:"20.1.3",
+                places:"2.6.0",
+                speechToText:"",
+                textRecognition:"18.0.2",
+                textToSpeech:"",
+                translate:"17.0.1"
+        ],
+        other:[
+                volley:"1.2.1",
+                work:"2.7.1",
+                picasso:"2.71828",
+                material:"1.5.0-alpha02",
+                gson:"2.8.6",
+                coreKtx:"1.3.2",
+                appcompat:"1.2.0",
+                constraintLayout:"2.0.4",
+        ],
+        test:[
+                junit:"4.13.2",
+                androidJunit:"1.1.2",
+                espresso:"3.3.0"
+        ]
+]
+

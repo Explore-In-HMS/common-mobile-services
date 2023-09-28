@@ -1,7 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
+def libs = project.libs
 
 dependencies {
-    implementation 'com.huawei.hms:ml-computer-voice-tts:3.7.0.303'
+    implementation "com.huawei.hms:ml-computer-voice-tts:${libs.hms.textToSpeech}"
     api project(":core")
 }
 
