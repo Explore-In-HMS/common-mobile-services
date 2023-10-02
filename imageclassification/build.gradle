@@ -2,8 +2,8 @@ apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
 dependencies {
-    implementation "com.google.android.gms:play-services-mlkit-image-labeling:"
-    implementation "com.huawei.hms:ml-computer-vision-classification:"
-    implementation "com.huawei.hms:ml-computer-vision-image-classification-model:"
+    implementation "com.google.android.gms:play-services-mlkit-image-labeling:${libs.gms.imageLabeling}"
+    implementation "com.huawei.hms:ml-computer-vision-classification:${libs.hms.imageClassification}"
+    implementation "com.huawei.hms:ml-computer-vision-image-classification-model:${libs.hms.imageClassification}"
     implementation(project(":core"))
 }

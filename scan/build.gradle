@@ -6,7 +6,7 @@ apply plugin: "kotlin-android"
 dependencies {
     implementation "com.huawei.hms:scan:${libs.hms.scan}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.google.android.gms:play-services-mlkit-barcode-scanning:${libs.gms.bracodeScanning}"
+    implementation "com.google.android.gms:play-services-mlkit-barcode-scanning:${libs.gms.barcodeScanning}"
 
     implementation "com.google.android.gms:play-services-vision:${libs.gms.playServicesVision}"
     api project(":core")

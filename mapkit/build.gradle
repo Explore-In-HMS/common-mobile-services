@@ -6,7 +6,7 @@ dependencies {
     api "com.huawei.hms:maps:${libs.hms.maps}"
     //Google Services
     api "com.google.android.gms:play-services-maps:${libs.gms.maps}"
-    api "com.google.maps.android:android-maps-utils:${libs.gms.mapsUtils}"
+    api "com.google.maps.android:android-maps-utils:${libs.gms.mapUtils}"
     api project(":core")
 }
 

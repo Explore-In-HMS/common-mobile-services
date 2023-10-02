@@ -15,6 +15,7 @@ package com.hms.commonmobileservices
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.hms.lib.commonmobileservices.R
 
 
 class MainActivity : AppCompatActivity() {
