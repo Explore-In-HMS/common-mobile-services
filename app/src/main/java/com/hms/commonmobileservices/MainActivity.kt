@@ -13,15 +13,45 @@
 // limitations under the License.
 package com.hms.commonmobileservices
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.ArrayAdapter
+import android.widget.SimpleAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var binding: ActivityMainBinding
+
+    val demos = mapOf(
+        "Scan" to ScanActivity::class.java
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+
+
+        binding.demosList.apply {
+            adapter = ArrayAdapter(
+                this@MainActivity,
+                android.R.layout.simple_list_item_1,
+                demos.keys.toList()
+            )
+            onItemClickListener =
+                OnItemClickListener { parent, view, position, id ->
+                    val name = demos.keys.toList()[position]
+                    startActivity(Intent(this@MainActivity, demos[name]))
+                }
+        }
     }
+
 }
