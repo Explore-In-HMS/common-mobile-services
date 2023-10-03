@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".location"
+}
+
 dependencies {
     implementation "com.huawei.hms:location:${libs.hms.location}"
     implementation "com.google.android.gms:play-services-location:${libs.gms.location}"

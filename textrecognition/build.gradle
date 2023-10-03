@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".textrecognition"
+}
+
 dependencies {
     implementation "com.huawei.hms:ml-computer-vision-ocr:${libs.hms.ocr}"
     implementation "com.google.android.gms:play-services-mlkit-text-recognition:${libs.gms.textRecognition}"

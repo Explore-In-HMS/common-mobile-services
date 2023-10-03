@@ -30,7 +30,7 @@ import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Detector.Detections
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.scan.R
 import java.io.IOException
 
 

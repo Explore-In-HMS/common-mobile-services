@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".remoteconfig"
+}
+
 dependencies {
     implementation "com.huawei.agconnect:agconnect-remoteconfig-ktx:${libs.hms.remoteConfig}"
     implementation "com.google.firebase:firebase-config-ktx:${libs.gms.remoteConfig}"

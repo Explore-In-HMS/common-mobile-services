@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".translate"
+}
+
 dependencies {
     implementation "com.huawei.hms:ml-computer-translate:${libs.hms.mlComputerTranslate}"
     implementation "com.google.mlkit:translate:${libs.gms.translate}"

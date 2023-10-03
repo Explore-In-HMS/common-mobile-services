@@ -15,7 +15,6 @@ package com.hms.lib.commonmobileservices.creditcardscanner
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.hms.lib.commonmobileservices.R
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCapture
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureConfig
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureFactory
@@ -66,7 +65,7 @@ class HMSCreditCardScanner(private val context: Context) : CreditCardScanner {
             override fun onDenied() {
                 // Processing for recognition request deny scenarios, for example, the camera is unavailable.
                 callback.invoke(
-                    ResultData.Failed(context.getString(com.hms.lib.commonmobileservices.R.string.scan_denied),
+                    ResultData.Failed(context.getString(R.string.scan_denied),
                         ScanError(context.getString(R.string.scan_denied),
                             ScanError.ScanErrorType.DENIED
                         )

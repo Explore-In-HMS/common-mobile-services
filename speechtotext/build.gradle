@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".speechtotext"
+}
+
 dependencies {
     implementation "com.huawei.hms:ml-computer-voice-asr-plugin:${libs.hms.asr}"
     api project(":core")

@@ -18,7 +18,7 @@ import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.remoteconfig.manager.IRemoteConfigService
 import com.huawei.agconnect.remoteconfig.AGConnectConfig
 
-class HuaweiRemoteConfig:IRemoteConfigService {
+class HuaweiRemoteConfig: IRemoteConfigService {
     private var config: AGConnectConfig = AGConnectConfig.getInstance()
     override fun setDefaultXml(xml: Int) {
         config.applyDefault(xml)

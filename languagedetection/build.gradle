@@ -1,5 +1,9 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
+android {
+    namespace project.namespace + ".languagedetection"
+}
+
 dependencies {
     implementation "com.huawei.hms:ml-computer-language-detection:${libs.hms.languageDetection}"
     implementation "com.google.android.gms:play-services-mlkit-language-id:${libs.gms.languageId}"

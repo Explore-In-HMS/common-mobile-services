@@ -3,6 +3,10 @@ def libs = project.libs
 
 apply plugin: "kotlin-kapt"
 
+android {
+    namespace project.namespace + ".auth"
+}
+
 dependencies {
     implementation "com.google.firebase:firebase-auth:${libs.gms.firebaseAuth}"
     implementation "com.huawei.agconnect:agconnect-auth:${libs.hms.agAuth}"

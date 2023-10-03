@@ -25,8 +25,7 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.mapkit.factory.CommonMap
 import com.hms.lib.commonmobileservices.mapkit.factory.MapFactory
-import com.hms.lib.commonmobileservices.R
-import com.hms.lib.commonmobileservices.databinding.CommonMapViewBinding
+import com.hms.lib.commonmobileservices.mapkit.databinding.CommonMapViewBinding
 
 class CommonMapView @JvmOverloads constructor(lifecycleContext: Context,
                     attrs: AttributeSet? = null,

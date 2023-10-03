@@ -30,7 +30,8 @@ import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.push.R
+
 import com.hms.lib.commonmobileservices.push.slider.models.SliderItem
 import com.hms.lib.commonmobileservices.push.slider.models.SliderPushNotification
 import com.hms.lib.commonmobileservices.push.slider.receivers.SliderPushNotificationReceiver

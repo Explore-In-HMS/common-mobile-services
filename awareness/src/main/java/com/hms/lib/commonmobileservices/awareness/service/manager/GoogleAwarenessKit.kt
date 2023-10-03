@@ -25,7 +25,8 @@ import com.google.android.gms.awareness.fence.TimeFence
 import com.google.android.gms.awareness.snapshot.TimeIntervalsResponse
 import com.google.android.gms.awareness.state.HeadphoneState
 import com.google.android.gms.awareness.state.Weather
-import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.awareness.R
+
 import com.huawei.hms.kit.awareness.status.HeadsetStatus
 import com.hms.lib.commonmobileservices.awareness.model.*
 import com.hms.lib.commonmobileservices.core.ErrorModel

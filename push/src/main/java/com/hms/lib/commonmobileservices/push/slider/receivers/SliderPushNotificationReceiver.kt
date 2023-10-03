@@ -25,7 +25,8 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.push.R
+
 
 class SliderPushNotificationReceiver : BroadcastReceiver() {
 

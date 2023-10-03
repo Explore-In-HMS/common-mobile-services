@@ -20,7 +20,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
-import com.hms.lib.commonmobileservices.R
+import com.hms.lib.commonmobileservices.awareness.R
 import com.huawei.hms.kit.awareness.Awareness
 import com.huawei.hms.kit.awareness.status.BehaviorStatus
 import com.huawei.hms.kit.awareness.status.HeadsetStatus

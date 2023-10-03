@@ -21,7 +21,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.remoteconfig.manager.IRemoteConfigService
 
-class GoogleRemoteConfig:IRemoteConfigService {
+
+class GoogleRemoteConfig: IRemoteConfigService {
     private var config: FirebaseRemoteConfig = Firebase.remoteConfig
     override fun setDefaultXml(xml: Int) {
         config.setDefaultsAsync(xml)

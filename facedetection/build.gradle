@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".facedetection"
+}
+
 dependencies {
     implementation "com.google.mlkit:face-detection:${libs.gms.faceDetection}"
     implementation "com.huawei.hms:ml-computer-vision-face:${libs.hms.faceDetection}"

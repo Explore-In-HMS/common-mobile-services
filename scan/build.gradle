@@ -3,6 +3,10 @@ def libs = project.libs
 apply plugin: "com.huawei.agconnect"
 apply plugin: "kotlin-android"
 
+android {
+    namespace project.namespace + ".scan"
+}
+
 dependencies {
     implementation "com.huawei.hms:scan:${libs.hms.scan}"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

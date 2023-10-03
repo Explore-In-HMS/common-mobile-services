@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".imageclassification"
+}
+
 dependencies {
     implementation "com.google.android.gms:play-services-mlkit-image-labeling:${libs.gms.imageLabeling}"
     implementation "com.huawei.hms:ml-computer-vision-classification:${libs.hms.imageClassification}"

@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".awareness"
+}
+
 dependencies {
     implementation "com.google.android.gms:play-services-awareness:${libs.gms.awareness}" // Don"t upgrade the version. Weather API deprecated from upper version.
     implementation "com.huawei.hms:awareness:${libs.hms.awareness}"

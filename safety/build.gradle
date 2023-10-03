@@ -1,6 +1,10 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 def libs = project.libs
 
+android {
+    namespace project.namespace + ".safety"
+}
+
 dependencies {
     implementation "com.huawei.hms:safetydetect:${libs.hms.safety}"
     implementation "com.google.android.gms:play-services-safetynet:${libs.gms.safety}"

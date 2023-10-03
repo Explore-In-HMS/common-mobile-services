@@ -26,6 +26,10 @@ android {
         }
     }
 
+    buildFeatures{
+        viewBinding true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -49,6 +53,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:${libs.test.androidJunit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${libs.test.espresso}"
 
+    implementation project(":scan")
 }
 
 apply plugin: "com.huawei.agconnect"
