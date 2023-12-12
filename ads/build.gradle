@@ -1,0 +1,7 @@
+apply from: "$project.rootDir/base_sdk.gradle"
+
+dependencies {
+    implementation 'com.google.android.gms:play-services-ads:22.2.0'
+    implementation 'com.huawei.hms:ads-prime:3.4.62.302'
+    api project(':core')
+}
