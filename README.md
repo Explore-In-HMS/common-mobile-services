@@ -12,7 +12,7 @@ If you want to contribute don't hesitate to create PR's :)
 
 Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
-## How to install
+## How to install 
 
 ### Step 1. Add the dependency of Huawei AGC and Google Play Services to your build file 
 ```gradle
