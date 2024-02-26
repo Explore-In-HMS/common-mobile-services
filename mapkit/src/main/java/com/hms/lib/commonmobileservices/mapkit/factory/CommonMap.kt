@@ -43,7 +43,7 @@ interface CommonMap : UISettings {
         anchor: Pair<Float, Float>? = null
     ): Marker
 
-    fun addPolygon(polygonOptions: PolygonOptions): Polygon
+    fun addPolygon(polygonOptions: PolygonOptions): Polygon?
     fun addPolyline(polylineOptions: PolylineOptions): Polyline
 
     fun setOnInfoWindowClickListener(
