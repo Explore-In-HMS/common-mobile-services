@@ -19,6 +19,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.mapkit.LocationSource
@@ -64,8 +65,13 @@ class HuaweiCommonMapImpl(
         }
     }
 
-    override fun addPolygon(polygonOptions: PolygonOptions): Polygon {
-        return map.addPolygon(polygonOptions.toHMSPolygonOptions()).toPolygon()
+    override fun addPolygon(polygonOptions: PolygonOptions): Polygon? {
+        return if(this::map.isInitialized) {
+            map.addPolygon(polygonOptions.toHMSPolygonOptions()).toPolygon()
+        } else {
+            Log.e("HuaweiCommonMapImpl", "Map is not initialized yet.")
+            null
+        }
     }
 
     override fun addPolyline(polylineOptions: PolylineOptions): Polyline {
