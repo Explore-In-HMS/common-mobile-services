@@ -3,7 +3,7 @@ apply from: "$project.rootDir/base_sdk.gradle"
 dependencies {
     implementation 'com.huawei.hms:push:6.11.0.300'
     implementation 'com.google.firebase:firebase-messaging-ktx:23.4.0'
-    implementation "androidx.work:work-runtime-ktx:2.9.0"
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
     api project(":core")
     implementation 'com.squareup.picasso:picasso:2.71828'
 }
