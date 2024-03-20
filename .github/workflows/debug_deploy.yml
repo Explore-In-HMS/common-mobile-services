@@ -1,12 +1,9 @@
-## 1
 name: Build Debug Apk and Deploy
-
 ## Actions that will be executed when pull request is created
 on:
   pull_request:
     branches:
       - master
-
 jobs:
   ## Debug
   build:
@@ -24,14 +21,12 @@ jobs:
       # 3.2
       - name: Generate Debug APK
         run: ./gradlew assembleDebug --stacktrace
-
       # 4
       - name: Upload APK to artifacts
         uses: actions/upload-artifact@v3
         with:
           name: app-debug.apk
           path: app/build/outputs/apk/debug/app-debug.apk
-
   # deploy_To_Firebase
   deploy-firebase:
     # 1
@@ -42,18 +37,11 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: app-debug.apk
-      # Setup Google Cloud
-      - name: Setup Google Cloud
-        uses: google-github-actions/setup-gcloud@master
+      #3
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.0
         with:
-          service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
-          project_id: <your_project_id_here>
-      # Deploy to Firebase
-      - name: Deploy to Firebase
-        run: firebase deploy --only hosting
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: /tmp/google-application-credentials.json
-        # Ensure GOOGLE_APPLICATION_CREDENTIALS environment variable is set
-        before_deploy:
-          - run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" > /tmp/google-application-credentials.json
-          - run: firebase appdistribution:distribute app-debug.apk --app ${{secrets.FIREBASE_APP_ID}} --groups debug-test
+          appId: ${{secrets.FIREBASE_APP_ID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: debug-test
+          file: app-debug.apk
