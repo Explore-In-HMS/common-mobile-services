@@ -7,14 +7,14 @@ apply from: "$project.rootDir/sonarqube.gradle"
 group = 'com.hms.lib.commonmobileservices'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 6
-        versionName "2.2.2"
+        targetSdkVersion 31
+        versionCode 7
+        versionName "2.3.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }

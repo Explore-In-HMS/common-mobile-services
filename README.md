@@ -12,28 +12,33 @@ If you want to contribute don't hesitate to create PR's :)
 
 Currently added services: `MapKit`, `Location`, `Analytics`, `CreditCardScanner`, `Awareness`, `Scan`, `Translate`, `Speech To Text`, `Text To Speech`, `Object Detection`, `Text Recognition`, `Face Detection`, `Language Detection`, `Image Classification`, `Account`, `Auth`, `Safety`, `Crash`, `Push`, `Site`, `Identity` and `Remote Config`.
 
-## How to install
+## How to install 
 
-### Step 1. Add the JitPack repository, Huawei repo and classpaths to your build file 
+### Step 1. Add the dependency of Huawei AGC and Google Play Services to your build file 
 ```gradle
 buildscript {
-    repositories {
-    	...
-        maven {url 'https://developer.huawei.com/repo/'}
+    ext {
+        toolsBuildGradleVersion = '7.1.1'
     }
     dependencies {
-    	...
-        classpath 'com.huawei.agconnect:agcp:1.7.1.300'
-        classpath 'com.google.gms:google-services:4.3.14'
+
+        classpath "com.android.tools.build:gradle:$toolsBuildGradleVersion"
+        classpath 'com.huawei.agconnect:agcp:1.9.1.301'
+        classpath "io.realm:realm-gradle-plugin:10.13.3-transformer-api"
+        classpath 'com.google.gms:google-services:4.3.15'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.5'
     }
 }
 
-allprojects {
-    repositories {
-	...
-	maven { url 'https://jitpack.io' }
-	maven { url "https://developer.huawei.com/repo/" }
-    }
+plugins {
+    id 'com.android.application' version '8.0.2' apply false
+    id 'com.android.library' version '8.0.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.20' apply false
+    id 'com.google.gms.google-services' version '4.4.0' apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 ```
 ### Step 2. Get the agconnect-services.json file from the AGC Console and google-services.json file from Firebase Console. Then, place it under the app module. And, add plugins to app level gradle file header.
@@ -41,7 +46,33 @@ allprojects {
 apply plugin: 'com.huawei.agconnect'
 apply plugin: 'com.google.gms.google-services'
 ```
-### Step 3. Add the dependency for module(s):
+### Step 3. Add the dependency to app level gradle file:
+```gradle
+dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.5.0"))
+    implementation 'com.huawei.agconnect:agconnect-core:1.9.1.300'
+    implementation 'com.huawei.hms:hmscoreinstaller:6.11.0.301'
+}
+```
+### Step 4. Add the JitPack and Huawei developer repository to settings.gradle:
+```gradle
+pluginManagement {
+    repositories {
+        maven { url 'https://developer.huawei.com/repo/' }
+    }
+}
+dependencyResolutionManagement {
+    repositories {
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+### Step 5. Add the this configuration setting that disables the instrumentation of the application performance management system:
+```gradle
+apmsInstrumentationEnabled=false
+```
+### Step 6. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
 `latest version 2.2.2`
@@ -88,6 +119,12 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:objectdetection
 ### Text Recognition
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition:<versionName>'
+```
+ ### Ads
+```gradle
+implementation 'com.github.Explore-In-HMS.common-mobile-services:ads:<versionName>'
+implementation 'com.google.android.gms:play-services-ads:22.2.0'
+implementation 'com.huawei.hms:ads-prime:3.4.62.302'
 ```
 ### Face Detection
 ```gradle
@@ -891,6 +928,55 @@ Parameters that should be used to use the text recognition feature; bitmap and c
 The `textRecognition()` function takes a callback lambda function as a parameter. The lambda function gives us a `RecognitionResult` sealed class object.
 ```kt
 fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResult<Any>) -> Unit)
+```
+
+## Ads
+Allows you to show ads in your app. 
+
+### Rewarded Ad
+Rewarded ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
+You can specify the reward values associated with the ad units in your app and set different rewards for different ad units. Users will receive the reward for interacting with the ad without needing to install anything.
+
+#### How to use
+Create an IRewardedAd variable in order to get instance when ads showing is ready.
+```kt
+    private lateinit var rewardedAd: IRewardedAd
+```
+First, you need to call static 'load()' function to get rewarded ad instance. 
+By passing 'context', 'hmsAd_ID', 'gmsAd_ID' and 'RewardedAdLoadCallback' you will get IRewardedAd instance in order to show ad.
+```kt
+    RewardedAd.load(
+        this,
+        "testx9dtjwj8hp",
+        "ca-app-pub-3940256099942544/5224354917",
+        object : RewardedAdLoadCallback {
+            override fun onAdLoadFailed(adError: String) {
+                 Log.e("main", adError)
+            }
+            override fun onRewardedAdLoaded(rewardedAd: IRewardedAd) {
+                rewardedAd = rewardedAd
+            }
+        }
+    )
+```
+Call `show()` function whenever you want to show ad. 
+You need to pass 'context' and 'UserRewardEarnedListener' params in order to get reward after user watched the ad.
+You can get reward value by calling 'getAmount()' function.  
+```kt
+    rewardedAd.show(    
+        this,
+        object : UserRewardEarnedListener {
+            override fun onUserEarnedReward(item: IRewardItem) {
+                Log.d("main", "${item.getAmount()} ${item.getTypeOrName()}")
+            }
+        }
+    )
+```
+In Addition you need add your ca-app-pub value in androidmanifest.xml
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
 ## Face Detection
