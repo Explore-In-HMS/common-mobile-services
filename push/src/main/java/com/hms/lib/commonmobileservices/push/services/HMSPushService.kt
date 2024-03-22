@@ -28,11 +28,23 @@ import com.huawei.hms.push.HmsMessageService
 import com.huawei.hms.push.RemoteMessage
 import org.json.JSONObject
 
+/**
+ * This class represents a Huawei Push Service that extends the HmsMessageService class.
+ * It handles new token, message received, deleted messages, message sent, and send error events.
+ */
 class HMSPushService : HmsMessageService() {
+    /**
+     * The companion object that holds the constant TAG value.
+     */
     companion object {
         private const val TAG = "HMSPushService"
     }
 
+    /**
+     * This method is called when a new token is received.
+     * It sends a broadcast message with the new token.
+     * @param token The new token received.
+     */
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         BroadcastHelper.sendMessage(
@@ -41,6 +53,13 @@ class HMSPushService : HmsMessageService() {
             Bundle().also { it.putSerializable("token", Token(Provider.Huawei, token)) })
     }
 
+    /**
+     * This method is called when a new message is received.
+     * It checks if the message is a slider push notification or not.
+     * If it is not a slider push notification, it sends a broadcast message with the received message.
+     * If it is a slider push notification, it shows the notification.
+     * @param message The received message.
+     */
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         if (message.dataOfMap.isNotEmpty()) {
@@ -67,11 +86,20 @@ class HMSPushService : HmsMessageService() {
         }
     }
 
+    /**
+     * This method is called when messages are deleted from the server.
+     * It sends a broadcast message to notify the deletion.
+     */
     override fun onDeletedMessages() {
         super.onDeletedMessages()
         BroadcastHelper.sendMessage(this, MessageType.DeletedMessages)
     }
 
+    /**
+     * This method is called when a message is successfully sent.
+     * It sends a broadcast message with the message ID.
+     * @param messageId The ID of the message sent.
+     */
     override fun onMessageSent(p0: String) {
         super.onMessageSent(p0)
         BroadcastHelper.sendMessage(
@@ -80,6 +108,12 @@ class HMSPushService : HmsMessageService() {
             Bundle().also { it.putString("message_id", p0) })
     }
 
+    /**
+     * This method is called when there is an error sending a message.
+     * It sends a broadcast message with the message ID and the exception.
+     * @param messageId The ID of the message that failed to send.
+     * @param exception The exception that occurred.
+     */
     override fun onSendError(p0: String, p1: Exception) {
         super.onSendError(p0, p1)
         BroadcastHelper.sendMessage(
