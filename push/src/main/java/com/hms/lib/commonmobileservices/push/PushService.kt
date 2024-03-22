@@ -45,12 +45,14 @@ abstract class PushService(private val context: Context) {
      * @param enable Whether to enable or disable auto initialization.
      */
     abstract fun autoInitEnabled(enable: Boolean)
+
     /**
      * Gets the token for the push service.
      *
      * @return A Work object containing the token.
      */
     abstract fun getToken(): Work<Token>
+
     /**
      * Subscribes to a topic for push notifications.
      *
@@ -58,6 +60,7 @@ abstract class PushService(private val context: Context) {
      * @return A Work object indicating the success or failure of the subscription.
      */
     abstract fun subscribeToTopic(topic: String): Work<Unit>
+
     /**
      * Unsubscribes from a topic for push notifications.
      *
@@ -65,6 +68,7 @@ abstract class PushService(private val context: Context) {
      * @return A Work object indicating the success or failure of the unsubscription.
      */
     abstract fun unsubscribeFromTopic(topic: String): Work<Unit>
+
     /**
      * Gets whether auto initialization is enabled or not.
      *

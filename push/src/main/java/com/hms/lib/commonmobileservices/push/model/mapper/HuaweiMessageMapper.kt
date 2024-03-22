@@ -23,7 +23,7 @@ import com.huawei.hms.push.RemoteMessage
  * It implements the Mapper interface with RemoteMessage as input and PushMessage as output.
  * It also contains a HuaweiNotificationMapper object to map the notification field of RemoteMessage.
  */
-class HuaweiMessageMapper: Mapper<RemoteMessage, PushMessage>() {
+class HuaweiMessageMapper : Mapper<RemoteMessage, PushMessage>() {
 
     /**
      * An instance of HuaweiNotificationMapper to map the notification field of RemoteMessage.
