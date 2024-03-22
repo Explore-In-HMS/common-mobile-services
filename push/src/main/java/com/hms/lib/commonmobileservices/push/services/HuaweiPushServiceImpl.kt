@@ -25,16 +25,29 @@ import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.ApiException
 import com.huawei.hms.push.HmsMessaging
 
+/**
+ * This class provides a service implementation for handling Huawei push notifications.
+ * @param context The application context.
+ */
 class HuaweiPushServiceImpl(private val context: Context) : PushService(context) {
     companion object {
         private const val TAG = "HuaweiPushServiceImpl"
     }
 
     private val hmsMessaging = HmsMessaging.getInstance(context)
+
+    /**
+     * Enables or disables auto initialization of Huawei Push Kit.
+     * @param enable True to enable auto initialization, false to disable.
+     */
     override fun autoInitEnabled(enable: Boolean) {
         hmsMessaging.isAutoInitEnabled = enable
     }
 
+    /**
+     * Retrieves the token associated with the Huawei push service.
+     * @return A Work object representing the asynchronous token retrieval process.
+     */
     override fun getToken(): Work<Token> {
         val work: Work<Token> = Work()
         object : Thread() {
@@ -43,7 +56,7 @@ class HuaweiPushServiceImpl(private val context: Context) : PushService(context)
                     val appId: String =
                         AGConnectOptionsBuilder().build(context).getString("client/app_id")
                     val token: String = HmsInstanceId.getInstance(context).getToken(appId, "HCM")
-                    if (!TextUtils.isEmpty(token)){
+                    if (!TextUtils.isEmpty(token)) {
                         work.onSuccess(Token(Provider.Huawei, token))
                     }
                 } catch (e: ApiException) {
@@ -55,6 +68,11 @@ class HuaweiPushServiceImpl(private val context: Context) : PushService(context)
         return work
     }
 
+    /**
+     * Subscribes to a specified topic for receiving push notifications.
+     * @param topic The topic to subscribe to.
+     * @return A Work object representing the asynchronous subscription process.
+     */
     override fun subscribeToTopic(topic: String): Work<Unit> {
         val work: Work<Unit> = Work()
         hmsMessaging.subscribe(topic)
@@ -64,6 +82,11 @@ class HuaweiPushServiceImpl(private val context: Context) : PushService(context)
         return work
     }
 
+    /**
+     * Unsubscribes from a specified topic for receiving push notifications.
+     * @param topic The topic to unsubscribe from.
+     * @return A Work object representing the asynchronous unsubscription process.
+     */
     override fun unsubscribeFromTopic(topic: String): Work<Unit> {
         val work: Work<Unit> = Work()
         hmsMessaging.unsubscribe(topic)
@@ -73,6 +96,10 @@ class HuaweiPushServiceImpl(private val context: Context) : PushService(context)
         return work
     }
 
+    /**
+     * Checks if auto initialization of Huawei Push Kit is enabled.
+     * @return True if auto initialization is enabled, false otherwise.
+     */
     override fun isAutoInitEnabled(): Boolean {
         return hmsMessaging.isAutoInitEnabled
     }
