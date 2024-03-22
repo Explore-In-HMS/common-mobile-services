@@ -18,10 +18,23 @@ import com.hms.lib.commonmobileservices.push.model.Mapper
 import com.hms.lib.commonmobileservices.push.model.PushMessage
 import com.huawei.hms.push.RemoteMessage
 
-class HuaweiMessageMapper: Mapper<RemoteMessage, PushMessage>() {
+/**
+ * This class is a mapper that maps a RemoteMessage object to a PushMessage object.
+ * It implements the Mapper interface with RemoteMessage as input and PushMessage as output.
+ * It also contains a HuaweiNotificationMapper object to map the notification field of RemoteMessage.
+ */
+class HuaweiMessageMapper : Mapper<RemoteMessage, PushMessage>() {
 
+    /**
+     * An instance of HuaweiNotificationMapper to map the notification field of RemoteMessage.
+     */
     private val notificationMapper: HuaweiNotificationMapper = HuaweiNotificationMapper()
 
+    /**
+     * This method maps a RemoteMessage object to a PushMessage object.
+     * @param from The RemoteMessage object to be mapped.
+     * @return The mapped PushMessage object.
+     */
     override fun map(from: RemoteMessage): PushMessage =
         PushMessage(
             data = from.dataOfMap,

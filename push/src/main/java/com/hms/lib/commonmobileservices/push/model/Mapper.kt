@@ -14,6 +14,19 @@
 
 package com.hms.lib.commonmobileservices.push.model
 
+/**
+ * The abstract class Mapper is a generic class that defines a mapping function from one data type to another.
+ * It is designed to be extended by concrete mapper classes that implement the map method.
+ *
+ * @param <From> the input data type that needs to be mapped
+ * @param <To> the output data type that the input is mapped to
+ */
 abstract class Mapper<From, To> {
+    /**
+     * This method maps the input data of type From to the output data of type To.
+     *
+     * @param from the input data that needs to be mapped
+     * @return the output data that the input is mapped to
+     */
     abstract fun map(from: From): To
 }

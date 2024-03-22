@@ -18,7 +18,17 @@ import android.content.Intent
 import android.os.Bundle
 import com.hms.lib.commonmobileservices.push.model.MessageType
 
+/**
+ * The BroadcastHelper class provides a convenient way to send broadcast messages with a specified message type and optional data bundle.
+ */
 object BroadcastHelper {
+    /**
+     * Sends a broadcast message with the specified message type and optional data bundle.
+     *
+     * @param context The context used to send the broadcast.
+     * @param messageType The type of message to be sent.
+     * @param bundle An optional data bundle to be included in the broadcast message.
+     */
     fun sendMessage(context: Context, messageType: MessageType, bundle: Bundle? = null) {
         val intent = Intent("com.commonmobileservices.action.MESSAGING_EVENT")
         intent.putExtra("data", bundle)
