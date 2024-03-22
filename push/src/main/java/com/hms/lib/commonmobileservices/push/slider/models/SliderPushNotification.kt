@@ -13,6 +13,12 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.push.slider.models
 
+/**
+ * Represents a push notification containing slider items.
+ * @property callToAction The call-to-action message associated with the notification.
+ * @property header The header text of the notification.
+ * @property items The list of slider items included in the notification.
+ */
 data class SliderPushNotification(
     val callToAction: String,
     val header: String,

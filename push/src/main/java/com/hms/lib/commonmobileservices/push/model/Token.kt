@@ -16,7 +16,12 @@ package com.hms.lib.commonmobileservices.push.model
 
 import java.io.Serializable
 
+/**
+ * Represents a token associated with a notification provider.
+ * @property provider The provider associated with the token.
+ * @property token The token string.
+ */
 data class Token(
     val provider: Provider,
     val token: String
-): Serializable
+) : Serializable

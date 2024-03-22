@@ -13,6 +13,12 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.push.slider.models
 
+/**
+ * Represents an item for a slider.
+ * @property image The image URL for the item.
+ * @property title The title of the item.
+ * @property url The URL associated with the item.
+ */
 data class SliderItem(
     val image: String,
     val title: String,
