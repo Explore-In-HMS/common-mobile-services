@@ -14,6 +14,10 @@
 
 package com.hms.lib.commonmobileservices.push.model
 
+/**
+ * The MessageType enum class represents the type of message that can be sent or received by the system.
+ * Each message type is associated with a unique integer value.
+ */
 enum class MessageType(val value: Int) {
     MessageReceived(0),
     DeletedMessages(1),

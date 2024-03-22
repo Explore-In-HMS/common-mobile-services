@@ -14,6 +14,10 @@
 
 package com.hms.lib.commonmobileservices.push.model
 
+/**
+ * The Provider enum class represents the different providers that can be used in the application.
+ * Each provider has a unique value associated with it.
+ */
 enum class Provider(val value: String) {
     Huawei("huawei"),
     Google("google")
