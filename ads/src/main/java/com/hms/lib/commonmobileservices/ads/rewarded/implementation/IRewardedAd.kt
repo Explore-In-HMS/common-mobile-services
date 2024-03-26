@@ -19,9 +19,36 @@ import android.os.Bundle
 import com.hms.lib.commonmobileservices.ads.rewarded.common.UserRewardEarnedListener
 import com.hms.lib.commonmobileservices.ads.rewarded.common.MetaDataChangedListener
 
+/**
+ * Interface representing a rewarded ad.
+ */
 interface IRewardedAd {
+    /**
+     * Retrieves the metadata associated with the rewarded ad.
+     *
+     * @return The metadata bundle.
+     */
     fun getMetaData(): Bundle
+
+    /**
+     * Sets a listener for metadata changes on the rewarded ad.
+     *
+     * @param callback The callback to be invoked when metadata changes.
+     */
     fun setOnMetadataChangedListener(callback: MetaDataChangedListener)
+
+    /**
+     * Sets whether the rewarded ad should be shown in immersive mode.
+     *
+     * @param value Boolean indicating whether to enable immersive mode.
+     */
     fun setImmersive(value: Boolean)
+
+    /**
+     * Shows the rewarded ad to the user.
+     *
+     * @param activity The activity context in which to show the ad.
+     * @param callback The callback for handling user's earned rewards.
+     */
     fun show(activity: Activity, callback: UserRewardEarnedListener)
 }

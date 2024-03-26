@@ -14,6 +14,12 @@
 
 package com.hms.lib.commonmobileservices.ads.rewarded.common
 
+/**
+ * Interface for listening to changes in metadata.
+ */
 interface MetaDataChangedListener {
+    /**
+     * Called when the metadata has changed.
+     */
     fun onMetaDataChanged()
 }

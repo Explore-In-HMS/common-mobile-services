@@ -14,11 +14,24 @@
 
 package com.hms.lib.commonmobileservices.ads.rewarded.common
 
+/**
+ * Interface for reward items.
+ */
 interface IRewardItem {
+    /**
+     * Retrieves the amount of the reward item.
+     *
+     * @return The amount of the reward item.
+     */
     fun getAmount(): Int?
 
     /**
-     * This function return name for hms instance type for gms instance
+     * Retrieves the name of the reward item.
+     *
+     * For HMS instance, this function returns the type.
+     * For GMS instance, this function returns the name.
+     *
+     * @return The name of the reward item for HMS instance, or the type for GMS instance.
      */
     fun getTypeOrName(): String?
 }
