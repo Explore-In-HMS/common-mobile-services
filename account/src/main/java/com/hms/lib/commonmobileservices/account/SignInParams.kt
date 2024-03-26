@@ -13,26 +13,47 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account
 
+/**
+ * Builder class for creating SignInParams instances with specified parameters.
+ */
 class SignInParams private constructor(
     private val accessToken: Boolean,
     private val email: Boolean,
     private val idToken: String
 ) {
-
+    /**
+     * Indicates whether the access token is requested.
+     *
+     * @return true if the access token is requested, false otherwise.
+     */
     fun accessToken(): Boolean = this.accessToken
 
+    /**
+     * Indicates whether the email information is requested.
+     *
+     * @return true if email information is requested, false otherwise.
+     */
     fun email(): Boolean = this.email
 
+    /**
+     * Retrieves the ID token.
+     *
+     * @return The ID token.
+     */
     fun idToken(): String = this.idToken
 
+    /**
+     * Builder class for constructing SignInParams instances.
+     */
     class Builder {
         private var accessToken: Boolean = false
         private var email: Boolean = false
         private var idToken: String = ""
 
-
         /**
          * Specifies that user profile info is requested by your application.
+         *
+         * @return The builder instance for method chaining.
          */
         fun requestAccessToken(): Builder {
             this.accessToken = true
@@ -41,6 +62,8 @@ class SignInParams private constructor(
 
         /**
          * Specifies that email info is requested by your application.
+         *
+         * @return The builder instance for method chaining.
          */
         fun requestEmail(): Builder {
             this.email = true
@@ -52,17 +75,23 @@ class SignInParams private constructor(
          * Requesting an ID token requires that the server client ID be specified.
          *
          * @param serverClientId The client ID of the server that will verify the integrity of the token.
-         * This parameter is used only for Google Services
+         * This parameter is used only for Google Services.
+         * @return The builder instance for method chaining.
          */
         fun requestIdToken(serverClientId: String): Builder {
-            this.idToken = if(serverClientId.isEmpty()){
+            this.idToken = if (serverClientId.isEmpty()) {
                 "true"
-            }else{
+            } else {
                 serverClientId
             }
             return this
         }
 
+        /**
+         * Creates a SignInParams instance with the specified parameters.
+         *
+         * @return The created SignInParams instance.
+         */
         fun create(): SignInParams {
             return SignInParams(
                 accessToken,

@@ -29,30 +29,82 @@ import com.hms.lib.commonmobileservices.account.util.SharedPrefHelper
 import com.hms.lib.commonmobileservices.core.ResultCallback
 import com.hms.lib.commonmobileservices.core.Work
 
+/**
+ * Implementation of the [AccountService] interface for handling Google account operations.
+ * This class provides methods to perform sign-in, sign-out, and retrieve account information.
+ *
+ * @property context The application context.
+ * @property signInParams Parameters for signing in.
+ */
 internal class GoogleAccountServiceImpl(private val context: Context, signInParams: SignInParams) :
     AccountService {
 
+    /**
+     * Google sign-in client used for handling Google sign-in operations.
+     */
     private var mGoogleSignInClient: GoogleSignInClient
+
+    /**
+     * Mapper used for mapping Google sign-in account to application-specific sign-in user.
+     */
     private val mapper: Mapper<GoogleSignInAccount, SignInUser> = GoogleUserMapper()
+
+    /**
+     * Helper class for accessing shared preferences.
+     */
     private val sharedPrefHelper = SharedPrefHelper(context)
-    private var mGoogleSmsRetriver: SmsRetrieverClient
+
+    /**
+     * Google SMS retriever client used for handling SMS retrieval.
+     */
+    private var mGoogleSmsRetriever: SmsRetrieverClient
+
+    /**
+     * The currently signed-in user. It is nullable as the user might not be signed in.
+     */
     private var signInUser: SignInUser? = null
 
+    /**
+     * Initializes the GoogleAccountServiceImpl instance.
+     *
+     * @param context The application context.
+     * @param signInParams Parameters for signing in.
+     */
     init {
         val helper = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-        if (signInParams.email()) helper.requestEmail()
-        if (signInParams.idToken().isNotEmpty()) helper.requestIdToken(signInParams.idToken())
-        mGoogleSmsRetriver = SmsRetriever.getClient(context)
+
+        // Request email if specified in signInParams
+        if (signInParams.email()) {
+            helper.requestEmail()
+        }
+
+        // Request ID token if provided in signInParams
+        if (signInParams.idToken().isNotEmpty()) {
+            helper.requestIdToken(signInParams.idToken())
+        }
+
+        // Initialize Google SMS retriever client
+        mGoogleSmsRetriever = SmsRetriever.getClient(context)
+
+        // Initialize Google sign-in client with the configured options
         mGoogleSignInClient = GoogleSignIn.getClient(
             context,
             helper.build()
         )
     }
 
+    /**
+     * Attempts to silently sign in the user.
+     *
+     * If the user is already signed in, their information is retrieved and the callback's onSuccess method is called.
+     * If the user is not signed in, the onFailure method of the callback is called.
+     *
+     * @param callback Callback to handle the result of the silent sign-in operation.
+     */
     override fun silentSignIn(callback: ResultCallback<SignInUser>) {
         val account = GoogleSignIn.getLastSignedInAccount(context)
         if (account == null) {
-            callback.onFailure(Exception("Get last signed account failed"))
+            callback.onFailure(Exception("Failed to get last signed account"))
         } else {
             account.email?.let { sharedPrefHelper.setEmail(it) }
             signInUser = mapper.map(account)
@@ -60,10 +112,21 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         }
     }
 
+    /**
+     * Retrieves the sign-in intent from Google sign-in client.
+     *
+     * @param intent Callback to receive the sign-in intent.
+     */
     override fun getSignInIntent(intent: (Intent) -> Unit) {
         intent.invoke(mGoogleSignInClient.signInIntent)
     }
 
+    /**
+     * Handles the result of a sign-in activity.
+     *
+     * @param intent The intent containing the result data.
+     * @param callback Callback to handle the result of the sign-in operation.
+     */
     override fun onSignInActivityResult(intent: Intent, callback: ResultCallback<SignInUser>) {
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         task.addOnSuccessListener {
@@ -75,6 +138,11 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         task.addOnCanceledListener { callback.onCancelled() }
     }
 
+    /**
+     * Signs the user out.
+     *
+     * @return A [Work] instance representing the sign-out operation.
+     */
     override fun signOut(): Work<Unit> {
         val worker: Work<Unit> = Work()
         mGoogleSignInClient.signOut()
@@ -85,6 +153,11 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         return worker
     }
 
+    /**
+     * Cancels the user's authorization.
+     *
+     * @return A [Work] instance representing the cancel authorization operation.
+     */
     override fun cancelAuthorization(): Work<Unit> {
         val worker: Work<Unit> = Work()
         mGoogleSignInClient.revokeAccess()
@@ -95,17 +168,24 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         return worker
     }
 
+    /**
+     * Retrieves the stored email address.
+     *
+     * @return The stored email address, or null if not found.
+     */
     override fun getEmail(): String? {
         val email = sharedPrefHelper.getEmail()
-        return if (email.isEmpty()) {
+        return email.ifEmpty {
             null
-        } else {
-            email
         }
     }
 
+    /**
+     * Retrieves the signed-in user account information.
+     *
+     * @return The signed-in user account information, or null if not signed in.
+     */
     override fun getSignAccountId(): SignInUser? {
         return signInUser
     }
-
 }
