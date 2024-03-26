@@ -28,8 +28,10 @@ import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.banner.BannerView
 
+/**
+ * Utility class for loading banner ads based on the mobile service type.
+ */
 class BannerAd {
-
     companion object {
         /**
          * Loads a banner ad based on the mobile service type.
@@ -90,7 +92,7 @@ class BannerAd {
                     }
 
                 }
-                MobileServiceType.NON -> throw IllegalArgumentException()
+                MobileServiceType.NON -> throw IllegalArgumentException("Unsupported mobile service type.")
             }
         }
     }

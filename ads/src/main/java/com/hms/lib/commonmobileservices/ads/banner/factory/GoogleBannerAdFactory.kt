@@ -18,6 +18,16 @@ import com.google.android.gms.ads.AdView
 import com.hms.lib.commonmobileservices.ads.banner.implementation.GoogleBannerAd
 import com.hms.lib.commonmobileservices.ads.banner.implementation.IBannerAd
 
+/**
+ * Factory class for creating Google banner ads.
+ *
+ * @param bannerAd The AdView instance used for creating the banner ad.
+ */
 class GoogleBannerAdFactory(private val bannerAd: AdView) : BannerAdFactory() {
+    /**
+     * Creates a Google banner ad instance.
+     *
+     * @return The created Google banner ad.
+     */
     override fun create(): IBannerAd = GoogleBannerAd(bannerAd)
 }
