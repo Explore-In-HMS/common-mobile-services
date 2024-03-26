@@ -20,7 +20,17 @@ import com.hms.lib.commonmobileservices.account.common.Scope
 
 private typealias GoogleScope = com.google.android.gms.common.api.Scope
 
+/**
+ * Mapper class to map Google sign-in account to application-specific sign-in user.
+ */
 internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser>() {
+    /**
+     * Maps a GoogleSignInAccount instance to a SignInUser instance.
+     *
+     * @param from The GoogleSignInAccount instance to be mapped.
+     * @return The mapped SignInUser instance.
+     * @throws NullPointerException if any required field in GoogleSignInAccount is null.
+     */
     override fun map(from: GoogleSignInAccount): SignInUser = SignInUser(
         familyName = from.familyName!!,
         givenName = from.givenName!!,
@@ -34,6 +44,12 @@ internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser>() {
         scopes = getGrantedScopes(from),
     )
 
+    /**
+     * Retrieves the granted scopes from the GoogleSignInAccount instance.
+     *
+     * @param account The GoogleSignInAccount instance.
+     * @return The set of granted scopes.
+     */
     private fun getGrantedScopes(account: GoogleSignInAccount): Set<Scope> {
         val scopes = HashSet<Scope>()
         if (account.grantedScopes.contains(GoogleScope("email"))) {
