@@ -28,13 +28,22 @@ import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.splash.SplashView
 import com.huawei.hms.ads.splash.SplashView.SplashAdLoadListener
 
+/**
+ * A utility class for loading Splash Ads.
+ */
 class SplashAd {
-
-
     companion object {
         /**
-         * TODO:Explain AdRequestParams in Readme document
-         * TODO:Initialize Ad_ID param with test ad_ID
+         * Loads a Splash Ad based on the mobile service type.
+         *
+         * @param context The context of the application.
+         * @param hmsAd_ID The Huawei Mobile Services Ad ID.
+         * @param gmsAd_ID The Google Mobile Services Ad ID.
+         * @param splashView The SplashView used for displaying the ad.
+         * @param screenOrientation The screen orientation for the ad.
+         * @param callback The callback for handling ad loading events.
+         * @param hmsAdRequestParams The Huawei Mobile Services AdParam parameters. Default is null.
+         * @throws IllegalArgumentException if the mobile service type is not supported.
          */
         fun load(
             context: Context,
@@ -54,7 +63,9 @@ class SplashAd {
                         object : AppOpenAd.AppOpenAdLoadCallback() {
                             override fun onAdLoaded(appOpenAd: AppOpenAd) {
                                 val googleAppOpenAdFactory =
-                                    SplashAdFactory.createFactory<GoogleAppOpenAd, AppOpenAd>(appOpenAd)
+                                    SplashAdFactory.createFactory<GoogleAppOpenAd, AppOpenAd>(
+                                        appOpenAd
+                                    )
                                 googleAppOpenAdFactory.create().let(callback::onSplashAdLoaded)
                             }
 

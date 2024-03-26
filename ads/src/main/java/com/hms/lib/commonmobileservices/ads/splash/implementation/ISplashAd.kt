@@ -16,6 +16,14 @@ package com.hms.lib.commonmobileservices.ads.splash.implementation
 
 import android.app.Activity
 
+/**
+ * Interface for displaying Splash Ads.
+ */
 interface ISplashAd {
+    /**
+     * Shows the Splash Ad in the specified activity context.
+     *
+     * @param activity The activity context in which to show the ad.
+     */
     fun show(activity: Activity)
 }

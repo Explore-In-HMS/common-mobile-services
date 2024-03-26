@@ -18,6 +18,16 @@ import com.hms.lib.commonmobileservices.ads.splash.implementation.HuaweiSplashAd
 import com.hms.lib.commonmobileservices.ads.splash.implementation.ISplashAd
 import com.huawei.hms.ads.splash.SplashAd
 
-class HuaweiSplashAdFactory(private val splashAd: SplashAd): SplashAdFactory() {
+/**
+ * Factory class for creating Huawei Splash ads.
+ *
+ * @param splashAd The Huawei Splash ad to be used for creating the splash ad.
+ */
+class HuaweiSplashAdFactory(private val splashAd: SplashAd) : SplashAdFactory() {
+    /**
+     * Creates an instance of the Huawei Splash ad.
+     *
+     * @return An instance of the ISplashAd interface representing the Huawei Splash ad.
+     */
     override fun create(): ISplashAd = HuaweiSplashAd(splashAd)
 }
