@@ -13,6 +13,13 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account.common
 
-enum class Scope() {
+/**
+ * Enum class representing the scope of an operation.
+ * Currently, only [EMAIL] scope is supported.
+ */
+enum class Scope {
+    /**
+     * Represents the scope of an operation related to email.
+     */
     EMAIL
 }
