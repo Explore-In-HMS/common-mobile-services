@@ -16,6 +16,30 @@ package com.hms.lib.commonmobileservices.analytics
 import android.os.Bundle
 import android.util.Log
 
+/**
+ * An inline function designed to simplify the logging of analytics events with a single data point.
+ * It supports common data types such as String, Int, Long, Double, and Float. The function
+ * automatically packages the data into a [Bundle] with an appropriate key-value pair and logs
+ * the event using the [CommonAnalytics.saveEvent] method.
+ *
+ * @param T The type parameter, reified to allow checking the type at runtime.
+ * @param eventKey The key representing the event to be logged. This is used as the event identifier.
+ * @param paramKey An optional parameter key to be used instead of the event key for the data in the bundle.
+ * If null or not provided, the event key will be used as the parameter key.
+ * @param data The data to be logged with the event. Supported types are String, Int, Long, Double, and Float.
+ * If a type other than these is provided, an informational log message will be output and the data will not be logged.
+ *
+ * Usage of this function allows for a more concise and type-safe way of logging analytics events that
+ * consist of a single data point. It handles the creation of the [Bundle], insertion of the data based on its
+ * type, and calls [saveEvent] method of [CommonAnalytics] interface, making the analytics logging process
+ * simpler and error-free.
+ *
+ * Example:
+ * ```
+ * analytics.saveSingleData("purchaseAmount", "amount", 9.99)
+ * ```
+ * In this example, an event named "purchaseAmount" is logged with a single parameter "amount" having a value of 9.99.
+ */
 inline fun <reified T> CommonAnalytics.saveSingleData(
     eventKey: String,
     paramKey: String? = null,
@@ -38,6 +62,13 @@ inline fun <reified T> CommonAnalytics.saveSingleData(
 
 //To log data with key and variable number of features
 //example: CommonAnalytics.saveData("ProductClick","price",20.99,"title","Gloves","seller","Wintermax")
+/**
+ * Saves analytics data for a given event key.
+ *
+ * @param eventKey The key identifying the event.
+ * @param keyDataPairs The key-value pairs of data to be saved.
+ * @throws IllegalArgumentException if an invalid data type is provided.
+ */
 fun CommonAnalytics.saveData(eventKey: String, vararg keyDataPairs: Any) {
     val bundle = Bundle()
     keyDataPairs.forEachIndexed { index, value ->
