@@ -16,12 +16,25 @@ package com.hms.lib.commonmobileservices.account.util
 import android.content.Context
 import android.content.SharedPreferences
 
+/**
+ * Helper class for managing shared preferences related to account service.
+ *
+ * @property context The application context.
+ */
 class SharedPrefHelper(private val context: Context) {
+    /**
+     * Retrieves the shared preferences instance.
+     */
     private val sharedPreferences: SharedPreferences
         get() {
             return context.getSharedPreferences("account_service", Context.MODE_PRIVATE)
         }
 
+    /**
+     * Sets the stored email address in shared preferences.
+     *
+     * @param email The email address to be stored.
+     */
     fun setEmail(email: String) {
         val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
@@ -29,6 +42,11 @@ class SharedPrefHelper(private val context: Context) {
         editor.apply()
     }
 
+    /**
+     * Retrieves the stored email address from shared preferences.
+     *
+     * @return The stored email address, or an empty string if not found.
+     */
     fun getEmail(): String {
         return sharedPreferences.getString("email", "")!!
     }
