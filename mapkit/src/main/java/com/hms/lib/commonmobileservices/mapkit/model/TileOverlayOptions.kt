@@ -13,10 +13,32 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+/**
+ * Options for configuring a tile overlay on the map.
+ */
 class TileOverlayOptions {
+    /**
+     * Indicates whether the tile overlay should fade in.
+     */
     var fadeIn: Boolean? = true
+
+    /**
+     * The tile provider for the overlay.
+     */
     var tileProvider: TileProvider? = null
+
+    /**
+     * The transparency of the tile overlay. Value should be in the range [0, 1], where 0 means fully opaque and 1 means fully transparent.
+     */
     var transparency: Float? = 0.0F
+
+    /**
+     * The z-index of the tile overlay.
+     */
     var zIndex: Float? = 0.0F
+
+    /**
+     * Indicates whether the tile overlay is visible.
+     */
     var isVisible: Boolean? = true
 }

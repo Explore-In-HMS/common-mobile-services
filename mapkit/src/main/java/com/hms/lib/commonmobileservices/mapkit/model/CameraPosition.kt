@@ -13,6 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+/**
+ * Represents the position of the camera (the view) in a map view, including its target geographical
+ * location, zoom level, tilt angle, and bearing (rotation) angle.
+ *
+ * @property target The geographical location that the camera is pointing to.
+ * @property zoom The zoom level of the camera. This value represents the scale of the view.
+ * @property tilt The tilt angle of the camera in degrees. A tilt of 0 degrees indicates a
+ *     straight-down view (from top to bottom), while higher tilt angles provide oblique views.
+ * @property bearing The bearing angle of the camera in degrees (clockwise rotation from the north
+ *     direction). A bearing of 0 degrees indicates that the camera is pointing north.
+ */
 data class CameraPosition(
     val target: LatLng,
     val zoom: Float,

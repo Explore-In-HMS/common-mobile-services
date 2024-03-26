@@ -17,9 +17,18 @@ import com.google.maps.android.SphericalUtil
 import com.hms.lib.commonmobileservices.mapkit.model.LatLng
 import com.hms.lib.commonmobileservices.mapkit.model.toGMSLatLng
 
+/**
+ * Utility class for calculating distances between geographical points.
+ */
 class DistanceUtil {
-    // calculates distance between 2 points in meters
-    fun calculateDistance(p1:LatLng, p2:LatLng) : Double{
-        return SphericalUtil.computeDistanceBetween(p1.toGMSLatLng(),p2.toGMSLatLng())
+    /**
+     * Calculates the distance between two geographical points using the Haversine formula.
+     *
+     * @param p1 The first geographical point.
+     * @param p2 The second geographical point.
+     * @return The distance between the two points in meters.
+     */
+    fun calculateDistance(p1: LatLng, p2: LatLng): Double {
+        return SphericalUtil.computeDistanceBetween(p1.toGMSLatLng(), p2.toGMSLatLng())
     }
 }
