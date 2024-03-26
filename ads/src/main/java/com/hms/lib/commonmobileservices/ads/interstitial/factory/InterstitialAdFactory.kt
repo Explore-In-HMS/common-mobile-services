@@ -19,14 +19,29 @@ import com.hms.lib.commonmobileservices.ads.interstitial.implementation.HuaweiIn
 import com.hms.lib.commonmobileservices.ads.interstitial.implementation.IInterstitialAd
 import com.huawei.hms.ads.InterstitialAd
 
+/**
+ * Abstract factory class for creating interstitial ads.
+ */
 abstract class InterstitialAdFactory {
+    /**
+     * Abstract method to create an interstitial ad instance.
+     *
+     * @return The created interstitial ad.
+     */
     abstract fun create(): IInterstitialAd
 
     companion object {
+        /**
+         * Creates an interstitial ad factory based on the type of interstitial ad and its associated view.
+         *
+         * @param interstitialAd The interstitial ad instance.
+         * @return An interstitial ad factory.
+         * @throws IllegalArgumentException If an invalid combination of interstitial ad type and view type is provided.
+         */
         inline fun <reified T : IInterstitialAd, reified K> createFactory(interstitialAd: K): InterstitialAdFactory {
-            when (T::class) {
+            return when (T::class) {
                 HuaweiInterstitialAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         InterstitialAd::class -> {
                             HuaweiInterstitialAdFactory(interstitialAd as InterstitialAd)
                         }
@@ -37,7 +52,7 @@ abstract class InterstitialAdFactory {
                     }
                 }
                 GoogleInterstitialAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         com.google.android.gms.ads.interstitial.InterstitialAd::class -> {
                             GoogleInterstitialAdFactory(interstitialAd as com.google.android.gms.ads.interstitial.InterstitialAd)
                         }
