@@ -14,7 +14,14 @@
 
 package com.hms.lib.commonmobileservices.ads.rewarded.common
 
+/**
+ * Interface for listening to user's earned rewards.
+ */
 interface UserRewardEarnedListener {
-
+    /**
+     * Called when the user earns a reward.
+     *
+     * @param item The reward item earned by the user.
+     */
     fun onUserEarnedReward(item: IRewardItem)
 }

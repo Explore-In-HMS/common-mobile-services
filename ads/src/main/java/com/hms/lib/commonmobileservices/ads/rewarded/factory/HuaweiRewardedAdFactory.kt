@@ -18,6 +18,16 @@ import com.hms.lib.commonmobileservices.ads.rewarded.implementation.HuaweiReward
 import com.hms.lib.commonmobileservices.ads.rewarded.implementation.IRewardedAd
 import com.huawei.hms.ads.reward.RewardAd
 
-class HuaweiRewardedAdFactory(private val rewardedAd: RewardAd): RewardedAdFactory() {
+/**
+ * Factory class for creating Huawei rewarded ads.
+ *
+ * @property rewardedAd The rewarded ad instance.
+ */
+class HuaweiRewardedAdFactory(private val rewardedAd: RewardAd) : RewardedAdFactory() {
+    /**
+     * Creates a Huawei rewarded ad instance.
+     *
+     * @return The created Huawei rewarded ad.
+     */
     override fun create(): IRewardedAd = HuaweiRewardedAd(rewardedAd)
 }

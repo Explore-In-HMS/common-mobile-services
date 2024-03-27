@@ -16,7 +16,21 @@ package com.hms.lib.commonmobileservices.ads.banner.common
 
 import com.hms.lib.commonmobileservices.ads.banner.implementation.IBannerAd
 
+/**
+ * Callback interface for handling banner ad loading events.
+ */
 interface BannerAdLoadCallback {
+    /**
+     * Called when the loading of a banner ad fails.
+     *
+     * @param adError The error message describing the reason for the ad load failure.
+     */
     fun onAdLoadFailed(adError: String)
+
+    /**
+     * Called when a banner ad is successfully loaded.
+     *
+     * @param bannerAd The loaded banner ad instance.
+     */
     fun onBannerAdLoaded(bannerAd: IBannerAd)
 }

@@ -16,6 +16,14 @@ package com.hms.lib.commonmobileservices.ads.interstitial.implementation
 
 import android.app.Activity
 
+/**
+ * Interface for interstitial ads.
+ */
 interface IInterstitialAd {
+    /**
+     * Displays the interstitial ad.
+     *
+     * @param activity The activity where the ad will be displayed.
+     */
     fun show(activity: Activity)
 }

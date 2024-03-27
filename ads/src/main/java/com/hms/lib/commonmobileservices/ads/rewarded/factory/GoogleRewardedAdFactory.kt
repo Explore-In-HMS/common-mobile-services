@@ -18,6 +18,16 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 import com.hms.lib.commonmobileservices.ads.rewarded.implementation.GoogleRewardedAd
 import com.hms.lib.commonmobileservices.ads.rewarded.implementation.IRewardedAd
 
+/**
+ * Factory class for creating Google rewarded ads.
+ *
+ * @property rewardedAd The rewarded ad instance.
+ */
 class GoogleRewardedAdFactory(private val rewardedAd: RewardedAd) : RewardedAdFactory() {
+    /**
+     * Creates a Google rewarded ad instance.
+     *
+     * @return The created Google rewarded ad.
+     */
     override fun create(): IRewardedAd = GoogleRewardedAd(rewardedAd)
 }

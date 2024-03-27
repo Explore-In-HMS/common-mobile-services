@@ -14,7 +14,19 @@
 
 package com.hms.lib.commonmobileservices.ads.banner.implementation
 
+/**
+ * Interface for banner ads.
+ */
 interface IBannerAd {
+    /**
+     * Destroys the banner ad.
+     */
     fun destroy()
+
+    /**
+     * Checks if the banner ad is currently loading.
+     *
+     * @return true if the banner ad is loading, false otherwise.
+     */
     fun isLoading(): Boolean
 }

@@ -20,14 +20,29 @@ import com.hms.lib.commonmobileservices.ads.splash.implementation.HuaweiSplashAd
 import com.hms.lib.commonmobileservices.ads.splash.implementation.ISplashAd
 import com.huawei.hms.ads.splash.SplashAd
 
+/**
+ * Abstract factory class for creating splash ads.
+ */
 abstract class SplashAdFactory {
+    /**
+     * Abstract function to create a splash ad.
+     *
+     * @return An instance of the ISplashAd interface representing the splash ad.
+     */
     abstract fun create(): ISplashAd
 
     companion object {
+        /**
+         * Creates a splash ad factory based on the specified types.
+         *
+         * @param splashAd The splash ad to be used for creating the factory.
+         * @return An instance of the SplashAdFactory interface representing the created factory.
+         * @throws IllegalArgumentException if the specified types are not supported.
+         */
         inline fun <reified T : ISplashAd, reified K> createFactory(splashAd: K): SplashAdFactory {
-            when (T::class) {
+            return when (T::class) {
                 HuaweiSplashAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         com.huawei.hms.ads.splash.SplashAd::class -> {
                             HuaweiSplashAdFactory(splashAd as SplashAd)
                         }
@@ -38,7 +53,7 @@ abstract class SplashAdFactory {
                     }
                 }
                 GoogleAppOpenAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         com.google.android.gms.ads.appopen.AppOpenAd::class -> {
                             GoogleAppOpenAdFactory(splashAd as AppOpenAd)
                         }

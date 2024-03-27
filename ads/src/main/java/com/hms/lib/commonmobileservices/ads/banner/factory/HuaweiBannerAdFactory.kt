@@ -18,6 +18,16 @@ import com.hms.lib.commonmobileservices.ads.banner.implementation.HuaweiBannerAd
 import com.hms.lib.commonmobileservices.ads.banner.implementation.IBannerAd
 import com.huawei.hms.ads.banner.BannerView
 
-class HuaweiBannerAdFactory(private val bannerAd: BannerView): BannerAdFactory() {
+/**
+ * Factory class for creating Huawei banner ads.
+ *
+ * @param bannerAd The BannerView instance used for creating the banner ad.
+ */
+class HuaweiBannerAdFactory(private val bannerAd: BannerView) : BannerAdFactory() {
+    /**
+     * Creates a Huawei banner ad instance.
+     *
+     * @return The created Huawei banner ad.
+     */
     override fun create(): IBannerAd = HuaweiBannerAd(bannerAd)
 }

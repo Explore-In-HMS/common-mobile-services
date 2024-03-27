@@ -17,7 +17,18 @@ package com.hms.lib.commonmobileservices.ads.splash.implementation
 import android.app.Activity
 import com.google.android.gms.ads.appopen.AppOpenAd
 
+/**
+ * Implementation of the ISplashAd interface for Google's App Open Ad.
+ *
+ * @property _appOpenAd The Google App Open Ad instance.
+ * @constructor Creates a GoogleAppOpenAd with the specified App Open Ad instance.
+ */
 class GoogleAppOpenAd(private var _appOpenAd: AppOpenAd) : ISplashAd {
+    /**
+     * Shows the Google App Open Ad.
+     *
+     * @param activity The activity context in which to show the ad.
+     */
     override fun show(activity: Activity) {
         _appOpenAd.show(activity)
     }

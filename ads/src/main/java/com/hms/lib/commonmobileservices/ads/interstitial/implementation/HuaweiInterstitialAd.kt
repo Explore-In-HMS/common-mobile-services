@@ -18,10 +18,18 @@ import android.app.Activity
 import com.huawei.hms.ads.InterstitialAd
 
 
+/**
+ * Implementation of the IInterstitialAd interface for Huawei interstitial ads.
+ *
+ * @property _interstitial The InterstitialAd instance representing the Huawei interstitial ad.
+ */
 class HuaweiInterstitialAd(private var _interstitial: InterstitialAd) : IInterstitialAd {
-
+    /**
+     * Displays the Huawei interstitial ad.
+     *
+     * @param activity The activity where the ad will be displayed.
+     */
     override fun show(activity: Activity) {
         _interstitial.show(activity)
     }
-
 }

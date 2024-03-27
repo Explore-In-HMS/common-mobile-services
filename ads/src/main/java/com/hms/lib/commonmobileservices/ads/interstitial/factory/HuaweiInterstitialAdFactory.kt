@@ -18,6 +18,17 @@ import com.hms.lib.commonmobileservices.ads.interstitial.implementation.HuaweiIn
 import com.hms.lib.commonmobileservices.ads.interstitial.implementation.IInterstitialAd
 import com.huawei.hms.ads.InterstitialAd
 
-class HuaweiInterstitialAdFactory(private val interstitialAd: InterstitialAd): InterstitialAdFactory() {
+/**
+ * Factory class for creating Huawei interstitial ads.
+ *
+ * @param interstitialAd The InterstitialAd instance used for creating the interstitial ad.
+ */
+class HuaweiInterstitialAdFactory(private val interstitialAd: InterstitialAd) :
+    InterstitialAdFactory() {
+    /**
+     * Creates a Huawei interstitial ad instance.
+     *
+     * @return The created Huawei interstitial ad.
+     */
     override fun create(): IInterstitialAd = HuaweiInterstitialAd(interstitialAd)
 }

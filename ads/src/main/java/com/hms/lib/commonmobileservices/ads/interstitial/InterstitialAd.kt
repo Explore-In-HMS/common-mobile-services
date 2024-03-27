@@ -28,12 +28,21 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 
+/**
+ * Helper class for loading interstitial ads based on the mobile service type.
+ */
 class InterstitialAd {
-
     companion object {
         /**
-         * TODO:Explain AdRequestParams in Readme document
-         * TODO:Initialize Ad_ID param with test ad_ID
+         * Loads an interstitial ad based on the mobile service type.
+         *
+         * @param context The context of the application.
+         * @param hmsAd_ID The ad ID for Huawei Mobile Services.
+         * @param gmsAd_ID The ad ID for Google Mobile Services.
+         * @param gmsAdRequestParams The Google Mobile Services AdRequest parameters. Default is null.
+         * @param hmsAdRequestParams The Huawei Mobile Services AdParam parameters. Default is null.
+         * @param callback The callback for interstitial ad loading events.
+         * @throws IllegalArgumentException if the mobile service type is not supported.
          */
         fun load(
             context: Context,
@@ -53,11 +62,11 @@ class InterstitialAd {
                         object :
                             com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
                             override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                                val googleRewardedAdFactory =
+                                val googleInterstitialAdFactory =
                                     InterstitialAdFactory.createFactory<GoogleInterstitialAd, InterstitialAd>(
                                         interstitialAd
                                     )
-                                googleRewardedAdFactory.create()
+                                googleInterstitialAdFactory.create()
                                     .let(callback::onInterstitialAdLoaded)
                             }
 
