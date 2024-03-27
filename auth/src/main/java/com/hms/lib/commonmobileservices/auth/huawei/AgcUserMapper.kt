@@ -21,7 +21,17 @@ import com.hms.lib.commonmobileservices.auth.common.ServiceType
 import com.huawei.agconnect.auth.AGConnectAuthCredential
 import com.huawei.agconnect.auth.AGConnectUser
 
+/**
+ * Mapper class to map AGConnectUser to AuthUser.
+ */
 class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
+
+    /**
+     * Maps an AGConnectUser instance to an AuthUser instance.
+     *
+     * @param from The source AGConnectUser object.
+     * @return The mapped AuthUser object.
+     */
     override fun map(from: AGConnectUser): AuthUser =
         AuthUser(
             id = from.uid,
@@ -33,6 +43,12 @@ class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
             providerType = getProvider(from)
         )
 
+    /**
+     * Determines the provider type based on the provider ID of the AGConnectUser.
+     *
+     * @param user The AGConnectUser object.
+     * @return The corresponding ProviderType enum value.
+     */
     private fun getProvider(user: AGConnectUser): ProviderType {
         return when (user.providerId) {
             AGConnectAuthCredential.HMS_Provider.toString() -> ProviderType.Huawei

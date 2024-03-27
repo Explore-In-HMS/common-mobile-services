@@ -14,4 +14,8 @@
 
 package com.hms.lib.commonmobileservices.auth.exception
 
-class AuthException(message: String): Exception(message)
+/**
+ * Exception class representing authentication-related errors.
+ * @param message a description of the exception.
+ */
+class AuthException(message: String) : Exception(message)

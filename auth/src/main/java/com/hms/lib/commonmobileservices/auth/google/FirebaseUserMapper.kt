@@ -20,7 +20,15 @@ import com.hms.lib.commonmobileservices.auth.common.Mapper
 import com.hms.lib.commonmobileservices.auth.common.ProviderType
 import com.hms.lib.commonmobileservices.auth.common.ServiceType
 
+/**
+ * Mapper class for mapping [FirebaseUser] instances to [AuthUser] instances.
+ */
 class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
+    /**
+     * Maps a [FirebaseUser] instance to an [AuthUser] instance.
+     * @param from the source [FirebaseUser] instance to be mapped.
+     * @return the mapped [AuthUser] instance.
+     */
     override fun map(from: FirebaseUser): AuthUser = AuthUser(
         id = from.uid,
         displayName = from.displayName ?: "",
@@ -28,9 +36,14 @@ class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
         phone = from.phoneNumber ?: "",
         photoUrl = from.photoUrl?.toString() ?: "",
         serviceType = ServiceType.Google,
-        providerType = if(!from.isAnonymous) getProvider(from) else ProviderType.NoProvider
+        providerType = if (!from.isAnonymous) getProvider(from) else ProviderType.NoProvider
     )
 
+    /**
+     * Determines the provider type of the given [FirebaseUser].
+     * @param user the [FirebaseUser] instance.
+     * @return the corresponding [ProviderType].
+     */
     private fun getProvider(user: FirebaseUser): ProviderType {
         return when (user.providerData[1].providerId) {
             GoogleAuthProvider.PROVIDER_ID -> ProviderType.Google
