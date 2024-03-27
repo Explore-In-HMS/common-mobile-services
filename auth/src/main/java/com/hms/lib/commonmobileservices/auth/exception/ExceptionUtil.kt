@@ -14,7 +14,15 @@
 
 package com.hms.lib.commonmobileservices.auth.exception
 
+/**
+ * Utility object for handling exceptions related to authentication.
+ */
 object ExceptionUtil {
+    /**
+     * Get an [AuthException] based on the provided [Throwable].
+     * @param exception the throwable representing the exception.
+     * @return an [AuthException] with a relevant error message.
+     */
     fun get(exception: Throwable): AuthException {
         exception.message?.let { errorMessage ->
             return when {
@@ -29,7 +37,7 @@ object ExceptionUtil {
                 -> AuthException("There is no existing user.")
                 errorMessage.contains("203816961") ||
                         errorMessage.contains("We have blocked all requests from this device due to unusual activity")
-                -> AuthException("Unusual activity has been detected. All Requests are blocked from this device. Try later")
+                -> AuthException("Unusual activity has been detected. All requests are blocked from this device. Try again later.")
                 else -> AuthException(errorMessage)
             }
         } ?: run { return AuthException("Unexpected authentication error") }
