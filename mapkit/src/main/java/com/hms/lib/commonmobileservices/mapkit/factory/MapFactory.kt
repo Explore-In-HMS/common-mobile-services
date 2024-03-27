@@ -17,12 +17,34 @@ import android.content.Context
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.maps.MapsInitializer
 
+/**
+ * A factory class for creating map objects. This class uses the Factory pattern to instantiate map objects
+ * based on the specified mobile service type. It abstracts the complexity of map initialization and
+ * allows for easy switching between different map services.
+ */
 class MapFactory {
     companion object {
-        fun createAndGetMap(context: Context, type: MobileServiceType, apiKey: String?=null): CommonMap {
+        /**
+         * Creates and returns a map object based on the specified [type] of mobile service.
+         * It supports creating maps for both Google Maps (GMS) and Huawei Mobile Services (HMS).
+         * The method initializes the necessary services and returns an instance of [CommonMap].
+         *
+         * @param context The application context used for initializing map services.
+         * @param type The type of mobile service for which to create the map. This is an enum
+         *             that can either be `MobileServiceType.HMS` for Huawei Maps or any other
+         *             value for Google Maps.
+         * @param apiKey The API key used for initializing the map services. This is optional
+         *               and primarily used for Huawei Maps initialization.
+         * @return An instance of [CommonMap] that corresponds to the specified mobile service type.
+         */
+        fun createAndGetMap(
+            context: Context,
+            type: MobileServiceType,
+            apiKey: String? = null
+        ): CommonMap {
             return if (type == MobileServiceType.HMS) {
                 MapsInitializer.initialize(context)
-                HuaweiCommonMapImpl(context,apiKey)
+                HuaweiCommonMapImpl(context, apiKey)
             } else {
                 GoogleCommonMapImpl(context)
             }

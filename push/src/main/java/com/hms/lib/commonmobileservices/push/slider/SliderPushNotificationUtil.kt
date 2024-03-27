@@ -39,7 +39,9 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.util.*
 
-
+/**
+ * Utility object for displaying slider push notifications.
+ */
 object SliderPushNotificationUtil {
 
     @SuppressLint("StaticFieldLeak")
@@ -49,6 +51,11 @@ object SliderPushNotificationUtil {
     private var notificationManager: NotificationManager? = null
     private var sliderPushNotificationItemModel: List<SliderItem>? = null
 
+    /**
+     * Displays the slider push notification.
+     * @param context The context to use.
+     * @param sliderPushNotificationMainModel The main model containing data for the notification.
+     */
     @SuppressLint("WrongConstant")
     fun show(context: Context, sliderPushNotificationMainModel: SliderPushNotification) {
 
@@ -213,6 +220,11 @@ object SliderPushNotificationUtil {
         }
     }
 
+    /**
+     * Generates a random string of the specified length.
+     * @param sizeOfRandomString The length of the random string to generate.
+     * @return The randomly generated string.
+     */
     private fun getRandomString(sizeOfRandomString: Int): String {
         val random = Random()
         val sb = StringBuilder(sizeOfRandomString)
@@ -225,6 +237,11 @@ object SliderPushNotificationUtil {
         return sb.toString()
     }
 
+    /**
+     * Retrieves a Bitmap image from the provided URL.
+     * @param url The URL of the image.
+     * @return The Bitmap image retrieved from the URL.
+     */
     private fun urlToBitmap(url: String): Bitmap? {
         var bitmap: Bitmap? = null
         try {

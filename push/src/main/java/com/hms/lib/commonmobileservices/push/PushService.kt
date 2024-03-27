@@ -24,18 +24,68 @@ import com.hms.lib.commonmobileservices.push.services.HuaweiPushServiceImpl
 
 private lateinit var INSTANCE: PushService
 
+/**
+ * This abstract class represents a push notification service.
+ *
+ * @param context The context of the application.
+ */
 abstract class PushService(private val context: Context) {
+    /**
+     * Initializes the push service.
+     *
+     * @param autoInitEnabled Whether auto initialization is enabled or not.
+     */
     fun initialize(autoInitEnabled: Boolean = false) {
         autoInitEnabled(autoInitEnabled)
     }
 
+    /**
+     * Enables or disables auto initialization.
+     *
+     * @param enable Whether to enable or disable auto initialization.
+     */
     abstract fun autoInitEnabled(enable: Boolean)
+
+    /**
+     * Gets the token for the push service.
+     *
+     * @return A Work object containing the token.
+     */
     abstract fun getToken(): Work<Token>
+
+    /**
+     * Subscribes to a topic for push notifications.
+     *
+     * @param topic The topic to subscribe to.
+     * @return A Work object indicating the success or failure of the subscription.
+     */
     abstract fun subscribeToTopic(topic: String): Work<Unit>
+
+    /**
+     * Unsubscribes from a topic for push notifications.
+     *
+     * @param topic The topic to unsubscribe from.
+     * @return A Work object indicating the success or failure of the unsubscription.
+     */
     abstract fun unsubscribeFromTopic(topic: String): Work<Unit>
+
+    /**
+     * Gets whether auto initialization is enabled or not.
+     *
+     * @return Whether auto initialization is enabled or not.
+     */
     abstract fun isAutoInitEnabled(): Boolean
 
+    /**
+     * Companion object that provides a way to get an instance of the push service.
+     */
     companion object {
+        /**
+         * Gets an instance of the push service.
+         *
+         * @param context The context of the application.
+         * @return An instance of the push service.
+         */
         fun getInstance(context: Context): PushService {
             synchronized(PushService::class.java) {
                 if (!::INSTANCE.isInitialized) {

@@ -13,8 +13,26 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
+/**
+ * Represents a tile used in tile overlays on a map.
+ *
+ * @property width The width of the tile in pixels.
+ * @property height The height of the tile in pixels.
+ * @property data The byte array containing the pixel data of the tile.
+ */
 class Tile(width: Int, height: Int, data: ByteArray?) {
+    /**
+     * The width of the tile in pixels.
+     */
     val width: Int = 0
+
+    /**
+     * The height of the tile in pixels.
+     */
     val height: Int = 0
+
+    /**
+     * The byte array containing the pixel data of the tile.
+     */
     val data: ByteArray? = null
 }

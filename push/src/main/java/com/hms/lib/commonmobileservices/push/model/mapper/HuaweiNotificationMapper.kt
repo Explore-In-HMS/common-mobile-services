@@ -18,7 +18,16 @@ import com.hms.lib.commonmobileservices.push.model.Mapper
 import com.hms.lib.commonmobileservices.push.model.PushMessage
 import com.huawei.hms.push.RemoteMessage
 
-class HuaweiNotificationMapper: Mapper<RemoteMessage.Notification, PushMessage.Notification>() {
+/**
+ * This class represents a mapper used to convert Huawei notifications from server-side data.
+ * @param Mapper<T, R> Generic class used to convert the incoming data type (RemoteMessage.Notification) to the target data type (PushMessage.Notification).
+ */
+class HuaweiNotificationMapper : Mapper<RemoteMessage.Notification, PushMessage.Notification>() {
+    /**
+     * Converts the incoming RemoteMessage.Notification object to a PushMessage.Notification object.
+     * @param from The RemoteMessage.Notification object to be converted.
+     * @return The converted PushMessage.Notification object.
+     */
     override fun map(from: RemoteMessage.Notification): PushMessage.Notification =
         PushMessage.Notification(
             title = from.title,

@@ -21,16 +21,29 @@ import com.hms.lib.commonmobileservices.push.model.Provider
 import com.hms.lib.commonmobileservices.push.PushService
 import com.hms.lib.commonmobileservices.push.model.Token
 
-class GooglePushServiceImpl(context: Context): PushService(context) {
+/**
+ * This class provides a service implementation for handling Google push notifications.
+ * @param context The application context.
+ */
+class GooglePushServiceImpl(context: Context) : PushService(context) {
     companion object {
         private const val TAG = "GooglePushServiceImpl"
     }
 
     private val firebaseMessaging = FirebaseMessaging.getInstance()
+
+    /**
+     * Enables or disables auto initialization of Firebase Cloud Messaging.
+     * @param enable True to enable auto initialization, false to disable.
+     */
     override fun autoInitEnabled(enable: Boolean) {
         firebaseMessaging.isAutoInitEnabled = enable
     }
 
+    /**
+     * Retrieves the token associated with the Google push service.
+     * @return A Work object representing the asynchronous token retrieval process.
+     */
     override fun getToken(): Work<Token> {
         val work: Work<Token> = Work()
         firebaseMessaging.token
@@ -40,6 +53,11 @@ class GooglePushServiceImpl(context: Context): PushService(context) {
         return work
     }
 
+    /**
+     * Subscribes to a specified topic for receiving push notifications.
+     * @param topic The topic to subscribe to.
+     * @return A Work object representing the asynchronous subscription process.
+     */
     override fun subscribeToTopic(topic: String): Work<Unit> {
         val work: Work<Unit> = Work()
         firebaseMessaging.subscribeToTopic(topic)
@@ -50,6 +68,11 @@ class GooglePushServiceImpl(context: Context): PushService(context) {
         return work
     }
 
+    /**
+     * Unsubscribes from a specified topic for receiving push notifications.
+     * @param topic The topic to unsubscribe from.
+     * @return A Work object representing the asynchronous unsubscription process.
+     */
     override fun unsubscribeFromTopic(topic: String): Work<Unit> {
         val work: Work<Unit> = Work()
         firebaseMessaging.unsubscribeFromTopic(topic)
@@ -59,6 +82,10 @@ class GooglePushServiceImpl(context: Context): PushService(context) {
         return work
     }
 
+    /**
+     * Checks if auto initialization of Firebase Cloud Messaging is enabled.
+     * @return True if auto initialization is enabled, false otherwise.
+     */
     override fun isAutoInitEnabled(): Boolean {
         return firebaseMessaging.isAutoInitEnabled
     }

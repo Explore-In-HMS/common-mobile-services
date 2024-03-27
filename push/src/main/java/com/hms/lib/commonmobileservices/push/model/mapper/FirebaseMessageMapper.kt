@@ -18,10 +18,24 @@ import com.google.firebase.messaging.RemoteMessage
 import com.hms.lib.commonmobileservices.push.model.Mapper
 import com.hms.lib.commonmobileservices.push.model.PushMessage
 
+/**
+ * This class is responsible for mapping Firebase RemoteMessage objects to PushMessage objects.
+ * It implements the Mapper interface with RemoteMessage as the input and PushMessage as the output.
+ * It uses the FirebaseNotificationMapper class to map the notification portion of the RemoteMessage.
+ */
 class FirebaseMessageMapper : Mapper<RemoteMessage, PushMessage>() {
 
+    /**
+     * The notification mapper used to map the notification portion of the RemoteMessage.
+     */
     private val notificationMapper: FirebaseNotificationMapper = FirebaseNotificationMapper()
 
+    /**
+     * Maps a RemoteMessage object to a PushMessage object.
+     *
+     * @param from The RemoteMessage object to map.
+     * @return The mapped PushMessage object.
+     */
     override fun map(from: RemoteMessage): PushMessage =
         PushMessage(
             data = from.data,

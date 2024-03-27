@@ -13,6 +13,19 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.account.common
 
+/**
+ * Abstract class representing a mapper that converts input of type [I] to output of type [O].
+ * Subclasses must implement the [map] function to define the mapping logic.
+ *
+ * @param I the type of the input to be mapped
+ * @param O the type of the output after mapping
+ */
 abstract class Mapper<I, O> {
+    /**
+     * Maps the input [from] of type [I] to an output of type [O].
+     *
+     * @param from the input to be mapped
+     * @return the output after mapping
+     */
     abstract fun map(from: I): O
 }

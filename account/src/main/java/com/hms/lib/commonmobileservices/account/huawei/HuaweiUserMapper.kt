@@ -20,7 +20,16 @@ import com.hms.lib.commonmobileservices.account.common.Scope
 
 private typealias HuaweiScope = com.huawei.hms.support.api.entity.auth.Scope
 
+/**
+ * Mapper class to map Huawei AuthHuaweiId to application-specific sign-in user.
+ */
 internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser>() {
+    /**
+     * Maps an AuthHuaweiId instance to a SignInUser instance.
+     *
+     * @param from The AuthHuaweiId instance to be mapped.
+     * @return The mapped SignInUser instance.
+     */
     override fun map(from: AuthHuaweiId): SignInUser = SignInUser(
         familyName = from.familyName,
         givenName = from.givenName,
@@ -34,6 +43,12 @@ internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser>() {
         scopes = getGrantedScopes(from)
     )
 
+    /**
+     * Retrieves the granted scopes from the AuthHuaweiId instance.
+     *
+     * @param account The AuthHuaweiId instance.
+     * @return The set of granted scopes.
+     */
     private fun getGrantedScopes(account: AuthHuaweiId): Set<Scope> {
         val scopes = HashSet<Scope>()
         if (account.authorizedScopes.contains(HuaweiScope("email"))) {

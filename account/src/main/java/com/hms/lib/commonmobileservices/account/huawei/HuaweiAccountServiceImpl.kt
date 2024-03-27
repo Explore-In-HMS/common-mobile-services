@@ -28,6 +28,13 @@ import com.huawei.hms.support.hwid.request.HuaweiIdAuthParamsHelper
 import com.huawei.hms.support.hwid.result.AuthHuaweiId
 import com.huawei.hms.support.hwid.service.HuaweiIdAuthService
 
+/**
+ * Implementation of the [AccountService] interface for handling Huawei account operations.
+ * This class provides methods to perform sign-in, sign-out, and retrieve account information.
+ *
+ * @property context The application context.
+ * @property signInParams Parameters for signing in.
+ */
 internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInParams) :
     AccountService {
 
@@ -36,13 +43,29 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
     private val sharedPrefHelper = SharedPrefHelper(context)
     private var signInUser: SignInUser? = null
 
+    /**
+     * Initializes the HuaweiAccountServiceImpl instance.
+     */
     init {
         val helper = HuaweiIdAuthParamsHelper(HuaweiIdAuthParams.DEFAULT_AUTH_REQUEST_PARAM)
+
+        // Configure authentication parameters based on signInParams
         if (signInParams.accessToken()) helper.setAccessToken()
         if (signInParams.email()) helper.setEmail()
         if (signInParams.idToken().isNotEmpty()) helper.setIdToken()
+
+        // Get Huawei ID authentication service
         mHuaweiIdAuthService = HuaweiIdAuthManager.getService(context, helper.createParams())
     }
+
+    /**
+     * Attempts to silently sign in the user.
+     *
+     * If the user is already signed in, their information is retrieved and the callback's onSuccess method is called.
+     * If the user is not signed in, the onFailure method of the callback is called.
+     *
+     * @param callback Callback to handle the result of the silent sign-in operation.
+     */
     override fun silentSignIn(callback: ResultCallback<SignInUser>) {
         val task = mHuaweiIdAuthService.silentSignIn()
         task.addOnCanceledListener { callback.onCancelled() }
@@ -54,10 +77,21 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
         }
     }
 
+    /**
+     * Retrieves the sign-in intent from Huawei ID authentication service.
+     *
+     * @param intent Callback to receive the sign-in intent.
+     */
     override fun getSignInIntent(intent: (Intent) -> Unit) {
         intent.invoke(mHuaweiIdAuthService.signInIntent)
     }
 
+    /**
+     * Handles the result of a sign-in activity.
+     *
+     * @param intent The intent containing the result data.
+     * @param callback Callback to handle the result of the sign-in operation.
+     */
     override fun onSignInActivityResult(intent: Intent, callback: ResultCallback<SignInUser>) {
         val task = HuaweiIdAuthManager.parseAuthResultFromIntent(intent)
         task.addOnCanceledListener { callback.onCancelled() }
@@ -73,6 +107,11 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
         }
     }
 
+    /**
+     * Signs the user out.
+     *
+     * @return A [Work] instance representing the sign-out operation.
+     */
     override fun signOut(): Work<Unit> {
         val worker: Work<Unit> = Work()
 
@@ -84,6 +123,11 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
         return worker
     }
 
+    /**
+     * Cancels the user's authorization.
+     *
+     * @return A [Work] instance representing the cancel authorization operation.
+     */
     override fun cancelAuthorization(): Work<Unit> {
         val worker: Work<Unit> = Work()
 
@@ -95,15 +139,23 @@ internal class HuaweiAccountServiceImpl(context: Context, signInParams: SignInPa
         return worker
     }
 
+    /**
+     * Retrieves the stored email address.
+     *
+     * @return The stored email address, or null if not found.
+     */
     override fun getEmail(): String? {
         val email = sharedPrefHelper.getEmail()
-        return if (email.isEmpty()) {
+        return email.ifEmpty {
             null
-        } else {
-            email
         }
     }
 
+    /**
+     * Retrieves the signed-in user account information.
+     *
+     * @return The signed-in user account information, or null if not signed in.
+     */
     override fun getSignAccountId(): SignInUser? {
         return signInUser
     }
