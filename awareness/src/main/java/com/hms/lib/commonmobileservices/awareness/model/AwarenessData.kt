@@ -16,7 +16,14 @@ package com.hms.lib.commonmobileservices.awareness.model
 
 import java.io.Serializable
 
-data class AwarenessData (
-    val awarenessValueData:Any,
+/**
+ * Represents awareness data associated with a particular type of awareness.
+ *
+ * @property awarenessValueData The data associated with the awareness, which can be of any type.
+ * @property awarenessType The type of awareness represented by this data.
+ * @constructor Creates an instance of [AwarenessData] with the provided awareness value data and type.
+ */
+data class AwarenessData(
+    val awarenessValueData: Any,
     val awarenessType: AwarenessType
-):Serializable
+) : Serializable
