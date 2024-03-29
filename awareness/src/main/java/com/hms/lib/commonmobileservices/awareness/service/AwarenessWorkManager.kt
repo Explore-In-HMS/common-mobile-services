@@ -27,33 +27,67 @@ import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.core.handleSuccess
 import java.lang.Exception
 
+/**
+ * A `Worker` class responsible for performing awareness-related tasks in a background thread.
+ *
+ * @property context The `Context` used for accessing resources and services.
+ * @property workerParams The `WorkerParameters` that configure this worker.
+ */
 class AwarenessWorkManager(val context: Context, workerParams: WorkerParameters) : Worker(
     context,
     workerParams
 ) {
-
+    /**
+     * Executes the background work defined by this worker.
+     *
+     * @return The result of the work, indicating success or failure.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     override fun doWork(): Result {
         workIt()
         return Result.success()
     }
 
+    /**
+     * Calls the method to retrieve time awareness data and handles the result.
+     *
+     * @param callback Callback function to handle the result data containing time awareness information.
+     */
     private fun callAwarenessTime(callback: (timeVal: ResultData<IntArray>) -> Unit) {
         HuaweiGoogleAwarenessManager(context).getTime(callback)
     }
 
+    /**
+     * Calls the method to retrieve behavior awareness data and handles the result.
+     *
+     * @param callback Callback function to handle the result data containing behavior awareness information.
+     */
     private fun callAwarenessBehavior(callback: (behaviorVal: ResultData<IntArray>) -> Unit) {
         HuaweiGoogleAwarenessManager(context).getBehavior(callback)
     }
 
+    /**
+     * Calls the method to retrieve weather awareness data and handles the result.
+     *
+     * @param callback Callback function to handle the result data containing weather awareness information.
+     */
     private fun callAwarenessWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit) {
         HuaweiGoogleAwarenessManager(context).getWeather(callback)
     }
 
+    /**
+     * Calls the method to retrieve headset awareness data and handles the result.
+     *
+     * @param callback Callback function to handle the result data containing headset awareness information.
+     */
     private fun callAwarenessHeadset(callback: (headsetVal: ResultData<IntArray>) -> Unit) {
         HuaweiGoogleAwarenessManager(context).getHeadset(callback)
     }
 
+    /**
+     * Performs the necessary work to handle awareness data, including time, behavior, weather, and headset awareness.
+     * It retrieves the class name from shared preferences and sends the awareness data to the appropriate service via intents.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun workIt() {
         val sharedPreferences = context.getSharedPreferences(
@@ -69,12 +103,11 @@ class AwarenessWorkManager(val context: Context, workerParams: WorkerParameters)
                         context,
                         className!!,
                         Bundle().apply {
-                            putIntArray(IAwarenessAPI.TIME_KEY,it.data)
+                            putIntArray(IAwarenessAPI.TIME_KEY, it.data)
                         })
                 try {
                     context.startService(intent)
-                }
-                catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -91,8 +124,7 @@ class AwarenessWorkManager(val context: Context, workerParams: WorkerParameters)
                         })
                 try {
                     context.startService(intent)
-                }
-                catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -110,8 +142,7 @@ class AwarenessWorkManager(val context: Context, workerParams: WorkerParameters)
                         })
                 try {
                     context.startService(intent)
-                }
-                catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -128,12 +159,10 @@ class AwarenessWorkManager(val context: Context, workerParams: WorkerParameters)
                         })
                 try {
                     context.startService(intent)
-                }
-                catch (e:Exception){
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
-
         }
     }
 }
