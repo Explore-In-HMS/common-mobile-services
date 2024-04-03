@@ -23,8 +23,20 @@ import com.hms.lib.commonmobileservices.languagedetection.implementation.ILangua
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.mlsdk.common.MLApplication
 
+/**
+ * Utility class for accessing language detection services provided by Huawei and Google.
+ */
 class HuaweiGoogleLanguageDetector private constructor() {
+
     companion object {
+
+        /**
+         * Retrieves a language detection client based on the mobile service type of the device.
+         * @param context The context used for determining the mobile service type.
+         * @param confidenceThreshold The confidence threshold to be applied to language detection.
+         * @return An instance of ILanguageDetection corresponding to the mobile service type.
+         * @throws IllegalArgumentException If the mobile service type is not supported.
+         */
         fun getClient(
             context: Context,
             confidenceThreshold: Float? = null
