@@ -18,7 +18,19 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.facedetection.GoogleFaceDetectionKit
 import com.hms.lib.commonmobileservices.facedetection.HuaweiFaceDetectionKit
 
+/**
+ * A factory class for providing implementations of face detection API based on the given [MobileServiceType].
+ */
 class FaceDetectionFactory {
+
+    /**
+     * Returns an instance of a face detection API implementation based on the provided [type].
+     * If [type] is [MobileServiceType.HMS], returns an instance of HuaweiFaceDetectionKit.
+     * If [type] is not [MobileServiceType.HMS], returns an instance of GoogleFaceDetectionKit.
+     *
+     * @param type The type of mobile service for which face detection API implementation is requested.
+     * @return An instance of IFaceDetectionAPI representing the appropriate face detection API implementation.
+     */
     fun getMLService(type: MobileServiceType): IFaceDetectionAPI {
         return if (MobileServiceType.HMS === type) {
             HuaweiFaceDetectionKit()

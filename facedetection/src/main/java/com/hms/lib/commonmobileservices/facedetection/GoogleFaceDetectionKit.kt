@@ -25,7 +25,19 @@ import com.google.mlkit.vision.face.FaceDetectorOptions
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.facedetection.manager.IFaceDetectionAPI
 
+/**
+ * Implementation of the IFaceDetectionAPI using Google's Face Detection API.
+ */
 class GoogleFaceDetectionKit : IFaceDetectionAPI {
+
+    /**
+     * Performs face detection on the provided bitmap image using Google's Face Detection API.
+     *
+     * @param callback A callback function to handle the result of the face detection operation.
+     * @param activity The activity context for displaying UI elements during the face detection process.
+     * @param bitmap The bitmap image on which face detection is to be performed.
+     * @param apiKey The API key required for accessing the face detection service.
+     */
     override fun faceDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
