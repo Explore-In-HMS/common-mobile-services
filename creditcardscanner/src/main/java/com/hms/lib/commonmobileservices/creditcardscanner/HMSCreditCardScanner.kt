@@ -21,9 +21,24 @@ import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureFactory
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureResult
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * A class representing a credit card scanner using Huawei Mobile Services (HMS) for scanning functionality.
+ *
+ * This class implements the [CreditCardScanner] interface, providing methods to initiate credit card scanning
+ * and process the scanning results asynchronously.
+ *
+ * @property context The context used for accessing resources and services required for scanning.
+ */
 class HMSCreditCardScanner(private val context: Context) : CreditCardScanner {
 
+    /**
+     * Initiates a credit card scanning operation using Huawei Mobile Services (HMS).
+     *
+     * @param callback A callback function to receive the scanning result asynchronously.
+     * The result is encapsulated within a [ResultData] object containing the [CommonCreditCardResult].
+     */
     override fun scan(callback: (ResultData<CommonCreditCardResult>) -> Unit) {
+        // Configuration for bank card recognition.
         val config =
             MLBcrCaptureConfig.Factory() // Set the expected result type of bank card recognition.
                 // MLBcrCaptureConfig.RESULT_NUM_ONLY: Recognize only the bank card number.
@@ -35,7 +50,11 @@ class HMSCreditCardScanner(private val context: Context) : CreditCardScanner {
                 // MLBcrCaptureConfig.ORIENTATION_PORTRAIT: portrait mode.
                 .setOrientation(MLBcrCaptureConfig.ORIENTATION_AUTO)
                 .create()
+
+        // Initialize the bank card capture instance.
         val bankCapture = MLBcrCaptureFactory.getInstance().getBcrCapture(config)
+
+        // Start capturing frames for bank card recognition.
         bankCapture.captureFrame(context, object : MLBcrCapture.Callback {
             override fun onSuccess(bankCardResult: MLBcrCaptureResult) {
                 // Processing for successful recognition.
