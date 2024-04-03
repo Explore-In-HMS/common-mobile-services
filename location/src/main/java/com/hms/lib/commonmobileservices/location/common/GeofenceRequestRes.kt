@@ -13,17 +13,22 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+/**
+ * A class representing a geofence request.
+ *
+ * This class encapsulates a list of geofences along with the initial trigger for geofence transitions.
+ */
 class GeofenceRequestRes {
 
-    companion object{
+    companion object {
         const val INITIAL_TRIGGER_ENTER = 1
         const val INITIAL_TRIGGER_EXIT = 2
         const val INITIAL_TRIGGER_DWELL = 4
     }
 
-    var geofenceList : List<Geofence>?=null
-    var initConversion: Int?=null
-    var geofence:Geofence?=null
+    var geofenceList: List<Geofence>? = null
+    var initConversion: Int? = null
+    var geofence: Geofence? = null
 }
 
 

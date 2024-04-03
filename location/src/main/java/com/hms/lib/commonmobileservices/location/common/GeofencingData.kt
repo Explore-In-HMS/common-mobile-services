@@ -15,12 +15,24 @@ package com.hms.lib.commonmobileservices.location.common
 
 import android.location.Location
 
+/**
+ * Data class representing geofencing data.
+ *
+ * This class encapsulates information related to geofencing events, including error code, conversion type,
+ * geofences involved in the conversion, converting location, and whether the conversion is a failure.
+ *
+ * @property errorCode The error code associated with the geofencing event.
+ * @property conversion The conversion type of the geofencing event.
+ * @property convertingGeofenceList The list of geofences involved in the conversion.
+ * @property convertingLocation The location where the conversion occurred.
+ * @property isFailure Indicates whether the geofencing conversion is a failure.
+ */
 data class GeofencingData(
-     val errorCode : Int,
-     val conversion : Int,
-     val convertingGeofenceList : List<Geofence>,
-     val convertingLocation : Location,
-     val isFailure: Boolean
+    val errorCode: Int,
+    val conversion: Int,
+    val convertingGeofenceList: List<Geofence>,
+    val convertingLocation: Location,
+    val isFailure: Boolean
 )
 
 
