@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location
 
+/**
+ * Object containing constants related to location services.
+ */
 object Constants {
     const val TAG = "LocationKit"
     const val CURRENT_LOCATION_REMOVE_SUCCESS = "Huawei Service Remove Location.."
