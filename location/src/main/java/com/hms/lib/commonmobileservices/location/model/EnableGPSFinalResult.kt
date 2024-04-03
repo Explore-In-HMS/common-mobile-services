@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.model
 
+/**
+ * Enum class representing the final result of enabling GPS.
+ */
 enum class EnableGPSFinalResult {
     ENABLED,
     FAILED,

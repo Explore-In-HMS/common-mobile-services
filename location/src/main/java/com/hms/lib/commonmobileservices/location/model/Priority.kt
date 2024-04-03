@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.model
 
+/**
+ * Enum class representing the priority levels for location requests.
+ */
 enum class Priority {
     PRIORITY_HIGH_ACCURACY,
     PRIORITY_BALANCED_POWER_ACCURACY,

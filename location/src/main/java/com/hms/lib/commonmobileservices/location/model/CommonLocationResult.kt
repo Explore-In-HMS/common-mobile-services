@@ -16,6 +16,12 @@ package com.hms.lib.commonmobileservices.location.model
 import android.location.Location
 import java.lang.Exception
 
+/**
+ * Data class representing a common location result.
+ * @property location The location data. Defaults to null.
+ * @property state The state of the location result. Defaults to SUCCESS.
+ * @property exception An exception associated with the location result. Defaults to null.
+ */
 data class CommonLocationResult(
     val location: Location? = null,
     val state: LocationResultState = LocationResultState.SUCCESS,
