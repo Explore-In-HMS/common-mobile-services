@@ -13,8 +13,22 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
- class CommonMaliciousAppsData {
-      var apkPackageName: String?=null
-      var apkCategory: Int?=null
-      var apkSha256: String?=null
- }
+/**
+ * Class representing common malicious apps data.
+ */
+class CommonMaliciousAppsData {
+    /**
+     * Package name of the malicious app.
+     */
+    var apkPackageName: String? = null
+
+    /**
+     * Category of the malicious app.
+     */
+    var apkCategory: Int? = null
+
+    /**
+     * SHA256 hash of the malicious app.
+     */
+    var apkSha256: String? = null
+}
