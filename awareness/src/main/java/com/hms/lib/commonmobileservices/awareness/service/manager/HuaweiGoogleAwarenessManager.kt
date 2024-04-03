@@ -18,23 +18,63 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Manager class for handling awareness functionalities from Huawei or Google Awareness Kit.
+ *
+ * This class provides methods to retrieve awareness data such as time, weather, behavior, and headset status.
+ *
+ * @property context The context used to access Awareness Kit services.
+ */
 class HuaweiGoogleAwarenessManager(context: Context) {
+    /**
+     * The awareness service instance obtained from either Huawei or Google Awareness Kit.
+     *
+     * This property is initialized lazily using the AwarenessKitFactory to get the appropriate
+     * awareness service based on the mobile service type detected on the device.
+     *
+     * @see AwarenessKitFactory
+     * @see Device.getMobileServiceType
+     */
     private val awarenessService: IAwarenessAPI =
-        AwarenessKitFactory().getAwarenessService(context, Device.getMobileServiceType(context,
-            MobileServiceType.HMS))!!
+        AwarenessKitFactory().getAwarenessService(
+            context, Device.getMobileServiceType(
+                context,
+                MobileServiceType.HMS
+            )
+        )!!
 
+    /**
+     * Retrieves time awareness data.
+     *
+     * @param callback Callback function to handle the result data, containing an array of time awareness values.
+     */
     fun getTime(callback: (timeVal: ResultData<IntArray>) -> Unit) {
         awarenessService.getTimeAwareness(callback)
     }
 
+    /**
+     * Retrieves weather awareness data.
+     *
+     * @param callback Callback function to handle the result data, containing an array of weather awareness values.
+     */
     fun getWeather(callback: (weatherVal: ResultData<IntArray>) -> Unit) {
         awarenessService.getWeatherAwareness(callback)
     }
 
+    /**
+     * Retrieves behavior awareness data.
+     *
+     * @param callback Callback function to handle the result data, containing an array of behavior awareness values.
+     */
     fun getBehavior(callback: (behaviorVal: ResultData<IntArray>) -> Unit) {
         awarenessService.getBehaviorAwareness(callback)
     }
 
+    /**
+     * Retrieves headset awareness data.
+     *
+     * @param callback Callback function to handle the result data, containing an array of headset awareness values.
+     */
     fun getHeadset(callback: (headsetVal: ResultData<IntArray>) -> Unit) {
         awarenessService.getHeadsetAwareness(callback)
     }

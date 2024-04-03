@@ -14,10 +14,32 @@
 
 package com.hms.lib.commonmobileservices.awareness.model
 
+/**
+ * Enumerates different types of awareness.
+ */
 enum class AwarenessType {
+    /**
+     * Represents awareness related to weather conditions.
+     */
     WEATHER,
+
+    /**
+     * Represents awareness related to user behavior.
+     */
     BEHAVIOUR,
+
+    /**
+     * Represents awareness related to time.
+     */
     TIME,
+
+    /**
+     * Represents awareness related to headset usage.
+     */
     HEADSET,
+
+    /**
+     * Represents awareness related to location.
+     */
     LOCATION
 }

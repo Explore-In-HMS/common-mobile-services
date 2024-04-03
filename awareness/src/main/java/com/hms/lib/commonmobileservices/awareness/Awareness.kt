@@ -24,52 +24,70 @@ import androidx.work.*
 import com.hms.lib.commonmobileservices.awareness.service.AwarenessWorkManager
 import java.util.concurrent.TimeUnit
 
-
+/**
+ * This class provides functionality to set up and run a periodic work manager for awareness tasks.
+ *
+ * @property context The activity context.
+ */
 class Awareness(var context: Activity) {
-     fun setWorkManager() {
-         Handler().post {
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                 if(ActivityCompat.checkSelfPermission(
-                         context,
-                         Manifest.permission.ACCESS_FINE_LOCATION
-                     ) == PackageManager.PERMISSION_GRANTED
-                     && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
-                     ) == PackageManager.PERMISSION_GRANTED
-                     && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                 ) == PackageManager.PERMISSION_GRANTED
-                         && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACTIVITY_RECOGNITION
-                 ) == PackageManager.PERMISSION_GRANTED){
-                     runWorkManager()
-                 }else{
-                     val strings = arrayOf(
-                         Manifest.permission.ACCESS_FINE_LOCATION,
-                         Manifest.permission.ACCESS_COARSE_LOCATION,
-                         Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-                         Manifest.permission.ACTIVITY_RECOGNITION
-                     )
-                     ActivityCompat.requestPermissions(context, strings,2)
-                 }
-             }
-             else{
-                 if(ActivityCompat.checkSelfPermission(
-                     context,
-                     Manifest.permission.ACCESS_FINE_LOCATION
-                     ) == PackageManager.PERMISSION_GRANTED
-                     && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
-                     ) == PackageManager.PERMISSION_GRANTED){
-                         runWorkManager()
-                     }else{
-                         val strings = arrayOf(
-                             Manifest.permission.ACCESS_FINE_LOCATION,
-                             Manifest.permission.ACCESS_COARSE_LOCATION
-                         )
-                         ActivityCompat.requestPermissions(context, strings,2)
-                     }
-                 }
-             }
-        }
 
-    private fun runWorkManager(){
+    /**
+     * Sets up the periodic work manager for awareness tasks.
+     * Checks for permissions and requests them if necessary before running the work manager.
+     */
+    fun setWorkManager() {
+        Handler().post {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        context, Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        context, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        context, Manifest.permission.ACTIVITY_RECOGNITION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    runWorkManager()
+                } else {
+                    val strings = arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                        Manifest.permission.ACTIVITY_RECOGNITION
+                    )
+                    ActivityCompat.requestPermissions(context, strings, 2)
+                }
+            } else {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(
+                        context, Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    runWorkManager()
+                } else {
+                    val strings = arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                    ActivityCompat.requestPermissions(context, strings, 2)
+                }
+            }
+        }
+    }
+
+    /**
+     * Runs the periodic work manager for awareness tasks.
+     * Constructs a periodic work request and enqueues it with the WorkManager.
+     */
+    private fun runWorkManager() {
         val data = Data.Builder().putInt("intKey", 1).build()
 
         val constraints = Constraints.Builder()

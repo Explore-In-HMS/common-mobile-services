@@ -31,9 +31,25 @@ import com.hms.lib.commonmobileservices.awareness.model.*
 import com.hms.lib.commonmobileservices.core.ErrorModel
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Implementation of the Awareness API for Google Mobile Services.
+ *
+ * @property context The application context.
+ */
 class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
+    /**
+     * SharedPreferences instance for storing data related to the awareness kit.
+     */
     private var sharedPreferences: SharedPreferences? = null
 
+    /**
+     * Initializes the [sharedPreferences] property with the application's SharedPreferences.
+     *
+     * This property is used for storing data related to the awareness kit.
+     * It is initialized with the application's SharedPreferences using the provided [context].
+     * The SharedPreferences file name is set to "com.hms.lib.commonmobileservices.productadvisor"
+     * with the mode set to private (Context.MODE_PRIVATE).
+     */
     init {
         sharedPreferences = context.getSharedPreferences(
             "com.hms.lib.commonmobileservices.productadvisor",
@@ -41,12 +57,28 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
         )
     }
 
+    /**
+     * Retrieves time awareness data.
+     *
+     * @param callback Callback function to handle the result data.
+     */
     override fun getTimeAwareness(callback: (timeVal: ResultData<IntArray>) -> Unit) {
+        /**
+         * Checks for the required location permission and retrieves time intervals data.
+         *
+         * If the ACCESS_FINE_LOCATION permission is not granted, the callback is invoked with a failure result
+         * indicating a missing permission. Otherwise, time intervals data is retrieved using the Awareness API.
+         * Upon successful retrieval, the callback is invoked with the calculated time awareness value.
+         * If an error occurs during the retrieval process, the callback is invoked with a failure result
+         * indicating a Google Awareness error.
+         *
+         * @param callback The callback function to handle the result data.
+         */
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ){
+        ) {
             callback.invoke(ResultData.Failed(context.getString(R.string.missing_permission)))
             return
         }
@@ -57,9 +89,22 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
         }
     }
 
-    private fun calculateTimeValue(timeIntervalsResponse: TimeIntervalsResponse) : ResultData<IntArray> {
-        val timeValue:ArrayList<Int> = arrayListOf()
-        for (index in 0..timeIntervalsResponse.timeIntervals.timeIntervals.size) {
+    /**
+     * Calculates the time awareness value based on the provided time intervals response.
+     *
+     * This function processes the time intervals response obtained from the Awareness API
+     * and calculates the corresponding time awareness value. The resulting time awareness value
+     * represents the time of day or specific time categories, such as morning, afternoon, etc.
+     * The calculated time awareness value is encapsulated in a [ResultData] object.
+     *
+     * @param timeIntervalsResponse The response containing time intervals data obtained from the Awareness API.
+     * @return A [ResultData] object encapsulating the calculated time awareness value as an integer array.
+     *         If the calculation is successful, the result contains the time awareness value.
+     *         If an error occurs during the calculation, the result indicates failure.
+     */
+    private fun calculateTimeValue(timeIntervalsResponse: TimeIntervalsResponse): ResultData<IntArray> {
+        val timeValue: ArrayList<Int> = arrayListOf()
+        for (index in 0 until timeIntervalsResponse.timeIntervals.timeIntervals.size) {
             if (index == 0) {
                 if (timeIntervalsResponse.timeIntervals.timeIntervals[0] == TimeFence.TIME_INSTANT_SUNRISE) {
                     timeValue += TimeDataValue.TIME_CATEGORY_MORNING.value
@@ -95,8 +140,25 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
         return ResultData.Success(TimeAwarenessData(timeValue).timeDataArray.toIntArray())
     }
 
+    /**
+     * Retrieves headset awareness data.
+     *
+     * @param callback Callback function to handle the result data.
+     */
     override fun getHeadsetAwareness(callback: (headsetVal: ResultData<IntArray>) -> Unit) {
-        val headsetValue:ArrayList<Int> = arrayListOf()
+        /**
+         * Retrieves the headset awareness data using the Awareness API.
+         *
+         * This function retrieves the current state of the headphones using the Awareness API.
+         * Upon successful retrieval, it determines whether the headphones are connected or disconnected,
+         * and constructs the corresponding headset awareness data.
+         * The constructed data is then encapsulated in a [ResultData] object and passed to the callback function.
+         * If an error occurs during the retrieval process, the callback function is invoked with a failure result
+         * containing an error message.
+         *
+         * @param callback The callback function to handle the result data.
+         */
+        val headsetValue: ArrayList<Int> = arrayListOf()
         Awareness.getSnapshotClient(context)
             .headphoneState
             .addOnSuccessListener { headphoneStateResponse ->
@@ -115,22 +177,48 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
             }
             .addOnFailureListener { e ->
                 callback.invoke(
-                    ResultData.Failed(context.getString(R.string.gms_awareness_error),
-                    ErrorModel(exception = e)
-                ))
+                    ResultData.Failed(
+                        context.getString(R.string.gms_awareness_error),
+                        ErrorModel(exception = e)
+                    )
+                )
             }
     }
 
+    /**
+     * Retrieves behavior awareness data.
+     *
+     * @param callback Callback function to handle the result data.
+     */
     override fun getBehaviorAwareness(callback: (behaviorVal: ResultData<IntArray>) -> Unit) {
-
+        /**
+         * Retrieves the behavior awareness data using the Awareness API.
+         *
+         * This function retrieves the current detected activity using the Awareness API.
+         * It requires appropriate permissions for activity recognition and location access.
+         * If the required permissions are granted, it retrieves the detected activity and constructs
+         * the corresponding behavior awareness data.
+         * The constructed data is then encapsulated in a [ResultData] object and passed to the callback function.
+         * If permissions are not granted, a request for permissions is initiated.
+         * If an error occurs during the retrieval process, the callback function is invoked with a failure result
+         * containing an error message.
+         *
+         * @param callback The callback function to handle the result data.
+         */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if(ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.ACTIVITY_RECOGNITION
                 ) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            ){
+                && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 Awareness.getSnapshotClient(context).detectedActivity
                     .addOnSuccessListener { p0 ->
                         val behaviorValue: ArrayList<Int> = arrayListOf()
@@ -141,7 +229,7 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                     .addOnFailureListener {
                         callback.invoke(ResultData.Failed(context.getString(R.string.gms_awareness_error)))
                     }
-             }else{
+            } else {
                 val strings = arrayOf(
                     Manifest.permission.ACTIVITY_RECOGNITION,
                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -149,15 +237,15 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                 )
                 ActivityCompat.requestPermissions(context as Activity, strings, 2)
             }
-        }
-        else{
-            if(ActivityCompat.checkSelfPermission(
+        } else {
+            if (ActivityCompat.checkSelfPermission(
                     context,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(context,Manifest.permission.ACCESS_COARSE_LOCATION
+                && ActivityCompat.checkSelfPermission(
+                    context, Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
-            ){
+            ) {
                 Awareness.getSnapshotClient(context).detectedActivity
                     .addOnSuccessListener { p0 ->
                         val behaviorValue: ArrayList<Int> = arrayListOf()
@@ -168,7 +256,7 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
                     .addOnFailureListener {
                         callback.invoke(ResultData.Failed(context.getString(R.string.gms_awareness_error)))
                     }
-            }else{
+            } else {
                 val strings = arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
@@ -178,46 +266,66 @@ class GoogleAwarenessKit(var context: Context) : IAwarenessAPI {
         }
     }
 
+    /**
+     * Retrieves weather awareness data.
+     *
+     * @param callback Callback function to handle the result data.
+     */
     override fun getWeatherAwareness(callback: (weatherVal: ResultData<IntArray>) -> Unit) {
+        /**
+         * Retrieves the weather awareness data using the Awareness API.
+         *
+         * This function checks if the necessary permission for accessing location is granted.
+         * If not, it requests the permission and returns a failed result indicating the missing permission.
+         * If the permission is granted, it retrieves the current weather conditions using the Awareness API.
+         * It then maps the weather conditions to corresponding values and constructs the weather awareness data.
+         * The constructed data is encapsulated in a [ResultData] object and passed to the callback function.
+         * If an error occurs during the retrieval process, the callback function is invoked with a failure result
+         * containing an error message.
+         *
+         * @param callback The callback function to handle the result data.
+         */
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
-        ){
+        ) {
             val strings = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
             ActivityCompat.requestPermissions(context as Activity, strings, 2)
             callback.invoke(ResultData.Failed(context.getString(R.string.missing_permission)))
             return
         }
         Awareness.getSnapshotClient(context).weather.addOnSuccessListener { weatherResponse ->
-            var weatherValue :ArrayList<Int> = arrayListOf()
-            weatherResponse.weather.conditions.forEach { condition->
-                if(condition == Weather.CONDITION_CLEAR){
-                    weatherValue.add(WeatherDataValue.WEATHER_CLEAR.value)
-                }
-                else if(condition == Weather.CONDITION_CLOUDY){
-                    weatherValue.add(WeatherDataValue.WEATHER_CLOUDS.value)
-                }
-                else if(condition == Weather.CONDITION_FOGGY){
-                    weatherValue.add(WeatherDataValue.WEATHER_FOG.value)
-                }
-                else if(condition == Weather.CONDITION_HAZY){
-                    weatherValue.add(WeatherDataValue.WEATHER_HAZY_SUNSHINE.value)
-                }
-                else if(condition == Weather.CONDITION_ICY){
-                    weatherValue.add(WeatherDataValue.WEATHER_ICE.value)
-                }
-                else if(condition == Weather.CONDITION_RAINY){
-                    weatherValue.add(WeatherDataValue.WEATHER_RAIN.value)
-                }
-                else if(condition == Weather.CONDITION_SNOWY){
-                    weatherValue.add(WeatherDataValue.WEATHER_SNOW.value)
-                }
-                else if(condition == Weather.CONDITION_STORMY){
-                    weatherValue.add(WeatherDataValue.WEATHER_T_STORMS.value)
-                }
-                else if(condition == Weather.CONDITION_WINDY){
-                    weatherValue.add(WeatherDataValue.WEATHER_WINDY.value)
+            val weatherValue: ArrayList<Int> = arrayListOf()
+            weatherResponse.weather.conditions.forEach { condition ->
+                when (condition) {
+                    Weather.CONDITION_CLEAR -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_CLEAR.value)
+                    }
+                    Weather.CONDITION_CLOUDY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_CLOUDS.value)
+                    }
+                    Weather.CONDITION_FOGGY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_FOG.value)
+                    }
+                    Weather.CONDITION_HAZY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_HAZY_SUNSHINE.value)
+                    }
+                    Weather.CONDITION_ICY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_ICE.value)
+                    }
+                    Weather.CONDITION_RAINY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_RAIN.value)
+                    }
+                    Weather.CONDITION_SNOWY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_SNOW.value)
+                    }
+                    Weather.CONDITION_STORMY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_T_STORMS.value)
+                    }
+                    Weather.CONDITION_WINDY -> {
+                        weatherValue.add(WeatherDataValue.WEATHER_WINDY.value)
+                    }
                 }
                 val resultData = WeatherAwarenessData(weatherValue)
                 callback.invoke(ResultData.Success(resultData.weatherDataArray.toIntArray()))
