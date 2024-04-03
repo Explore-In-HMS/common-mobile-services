@@ -16,14 +16,33 @@ package com.hms.lib.commonmobileservices.languagedetection.implementation
 import com.hms.lib.commonmobileservices.languagedetection.common.DetectionResult
 import com.hms.lib.commonmobileservices.languagedetection.common.PossibleLanguage
 
+/**
+ * Interface defining language detection functionalities.
+ */
 interface ILanguageDetection {
+
+    /**
+     * Detects the language of the provided source text.
+     * @param sourceText The text for which language detection is performed.
+     * @param callback A callback function to handle the detection result.
+     */
     fun detectLanguage(
         sourceText: String,
         callback: (detectResult: DetectionResult<String>) -> Unit
     )
+
+    /**
+     * Detects possible languages of the provided source text along with their confidence levels.
+     * @param sourceText The text for which language detection is performed.
+     * @param callback A callback function to handle the detection result.
+     */
     fun detectPossibleLanguages(
         sourceText: String,
         callback: (detectResult: DetectionResult<List<PossibleLanguage>>) -> Unit
     )
+
+    /**
+     * Stops the language detector.
+     */
     fun stopDetector()
 }
