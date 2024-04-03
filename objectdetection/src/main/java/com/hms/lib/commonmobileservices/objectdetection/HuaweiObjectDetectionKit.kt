@@ -26,6 +26,9 @@ import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.common.MLFrame
 import com.huawei.hms.mlsdk.objects.MLObjectAnalyzerSetting
 
+/**
+ * Object detection implementation for Huawei's ML Kit.
+ */
 class HuaweiObjectDetectionKit : IObjectDetectionAPI {
 
     override fun staticImageDetection(
