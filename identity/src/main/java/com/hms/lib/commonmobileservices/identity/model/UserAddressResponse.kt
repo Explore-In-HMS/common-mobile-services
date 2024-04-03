@@ -19,6 +19,16 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.Serializable
 
+/**
+ * Data class representing the response of user address information.
+ * @property title The title associated with the user address.
+ * @property addressLine The concatenated address lines of the user address.
+ * @property province The province of the user address.
+ * @property county The county of the user address.
+ * @property buildingNo The building number of the user address.
+ * @property aptNo The apartment number of the user address.
+ * @constructor Creates a new instance of UserAddressResponse.
+ */
 data class UserAddressResponse(
     var title: String? = null,
     var addressLine: String? = null,
@@ -27,6 +37,12 @@ data class UserAddressResponse(
     var buildingNo: String? = null,
     var aptNo: String? = null
 ) : Serializable {
+
+    /**
+     * Parses the given Intent data to obtain a UserAddressResponse object.
+     * @param data The Intent data containing user address information.
+     * @return A UserAddressResponse object parsed from the Intent data.
+     */
     fun parseIntent(data: Intent?): UserAddressResponse {
         val userAddressResponse = UserAddressResponse()
         if (data == null) {
