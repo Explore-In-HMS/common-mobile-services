@@ -32,7 +32,14 @@ import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 
 
-class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
+/**
+ * Implementation of the SafetyService interface for Huawei Mobile Services.
+ *
+ * This class provides methods for performing various safety checks and operations using Huawei Mobile Services.
+ *
+ * @property context The context used to access Huawei Mobile Services APIs.
+ */
+class HuaweiSafetyServiceImpl(private val context: Context) : SafetyService {
 
     private val mapper: Mapper<UserDetectResponse, SafetyServiceResponse> = HuaweiSafetyMapper()
     private val rootDetectMapper: Mapper<JSONObject, RootDetectionResponse> =
@@ -41,7 +48,13 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
     val TAG = "CommonMobileServicesSafetySDK"
 
     /**
-    App key value is the app_id value in Huawei Mobile Services.
+     *   App key value is the app_id value in Huawei Mobile Services.
+     */
+    /**
+     * Performs user detection using Huawei SafetyDetect API.
+     *
+     * @param appKey The app key value, which is the app_id value in Huawei Mobile Services.
+     * @param callback The callback to be invoked with the result of the user detection operation.
      */
     override fun userDetect(
         appKey: String,
@@ -59,7 +72,12 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
-    @SuppressLint("LongLogTag")
+    /**
+     * Performs root detection using Huawei SafetyDetect API.
+     *
+     * @param appKey The app key value, which is the app_id value in Huawei Mobile Services.
+     * @param callback The callback to be invoked with the result of the root detection operation.
+     */
     override fun rootDetection(
         appKey: String,
         callback: ResultCallback<RootDetectionResponse>
@@ -95,6 +113,11 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
             }
     }
 
+    /**
+     * Retrieves the list of malicious apps detected by Huawei SafetyDetect API.
+     *
+     * @param callback The callback to be invoked with the result containing the list of malicious apps.
+     */
     override fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>) {
         SafetyDetect.getClient(context).maliciousAppsList.addOnSuccessListener {
             callback.onSuccess(it.toCommonMaliciousAppList())
@@ -103,7 +126,12 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
-    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>){
+    /**
+     * Checks if app checks are enabled using Huawei SafetyDetect API.
+     *
+     * @param callback The callback to be invoked with the result indicating whether app checks are enabled.
+     */
+    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
         SafetyDetect.getClient(context).isVerifyAppsCheck.addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
         }.addOnFailureListener {
@@ -111,6 +139,11 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
+    /**
+     * Enables app checks using Huawei SafetyDetect API.
+     *
+     * @param callback The callback to be invoked with the result indicating whether app checks are enabled.
+     */
     override fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
         SafetyDetect.getClient(context).enableAppsCheck().addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
@@ -119,6 +152,11 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
+    /**
+     * Initializes URL check using Huawei SafetyDetect API.
+     *
+     * @return A Work object representing the initialization task.
+     */
     override fun initURLCheck(): Work<Unit> {
         val worker = Work<Unit>()
         SafetyDetect.getClient(context).initUrlCheck().addOnSuccessListener {
@@ -129,19 +167,32 @@ class HuaweiSafetyServiceImpl(private val context: Context): SafetyService {
         return worker
     }
 
+    /**
+     * Performs URL check using Huawei SafetyDetect API.
+     *
+     * @param url The URL to be checked.
+     * @param appKey The app key value, which is the app_id value in Huawei Mobile Services.
+     * @param threatType The type of threat to check for.
+     * @param callback The callback to be invoked with the result of the URL check operation.
+     */
     override fun urlCheck(
         url: String,
         appKey: String,
         threatType: Int,
         callback: ResultCallback<CommonUrlCheckRes>
     ) {
-        SafetyDetect.getClient(context).urlCheck(url,appKey,threatType).addOnSuccessListener {
+        SafetyDetect.getClient(context).urlCheck(url, appKey, threatType).addOnSuccessListener {
             callback.onSuccess(it.toCommonURLCheck())
         }.addOnFailureListener {
             callback.onFailure(it)
         }
     }
 
+    /**
+     * Shuts down URL check using Huawei SafetyDetect API.
+     *
+     * @return A Work object representing the shutdown task.
+     */
     override fun shutDownUrlCheck(): Work<Unit> {
         val worker = Work<Unit>()
         SafetyDetect.getClient(context).shutdownUrlCheck().addOnSuccessListener {
