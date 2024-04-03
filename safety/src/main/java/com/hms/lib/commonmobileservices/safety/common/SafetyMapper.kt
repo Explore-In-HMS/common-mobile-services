@@ -20,55 +20,83 @@ import com.huawei.hms.support.api.entity.safetydetect.UrlCheckResponse
 import com.huawei.hms.support.api.entity.safetydetect.UrlCheckThreat
 import com.huawei.hms.support.api.entity.safetydetect.VerifyAppsCheckEnabledResp
 
-
-
-fun MaliciousAppsListResp.toCommonMaliciousAppList(): CommonMaliciousAppResponse{
+/**
+ * Extension function to map MaliciousAppsListResp to CommonMaliciousAppResponse.
+ */
+fun MaliciousAppsListResp.toCommonMaliciousAppList(): CommonMaliciousAppResponse {
     return CommonMaliciousAppResponse()
-        .also { it -> it.getMaliciousAppsList = maliciousAppsList.map { it.toCommonMaliciousAppData() } }
+        .also { it.getMaliciousAppsList = maliciousAppsList.map { it.toCommonMaliciousAppData() } }
         .also { it.rtnCode = rtnCode }
         .also { it.errorReason = errorReason }
 }
 
-fun SafetyNetApi.HarmfulAppsResponse.toCommonMaliciousAppList(): CommonMaliciousAppResponse{
+/**
+ * Extension function to map SafetyNetApi.HarmfulAppsResponse to CommonMaliciousAppResponse.
+ */
+fun SafetyNetApi.HarmfulAppsResponse.toCommonMaliciousAppList(): CommonMaliciousAppResponse {
     return CommonMaliciousAppResponse()
         .also { it.getMaliciousAppsList = harmfulAppsList.map { it.toCommonMaliciousAppData() } }
         .also { it.rtnCode = hoursSinceLastScanWithHarmfulApp }
 }
 
-fun com.huawei.hms.support.api.entity.safetydetect.MaliciousAppsData.toCommonMaliciousAppData(): CommonMaliciousAppsData{
+/**
+ * Extension function to map com.huawei.hms.support.api.entity.safetydetect.MaliciousAppsData to CommonMaliciousAppsData.
+ */
+fun com.huawei.hms.support.api.entity.safetydetect.MaliciousAppsData.toCommonMaliciousAppData(): CommonMaliciousAppsData {
     return CommonMaliciousAppsData()
         .also { it.apkCategory = apkCategory }
         .also { it.apkPackageName = apkPackageName }
         .also { it.apkSha256 = apkSha256 }
 }
 
-fun com.google.android.gms.safetynet.HarmfulAppsData.toCommonMaliciousAppData(): CommonMaliciousAppsData{
+/**
+ * Extension function to map com.google.android.gms.safetynet.HarmfulAppsData to CommonMaliciousAppsData.
+ */
+fun com.google.android.gms.safetynet.HarmfulAppsData.toCommonMaliciousAppData(): CommonMaliciousAppsData {
     return CommonMaliciousAppsData()
         .also { it.apkCategory = apkCategory }
         .also { it.apkPackageName = apkPackageName }
         .also { it.apkSha256 = apkSha256.toString() }
 }
 
-fun VerifyAppsCheckEnabledResp.toCommonVerifyAppUserEnabled(): CommonVerifyAppChecksEnabledRes{
+/**
+ * Extension function to map VerifyAppsCheckEnabledResp to CommonVerifyAppChecksEnabledRes.
+ */
+fun VerifyAppsCheckEnabledResp.toCommonVerifyAppUserEnabled(): CommonVerifyAppChecksEnabledRes {
     return CommonVerifyAppChecksEnabledRes().also { it.result = result }.also { it.errorReason = errorReason }.also { it.rtnCode = rtnCode }
 }
 
-fun SafetyNetApi.VerifyAppsUserResponse.toCommonVerifyAppUserEnabled() : CommonVerifyAppChecksEnabledRes{
-    return  CommonVerifyAppChecksEnabledRes().also { it.result = isVerifyAppsEnabled }
+/**
+ * Extension function to map SafetyNetApi.VerifyAppsUserResponse to CommonVerifyAppChecksEnabledRes.
+ */
+fun SafetyNetApi.VerifyAppsUserResponse.toCommonVerifyAppUserEnabled(): CommonVerifyAppChecksEnabledRes {
+    return CommonVerifyAppChecksEnabledRes().also { it.result = isVerifyAppsEnabled }
 }
 
-fun UrlCheckResponse.toCommonURLCheck(): CommonUrlCheckRes{
+/**
+ * Extension function to map UrlCheckResponse to CommonUrlCheckRes.
+ */
+fun UrlCheckResponse.toCommonURLCheck(): CommonUrlCheckRes {
     return CommonUrlCheckRes().also { it.urlCheckThreats = urlCheckResponse.map { it.toCommonThreatType() } }
 }
 
-fun SafetyNetApi.SafeBrowsingResponse.toCommonURLCheck(): CommonUrlCheckRes{
-    return CommonUrlCheckRes().also { it.urlCheckThreats =  detectedThreats.map { it.toCommonThreatType() }}
+/**
+ * Extension function to map SafetyNetApi.SafeBrowsingResponse to CommonUrlCheckRes.
+ */
+fun SafetyNetApi.SafeBrowsingResponse.toCommonURLCheck(): CommonUrlCheckRes {
+    return CommonUrlCheckRes().also { it.urlCheckThreats =  detectedThreats.map { it.toCommonThreatType() } }
 }
 
-fun UrlCheckThreat.toCommonThreatType(): CommonUrlCheckThreat{
+/**
+ * Extension function to map UrlCheckThreat to CommonUrlCheckThreat.
+ */
+fun UrlCheckThreat.toCommonThreatType(): CommonUrlCheckThreat {
     return CommonUrlCheckThreat().also { it.urlCheckResult = urlCheckResult }
 }
 
-fun SafeBrowsingThreat.toCommonThreatType(): CommonUrlCheckThreat{
+/**
+ * Extension function to map SafeBrowsingThreat to CommonUrlCheckThreat.
+ */
+fun SafeBrowsingThreat.toCommonThreatType(): CommonUrlCheckThreat {
     return CommonUrlCheckThreat().also { it.urlCheckResult = threatType }
 }
