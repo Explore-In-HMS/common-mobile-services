@@ -18,10 +18,20 @@ import com.hms.lib.commonmobileservices.languagedetection.common.DetectionResult
 import com.hms.lib.commonmobileservices.languagedetection.common.PossibleLanguage
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetector
 
+/**
+ * Implementation of ILanguageDetection using Huawei's remote language detector.
+ * @property languageDetector The underlying MLRemoteLangDetector used for language detection.
+ * @constructor Creates a HuaweiLanguageDetection instance with the provided MLRemoteLangDetector.
+ */
 class HuaweiLanguageDetection(
     private val languageDetector: MLRemoteLangDetector
-): ILanguageDetection {
+) : ILanguageDetection {
 
+    /**
+     * Detects the language of the provided source text.
+     * @param sourceText The text for which language detection is performed.
+     * @param callback A callback function to handle the detection result.
+     */
     override fun detectLanguage(
         sourceText: String,
         callback: (detectResult: DetectionResult<String>) -> Unit
@@ -42,6 +52,11 @@ class HuaweiLanguageDetection(
         }
     }
 
+    /**
+     * Detects possible languages of the provided source text along with their confidence levels.
+     * @param sourceText The text for which language detection is performed.
+     * @param callback A callback function to handle the detection result.
+     */
     override fun detectPossibleLanguages(
         sourceText: String,
         callback: (detectResult: DetectionResult<List<PossibleLanguage>>) -> Unit
@@ -71,6 +86,9 @@ class HuaweiLanguageDetection(
         }
     }
 
+    /**
+     * Stops the language detector.
+     */
     override fun stopDetector() {
         languageDetector.stop()
     }
