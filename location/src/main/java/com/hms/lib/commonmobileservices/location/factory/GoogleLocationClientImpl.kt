@@ -31,6 +31,14 @@ import com.hms.lib.commonmobileservices.location.model.CommonLocationResult
 import com.hms.lib.commonmobileservices.location.model.LocationResultState
 import com.hms.lib.commonmobileservices.location.model.Priority
 
+/**
+ * Google implementation of the common location client.
+ * Provides access to location services provided by Google Play Services.
+ *
+ * @property activity The activity context.
+ * @property lifecycle The lifecycle of the activity.
+ * @property needBackgroundPermissions Flag indicating whether background permissions are needed.
+ */
 class GoogleLocationClientImpl(
     activity: Activity,
     lifecycle: Lifecycle,
@@ -41,6 +49,11 @@ class GoogleLocationClientImpl(
 
     var locationCallback: LocationCallback? = null
 
+    /**
+     * Retrieves the last known location asynchronously.
+     *
+     * @param locationListener Callback to be invoked with the result.
+     */
     @SuppressLint("MissingPermission")
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
@@ -52,6 +65,13 @@ class GoogleLocationClientImpl(
         }
     }
 
+    /**
+     * Requests location updates.
+     *
+     * @param priority The priority for location updates.
+     * @param interval The interval for location updates.
+     * @param locationListener Callback to be invoked with the result.
+     */
     @SuppressLint("MissingPermission")
     override fun requestLocationUpdatesCore(
         priority: Priority?,
@@ -105,6 +125,9 @@ class GoogleLocationClientImpl(
         }
     }
 
+    /**
+     * Removes location updates.
+     */
     override fun removeLocationUpdates() {
         locationCallback?.let { callback ->
             fusedLocationProviderClient.removeLocationUpdates(callback)
@@ -112,6 +135,12 @@ class GoogleLocationClientImpl(
         }
     }
 
+    /**
+     * Checks if location settings are enabled.
+     *
+     * @param activity The activity context.
+     * @param callback Callback to be invoked with the result.
+     */
     override fun checkLocationSettings(
         activity: Activity,
         callback: (
@@ -146,6 +175,12 @@ class GoogleLocationClientImpl(
         }
     }
 
+    /**
+     * Sets the mock mode for location services.
+     *
+     * @param isMockMode Flag indicating whether mock mode is enabled.
+     * @return A work representing the asynchronous operation.
+     */
     @SuppressLint("MissingPermission")
     override fun setMockMode(isMockMode: Boolean): Work<Unit> {
         val worker: Work<Unit> = Work()
@@ -158,6 +193,12 @@ class GoogleLocationClientImpl(
         return worker
     }
 
+    /**
+     * Sets a mock location for location services.
+     *
+     * @param location The mock location to be set.
+     * @return A work representing the asynchronous operation.
+     */
     @SuppressLint("MissingPermission")
     override fun setMockLocation(location: Location): Work<Unit> {
         val worker: Work<Unit> = Work()
@@ -173,6 +214,11 @@ class GoogleLocationClientImpl(
         return worker
     }
 
+    /**
+     * Flushes the pending locations.
+     *
+     * @return A work representing the asynchronous operation.
+     */
     override fun flushLocations(): Work<Unit> {
         val worker: Work<Unit> = Work()
         fusedLocationProviderClient.flushLocations()

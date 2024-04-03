@@ -29,6 +29,14 @@ import com.huawei.hms.common.ApiException
 import com.huawei.hms.common.ResolvableApiException
 import com.huawei.hms.location.*
 
+/**
+ * Huawei implementation of the common location client.
+ * Provides access to location services provided by Huawei Mobile Services.
+ *
+ * @property activity The activity context.
+ * @property lifecycle The lifecycle of the activity.
+ * @property needBackgroundPermissions Flag indicating whether background permissions are needed.
+ */
 class HuaweiLocationClientImpl(
     activity: Activity,
     lifecycle: Lifecycle,
@@ -39,6 +47,11 @@ class HuaweiLocationClientImpl(
 
     private var locationCallback: LocationCallback? = null
 
+    /**
+     * Retrieves the last known location asynchronously.
+     *
+     * @param locationListener Callback to be invoked with the result.
+     */
     override fun getLastKnownLocationCore(locationListener: (commonLocationResult: CommonLocationResult) -> Unit) {
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
             location?.let {
@@ -58,6 +71,13 @@ class HuaweiLocationClientImpl(
         }
     }
 
+    /**
+     * Requests location updates.
+     *
+     * @param priority The priority for location updates.
+     * @param interval The interval for location updates.
+     * @param locationListener Callback to be invoked with the result.
+     */
     override fun requestLocationUpdatesCore(
         priority: Priority?,
         interval: Long?,
@@ -100,6 +120,9 @@ class HuaweiLocationClientImpl(
         }
     }
 
+    /**
+     * Removes location updates.
+     */
     override fun removeLocationUpdates() {
         locationCallback?.let {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
@@ -107,6 +130,12 @@ class HuaweiLocationClientImpl(
         }
     }
 
+    /**
+     * Checks if location settings are enabled.
+     *
+     * @param activity The activity context.
+     * @param callback Callback to be invoked with the result.
+     */
     override fun checkLocationSettings(
         activity: Activity,
         callback: (
@@ -137,6 +166,12 @@ class HuaweiLocationClientImpl(
         }
     }
 
+    /**
+     * Sets the mock mode for location services.
+     *
+     * @param isMockMode Flag indicating whether mock mode is enabled.
+     * @return A work representing the asynchronous operation.
+     */
     override fun setMockMode(isMockMode: Boolean): Work<Unit> {
         val worker: Work<Unit> = Work()
         fusedLocationProviderClient.setMockMode(isMockMode)
@@ -148,6 +183,12 @@ class HuaweiLocationClientImpl(
         return worker
     }
 
+    /**
+     * Sets a mock location for location services.
+     *
+     * @param location The mock location to be set.
+     * @return A work representing the asynchronous operation.
+     */
     override fun setMockLocation(location: Location): Work<Unit> {
         val worker: Work<Unit> = Work()
         val mockLocation = Location(LocationManager.GPS_PROVIDER)
@@ -163,6 +204,11 @@ class HuaweiLocationClientImpl(
         return worker
     }
 
+    /**
+     * Flushes location data in the location client.
+     *
+     * @return A work representing the asynchronous operation.
+     */
     override fun flushLocations(): Work<Unit> {
         val worker: Work<Unit> = Work()
         fusedLocationProviderClient.flushLocations()
