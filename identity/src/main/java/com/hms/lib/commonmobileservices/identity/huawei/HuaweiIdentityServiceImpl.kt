@@ -26,8 +26,16 @@ import com.huawei.hms.identity.entity.UserAddress
 import com.huawei.hms.identity.entity.UserAddressRequest
 import com.huawei.hms.support.api.client.Status
 
+/**
+ * Implementation of IdentityService specifically for Huawei identity service.
+ * This service provides methods related to retrieving user address information.
+ * @param context The context used for accessing Huawei identity service.
+ */
 class HuaweiIdentityServiceImpl(private val context: Context) : IdentityService {
 
+    /**
+     * Retrieves the user address information from Huawei identity service.
+     */
     override fun getUserAddress() {
 
         val task = Address.getAddressClient(context).getUserAddress(UserAddressRequest())
@@ -59,6 +67,5 @@ class HuaweiIdentityServiceImpl(private val context: Context) : IdentityService 
                 Log.e(IdentityService.TAG, "HMS - onFailed resultCode: ${it.message}")
             }
         }
-
     }
 }
