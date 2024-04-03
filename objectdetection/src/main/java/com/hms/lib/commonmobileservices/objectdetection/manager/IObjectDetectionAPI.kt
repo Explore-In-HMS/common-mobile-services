@@ -18,8 +18,18 @@ import android.app.Activity
 import android.graphics.Bitmap
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Interface for object detection API.
+ */
 interface IObjectDetectionAPI {
 
+    /**
+     * Performs static image detection.
+     * @param callback Callback function to handle the detection result.
+     * @param activity The activity context.
+     * @param bitmap The input image bitmap.
+     * @param apiKey The API key for the ML service.
+     */
     fun staticImageDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
