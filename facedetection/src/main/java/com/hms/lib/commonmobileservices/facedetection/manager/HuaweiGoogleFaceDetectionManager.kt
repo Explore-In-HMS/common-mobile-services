@@ -21,9 +21,18 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Manages face detection functionality using either Huawei or Google's face detection API based on the mobile service type of the device.
+ * @param context The context used to determine the mobile service type of the device.
+ */
 class HuaweiGoogleFaceDetectionManager(context: Context) {
     private var faceDetectionApi: IFaceDetectionAPI? = null
 
+    /**
+     * Initializes the manager by obtaining an instance of the appropriate face detection API implementation based on the mobile service type of the device.
+     * If the device supports Huawei Mobile Services (HMS), the HuaweiFaceDetectionKit is used. Otherwise, the GoogleFaceDetectionKit is used.
+     * @param context The context used to determine the mobile service type of the device.
+     */
     init {
         faceDetectionApi = FaceDetectionFactory().getMLService(
             Device.getMobileServiceType(
@@ -33,6 +42,13 @@ class HuaweiGoogleFaceDetectionManager(context: Context) {
         )
     }
 
+    /**
+     * Performs face detection on the provided bitmap image using the initialized face detection API implementation.
+     * @param callback A callback function to handle the result of the face detection operation.
+     * @param activity The activity context for displaying UI elements during the face detection process.
+     * @param bitmap The bitmap image on which face detection is to be performed.
+     * @param apiKey The API key required for accessing the face detection service.
+     */
     fun faceDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
