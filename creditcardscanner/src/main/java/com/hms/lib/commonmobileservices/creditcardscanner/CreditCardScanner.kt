@@ -18,12 +18,33 @@ import com.hms.lib.commonmobileservices.core.Device.getMobileServiceType
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * An interface for credit card scanning functionality.
+ * Implementations of this interface provide methods for scanning credit cards and returning the scanning results
+ * asynchronously through a callback.
+ */
 interface CreditCardScanner {
+    /**
+     * Initiates a credit card scanning operation.
+     *
+     * @param callback A callback function to receive the scanning result asynchronously.
+     * The result is encapsulated within a [ResultData] object containing the [CommonCreditCardResult].
+     */
     fun scan(callback: (ResultData<CommonCreditCardResult>) -> Unit)
 
-    companion object{
-        fun instance(context: Context, firstPriority: MobileServiceType?=null): CreditCardScanner?{
-            return when(getMobileServiceType(context,firstPriority)){
+    companion object {
+        /**
+         * Creates an instance of a CreditCardScanner based on the available mobile service type.
+         *
+         * @param context The context used for accessing resources and services.
+         * @param firstPriority The priority for selecting the mobile service type.
+         * @return An instance of CreditCardScanner or null if scanning is not supported by the available mobile services.
+         */
+        fun instance(
+            context: Context,
+            firstPriority: MobileServiceType? = null
+        ): CreditCardScanner? {
+            return when (getMobileServiceType(context, firstPriority)) {
                 MobileServiceType.NON -> null
                 else -> HMSCreditCardScanner(context)
             }
