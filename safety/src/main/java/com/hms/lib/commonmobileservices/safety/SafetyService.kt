@@ -24,18 +24,89 @@ import com.hms.lib.commonmobileservices.safety.common.CommonVerifyAppChecksEnabl
 import com.hms.lib.commonmobileservices.safety.google.GoogleSafetyServiceImpl
 import com.hms.lib.commonmobileservices.safety.huawei.HuaweiSafetyServiceImpl
 
+/**
+ * Interface defining methods for interacting with a safety service.
+ */
 interface SafetyService {
 
-    fun userDetect(appKey : String,callback: ResultCallback<SafetyServiceResponse>)
-    fun rootDetection(appKey: String,callback: ResultCallback<RootDetectionResponse>)
+    /**
+     * Detects if the user is safe.
+     *
+     * @param appKey The application key.
+     * @param callback The callback to be invoked with the detection result.
+     */
+    fun userDetect(appKey: String, callback: ResultCallback<SafetyServiceResponse>)
+
+    /**
+     * Performs root detection.
+     *
+     * @param appKey The application key.
+     * @param callback The callback to be invoked with the root detection result.
+     */
+    fun rootDetection(appKey: String, callback: ResultCallback<RootDetectionResponse>)
+
+    /**
+     * Retrieves a list of malicious apps.
+     *
+     * @param callback The callback to be invoked with the list of malicious apps.
+     */
     fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>)
+
+    /**
+     * Checks if app checks are enabled.
+     *
+     * @param callback The callback to be invoked with the result of the check.
+     */
     fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
+
+    /**
+     * Enables app checks.
+     *
+     * @param callback The callback to be invoked with the result of the operation.
+     */
     fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>)
-    fun initURLCheck():Work<Unit>
-    fun urlCheck(url:String,appKey: String,threatType:Int,callback:ResultCallback<CommonUrlCheckRes>)
+
+    /**
+     * Initializes URL checking.
+     *
+     * @return A [Work] object representing the initialization process.
+     */
+    fun initURLCheck(): Work<Unit>
+
+    /**
+     * Checks the safety of a URL.
+     *
+     * @param url The URL to check.
+     * @param appKey The application key.
+     * @param threatType The type of threat to check for.
+     * @param callback The callback to be invoked with the URL check result.
+     */
+    fun urlCheck(
+        url: String,
+        appKey: String,
+        threatType: Int,
+        callback: ResultCallback<CommonUrlCheckRes>
+    )
+
+    /**
+     * Shuts down URL checking.
+     *
+     * @return A [Work] object representing the shutdown process.
+     */
     fun shutDownUrlCheck(): Work<Unit>
 
-      object Factory {
+    /**
+     * Factory object responsible for creating instances of [SafetyService] implementations
+     * based on the mobile service type obtained from the device.
+     */
+    object Factory {
+        /**
+         * Creates an instance of [SafetyService] based on the mobile service type.
+         *
+         * @param context The application context.
+         * @return An instance of [SafetyService].
+         * @throws Exception if the mobile service type is unknown.
+         */
         fun create(context: Context): SafetyService {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {

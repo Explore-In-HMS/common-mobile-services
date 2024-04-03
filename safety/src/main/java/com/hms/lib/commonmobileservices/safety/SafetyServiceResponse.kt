@@ -13,6 +13,10 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety
 
+/**
+ * Data class representing a response from a safety service.
+ * @property responseToken The response token received from the safety service.
+ */
 data class SafetyServiceResponse(
     val responseToken: String
 )
