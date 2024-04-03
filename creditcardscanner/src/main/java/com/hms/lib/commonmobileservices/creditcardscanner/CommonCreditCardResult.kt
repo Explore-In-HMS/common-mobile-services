@@ -16,6 +16,18 @@ package com.hms.lib.commonmobileservices.creditcardscanner
 import android.graphics.Bitmap
 import com.huawei.hms.mlplugin.card.bcr.MLBcrCaptureResult
 
+/**
+ * Represents the result of a credit card scanning operation.
+ *
+ * @property cardNumber The card number extracted from the scanned image.
+ * @property issuer The issuer of the credit card.
+ * @property expireDate The expiration date of the credit card.
+ * @property organization The organization associated with the credit card.
+ * @property type The type of the credit card.
+ * @property originalBitmap The original bitmap image of the scanned credit card.
+ * @property numberBitmap The bitmap image of the extracted card number.
+ * @property errorCode The error code, if any, encountered during the scanning process.
+ */
 data class CommonCreditCardResult(
     val cardNumber: String? = null,
     val issuer: String? = null,
@@ -27,6 +39,11 @@ data class CommonCreditCardResult(
     val errorCode: Int? = null
 )
 
+/**
+ * Maps an [MLBcrCaptureResult] to a [CommonCreditCardResult].
+ *
+ * @return The mapped [CommonCreditCardResult].
+ */
 fun MLBcrCaptureResult.mapToCommonCreditCardResult(): CommonCreditCardResult =
     CommonCreditCardResult(
         cardNumber = this.number,
