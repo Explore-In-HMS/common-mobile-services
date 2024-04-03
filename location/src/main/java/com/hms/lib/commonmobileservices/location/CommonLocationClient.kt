@@ -28,6 +28,9 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.hms.lib.commonmobileservices.core.Work
 import com.hms.lib.commonmobileservices.location.model.*
 
+/**
+ * Abstract class representing a common location client for accessing location-related services.
+ */
 abstract class CommonLocationClient(
     private val activity: Activity,
     lifecycle: Lifecycle,
@@ -62,6 +65,10 @@ abstract class CommonLocationClient(
     private var enableGpsCallback: ((enableGPSFinalResult: EnableGPSFinalResult, error: Exception?) -> Unit)? =
         null
 
+    /**
+     * Enables GPS location services.
+     * @param callback Callback to be invoked with the result of enabling GPS.
+     */
     fun enableGps(
         callback: (
             enableGPSFinalResult: EnableGPSFinalResult,
@@ -76,6 +83,7 @@ abstract class CommonLocationClient(
                         EnableGPSFinalResult.ENABLED,
                         null
                     )
+
                     CheckGpsEnabledResult.ERROR -> callback.invoke(
                         EnableGPSFinalResult.FAILED,
                         error
@@ -91,6 +99,11 @@ abstract class CommonLocationClient(
         }
     }
 
+    /**
+     * Abstract method to check the location settings.
+     * @param activity The activity context.
+     * @param callback Callback to be invoked with the result of the location settings check.
+     */
     abstract fun checkLocationSettings(
         activity: Activity, callback: (
             checkGpsEnabledResult: CheckGpsEnabledResult,
@@ -98,15 +111,24 @@ abstract class CommonLocationClient(
         ) -> Unit
     )
 
+    /**
+     * Handles the result of the resolution request for enabling GPS.
+     * @param resultCode The result code of the resolution request.
+     */
     fun handleResolutionResult(resultCode: Int) {
         when (resultCode) {
             Activity.RESULT_OK ->             // All required changes were successfully made
                 enableGpsCallback?.invoke(EnableGPSFinalResult.ENABLED, null)
+
             Activity.RESULT_CANCELED ->             // The user was asked to change settings, but chose not to
                 enableGpsCallback?.invoke(EnableGPSFinalResult.USER_CANCELLED, null)
         }
     }
 
+    /**
+     * Retrieves the last known location.
+     * @param locationListener Callback to be invoked with the result of the last known location retrieval.
+     */
     fun getLastKnownLocation(locationListener: (CommonLocationResult) -> Unit) {
         if (hasLocationPermission(activity)) {
             getLastKnownLocationCore(locationListener)
@@ -115,8 +137,18 @@ abstract class CommonLocationClient(
         }
     }
 
+    /**
+     * Abstract method to retrieve the last known location.
+     * @param locationListener Callback to be invoked with the result of the last known location retrieval.
+     */
     abstract fun getLastKnownLocationCore(locationListener: (CommonLocationResult) -> Unit)
 
+    /**
+     * Requests location updates.
+     * @param priority The priority of the location request.
+     * @param interval The interval for location updates.
+     * @param locationListener Callback to be invoked with each location update.
+     */
     fun requestLocationUpdates(
         priority: Priority? = Priority.PRIORITY_BALANCED_POWER_ACCURACY,
         interval: Long? = 10000,
@@ -134,14 +166,27 @@ abstract class CommonLocationClient(
         }
     }
 
+    /**
+     * Abstract method to request location updates.
+     * @param priority The priority of the location request.
+     * @param interval The interval for location updates.
+     * @param locationListener Callback to be invoked with each location update.
+     */
     abstract fun requestLocationUpdatesCore(
         priority: Priority? = Priority.PRIORITY_BALANCED_POWER_ACCURACY,
         interval: Long? = 10000,
         locationListener: (CommonLocationResult) -> Unit
     )
 
+    /**
+     * Removes location updates.
+     */
     abstract fun removeLocationUpdates()
 
+    /**
+     * Retrieves the location permissions required by the client.
+     * @return The list of location permissions required.
+     */
     protected fun getLocationPermissions(): MutableList<String> {
         val perms = mutableListOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -152,6 +197,10 @@ abstract class CommonLocationClient(
         return perms
     }
 
+    /**
+     * Checks if location services are enabled on the device.
+     * @return True if location services are enabled, false otherwise.
+     */
     fun isLocationEnabled(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             val lm = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -165,6 +214,11 @@ abstract class CommonLocationClient(
         }
     }
 
+    /**
+     * Checks if the required location permissions are granted.
+     * @param activity The activity context.
+     * @return True if the required permissions are granted, false otherwise.
+     */
     private fun hasLocationPermission(activity: Activity): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             return ActivityCompat.checkSelfPermission(
@@ -191,8 +245,23 @@ abstract class CommonLocationClient(
         }
     }
 
-
+    /**
+     * Abstract method to set the mock mode for the location client.
+     * @param isMockMode Boolean indicating whether mock mode should be enabled or disabled.
+     * @return A [Work] object representing the asynchronous work to set the mock mode.
+     */
     abstract fun setMockMode(isMockMode: Boolean): Work<Unit>
+
+    /**
+     * Abstract method to set a mock location for the location client.
+     * @param location The mock location to be set.
+     * @return A [Work] object representing the asynchronous work to set the mock location.
+     */
     abstract fun setMockLocation(location: Location): Work<Unit>
+
+    /**
+     * Abstract method to flush any pending location updates.
+     * @return A [Work] object representing the asynchronous work to flush locations.
+     */
     abstract fun flushLocations(): Work<Unit>
 }
