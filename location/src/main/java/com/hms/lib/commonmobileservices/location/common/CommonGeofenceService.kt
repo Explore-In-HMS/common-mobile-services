@@ -22,9 +22,21 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.hms.location.GeofenceService
 
-
+/**
+ * A service class for managing geofence operations across different mobile service providers.
+ *
+ * This class provides methods for creating and deleting geofence lists.
+ */
 class CommonGeofenceService {
 
+    /**
+     * Creates a geofence list.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param geofenceReq The request for creating the geofence list.
+     * @param pendingIntent The pending intent to be triggered when geofence events occur.
+     * @return A [Work] object representing the asynchronous task of creating the geofence list.
+     */
     @SuppressLint("MissingPermission")
     fun createGeofenceList(
         context: Context,
@@ -39,6 +51,7 @@ class CommonGeofenceService {
             )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> LocationServices.getGeofencingClient(context)
                 .addGeofences(geofenceReq.toGmsGeofenceReq(), pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
@@ -47,12 +60,20 @@ class CommonGeofenceService {
         return worker
     }
 
+    /**
+     * Deletes a geofence list by providing a list of geofence IDs.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param geofenceList The list of geofence IDs to be deleted.
+     * @return A [Work] object representing the asynchronous task of deleting the geofence list.
+     */
     fun deleteGeofenceList(context: Context, geofenceList: List<String>): Work<Unit> {
         val worker: Work<Unit> = Work()
         when (Device.getMobileServiceType(context)) {
             MobileServiceType.HMS -> GeofenceService(context).deleteGeofenceList(geofenceList)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> LocationServices.getGeofencingClient(context).removeGeofences(geofenceList)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
@@ -60,12 +81,20 @@ class CommonGeofenceService {
         return worker
     }
 
+    /**
+     * Deletes a geofence list by providing a pending intent.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param pendingIntent The pending intent associated with the geofence list to be deleted.
+     * @return A [Work] object representing the asynchronous task of deleting the geofence list.
+     */
     fun deleteGeofenceList(context: Context, pendingIntent: PendingIntent): Work<Unit> {
         val worker: Work<Unit> = Work()
         when (Device.getMobileServiceType(context)) {
             MobileServiceType.HMS -> GeofenceService(context).deleteGeofenceList(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> LocationServices.getGeofencingClient(context).removeGeofences(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }

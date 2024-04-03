@@ -20,8 +20,21 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.location.GeofenceData
 
-
+/**
+ * A utility class for fetching geofence data from an intent.
+ *
+ * This class provides a method to extract geofence data from the provided intent based on the mobile service provider.
+ */
 class CommonGeofenceData {
+    /**
+     * Fetches common geofence data from an intent.
+     *
+     * This function extracts geofence data from the provided intent based on the mobile service provider.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param intent The intent from which to extract geofence data.
+     * @return A [GeofencingData] object containing the extracted geofence data, or null if the data extraction fails.
+     */
     fun fetchDataFromIntent(context: Context, intent: Intent): GeofencingData? {
         return when (Device.getMobileServiceType(context)) {
             MobileServiceType.HMS -> GeofenceData.getDataFromIntent(intent).toCommonGeofenceData()

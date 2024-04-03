@@ -20,14 +20,33 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.location.ActivityConversionResponse
 
+/**
+ * A class representing a response for common activity conversions.
+ *
+ * This class encapsulates a list of activity conversion data.
+ *
+ * @property getActivityConversionDataList The list of activity conversion data.
+ */
 class CommonActivityConversionResponse {
 
-    var getActivityConversionDataList: List<CommonActivityConversionData>?= null
+    var getActivityConversionDataList: List<CommonActivityConversionData>? = null
 
-    fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse{
-        return when(Device.getMobileServiceType(context)){
-            MobileServiceType.HMS -> ActivityConversionResponse.getDataFromIntent(intent).toCommonActivityConversionResponse()
-            else -> ActivityTransitionResult.extractResult(intent)!!.toCommonActivityConversionResponse()
+    /**
+     * Fetches common activity conversion response from an intent.
+     *
+     * This function extracts activity conversion data from the provided intent based on the mobile service provider.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param intent The intent from which to extract activity conversion data.
+     * @return A [CommonActivityConversionResponse] containing the extracted activity conversion data.
+     */
+    fun fetchDataFromIntent(context: Context, intent: Intent): CommonActivityConversionResponse {
+        return when (Device.getMobileServiceType(context)) {
+            MobileServiceType.HMS -> ActivityConversionResponse.getDataFromIntent(intent)
+                .toCommonActivityConversionResponse()
+
+            else -> ActivityTransitionResult.extractResult(intent)!!
+                .toCommonActivityConversionResponse()
         }
     }
 }

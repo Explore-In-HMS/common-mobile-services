@@ -13,8 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+/**
+ * A data class representing common activity conversion data.
+ *
+ * This class encapsulates information related to activity type, conversion type, and elapsed time from device reboot.
+ *
+ * @property getActivityType The type of activity.
+ * @property getConversionType The type of conversion.
+ * @property getElapsedTimeFromReboot The elapsed time in milliseconds since the device reboot.
+ */
 class CommonActivityConversionData {
-    var getActivityType: Int?=null
-    var getConversionType: Int?=null
-    var getElapsedTimeFromReboot: Long?=null
+    var getActivityType: Int? = null
+    var getConversionType: Int? = null
+    var getElapsedTimeFromReboot: Long? = null
 }
