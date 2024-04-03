@@ -21,12 +21,25 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.remoteconfig.manager.IRemoteConfigService
 
-class GoogleRemoteConfig:IRemoteConfigService {
+/**
+ * Implementation of remote config service using Google Firebase Remote Config.
+ */
+class GoogleRemoteConfig : IRemoteConfigService {
     private var config: FirebaseRemoteConfig = Firebase.remoteConfig
+
+    /**
+     * Set the default values from an XML resource file.
+     * @param xml XML resource containing default values.
+     */
     override fun setDefaultXml(xml: Int) {
         config.setDefaultsAsync(xml)
     }
 
+    /**
+     * Fetches the latest Firebase Remote Config data and applies it.
+     * @param callback Callback to be invoked with the result.
+     * @param interval Minimum interval between fetches, in seconds.
+     */
     override fun fetchAndApply(
         callback: (result: ResultData<Unit>) -> Unit,
         interval: Long
@@ -36,27 +49,46 @@ class GoogleRemoteConfig:IRemoteConfigService {
         }
         config.setConfigSettingsAsync(configSettings)
         config.fetchAndActivate().addOnCompleteListener { task ->
-            if(task.isSuccessful){
+            if (task.isSuccessful) {
                 callback.invoke(ResultData.Success())
-            }
-            else{
+            } else {
                 callback.invoke(ResultData.Failed())
             }
         }
     }
 
+    /**
+     * Get the String value associated with the given key from Firebase Remote Config.
+     * @param keyValue Key to fetch the String value.
+     * @return The String value associated with the given key.
+     */
     override fun getString(keyValue: String): String {
         return config.getString(keyValue)
     }
 
+    /**
+     * Get the Boolean value associated with the given key from Firebase Remote Config.
+     * @param keyValue Key to fetch the Boolean value.
+     * @return The Boolean value associated with the given key.
+     */
     override fun getBoolean(keyValue: String): Boolean {
         return config.getBoolean(keyValue)
     }
 
+    /**
+     * Get the Long value associated with the given key from Firebase Remote Config.
+     * @param keyValue Key to fetch the Long value.
+     * @return The Long value associated with the given key.
+     */
     override fun getLong(keyValue: String): Long {
         return config.getLong(keyValue)
     }
 
+    /**
+     * Get the Double value associated with the given key from Firebase Remote Config.
+     * @param keyValue Key to fetch the Double value.
+     * @return The Double value associated with the given key.
+     */
     override fun getDouble(keyValue: String): Double {
         return config.getDouble(keyValue)
     }
