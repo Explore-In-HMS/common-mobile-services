@@ -18,8 +18,18 @@ import android.app.Activity
 import android.graphics.Bitmap
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Interface representing a face detection API.
+ */
 interface IFaceDetectionAPI {
 
+    /**
+     * Performs face detection on the provided bitmap image.
+     * @param callback A callback function to handle the result of the face detection operation.
+     * @param activity The activity context for displaying UI elements during the face detection process.
+     * @param bitmap The bitmap image on which face detection is to be performed.
+     * @param apiKey The API key required for accessing the face detection service.
+     */
     fun faceDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,
