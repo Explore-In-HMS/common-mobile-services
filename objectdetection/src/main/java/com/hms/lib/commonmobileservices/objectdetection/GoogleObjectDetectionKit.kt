@@ -25,6 +25,9 @@ import com.google.mlkit.vision.objects.defaults.ObjectDetectorOptions
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.objectdetection.manager.IObjectDetectionAPI
 
+/**
+ * Object detection implementation for Google's ML Kit.
+ */
 class GoogleObjectDetectionKit : IObjectDetectionAPI {
 
     override fun staticImageDetection(
