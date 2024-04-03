@@ -18,13 +18,36 @@ import com.hms.lib.commonmobileservices.languagedetection.implementation.HuaweiL
 import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 import java.lang.IllegalArgumentException
 
+/**
+ * Abstract factory class for creating instances of ILanguageDetection.
+ */
 abstract class LanguageDetectionFactory {
+
+    /**
+     * Creates an instance of ILanguageDetection without specifying a confidence threshold.
+     * @return An instance of ILanguageDetection.
+     */
     abstract fun create(): ILanguageDetection
+
+    /**
+     * Creates an instance of ILanguageDetection with a specified confidence threshold.
+     * @param confidenceThreshold The confidence threshold to be applied to language detection.
+     * @return An instance of ILanguageDetection.
+     */
     abstract fun create(confidenceThreshold: Float): ILanguageDetection
 
+    /**
+     * Companion object containing utility methods for creating LanguageDetectionFactory instances.
+     */
     companion object {
-        inline fun <reified T: ILanguageDetection> createFactory(): LanguageDetectionFactory =
-            when(T::class){
+
+        /**
+         * Creates a specific LanguageDetectionFactory based on the type of ILanguageDetection.
+         * @return An instance of LanguageDetectionFactory corresponding to the ILanguageDetection type.
+         * @throws IllegalArgumentException If the ILanguageDetection type is not supported.
+         */
+        inline fun <reified T : ILanguageDetection> createFactory(): LanguageDetectionFactory =
+            when (T::class) {
                 HuaweiLanguageDetection::class -> HuaweiLanguageDetectorFactory()
                 GoogleLanguageIdentification::class -> GoogleLanguageDetectorFactory()
                 else -> throw IllegalArgumentException()
