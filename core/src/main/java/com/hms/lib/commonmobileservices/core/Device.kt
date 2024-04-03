@@ -25,21 +25,37 @@ import java.lang.reflect.Field
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 
+/**
+ * Tag used for logging related to mobile services.
+ */
 private const val TAG = "MobileService"
 
+/**
+ * Represents the type of mobile service.
+ */
 enum class MobileServiceType {
+    /** Huawei Mobile Services */
     HMS,
+
+    /** Google Mobile Services */
     GMS,
+
+    /** Non-specific or unknown mobile service */
     NON
 }
 
+/**
+ * Represents an EMUI (Emotion UI) version.
+ *
+ * @property name The name of the EMUI version.
+ * @property code The version code of the EMUI version.
+ */
 data class EmuiVersion(
     val name: String,
     val code: Int
 )
 
 object Device {
-
     /**
      * Mobile services availability of devices
      *
@@ -91,6 +107,11 @@ object Device {
         return EmuiVersion(getEmuiVersionName(), getEmuiVersionCode())
     }
 
+    /**
+     * Retrieves the EMUI version name.
+     *
+     * @return The EMUI version name.
+     */
     @SuppressLint("PrivateApi")
     private fun getEmuiVersionName(): String {
         val classType: Class<*>
@@ -114,6 +135,11 @@ object Device {
         return emuiVerName
     }
 
+    /**
+     * Retrieves the EMUI version code.
+     *
+     * @return The EMUI version code.
+     */
     private fun getEmuiVersionCode(): Int {
         var returnObj: Any? = null
         var emuiVersionCode = 0
