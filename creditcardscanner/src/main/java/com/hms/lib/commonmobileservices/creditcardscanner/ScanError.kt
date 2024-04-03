@@ -15,11 +15,23 @@ package com.hms.lib.commonmobileservices.creditcardscanner
 
 import com.hms.lib.commonmobileservices.core.ErrorModel
 
+/**
+ * A data class representing an error that may occur during a scanning operation.
+ *
+ * @property errorString A descriptive error message indicating the nature of the error.
+ * @property scanErrorType The type of the scanning error, which could be one of [ScanErrorType.USER_CANCELED],
+ * [ScanErrorType.ERROR], or [ScanErrorType.DENIED].
+ *
+ * @constructor Creates a new instance of [ScanError].
+ */
 data class ScanError(
     val errorString: String,
     val scanErrorType: ScanErrorType = ScanErrorType.ERROR
 ) : ErrorModel(errorString) {
 
+    /**
+     * Enum class representing different types of scanning errors.
+     */
     enum class ScanErrorType {
         USER_CANCELED, ERROR, DENIED
     }
