@@ -18,15 +18,33 @@ import com.hms.lib.commonmobileservices.imageclassification.implementation.IImag
 import com.huawei.hms.mlsdk.MLAnalyzerFactory
 import com.huawei.hms.mlsdk.classification.MLLocalClassificationAnalyzerSetting
 
-class HuaweiImageClassificationFactory: ImageClassificationFactory() {
+/**
+ * A factory class for creating instances of image classification using Huawei's ML Kit.
+ *
+ * This factory extends [ImageClassificationFactory] and provides methods to create instances of
+ * [IImageClassification] specifically for Huawei's ML Kit image classification.
+ */
+class HuaweiImageClassificationFactory : ImageClassificationFactory() {
+    /**
+     * Creates an instance of image classification using Huawei's ML Kit with default options.
+     *
+     * @return An instance of [IImageClassification] for performing image classification.
+     */
     override fun create(): IImageClassification {
         return HuaweiImageClassification(
             MLAnalyzerFactory.getInstance().remoteImageClassificationAnalyzer
         )
     }
 
+    /**
+     * Creates an instance of image classification using Huawei's ML Kit with custom confidence threshold.
+     *
+     * @param confidenceThreshold The confidence threshold to be applied for classification. It should be a value
+     * between 0.0 and 1.0.
+     * @return An instance of [IImageClassification] for performing image classification with the specified confidence threshold.
+     */
     override fun create(confidenceThreshold: Float): IImageClassification {
-        val threshold = confidenceThreshold.coerceIn(0.0f,1.0f)
+        val threshold = confidenceThreshold.coerceIn(0.0f, 1.0f)
         val setting = MLLocalClassificationAnalyzerSetting.Factory()
             .setMinAcceptablePossibility(threshold)
             .create()
