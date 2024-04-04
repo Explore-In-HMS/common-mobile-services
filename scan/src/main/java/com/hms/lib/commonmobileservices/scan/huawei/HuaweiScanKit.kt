@@ -25,10 +25,21 @@ import com.hms.lib.commonmobileservices.scan.manager.IScanKitAPI
 import com.hms.lib.commonmobileservices.core.ResultData
 import java.lang.Exception
 
-class HuaweiScanKit : IScanKitAPI  {
+/**
+ * Implementation of the barcode scanning API using Huawei's Scan Kit.
+ */
+class HuaweiScanKit : IScanKitAPI {
+
+    /**
+     * Performs barcode scanning.
+     * Requests permissions if necessary.
+     *
+     * @param activity The activity context.
+     * @param scanResultCode The code to be used for the result of the scan.
+     */
     override fun performScan(
         activity: Activity,
-        scanResultCode:Int
+        scanResultCode: Int
     ) {
         if(ActivityCompat.checkSelfPermission(
                 activity,
@@ -50,6 +61,13 @@ class HuaweiScanKit : IScanKitAPI  {
         }
     }
 
+    /**
+     * Parses the barcode scan result to text data.
+     *
+     * @param callback Callback to receive the parsed scan result.
+     * @param activity The activity context.
+     * @param data The intent data containing the scan result.
+     */
     override fun parseScanToTextData(
         callback: (scanToTextResult: ResultData<String>) -> Unit,
         activity: Activity,
@@ -59,8 +77,7 @@ class HuaweiScanKit : IScanKitAPI  {
             (data.getParcelableExtra(ScanUtil.RESULT) as? HmsScan)?.let {
                 callback.invoke(ResultData.Success(it.getOriginalValue()))
             }
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             callback.invoke(ResultData.Failed())
         }
     }
