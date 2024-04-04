@@ -21,7 +21,18 @@ import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.scan.manager.IScanKitAPI
 
+/**
+ * Implementation of the barcode scanning functionality using Google's barcode scanning APIs.
+ */
 class GoogleScanKit : IScanKitAPI {
+
+    /**
+     * Performs barcode scanning.
+     * Requests permissions if necessary.
+     *
+     * @param activity The activity context.
+     * @param scanResultCode The code to be used for the result of the scan.
+     */
     override fun performScan(
         activity: Activity,
         scanResultCode: Int
@@ -48,6 +59,13 @@ class GoogleScanKit : IScanKitAPI {
         }
     }
 
+    /**
+     * Parses the barcode scan result to text data.
+     *
+     * @param callback Callback to receive the parsed scan result.
+     * @param activity The activity context.
+     * @param data The intent data containing the scan result.
+     */
     override fun parseScanToTextData(
         callback: (scanToTextResult: ResultData<String>) -> Unit,
         activity: Activity,
