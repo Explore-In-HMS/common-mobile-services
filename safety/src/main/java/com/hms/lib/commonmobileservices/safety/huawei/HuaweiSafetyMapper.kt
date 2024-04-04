@@ -17,7 +17,16 @@ import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
 import com.hms.lib.commonmobileservices.safety.common.Mapper
 import com.huawei.hms.support.api.entity.safetydetect.UserDetectResponse
 
+/**
+ * Mapper class for mapping Huawei SafetyDetect API responses to SafetyServiceResponse objects.
+ */
 class HuaweiSafetyMapper : Mapper<UserDetectResponse, SafetyServiceResponse>() {
+    /**
+     * Maps a UserDetectResponse object to a SafetyServiceResponse object.
+     *
+     * @param from The UserDetectResponse object to map from.
+     * @return The mapped SafetyServiceResponse object.
+     */
     override fun map(from: UserDetectResponse): SafetyServiceResponse = SafetyServiceResponse(
         responseToken = from.responseToken
     )

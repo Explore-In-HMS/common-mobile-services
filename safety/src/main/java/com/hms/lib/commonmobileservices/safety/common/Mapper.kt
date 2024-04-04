@@ -13,6 +13,15 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
+/**
+ * Abstract Mapper class that defines a map function to convert input of type [I] to output of type [O].
+ */
 abstract class Mapper<I, O> {
+    /**
+     * Abstract function to map input of type [I] to output of type [O].
+     *
+     * @param from The input object of type [I].
+     * @return The mapped output object of type [O].
+     */
     abstract fun map(from: I): O
 }

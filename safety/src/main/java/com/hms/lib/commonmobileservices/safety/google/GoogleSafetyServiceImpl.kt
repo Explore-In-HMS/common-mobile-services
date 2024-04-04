@@ -30,31 +30,44 @@ import java.nio.charset.StandardCharsets
 import java.security.NoSuchAlgorithmException
 import java.security.SecureRandom
 
+/**
+ * Implementation of the SafetyService interface for Google Mobile Services.
+ * This class provides functionality related to safety services offered by Google Mobile Services,
+ * such as user detection, root detection, checking for malicious apps, enabling app checks,
+ * URL checking, and shutting down URL checks.
+ *
+ * @param context The application context.
+ */
 class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
 
     private val mapper: GoogleSafetyMapper = GoogleSafetyMapper()
     private val rootDetectMapper: Mapper<JSONObject, RootDetectionResponse> = GoogleRootDetectMapper()
 
-    override fun userDetect(appKey: String,callback: ResultCallback<SafetyServiceResponse>){
-
-        /**
-         * App key value is the SITE_API_KEY value in Google Mobile Services.
-         */
+    /**
+     * Initiates user detection using SafetyNet API.
+     *
+     * @param appKey The SITE_API_KEY value in Google Mobile Services.
+     * @param callback The callback to handle the result of the user detection operation.
+     */
+    override fun userDetect(appKey: String, callback: ResultCallback<SafetyServiceResponse>) {
         SafetyNet.getClient(context).verifyWithRecaptcha(appKey)
-            .addOnSuccessListener(){
-                val responseToken = it.tokenResult
-                if (responseToken != null && responseToken.isNotEmpty()){
-                    callback.onSuccess(mapper.map(it))
+            .addOnSuccessListener { response ->
+                val responseToken = response.tokenResult
+                if (responseToken != null && responseToken.isNotEmpty()) {
+                    callback.onSuccess(mapper.map(response))
                 }
-            }.addOnFailureListener(){
-                callback.onFailure(it)
+            }.addOnFailureListener { exception ->
+                callback.onFailure(exception)
             }
     }
 
-    override fun rootDetection(
-        appKey: String,
-        callback: ResultCallback<RootDetectionResponse>
-    ){
+    /**
+     * Initiates root detection using SafetyNet API.
+     *
+     * @param appKey The app key for the SafetyNet API.
+     * @param callback The callback to handle the result of the root detection operation.
+     */
+    override fun rootDetection(appKey: String, callback: ResultCallback<RootDetectionResponse>) {
         val nonce = ByteArray(24)
         try {
             val random: SecureRandom = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -68,18 +81,23 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         }
 
         SafetyNet.getClient(context).attest(nonce, appKey)
-            .addOnSuccessListener{ result ->
+            .addOnSuccessListener { result ->
                 val jwsStr = result.jwsResult
                 val jwsSplit = jwsStr?.split(".")?.toTypedArray()
                 val jwsPayloadStr = jwsSplit?.get(1)
                 val payloadDetail = String(Base64.decode(jwsPayloadStr?.toByteArray(StandardCharsets.UTF_8), Base64.URL_SAFE), StandardCharsets.UTF_8)
                 val jsonObject = JSONObject(payloadDetail)
                 callback.onSuccess(rootDetectMapper.map(jsonObject))
-            }.addOnFailureListener{ e->
-                callback.onFailure(e)
-        }
+            }.addOnFailureListener { exception ->
+                callback.onFailure(exception)
+            }
     }
 
+    /**
+     * Retrieves a list of harmful apps using SafetyNet API.
+     *
+     * @param callback The callback to handle the result of the malicious apps list operation.
+     */
     override fun getMaliciousAppsList(callback: ResultCallback<CommonMaliciousAppResponse>) {
         SafetyNet.getClient(context).listHarmfulApps().addOnSuccessListener {
             callback.onSuccess(it.toCommonMaliciousAppList())
@@ -88,7 +106,12 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
-    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>){
+    /**
+     * Checks whether app checks are enabled using SafetyNet API.
+     *
+     * @param callback The callback to handle the result of the app checks enabled operation.
+     */
+    override fun isAppChecksEnabled(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
         SafetyNet.getClient(context).isVerifyAppsEnabled.addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
         }.addOnFailureListener {
@@ -96,6 +119,11 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
+    /**
+     * Enables app checks using SafetyNet API.
+     *
+     * @param callback The callback to handle the result of the enabling app checks operation.
+     */
     override fun enableAppsCheck(callback: ResultCallback<CommonVerifyAppChecksEnabledRes>) {
         SafetyNet.getClient(context).enableVerifyApps().addOnSuccessListener {
             callback.onSuccess(it.toCommonVerifyAppUserEnabled())
@@ -104,6 +132,11 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         }
     }
 
+    /**
+     * Initiates URL check using SafetyNet API.
+     *
+     * @return A Work object representing the asynchronous operation.
+     */
     override fun initURLCheck(): Work<Unit> {
         val worker = Work<Unit>()
         SafetyNet.getClient(context).initSafeBrowsing().addOnSuccessListener {
@@ -114,19 +147,32 @@ class GoogleSafetyServiceImpl(private val context: Context): SafetyService {
         return worker
     }
 
+    /**
+     * Performs URL check using SafetyNet API.
+     *
+     * @param url The URL to be checked.
+     * @param appKey The app key for the SafetyNet API.
+     * @param threatType The threat type to be checked.
+     * @param callback The callback to handle the result of the URL check operation.
+     */
     override fun urlCheck(
         url: String,
         appKey: String,
         threatType: Int,
         callback: ResultCallback<CommonUrlCheckRes>
     ) {
-        SafetyNet.getClient(context).lookupUri(url,appKey,threatType).addOnSuccessListener {
+        SafetyNet.getClient(context).lookupUri(url, appKey, threatType).addOnSuccessListener {
             callback.onSuccess(it.toCommonURLCheck())
         }.addOnFailureListener {
             callback.onFailure(it)
         }
     }
 
+    /**
+     * Shuts down URL check using SafetyNet API.
+     *
+     * @return A Work object representing the asynchronous operation.
+     */
     override fun shutDownUrlCheck(): Work<Unit> {
         val worker = Work<Unit>()
         SafetyNet.getClient(context).shutdownSafeBrowsing().addOnSuccessListener {

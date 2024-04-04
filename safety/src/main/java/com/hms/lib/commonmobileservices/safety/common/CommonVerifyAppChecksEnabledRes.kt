@@ -13,8 +13,22 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
-class CommonVerifyAppChecksEnabledRes{
-    var result: Boolean?=null
-    var errorReason: String?=null
-    var rtnCode: Int?=null
+/**
+ * Class representing a common response containing information about whether app checks are enabled.
+ */
+class CommonVerifyAppChecksEnabledRes {
+    /**
+     * Boolean value indicating whether app checks are enabled.
+     */
+    var result: Boolean? = null
+
+    /**
+     * Error reason in case of failure.
+     */
+    var errorReason: String? = null
+
+    /**
+     * Return code indicating the status of the response.
+     */
+    var rtnCode: Int? = null
 }

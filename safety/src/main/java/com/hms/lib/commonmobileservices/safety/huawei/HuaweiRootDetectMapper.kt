@@ -17,7 +17,16 @@ import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.common.Mapper
 import org.json.JSONObject
 
-class HuaweiRootDetectMapper  : Mapper<JSONObject, RootDetectionResponse>(){
+/**
+ * Mapper class for mapping Huawei SafetyDetect root detection API responses to RootDetectionResponse objects.
+ */
+class HuaweiRootDetectMapper : Mapper<JSONObject, RootDetectionResponse>() {
+    /**
+     * Maps a JSONObject representing root detection response to a RootDetectionResponse object.
+     *
+     * @param from The JSONObject representing root detection response to map from.
+     * @return The mapped RootDetectionResponse object.
+     */
     override fun map(from: JSONObject): RootDetectionResponse = RootDetectionResponse(
         apkDigestSha256 = from.getString("apkDigestSha256"),
         apkPackageName = from.getString("apkPackageName"),

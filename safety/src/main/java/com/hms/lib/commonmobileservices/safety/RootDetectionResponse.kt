@@ -13,6 +13,15 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety
 
+/**
+ * Data class representing the response from root detection.
+ *
+ * @property apkDigestSha256 The SHA-256 digest of the APK.
+ * @property apkPackageName The package name of the APK.
+ * @property basicIntegrity Indicates whether basic integrity check passed.
+ * @property nonce A string used to differentiate the response.
+ * @property timestampMs The timestamp of the response in milliseconds.
+ */
 data class RootDetectionResponse(
     val apkDigestSha256: String,
     val apkPackageName: String,
