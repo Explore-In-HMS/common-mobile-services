@@ -18,16 +18,26 @@ import com.hms.lib.commonmobileservices.site.SiteServiceReturn
 import com.hms.lib.commonmobileservices.site.common.Mapper
 import com.huawei.hms.site.api.model.Site
 
-class HuaweiSiteMapper : Mapper<SiteServiceReturn, Site>(){
+/**
+ * Mapper class for mapping a [Site] entity to a [SiteServiceReturn] entity.
+ */
+class HuaweiSiteMapper : Mapper<SiteServiceReturn, Site>() {
+
+    /**
+     * Maps a [Site] entity to a [SiteServiceReturn] entity.
+     *
+     * @param from The source [Site] entity.
+     * @return The mapped [SiteServiceReturn] entity.
+     */
     override fun mapToEntity(from: Site): SiteServiceReturn = SiteServiceReturn(
         id = from.siteId,
         name = from.name,
         locationLat = from.location.lat,
         locationLong = from.location.lng,
-        phoneNumber =  from.poi.internationalPhone,
+        phoneNumber = from.poi.internationalPhone,
         formatAddress = from.formatAddress,
         distance = from.distance,
-        image = ArrayList(),
+        image = ArrayList(), // Initialize as empty list
         averagePrice = from.poi.priceLevel.toDouble(),
         point = from.poi.rating
     )
