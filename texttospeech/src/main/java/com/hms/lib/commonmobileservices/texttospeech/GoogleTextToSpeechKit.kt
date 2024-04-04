@@ -20,12 +20,24 @@ import android.util.Log
 import com.hms.lib.commonmobileservices.texttospeech.manager.ITextToSpeechAPI
 import java.util.*
 
+/**
+ * Implementation of the text-to-speech API using Google's text-to-speech service.
+ */
 class GoogleTextToSpeechKit : ITextToSpeechAPI {
 
     companion object {
         private var tts: TextToSpeech? = null
     }
 
+    /**
+     * Initiates text-to-speech with the provided text.
+     *
+     * @param text The text to be converted to speech.
+     * @param activity The activity context.
+     * @param apiKey Not used in Google Text-to-Speech.
+     * @param languageCode The language code for the text.
+     * @param personType Not used in Google Text-to-Speech.
+     */
     override fun runTextToSpeech(
         text: String,
         activity: Activity,
@@ -34,9 +46,7 @@ class GoogleTextToSpeechKit : ITextToSpeechAPI {
         personType: String
     ) {
         val localeLanguageCode = Locale(languageCode)
-        tts = TextToSpeech(
-            activity.applicationContext
-        ) { status ->
+        tts = TextToSpeech(activity.applicationContext) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 tts?.let {
                     it.language = localeLanguageCode
@@ -49,6 +59,9 @@ class GoogleTextToSpeechKit : ITextToSpeechAPI {
         }
     }
 
+    /**
+     * Stops the text-to-speech engine.
+     */
     override fun stopTextToSpeech() {
         tts?.shutdown()
     }
