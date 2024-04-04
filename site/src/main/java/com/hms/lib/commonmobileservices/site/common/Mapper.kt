@@ -14,7 +14,26 @@
 
 package com.hms.lib.commonmobileservices.site.common
 
+/**
+ * Abstract class for mapping objects from one type to another.
+ *
+ * @param I The input type to be mapped to.
+ * @param O The output type to be mapped from.
+ */
 abstract class Mapper<I, O> {
+    /**
+     * Maps an object of type [O] to an object of type [I].
+     *
+     * @param from The object to be mapped from.
+     * @return The mapped object of type [I].
+     */
     abstract fun mapToEntity(from: O): I
+
+    /**
+     * Maps a list of objects of type [O] to a list of objects of type [I].
+     *
+     * @param from The list of objects to be mapped from.
+     * @return The list of mapped objects of type [I].
+     */
     fun mapToEntityList(from: List<O>): List<I> = from.map { mapToEntity(it) }
 }
