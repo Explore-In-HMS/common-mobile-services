@@ -20,23 +20,30 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.textrecognition.common.RecognitionResult
 
+/**
+ * Manages text recognition using Huawei or Google text recognition services based on the mobile service type.
+ */
 class HuaweiGoogleTextRecognitionManager(context: Context) {
     private var textRecognitionService: ITextRecognitionAPI? = null
 
     init {
+        // Get the appropriate text recognition service based on the mobile service type
         textRecognitionService = TextRecognitionFactory().getMLService(
-            Device.getMobileServiceType(
-                context,
-                MobileServiceType.HMS
-            )
+            Device.getMobileServiceType(context, MobileServiceType.HMS)
         )
     }
 
+    /**
+     * Performs text recognition on the provided bitmap image.
+     *
+     * @param bitmap The bitmap image containing the text to be recognized.
+     * @param callback Callback to receive the recognition result.
+     */
     fun textRecognition(
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
-
     ) {
+        // Delegate text recognition to the appropriate service
         textRecognitionService?.textRecognition(bitmap, callback)
     }
 }
