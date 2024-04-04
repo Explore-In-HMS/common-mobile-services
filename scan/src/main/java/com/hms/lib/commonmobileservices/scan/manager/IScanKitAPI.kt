@@ -18,7 +18,24 @@ import android.content.Intent
 import android.graphics.Bitmap
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Interface for defining common methods required for barcode scanning.
+ */
 interface IScanKitAPI {
-    fun performScan(activity:Activity,scanResultCode:Int)
-    fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent)
+    /**
+     * Performs a barcode scan.
+     *
+     * @param activity The activity context.
+     * @param scanResultCode The result code to be used for the scan result.
+     */
+    fun performScan(activity: Activity, scanResultCode: Int)
+
+    /**
+     * Parses the barcode scan result into text data.
+     *
+     * @param callback Callback to receive the parsed scan result.
+     * @param activity The activity context.
+     * @param data The intent data containing the scan result.
+     */
+    fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit, activity: Activity, data: Intent)
 }

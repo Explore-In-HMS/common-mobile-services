@@ -17,7 +17,16 @@ import com.hms.lib.commonmobileservices.scan.huawei.HuaweiScanKit
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.scan.google.GoogleScanKit
 
+/**
+ * Factory class for obtaining the appropriate barcode scanning service based on the mobile service type.
+ */
 class ScanKitFactory {
+    /**
+     * Gets the barcode scanning service based on the mobile service type.
+     *
+     * @param type The mobile service type.
+     * @return An instance of [IScanKitAPI] for the specified mobile service type.
+     */
     fun getScanKitService(type: MobileServiceType): IScanKitAPI? {
         return when(type){
             MobileServiceType.HMS -> HuaweiScanKit()
