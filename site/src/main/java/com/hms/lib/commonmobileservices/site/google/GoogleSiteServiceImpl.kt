@@ -29,7 +29,13 @@ import com.hms.lib.commonmobileservices.site.common.Mapper
 import org.json.JSONException
 import org.json.JSONObject
 
-
+/**
+ * Implementation of the SiteService interface for Google Places API.
+ * This class handles various operations related to retrieving information about places using Google Places API.
+ *
+ * @param context The context used for Volley request queue initialization.
+ * @param apiKey The API key for accessing Google Places API.
+ */
 class GoogleSiteServiceImpl(
     context: Context,
     private val apiKey: String? = null
@@ -42,6 +48,20 @@ class GoogleSiteServiceImpl(
 
     var googlePlacesURL: StringBuilder? = java.lang.StringBuilder("")
 
+    /**
+     * Retrieves nearby places based on the provided parameters.
+     *
+     * @param siteLat Latitude of the reference point.
+     * @param siteLng Longitude of the reference point.
+     * @param query Optional query string to filter results.
+     * @param hwpoiType Optional type of places to search for.
+     * @param radius Optional radius for searching nearby places.
+     * @param language Optional language code for localization.
+     * @param pageIndex Optional index of the page for paginated results.
+     * @param pageSize Optional size of the page for paginated results.
+     * @param strictBounds Optional flag indicating whether to strictly restrict the search within the specified bounds.
+     * @param callback Callback function to handle the result of the operation.
+     */
     override fun getNearbyPlaces(
         siteLat: Double,
         siteLng: Double,
@@ -86,6 +106,19 @@ class GoogleSiteServiceImpl(
         requestQueue.add(jsonObjectRequest)
     }
 
+    /**
+     * Searches for places based on a text query.
+     *
+     * @param query The text query to search for places.
+     * @param siteLat Latitude of the reference point (optional).
+     * @param siteLng Longitude of the reference point (optional).
+     * @param hwpoiType Optional type of places to search for.
+     * @param radius Optional radius for searching places.
+     * @param language Optional language code for localization.
+     * @param pageIndex Optional index of the page for paginated results.
+     * @param pageSize Optional size of the page for paginated results.
+     * @param callback Callback function to handle the result of the operation.
+     */
     override fun getTextSearchPlaces(
         query: String,
         siteLat: Double?,
@@ -134,6 +167,14 @@ class GoogleSiteServiceImpl(
         requestQueue.add(jsonObjectRequest)
     }
 
+    /**
+     * Retrieves detailed information about a specific place.
+     *
+     * @param siteID The ID of the place to retrieve details for.
+     * @param areaLanguage Optional language code for localization.
+     * @param childrenNode Optional flag indicating whether to include children nodes in the response.
+     * @param callback Callback function to handle the result of the operation.
+     */
     override fun getDetailSearch(
         siteID: String,
         areaLanguage: String?,
@@ -174,6 +215,17 @@ class GoogleSiteServiceImpl(
         requestQueue.add(jsonObjectRequest)
     }
 
+    /**
+     * Provides suggestions for places based on a partial query string.
+     *
+     * @param keyword The partial query string for place suggestions.
+     * @param siteLat Latitude of the reference point (optional).
+     * @param siteLng Longitude of the reference point (optional).
+     * @param childrenNode Optional flag indicating whether to include children nodes in the response.
+     * @param areaRadius Optional radius for searching suggestions.
+     * @param areaLanguage Optional language code for localization.
+     * @param callback Callback function to handle the result of the operation.
+     */
     override fun placeSuggestion(
         keyword: String,
         siteLat: Double?,
@@ -226,6 +278,14 @@ class GoogleSiteServiceImpl(
         requestQueue.add(jsonObjectRequest)
     }
 
+    /**
+     * Handles the response from the Google Places API when the result is a JSON array.
+     *
+     * @param response The JSON object representing the API response.
+     * @param mapper The mapper used to convert JSON objects to domain objects.
+     * @param jsonArrayName The name of the JSON array containing the results.
+     * @return A ResultData object containing the list of domain objects or an error message.
+     */
     private fun handlePlaceApiJsonArrayResult(
         response: JSONObject,
         mapper: Mapper<SiteServiceReturn, JSONObject>,
@@ -244,6 +304,14 @@ class GoogleSiteServiceImpl(
         }
     }
 
+    /**
+     * Handles the response from the Google Places API when the result is a JSON object.
+     *
+     * @param response The JSON object representing the API response.
+     * @param mapper The mapper used to convert JSON objects to domain objects.
+     * @param jsonObjectName The name of the JSON object containing the result.
+     * @return A ResultData object containing the domain object or an error message.
+     */
     private fun handlePlaceApiJsonObjectResult(
         response: JSONObject,
         mapper: Mapper<SiteServiceReturn, JSONObject>,
@@ -258,6 +326,13 @@ class GoogleSiteServiceImpl(
         }
     }
 
+    /**
+     * Determines the result of the Google Places API request based on the status code.
+     *
+     * @param status The status code returned by the API response.
+     * @param manageSuccessState A lambda function to manage the success state if the status is "OK".
+     * @return A ResultData object containing either the success result or an error message.
+     */
     private fun <T> getPlaceApiResult(
         status: String,
         manageSuccessState: () -> ResultData<T>
@@ -272,6 +347,12 @@ class GoogleSiteServiceImpl(
         }
     }
 
+    /**
+     * Handles errors that occur during the Google Places API request.
+     *
+     * @param e The exception representing the error.
+     * @return A ResultData object containing the error message.
+     */
     private fun handlePlaceApiError(e: Exception): ResultData.Failed {
         return ResultData.Failed(
             error = e.localizedMessage,
