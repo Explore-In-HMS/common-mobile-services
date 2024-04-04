@@ -21,18 +21,37 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * A manager class for handling barcode scanning using Huawei and Google Scan Kits.
+ * This class selects the appropriate Scan Kit service based on the device's Mobile Service Type.
+ *
+ * @property context The context used to determine the Mobile Service Type.
+ */
 class HuaweiGoogleScanManager(context: Context) {
-    private var scanKitService: IScanKitAPI ?=null
+    private var scanKitService: IScanKitAPI? = null
 
     init {
         scanKitService = ScanKitFactory().getScanKitService(Device.getMobileServiceType(context, MobileServiceType.HMS))!!
     }
 
-    fun performScan(activity:Activity, resultCode:Int) {
-        scanKitService?.performScan(activity,resultCode)
+    /**
+     * Performs a barcode scan.
+     *
+     * @param activity The activity context.
+     * @param resultCode The result code to be used for the scan result.
+     */
+    fun performScan(activity: Activity, resultCode: Int) {
+        scanKitService?.performScan(activity, resultCode)
     }
 
-    fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent){
-        scanKitService?.parseScanToTextData(callback,activity,data)
+    /**
+     * Parses the barcode scan result into text data.
+     *
+     * @param callback Callback to receive the parsed scan result.
+     * @param activity The activity context.
+     * @param data The intent data containing the scan result.
+     */
+    fun parseScanToTextData(callback: (scanToTextResult: ResultData<String>) -> Unit, activity: Activity, data: Intent) {
+        scanKitService?.parseScanToTextData(callback, activity, data)
     }
 }
