@@ -28,12 +28,33 @@ import com.huawei.hms.site.api.SearchServiceFactory
 import com.huawei.hms.site.api.model.*
 import java.net.URLEncoder
 
+/**
+ * Implementation of [SiteService] for Huawei Map Kit.
+ * This service interacts with the Huawei Site Kit APIs to perform various location-based operations.
+ *
+ * @property context The application context.
+ * @property apiKey The API key used for authentication (optional).
+ */
 class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteService {
 
     private val siteService: SearchService =
         SearchServiceFactory.create(context, URLEncoder.encode(apiKey, "utf-8"))
     private val mapper: Mapper<SiteServiceReturn, Site> = HuaweiSiteMapper()
 
+    /**
+     * Retrieves nearby places based on the specified criteria.
+     *
+     * @param siteLat The latitude of the center point for the search.
+     * @param siteLng The longitude of the center point for the search.
+     * @param keyword The keyword to search for (optional).
+     * @param hwpoiType The type of the place to search for (optional).
+     * @param areaRadius The search radius in meters (optional).
+     * @param areaLanguage The language of the search results (optional).
+     * @param pageIndex The index of the current page of results (optional).
+     * @param pageSize The number of results to return per page (optional).
+     * @param strictBounds Indicates whether the search should strictly adhere to the specified bounds (optional).
+     * @param callback The callback function to be invoked with the search results.
+     */
     override fun getNearbyPlaces(
         siteLat: Double,
         siteLng: Double,
@@ -76,6 +97,19 @@ class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteServ
 
     }
 
+    /**
+     * Searches for places based on the specified keyword.
+     *
+     * @param keyword The keyword to search for.
+     * @param siteLat The latitude of the reference point (optional).
+     * @param siteLng The longitude of the reference point (optional).
+     * @param hwpoiType The type of the place to search for (optional).
+     * @param areaRadius The search radius in meters (optional).
+     * @param areaLanguage The language of the search results (optional).
+     * @param pageIndex The index of the current page of results (optional).
+     * @param pageSize The number of results to return per page (optional).
+     * @param callback The callback function to be invoked with the search results.
+     */
     override fun getTextSearchPlaces(
         keyword: String,
         siteLat: Double?,
@@ -116,6 +150,14 @@ class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteServ
             })
     }
 
+    /**
+     * Retrieves detailed information about a specific place.
+     *
+     * @param siteID The ID of the place to retrieve details for.
+     * @param areaLanguage The language of the details (optional).
+     * @param childrenNode Indicates whether to retrieve child nodes (optional).
+     * @param callback The callback function to be invoked with the place details.
+     */
     override fun getDetailSearch(
         siteID: String,
         areaLanguage: String?,
@@ -142,6 +184,17 @@ class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteServ
             })
     }
 
+    /**
+     * Provides place suggestions based on the specified keyword.
+     *
+     * @param keyword The keyword to search for.
+     * @param siteLat The latitude of the reference point (optional).
+     * @param siteLng The longitude of the reference point (optional).
+     * @param childrenNode Indicates whether to retrieve child nodes (optional).
+     * @param areaRadius The search radius in meters (optional).
+     * @param areaLanguage The language of the search results (optional).
+     * @param callback The callback function to be invoked with the place suggestions.
+     */
     override fun placeSuggestion(
         keyword: String,
         siteLat: Double?,
@@ -177,6 +230,12 @@ class HuaweiSiteServiceImpl(context: Context, apiKey: String? = null) : SiteServ
             })
     }
 
+    /**
+     * Handles errors that occur during Site Kit API calls.
+     *
+     * @param searchStatus The status of the search operation.
+     * @return A [ResultData.Failed] instance representing the error.
+     */
     private fun handleSiteKitError(searchStatus: SearchStatus): ResultData.Failed {
         return ResultData.Failed(
             error = searchStatus.errorMessage,
