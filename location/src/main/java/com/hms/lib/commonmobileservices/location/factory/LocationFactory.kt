@@ -19,8 +19,20 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.location.CommonLocationClient
 
+/**
+ * Factory class for creating location clients.
+ */
 class LocationFactory {
     companion object {
+        /**
+         * Retrieves the appropriate location client based on the preferred type and device capabilities.
+         *
+         * @param activity The activity context.
+         * @param lifecycle The lifecycle of the activity.
+         * @param needBackgroundPermissions Flag indicating whether background permissions are needed.
+         * @param preferredType The preferred type of location service.
+         * @return A CommonLocationClient instance representing the location client.
+         */
         fun getLocationClient(
             activity: Activity,
             lifecycle: Lifecycle,
@@ -33,11 +45,13 @@ class LocationFactory {
                     lifecycle,
                     needBackgroundPermissions
                 )
+
                 MobileServiceType.GMS -> GoogleLocationClientImpl(
                     activity,
                     lifecycle,
                     needBackgroundPermissions
                 )
+
                 MobileServiceType.NON -> null
             }
         }

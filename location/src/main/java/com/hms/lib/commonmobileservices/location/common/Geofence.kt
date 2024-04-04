@@ -13,9 +13,15 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+/**
+ * A class representing a geofence.
+ *
+ * This class encapsulates the attributes of a geofence, including its unique ID, conversion types, validity duration,
+ * geographical coordinates, radius, notification interval, and dwell delay time.
+ */
 class Geofence {
 
-    companion object{
+    companion object {
         const val ENTER_GEOFENCE_CONVERSION = 1
         const val EXIT_GEOFENCE_CONVERSION = 2
         const val DWELL_GEOFENCE_CONVERSION = 4

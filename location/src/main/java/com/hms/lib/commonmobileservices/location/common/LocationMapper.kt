@@ -17,6 +17,11 @@ package com.hms.lib.commonmobileservices.location.common
 import com.google.android.gms.location.*
 import com.huawei.hms.location.*
 
+/**
+ * Extension function to convert a GeofenceRequestRes object to an HMS GeofenceRequest.
+ *
+ * @return The HMS GeofenceRequest object.
+ */
 fun GeofenceRequestRes.toHmsGeofenceReq(): GeofenceRequest {
     val builder = GeofenceRequest.Builder()
     geofenceList?.let { builder.createGeofenceList(it.map { it.toHMSGeofence() }) }
@@ -25,6 +30,11 @@ fun GeofenceRequestRes.toHmsGeofenceReq(): GeofenceRequest {
     return builder.build()
 }
 
+/**
+ * Extension function to convert a GeofenceRequestRes object to a GMS GeofencingRequest.
+ *
+ * @return The GMS GeofencingRequest object.
+ */
 fun GeofenceRequestRes.toGmsGeofenceReq(): GeofencingRequest {
     val builder = GeofencingRequest.Builder()
     geofenceList?.let { builder.addGeofences(it.map { it.toGMSGeofence() }) }
@@ -33,7 +43,11 @@ fun GeofenceRequestRes.toGmsGeofenceReq(): GeofencingRequest {
     return builder.build()
 }
 
-
+/**
+ * Extension function to convert a Geofence object to an HMS Geofence.
+ *
+ * @return The HMS Geofence object.
+ */
 fun Geofence.toHMSGeofence(): com.huawei.hms.location.Geofence {
     val builder = com.huawei.hms.location.Geofence.Builder()
     uniqueId?.let { builder.setUniqueId(it) }
@@ -51,6 +65,11 @@ fun Geofence.toHMSGeofence(): com.huawei.hms.location.Geofence {
     return builder.build()
 }
 
+/**
+ * Extension function to convert a Geofence object to a GMS Geofence.
+ *
+ * @return The GMS Geofence object.
+ */
 fun Geofence.toGMSGeofence(): com.google.android.gms.location.Geofence {
     val builder = com.google.android.gms.location.Geofence.Builder()
     uniqueId?.let { builder.setRequestId(it) }
@@ -68,6 +87,11 @@ fun Geofence.toGMSGeofence(): com.google.android.gms.location.Geofence {
     return builder.build()
 }
 
+/**
+ * Extension function to convert an HMS Geofence object to a common Geofence object.
+ *
+ * @return The common Geofence object.
+ */
 fun com.huawei.hms.location.Geofence.toCommonGeofence(): Geofence {
     return Geofence()
         .also { it.uniqueId = uniqueId }.also { it.conversions = 0 }.also { it.validDuration = 0 }
@@ -76,6 +100,11 @@ fun com.huawei.hms.location.Geofence.toCommonGeofence(): Geofence {
 
 }
 
+/**
+ * Extension function to convert an HMS Geofence object to a common Geofence object.
+ *
+ * @return The common Geofence object.
+ */
 fun com.google.android.gms.location.Geofence.toCommonGeofence(): Geofence {
     return Geofence()
         .also { it.uniqueId = requestId }.also { it.conversions = 0 }.also { it.validDuration = 0 }
@@ -83,6 +112,11 @@ fun com.google.android.gms.location.Geofence.toCommonGeofence(): Geofence {
         .also { it.notificationInterval = 0 }.also { it.dwellDelayTime = -1 }
 }
 
+/**
+ * Extension function to convert a GeofenceData object to a common GeofencingData object.
+ *
+ * @return The common GeofencingData object.
+ */
 fun GeofenceData.toCommonGeofenceData(): GeofencingData {
     return GeofencingData(
         errorCode,
@@ -93,6 +127,11 @@ fun GeofenceData.toCommonGeofenceData(): GeofencingData {
     )
 }
 
+/**
+ * Extension function to convert a GeofencingEvent object to a common GeofencingData object.
+ *
+ * @return The common GeofencingData object.
+ */
 fun GeofencingEvent.toCommonGeofenceData(): GeofencingData? {
     return triggeringGeofences?.let { geofences ->
         triggeringLocation?.let { location ->
@@ -106,15 +145,29 @@ fun GeofencingEvent.toCommonGeofenceData(): GeofencingData? {
 
 
 //ActivityRecognition Mapper
-
+/**
+ * Extension function to convert a CommonActivityConversionReq object to an HMS ActivityConversionRequest.
+ *
+ * @return The HMS ActivityConversionRequest object.
+ */
 fun CommonActivityConversionReq.toHMSActivityConversionReq(): ActivityConversionRequest {
     return ActivityConversionRequest(activityConversions!!.let { it -> it.map { it.toHMSActivityConversionInfo() } })
 }
 
+/**
+ * Extension function to convert a CommonActivityConversionReq object to a GMS ActivityTransitionRequest.
+ *
+ * @return The GMS ActivityTransitionRequest object.
+ */
 fun CommonActivityConversionReq.toGMSActivityConversionReq(): ActivityTransitionRequest {
     return ActivityTransitionRequest(activityConversions!!.let { it -> it.map { it.toGMSActivityConversionInfo() } })
 }
 
+/**
+ * Extension function to convert a CommonActivityConversionInfo object to an HMS ActivityConversionInfo.
+ *
+ * @return The HMS ActivityConversionInfo object.
+ */
 fun CommonActivityConversionInfo.toHMSActivityConversionInfo(): ActivityConversionInfo {
     val activityConversionInfo = ActivityConversionInfo.Builder()
     activityType?.let { activityConversionInfo.setActivityType(it) }
@@ -123,6 +176,11 @@ fun CommonActivityConversionInfo.toHMSActivityConversionInfo(): ActivityConversi
 
 }
 
+/**
+ * Extension function to convert a CommonActivityConversionInfo object to a GMS ActivityTransition.
+ *
+ * @return The GMS ActivityTransition object.
+ */
 fun CommonActivityConversionInfo.toGMSActivityConversionInfo(): ActivityTransition {
     val activityConversionInfo = ActivityTransition.Builder()
     activityType?.let { activityConversionInfo.setActivityType(it) }
@@ -130,6 +188,11 @@ fun CommonActivityConversionInfo.toGMSActivityConversionInfo(): ActivityTransiti
     return activityConversionInfo.build()
 }
 
+/**
+ * Extension function to convert an ActivityConversionResponse object to a CommonActivityConversionResponse.
+ *
+ * @return The CommonActivityConversionResponse object.
+ */
 fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActivityConversionResponse {
     return CommonActivityConversionResponse().also { it ->
         it.getActivityConversionDataList =
@@ -137,34 +200,64 @@ fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActiv
     }
 }
 
+/**
+ * Extension function to convert an ActivityTransitionResult object to a CommonActivityConversionResponse.
+ *
+ * @return The CommonActivityConversionResponse object.
+ */
 fun ActivityTransitionResult.toCommonActivityConversionResponse(): CommonActivityConversionResponse {
     return CommonActivityConversionResponse().also { it ->
         it.getActivityConversionDataList = transitionEvents.map { it.toCommonConversionData() }
     }
 }
 
+/**
+ * Extension function to convert an ActivityConversionData object to a CommonActivityConversionData.
+ *
+ * @return The CommonActivityConversionData object.
+ */
 fun ActivityConversionData.toCommonConversionData(): CommonActivityConversionData {
     return CommonActivityConversionData().also { it.getActivityType = activityType }
         .also { it.getConversionType = conversionType }
         .also { it.getElapsedTimeFromReboot = elapsedTimeFromReboot }
 }
 
+/**
+ * Extension function to convert an ActivityTransitionEvent object to a CommonActivityConversionData.
+ *
+ * @return The CommonActivityConversionData object.
+ */
 fun ActivityTransitionEvent.toCommonConversionData(): CommonActivityConversionData {
     return CommonActivityConversionData().also { it.getActivityType = activityType }
         .also { it.getConversionType = transitionType }
         .also { it.getElapsedTimeFromReboot = elapsedRealTimeNanos }
 }
 
+/**
+ * Extension function to convert an ActivityIdentificationData object to a CommonActivityIdentificationData.
+ *
+ * @return The CommonActivityIdentificationData object.
+ */
 fun ActivityIdentificationData.toCommonActivityIdentificationData(): CommonActivityIdentificationData {
     return CommonActivityIdentificationData().also { it.possibility = possibility }
         .also { it.identificationActivity = identificationActivity }
 }
 
+/**
+ * Extension function to convert a DetectedActivity object to a CommonActivityIdentificationData.
+ *
+ * @return The CommonActivityIdentificationData object.
+ */
 fun DetectedActivity.toCommonActivityIdentificationData(): CommonActivityIdentificationData {
     return CommonActivityIdentificationData().also { it.possibility = confidence }
         .also { it.identificationActivity = type }
 }
 
+/**
+ * Extension function to convert an ActivityIdentificationResponse object to a CommonActivityIdentificationResponse.
+ *
+ * @return The CommonActivityIdentificationResponse object.
+ */
 fun ActivityIdentificationResponse.toCommonActivityIdentificationResponse(): CommonActivityIdentificationResponse {
     return CommonActivityIdentificationResponse().also {
         it.activityIdentificationDataList =
@@ -176,6 +269,11 @@ fun ActivityIdentificationResponse.toCommonActivityIdentificationResponse(): Com
         }.also { it.time = time }.also { it.elapsedTimeFromReboot = elapsedTimeFromReboot }
 }
 
+/**
+ * Extension function to convert an ActivityRecognitionResult object to a CommonActivityIdentificationResponse.
+ *
+ * @return The CommonActivityIdentificationResponse object.
+ */
 fun ActivityRecognitionResult.toCommonActivityIdentificationResponse(): CommonActivityIdentificationResponse {
     return CommonActivityIdentificationResponse().also {
         it.activityIdentificationDataList =

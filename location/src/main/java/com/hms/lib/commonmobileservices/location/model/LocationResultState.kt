@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.model
 
+/**
+ * Enum class representing the state of a location result.
+ */
 enum class LocationResultState {
     SUCCESS,
     FAIL,

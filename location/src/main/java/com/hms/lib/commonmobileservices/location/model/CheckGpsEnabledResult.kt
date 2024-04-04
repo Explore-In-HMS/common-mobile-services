@@ -13,6 +13,9 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.model
 
+/**
+ * Enum class representing the result of checking GPS enabled status.
+ */
 enum class CheckGpsEnabledResult {
     ENABLED,
     ERROR
