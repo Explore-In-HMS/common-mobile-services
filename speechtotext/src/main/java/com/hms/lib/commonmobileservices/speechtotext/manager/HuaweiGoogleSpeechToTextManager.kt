@@ -21,19 +21,44 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Manager class for performing speech-to-text operations using Huawei or Google services.
+ *
+ * @property context The context used for initializing the manager.
+ */
 class HuaweiGoogleSpeechToTextManager(context: Context) {
-    private var speechToTextService: ISpeechToTextAPI?=null
+    private var speechToTextService: ISpeechToTextAPI? = null
 
+    /**
+     * Initializes the manager with the appropriate speech-to-text service based on the mobile service type.
+     *
+     * @param context The context used for initialization.
+     */
     init {
         speechToTextService = SpeechToTextFactory().getMLService(Device.getMobileServiceType(context, MobileServiceType.HMS))!!
     }
 
-    fun performSpeechToText(activity:Activity,recordAudioResultCode:Int,languageCode:String,hmsApiKey:String) {
-        speechToTextService?.performSpeechToText(activity,recordAudioResultCode,languageCode,hmsApiKey)
+    /**
+     * Performs speech-to-text conversion.
+     *
+     * @param activity The activity context.
+     * @param recordAudioResultCode The result code for recording audio.
+     * @param languageCode The language code for the speech.
+     * @param hmsApiKey The API key for Huawei services.
+     */
+    fun performSpeechToText(activity: Activity, recordAudioResultCode: Int, languageCode: String, hmsApiKey: String) {
+        speechToTextService?.performSpeechToText(activity, recordAudioResultCode, languageCode, hmsApiKey)
     }
 
-    fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity: Activity, data:Intent, resultCode:Int){
-        speechToTextService?.parseSpeechToTextData(callback,activity,data,resultCode)
+    /**
+     * Parses the speech-to-text result data.
+     *
+     * @param callback Callback function to handle the parsed result.
+     * @param activity The activity context.
+     * @param data The intent data containing the speech-to-text result.
+     * @param resultCode The result code for the operation.
+     */
+    fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity: Activity, data: Intent, resultCode: Int) {
+        speechToTextService?.parseSpeechToTextData(callback, activity, data, resultCode)
     }
-
 }
