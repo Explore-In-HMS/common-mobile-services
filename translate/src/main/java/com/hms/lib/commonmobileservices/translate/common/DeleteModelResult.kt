@@ -13,7 +13,21 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.translate.common
 
+/**
+ * Sealed interface representing the result of a model deletion operation.
+ * It can either indicate a successful deletion or an error with an associated exception.
+ */
 sealed interface DeleteModelResult {
+    /**
+     * Represents a successful deletion operation.
+     */
     object Success : DeleteModelResult
+
+    /**
+     * Represents an error that occurred during the deletion operation,
+     * encapsulating the exception that occurred.
+     *
+     * @property exception The exception that occurred during the deletion operation.
+     */
     data class Error(val exception: Exception) : DeleteModelResult
 }
