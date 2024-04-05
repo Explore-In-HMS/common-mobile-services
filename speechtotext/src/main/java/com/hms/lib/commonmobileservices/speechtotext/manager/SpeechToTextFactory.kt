@@ -18,7 +18,16 @@ import com.hms.lib.commonmobileservices.speechtotext.GoogleSpeechToTextKit
 import com.hms.lib.commonmobileservices.speechtotext.HuaweiSpeechToTextKit
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 
+/**
+ * Factory class for obtaining Speech-to-Text API implementations.
+ */
 class SpeechToTextFactory {
+    /**
+     * Gets the appropriate Speech-to-Text API service based on the mobile service type.
+     *
+     * @param type The mobile service type.
+     * @return An instance of ISpeechToTextAPI for the specified service type.
+     */
     fun getMLService(type: MobileServiceType): ISpeechToTextAPI? {
         return if (MobileServiceType.HMS === type) {
             HuaweiSpeechToTextKit()
