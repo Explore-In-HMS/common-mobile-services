@@ -18,7 +18,18 @@ import com.hms.lib.commonmobileservices.translate.common.DownloadModelResult
 import com.hms.lib.commonmobileservices.translate.common.RequiresModelDownloadResult
 import com.hms.lib.commonmobileservices.translate.common.TranslateResult
 
+/**
+ * Interface for a translator service that provides translation functionalities.
+ */
 interface ITranslator {
+    /**
+     * Translates the given text from the source language to the target language.
+     *
+     * @param text The text to be translated.
+     * @param sourceLanguage The language code of the source language.
+     * @param targetLanguage The language code of the target language.
+     * @param callback Callback function to handle the translation result.
+     */
     fun translate(
         text: String,
         sourceLanguage: String,
@@ -27,12 +38,27 @@ interface ITranslator {
             translateResult: TranslateResult
         ) -> Unit
     )
+
+    /**
+     * Checks if the translation model for the given language code needs to be downloaded.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     fun requiresModelDownload(
         langCode: String,
         callback: (
             requiresModelDownloadResult: RequiresModelDownloadResult
         ) -> Unit
     )
+
+    /**
+     * Downloads the translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param requireWifi Indicates whether to require Wi-Fi for the download. Default is true.
+     * @param callback Callback function to handle the result.
+     */
     fun downloadModel(
         langCode: String,
         requireWifi: Boolean = true,
@@ -40,11 +66,22 @@ interface ITranslator {
             downloadResult: DownloadModelResult
         ) -> Unit
     )
+
+    /**
+     * Deletes the downloaded translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     fun deleteModel(
         langCode: String,
         callback: (
             downloadResult: DeleteModelResult
         ) -> Unit
     )
+
+    /**
+     * Closes the translator service.
+     */
     fun close()
 }
