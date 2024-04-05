@@ -24,35 +24,38 @@ import com.hms.lib.commonmobileservices.textrecognition.common.RecognitionResult
 import com.hms.lib.commonmobileservices.textrecognition.manager.ITextRecognitionAPI
 import com.huawei.hms.mlsdk.common.MLApplication
 
+/**
+ * Implementation of the ITextRecognitionAPI for Google's text recognition.
+ */
 class GoogleTextRecognitionKit : ITextRecognitionAPI {
+    /**
+     * Performs text recognition on the provided bitmap image.
+     *
+     * @param bitmap The bitmap image containing the text to be recognized.
+     * @param callback Callback to receive the recognition result.
+     */
     override fun textRecognition(
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
     ) {
-
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         val image = InputImage.fromBitmap(bitmap, 0)
 
         val task = recognizer.process(image)
         recognizer.optionalFeatures
 
-        task.let { result ->
-            result.addOnSuccessListener { text->
-                callback.invoke(RecognitionResult.Success(text.text))
-            }.addOnFailureListener { e ->
-                callback.invoke(
-                    RecognitionResult.Error(
-                        errorMessage = e.localizedMessage,
-                        errorModel = ErrorModel(
-                            message = e.message,
-                            exception = e
-                        )
+        task.addOnSuccessListener { text ->
+            callback.invoke(RecognitionResult.Success(text.text))
+        }.addOnFailureListener { e ->
+            callback.invoke(
+                RecognitionResult.Error(
+                    errorMessage = e.localizedMessage,
+                    errorModel = ErrorModel(
+                        message = e.message,
+                        exception = e
                     )
                 )
-            }
+            )
         }
-
-
     }
-
 }

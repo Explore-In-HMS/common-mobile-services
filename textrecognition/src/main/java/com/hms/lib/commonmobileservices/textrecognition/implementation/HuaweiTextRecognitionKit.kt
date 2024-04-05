@@ -24,12 +24,20 @@ import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.common.MLFrame
 import com.huawei.hms.mlsdk.text.MLLocalTextSetting
 
+/**
+ * Implementation of the ITextRecognitionAPI for Huawei's text recognition.
+ */
 class HuaweiTextRecognitionKit : ITextRecognitionAPI {
+    /**
+     * Performs text recognition on the provided bitmap image.
+     *
+     * @param bitmap The bitmap image containing the text to be recognized.
+     * @param callback Callback to receive the recognition result.
+     */
     override fun textRecognition(
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
     ) {
-
         val setting = MLLocalTextSetting.Factory()
             .setOCRMode(MLLocalTextSetting.OCR_DETECT_MODE)
             .create()
@@ -38,20 +46,18 @@ class HuaweiTextRecognitionKit : ITextRecognitionAPI {
         val frame = MLFrame.fromBitmap(bitmap)
         val task = analyzer?.asyncAnalyseFrame(frame)
 
-        task?.let { result ->
-            result.addOnSuccessListener { mlText ->
-                callback.invoke(RecognitionResult.Success(mlText.stringValue))
-            }.addOnFailureListener { e ->
-                callback.invoke(
-                    RecognitionResult.Error(
-                        errorMessage = e.localizedMessage,
-                        errorModel = ErrorModel(
-                            message = e.message,
-                            exception = e
-                        )
+        task?.addOnSuccessListener { mlText ->
+            callback.invoke(RecognitionResult.Success(mlText.stringValue))
+        }?.addOnFailureListener { e ->
+            callback.invoke(
+                RecognitionResult.Error(
+                    errorMessage = e.localizedMessage,
+                    errorModel = ErrorModel(
+                        message = e.message,
+                        exception = e
                     )
                 )
-            }
+            )
         } ?: run {
             callback.invoke(RecognitionResult.Error())
         }

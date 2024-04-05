@@ -15,11 +15,25 @@ package com.hms.lib.commonmobileservices.textrecognition.common
 
 import com.hms.lib.commonmobileservices.core.ErrorModel
 
+/**
+ * Sealed class representing the result of a recognition operation.
+ */
 sealed class RecognitionResult<out T> {
+    /**
+     * Represents a successful recognition result.
+     *
+     * @property data The data resulting from the recognition operation.
+     */
     data class Success<out T>(
         val data: T
     ) : RecognitionResult<T>()
 
+    /**
+     * Represents an error that occurred during the recognition operation.
+     *
+     * @property errorMessage The error message describing the encountered error.
+     * @property errorModel Optional additional error information in the form of an ErrorModel.
+     */
     data class Error(
         val errorMessage: String? = null,
         val errorModel: ErrorModel? = null

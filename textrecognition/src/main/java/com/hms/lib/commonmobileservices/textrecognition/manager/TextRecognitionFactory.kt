@@ -18,7 +18,17 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.textrecognition.implementation.GoogleTextRecognitionKit
 import com.hms.lib.commonmobileservices.textrecognition.implementation.HuaweiTextRecognitionKit
 
+/**
+ * Factory class for creating instances of text recognition services.
+ */
 class TextRecognitionFactory {
+
+    /**
+     * Gets the appropriate text recognition service based on the mobile service type.
+     *
+     * @param type The mobile service type.
+     * @return An instance of the text recognition service.
+     */
     fun getMLService(type: MobileServiceType): ITextRecognitionAPI {
         return if (MobileServiceType.HMS === type) {
             HuaweiTextRecognitionKit()
@@ -26,5 +36,4 @@ class TextRecognitionFactory {
             GoogleTextRecognitionKit()
         }
     }
-
 }
