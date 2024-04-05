@@ -17,14 +17,29 @@ import com.hms.lib.commonmobileservices.translate.implementation.GoogleTranslato
 import com.hms.lib.commonmobileservices.translate.implementation.HuaweiTranslator
 import com.hms.lib.commonmobileservices.translate.implementation.ITranslator
 
+/**
+ * Abstract factory class for creating instances of translators.
+ */
 abstract class TranslatorFactory {
+    /**
+     * Abstract method to create a translator instance.
+     *
+     * @return An instance of ITranslator.
+     */
     abstract fun create(): ITranslator
+
     companion object {
-        inline fun <reified T: ITranslator> createFactory(): TranslatorFactory =
-            when(T::class){
+        /**
+         * Creates a factory for the specified type of translator.
+         *
+         * @return An instance of TranslatorFactory corresponding to the provided translator type.
+         * @throws IllegalArgumentException if the provided translator type is not supported.
+         */
+        inline fun <reified T : ITranslator> createFactory(): TranslatorFactory =
+            when (T::class) {
                 HuaweiTranslator::class -> HuaweiTranslatorFactory()
                 GoogleTranslator::class -> GoogleTranslatorFactory()
-                else -> throw IllegalArgumentException()
+                else -> throw IllegalArgumentException("Unsupported translator type")
             }
     }
 }

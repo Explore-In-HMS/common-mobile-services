@@ -16,7 +16,15 @@ package com.hms.lib.commonmobileservices.translate.factory
 import com.hms.lib.commonmobileservices.translate.implementation.HuaweiTranslator
 import com.hms.lib.commonmobileservices.translate.implementation.ITranslator
 
+/**
+ * Concrete factory class for creating HuaweiTranslator instances.
+ */
 class HuaweiTranslatorFactory : TranslatorFactory() {
+    /**
+     * Creates a new instance of HuaweiTranslator.
+     *
+     * @return An instance of HuaweiTranslator.
+     */
     override fun create(): ITranslator {
         return HuaweiTranslator()
     }
