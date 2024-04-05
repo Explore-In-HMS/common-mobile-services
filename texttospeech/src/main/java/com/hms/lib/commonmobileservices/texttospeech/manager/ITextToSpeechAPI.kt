@@ -16,8 +16,20 @@ package com.hms.lib.commonmobileservices.texttospeech.manager
 
 import android.app.Activity
 
+/**
+ * Interface for text-to-speech functionality.
+ */
 interface ITextToSpeechAPI {
 
+    /**
+     * Runs the text-to-speech functionality.
+     *
+     * @param text The text to be converted to speech.
+     * @param activity The activity context.
+     * @param apiKey The API key required for the service.
+     * @param languageCode The language code for the speech.
+     * @param personType The type of voice for the speech.
+     */
     fun runTextToSpeech(
         text: String,
         activity: Activity,
@@ -26,6 +38,8 @@ interface ITextToSpeechAPI {
         personType: String
     )
 
+    /**
+     * Stops the text-to-speech functionality.
+     */
     fun stopTextToSpeech()
-
 }
