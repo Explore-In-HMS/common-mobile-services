@@ -13,7 +13,23 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.translate.common
 
+/**
+ * Sealed interface representing the result of a translation operation.
+ * It can indicate a successful translation or an error occurred during the process.
+ */
 sealed interface TranslateResult {
+    /**
+     * Represents a successful translation result.
+     *
+     * @property translatedText The translated text.
+     */
     data class Success(val translatedText: String) : TranslateResult
+
+    /**
+     * Represents an error that occurred during the translation process,
+     * encapsulating the exception that occurred.
+     *
+     * @property exception The exception that occurred during the translation process.
+     */
     data class Error(val exception: Exception) : TranslateResult
 }

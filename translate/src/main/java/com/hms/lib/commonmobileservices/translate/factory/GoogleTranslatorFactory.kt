@@ -16,7 +16,15 @@ package com.hms.lib.commonmobileservices.translate.factory
 import com.hms.lib.commonmobileservices.translate.implementation.GoogleTranslator
 import com.hms.lib.commonmobileservices.translate.implementation.ITranslator
 
+/**
+ * Concrete factory class for creating GoogleTranslator instances.
+ */
 class GoogleTranslatorFactory : TranslatorFactory() {
+    /**
+     * Creates a new instance of GoogleTranslator.
+     *
+     * @return An instance of GoogleTranslator.
+     */
     override fun create(): ITranslator {
         return GoogleTranslator()
     }

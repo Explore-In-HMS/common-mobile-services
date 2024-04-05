@@ -21,11 +21,22 @@ import com.hms.lib.commonmobileservices.translate.common.DownloadModelResult
 import com.hms.lib.commonmobileservices.translate.common.RequiresModelDownloadResult
 import com.hms.lib.commonmobileservices.translate.common.TranslateResult
 
+/**
+ * Implementation of the [ITranslator] interface for Google Translator.
+ */
 class GoogleTranslator : ITranslator {
 
     private val modelManager = RemoteModelManager.getInstance()
     private lateinit var translator: Translator
 
+    /**
+     * Translates the given text from the source language to the target language.
+     *
+     * @param text The text to be translated.
+     * @param sourceLanguage The language code of the source language.
+     * @param targetLanguage The language code of the target language.
+     * @param callback Callback function to handle the translation result.
+     */
     override fun translate(
         text: String,
         sourceLanguage: String,
@@ -33,11 +44,11 @@ class GoogleTranslator : ITranslator {
         callback: (translateResult: TranslateResult) -> Unit
     ) {
         val sourceLang = TranslateLanguage.fromLanguageTag(sourceLanguage) ?: ""
-        val targetLanguage = TranslateLanguage.fromLanguageTag(targetLanguage) ?: ""
+        val targetLang = TranslateLanguage.fromLanguageTag(targetLanguage) ?: ""
 
         val options = TranslatorOptions.Builder()
             .setSourceLanguage(sourceLang)
-            .setTargetLanguage(targetLanguage)
+            .setTargetLanguage(targetLang)
             .build()
         translator = Translation.getClient(options)
 
@@ -50,6 +61,12 @@ class GoogleTranslator : ITranslator {
             }
     }
 
+    /**
+     * Checks if the translation model for the given language code needs to be downloaded.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     override fun requiresModelDownload(
         langCode: String,
         callback: (requiresModelDownloadResult: RequiresModelDownloadResult) -> Unit
@@ -65,6 +82,13 @@ class GoogleTranslator : ITranslator {
             }
     }
 
+    /**
+     * Downloads the translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param requireWifi Indicates whether to require Wi-Fi for the download.
+     * @param callback Callback function to handle the result.
+     */
     override fun downloadModel(
         langCode: String,
         requireWifi: Boolean,
@@ -73,7 +97,7 @@ class GoogleTranslator : ITranslator {
         val languageTag = TranslateLanguage.fromLanguageTag(langCode) ?: ""
         val model = TranslateRemoteModel.Builder(languageTag).build()
         val conditionBuilder = DownloadConditions.Builder()
-        if (requireWifi){
+        if (requireWifi) {
             conditionBuilder.requireWifi()
         }
         val conditions = conditionBuilder.build()
@@ -87,6 +111,12 @@ class GoogleTranslator : ITranslator {
             }
     }
 
+    /**
+     * Deletes the downloaded translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     override fun deleteModel(
         langCode: String,
         callback: (downloadResult: DeleteModelResult) -> Unit
@@ -103,6 +133,9 @@ class GoogleTranslator : ITranslator {
             }
     }
 
+    /**
+     * Closes the translator instance.
+     */
     override fun close() {
         if (::translator.isInitialized)
             translator.close()

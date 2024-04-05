@@ -13,7 +13,21 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.translate.common
 
+/**
+ * Sealed interface representing the result of a model download operation.
+ * It can either indicate a successful download or an error with an associated exception.
+ */
 sealed interface DownloadModelResult {
+    /**
+     * Represents a successful download operation.
+     */
     object Success : DownloadModelResult
+
+    /**
+     * Represents an error that occurred during the download operation,
+     * encapsulating the exception that occurred.
+     *
+     * @property exception The exception that occurred during the download operation.
+     */
     data class Error(val exception: Exception) : DownloadModelResult
 }

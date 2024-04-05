@@ -25,11 +25,22 @@ import com.huawei.hms.mlsdk.translate.local.MLLocalTranslateSetting
 import com.huawei.hms.mlsdk.translate.local.MLLocalTranslator
 import com.huawei.hms.mlsdk.translate.local.MLLocalTranslatorModel
 
+/**
+ * Implementation of the [ITranslator] interface for Huawei Translator.
+ */
 class HuaweiTranslator : ITranslator {
 
     private val modelManager = MLLocalModelManager.getInstance()
     private lateinit var translator: MLLocalTranslator
 
+    /**
+     * Translates the given text from the source language to the target language.
+     *
+     * @param text The text to be translated.
+     * @param sourceLanguage The language code of the source language.
+     * @param targetLanguage The language code of the target language.
+     * @param callback Callback function to handle the translation result.
+     */
     override fun translate(
         text: String,
         sourceLanguage: String,
@@ -51,6 +62,12 @@ class HuaweiTranslator : ITranslator {
             }
     }
 
+    /**
+     * Checks if the translation model for the given language code needs to be downloaded.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     override fun requiresModelDownload(
         langCode: String,
         callback: (requiresModelDownloadResult: RequiresModelDownloadResult) -> Unit
@@ -66,6 +83,13 @@ class HuaweiTranslator : ITranslator {
             }
     }
 
+    /**
+     * Downloads the translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param requireWifi Indicates whether to require Wi-Fi for the download.
+     * @param callback Callback function to handle the result.
+     */
     override fun downloadModel(
         langCode: String,
         requireWifi: Boolean,
@@ -87,6 +111,12 @@ class HuaweiTranslator : ITranslator {
             }
     }
 
+    /**
+     * Deletes the downloaded translation model for the given language code.
+     *
+     * @param langCode The language code.
+     * @param callback Callback function to handle the result.
+     */
     override fun deleteModel(
         langCode: String,
         callback: (downloadResult: DeleteModelResult) -> Unit
@@ -100,6 +130,9 @@ class HuaweiTranslator : ITranslator {
             }
     }
 
+    /**
+     * Stops the translator.
+     */
     override fun close() {
         if (::translator.isInitialized)
             translator.stop()
