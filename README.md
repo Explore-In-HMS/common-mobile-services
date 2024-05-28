@@ -1,6 +1,9 @@
+<div align="center">
+<img src="https://github.com/Explore-In-HMS/common-mobile-services/assets/15270497/f0696ab3-3b4d-4bd3-b434-369f303230fb" alt="CMS Logo" width="300" height="300"><br>
+</div>
+
 # Common Mobile Services
 [![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services) [![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
-
 It is a library that provides a common interface for mobile services for Android developers. Its aim is removing special mobile service dependencies for your app code.
 This has mainly two benefits:
 1- It removes creation and lifecycle control code from your app code. So your classes get rid of one extra responsibility.(Separation of Concerns)
