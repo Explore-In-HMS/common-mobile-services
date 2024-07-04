@@ -4,7 +4,7 @@ dependencies {
     //Huawei Services
     api 'com.huawei.hms:maps:6.11.2.301'
     //Google Services
-    api 'com.google.android.gms:play-services-maps:18.2.0'
+    api 'com.google.android.gms:play-services-maps:19.0.0'
     api 'com.google.maps.android:android-maps-utils:0.6.2'
     api project(':core')
 }
