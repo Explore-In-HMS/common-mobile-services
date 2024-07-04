@@ -2,7 +2,7 @@ apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.huawei.hms:location:6.8.0.300'
+    implementation 'com.huawei.hms:location:6.11.0.301'
     api project(':core')
 }
 
