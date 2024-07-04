@@ -18,8 +18,15 @@ import com.hms.lib.commonmobileservices.languagedetection.implementation.ILangua
 import com.huawei.hms.mlsdk.langdetect.MLLangDetectorFactory
 import com.huawei.hms.mlsdk.langdetect.cloud.MLRemoteLangDetectorSetting
 
-class HuaweiLanguageDetectorFactory: LanguageDetectionFactory() {
+/**
+ * Factory class for creating instances of ILanguageDetection using Huawei's language detection services.
+ */
+class HuaweiLanguageDetectorFactory : LanguageDetectionFactory() {
 
+    /**
+     * Creates an instance of ILanguageDetection without specifying a confidence threshold.
+     * @return An instance of ILanguageDetection using Huawei's default remote language detector.
+     */
     override fun create(): ILanguageDetection {
         val mlRemoteLangDetector = MLLangDetectorFactory.getInstance()
             .remoteLangDetector
@@ -27,8 +34,13 @@ class HuaweiLanguageDetectorFactory: LanguageDetectionFactory() {
         return HuaweiLanguageDetection(mlRemoteLangDetector)
     }
 
+    /**
+     * Creates an instance of ILanguageDetection with a specified confidence threshold.
+     * @param confidenceThreshold The confidence threshold to be applied to language detection.
+     * @return An instance of ILanguageDetection using Huawei's remote language detector with the specified confidence threshold.
+     */
     override fun create(confidenceThreshold: Float): ILanguageDetection {
-        val threshold = confidenceThreshold.coerceIn(0.0f,1.0f)
+        val threshold = confidenceThreshold.coerceIn(0.0f, 1.0f)
         val setting = MLRemoteLangDetectorSetting.Factory()
             .setTrustedThreshold(threshold)
             .create()

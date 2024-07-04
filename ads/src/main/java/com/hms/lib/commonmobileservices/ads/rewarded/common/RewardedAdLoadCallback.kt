@@ -17,7 +17,21 @@ package com.hms.lib.commonmobileservices.ads.rewarded.common
 import com.hms.lib.commonmobileservices.ads.rewarded.implementation.IRewardedAd
 
 
+/**
+ * Callback interface for handling events related to loading rewarded ads.
+ */
 interface RewardedAdLoadCallback {
+    /**
+     * Called when loading of a rewarded ad fails.
+     *
+     * @param adError The error message describing the failure.
+     */
     fun onAdLoadFailed(adError: String)
+
+    /**
+     * Called when a rewarded ad is successfully loaded.
+     *
+     * @param rewardedAd The loaded rewarded ad.
+     */
     fun onRewardedAdLoaded(rewardedAd: IRewardedAd)
 }

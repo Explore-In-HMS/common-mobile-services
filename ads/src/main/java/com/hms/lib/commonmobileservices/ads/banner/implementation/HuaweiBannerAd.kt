@@ -16,13 +16,25 @@ package com.hms.lib.commonmobileservices.ads.banner.implementation
 
 import com.huawei.hms.ads.banner.BannerView
 
+/**
+ * Implementation of the IBannerAd interface for Huawei banner ads.
+ *
+ * @property _banner The BannerView instance representing the Huawei banner ad.
+ */
 class HuaweiBannerAd(private var _banner: BannerView) : IBannerAd {
+    /**
+     * Destroys the Huawei banner ad.
+     */
     override fun destroy() {
         _banner.destroy()
     }
 
+    /**
+     * Checks if the Huawei banner ad is currently loading.
+     *
+     * @return true if the banner ad is loading, false otherwise.
+     */
     override fun isLoading(): Boolean {
         return _banner.isLoading
     }
-
 }

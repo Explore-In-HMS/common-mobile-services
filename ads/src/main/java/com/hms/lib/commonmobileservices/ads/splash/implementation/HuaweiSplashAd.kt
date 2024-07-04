@@ -17,8 +17,20 @@ package com.hms.lib.commonmobileservices.ads.splash.implementation
 import android.app.Activity
 import com.huawei.hms.ads.splash.SplashAd
 
+/**
+ * Implementation of the ISplashAd interface for Huawei's Splash Ad.
+ *
+ * @property _splash The Huawei Splash Ad instance.
+ * @constructor Creates a HuaweiSplashAd with the specified Splash Ad instance.
+ */
 class HuaweiSplashAd(private var _splash: SplashAd) : ISplashAd {
+    /**
+     * Shows the Huawei Splash Ad. This method is not yet implemented.
+     *
+     * @param activity The activity context in which to show the ad.
+     */
     override fun show(activity: Activity) {
-        TODO("Not yet implemented")
+        // TODO: Implement this method
+        // Currently, this method is not yet implemented.
     }
 }

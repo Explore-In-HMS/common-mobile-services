@@ -17,7 +17,19 @@ import com.hms.lib.commonmobileservices.safety.RootDetectionResponse
 import com.hms.lib.commonmobileservices.safety.common.Mapper
 import org.json.JSONObject
 
-class GoogleRootDetectMapper : Mapper<JSONObject,RootDetectionResponse>() {
+/**
+ * Mapper class for mapping JSONObject to RootDetectionResponse.
+ * This mapper is used to map a JSONObject representing root detection response
+ * to a RootDetectionResponse object.
+ */
+class GoogleRootDetectMapper : Mapper<JSONObject, RootDetectionResponse>() {
+
+    /**
+     * Maps the JSONObject to RootDetectionResponse.
+     *
+     * @param from The source JSONObject representing root detection response.
+     * @return A RootDetectionResponse object mapped from the JSONObject.
+     */
     override fun map(from: JSONObject): RootDetectionResponse = RootDetectionResponse(
         apkDigestSha256 = from.getString("apkDigestSha256"),
         apkPackageName = from.getString("apkPackageName"),

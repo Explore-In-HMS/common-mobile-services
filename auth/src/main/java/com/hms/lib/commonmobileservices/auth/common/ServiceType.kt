@@ -14,7 +14,19 @@
 
 package com.hms.lib.commonmobileservices.auth.common
 
+/**
+ * Enumeration class representing different types of services.
+ * Each service type has a corresponding value.
+ * @property value the string representation of the service type.
+ */
 enum class ServiceType(val value: String) {
+    /**
+     * Huawei service type.
+     */
     Huawei("huawei"),
+
+    /**
+     * Google service type.
+     */
     Google("google")
 }

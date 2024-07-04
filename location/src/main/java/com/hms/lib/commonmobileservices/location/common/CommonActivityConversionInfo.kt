@@ -13,9 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+/**
+ * A class representing common activity conversion information.
+ *
+ * This class encapsulates information about activity type and conversion type.
+ *
+ * @property activityType The type of activity.
+ * @property conversionType The type of conversion.
+ */
 class CommonActivityConversionInfo {
 
-    companion object{
+    companion object {
         const val ENTER_ACTIVITY_CONVERSION = 0
         const val EXIT_ACTIVITY_CONVERSION = 1
     }

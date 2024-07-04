@@ -18,14 +18,26 @@ import com.google.mlkit.nl.languageid.LanguageIdentificationOptions
 import com.hms.lib.commonmobileservices.languagedetection.implementation.GoogleLanguageIdentification
 import com.hms.lib.commonmobileservices.languagedetection.implementation.ILanguageDetection
 
-class GoogleLanguageDetectorFactory: LanguageDetectionFactory() {
+/**
+ * Factory class for creating instances of ILanguageDetection using Google's language detection services.
+ */
+class GoogleLanguageDetectorFactory : LanguageDetectionFactory() {
 
+    /**
+     * Creates an instance of ILanguageDetection without specifying a confidence threshold.
+     * @return An instance of ILanguageDetection using Google's default language identification client.
+     */
     override fun create(): ILanguageDetection {
         return GoogleLanguageIdentification(LanguageIdentification.getClient())
     }
 
+    /**
+     * Creates an instance of ILanguageDetection with a specified confidence threshold.
+     * @param confidenceThreshold The confidence threshold to be applied to language identification.
+     * @return An instance of ILanguageDetection using Google's language identification client with the specified confidence threshold.
+     */
     override fun create(confidenceThreshold: Float): ILanguageDetection {
-        val threshold = confidenceThreshold.coerceIn(0.0f,1.0f)
+        val threshold = confidenceThreshold.coerceIn(0.0f, 1.0f)
         val options = LanguageIdentificationOptions.Builder()
             .setConfidenceThreshold(threshold)
             .build()

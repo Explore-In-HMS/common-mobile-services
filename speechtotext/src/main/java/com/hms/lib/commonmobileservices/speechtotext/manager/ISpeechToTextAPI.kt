@@ -18,7 +18,27 @@ import android.app.Activity
 import android.content.Intent
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Interface for Speech-to-Text APIs.
+ */
 interface ISpeechToTextAPI {
-    fun performSpeechToText(activity:Activity,recordAudioResultCode:Int,languageCode:String,hmsApiKey:String)
-    fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity:Activity, data:Intent, resultCode:Int)
+    /**
+     * Performs speech-to-text conversion.
+     *
+     * @param activity The activity context.
+     * @param recordAudioResultCode The result code for recording audio.
+     * @param languageCode The language code for the speech.
+     * @param hmsApiKey The API key for Huawei services.
+     */
+    fun performSpeechToText(activity: Activity, recordAudioResultCode: Int, languageCode: String, hmsApiKey: String)
+
+    /**
+     * Parses the speech-to-text result data.
+     *
+     * @param callback Callback function to handle the parsed result.
+     * @param activity The activity context.
+     * @param data The intent data containing the speech-to-text result.
+     * @param resultCode The result code for the operation.
+     */
+    fun parseSpeechToTextData(callback: (speechToTextResult: ResultData<String>) -> Unit, activity: Activity, data: Intent, resultCode: Int)
 }

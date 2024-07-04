@@ -18,7 +18,15 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.objectdetection.GoogleObjectDetectionKit
 import com.hms.lib.commonmobileservices.objectdetection.HuaweiObjectDetectionKit
 
+/**
+ * Factory class for creating object detection services based on the specified MobileServiceType.
+ */
 class ObjectDetectionFactory {
+    /**
+     * Gets the appropriate object detection service based on the MobileServiceType.
+     * @param type The type of mobile service.
+     * @return An instance of the object detection service.
+     */
     fun getMLService(type: MobileServiceType): IObjectDetectionAPI {
         return if (MobileServiceType.HMS === type) {
             HuaweiObjectDetectionKit()

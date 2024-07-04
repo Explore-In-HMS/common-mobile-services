@@ -28,12 +28,21 @@ import com.huawei.hms.ads.AdParam
 import com.huawei.hms.ads.reward.RewardAd
 import com.huawei.hms.ads.reward.RewardAdLoadListener
 
+/**
+ * Utility class for loading rewarded ads based on the mobile service type.
+ */
 class RewardedAd {
-
     companion object {
         /**
-         * TODO:Explain AdRequestParams in Readme document
-         * TODO:Initialize Ad_ID param with test ad_ID
+         * Loads a rewarded ad based on the mobile service type.
+         *
+         * @param context The context of the application.
+         * @param hmsAd_ID The ad ID for Huawei Mobile Services.
+         * @param gmsAd_ID The ad ID for Google Mobile Services.
+         * @param callback The callback for rewarded ad loading events.
+         * @param gmsAdRequestParams The Google Mobile Services AdRequest parameters. Default is null.
+         * @param hmsAdRequestParams The Huawei Mobile Services AdParam parameters. Default is null.
+         * @throws IllegalArgumentException if the mobile service type is not supported.
          */
         fun load(
             context: Context,
@@ -52,7 +61,8 @@ class RewardedAd {
                         adRequestParams,
                         object : com.google.android.gms.ads.rewarded.RewardedAdLoadCallback() {
                             override fun onAdLoaded(p0: RewardedAd) {
-                                val huaweiRewardedAdFactory = RewardedAdFactory.createFactory<GoogleRewardedAd, RewardedAd>(p0)
+                                val huaweiRewardedAdFactory =
+                                    RewardedAdFactory.createFactory<GoogleRewardedAd, RewardedAd>(p0)
                                 huaweiRewardedAdFactory.create().let(callback::onRewardedAdLoaded)
                             }
 
@@ -66,7 +76,8 @@ class RewardedAd {
                     val adRequestParams = hmsAdRequestParams ?: AdParam.Builder().build()
                     rewardAd.loadAd(adRequestParams, object : RewardAdLoadListener() {
                         override fun onRewardedLoaded() {
-                            val googleRewardedAdFactory = RewardedAdFactory.createFactory<HuaweiRewardedAd,RewardAd>(rewardAd)
+                            val googleRewardedAdFactory =
+                                RewardedAdFactory.createFactory<HuaweiRewardedAd, RewardAd>(rewardAd)
                             googleRewardedAdFactory.create().let(callback::onRewardedAdLoaded)
                         }
 

@@ -20,14 +20,29 @@ import com.hms.lib.commonmobileservices.ads.banner.implementation.HuaweiBannerAd
 import com.hms.lib.commonmobileservices.ads.banner.implementation.IBannerAd
 import com.huawei.hms.ads.banner.BannerView
 
+/**
+ * Abstract factory class for creating banner ads.
+ */
 abstract class BannerAdFactory {
+    /**
+     * Abstract method to create a banner ad instance.
+     *
+     * @return The created banner ad.
+     */
     abstract fun create(): IBannerAd
 
     companion object {
+        /**
+         * Creates a banner ad factory based on the type of banner ad and its associated view.
+         *
+         * @param bannerAd The banner ad instance.
+         * @return A banner ad factory.
+         * @throws IllegalArgumentException If an invalid combination of banner ad type and view type is provided.
+         */
         inline fun <reified T : IBannerAd, reified K> createFactory(bannerAd: K): BannerAdFactory {
-            when (T::class) {
+            return when (T::class) {
                 HuaweiBannerAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         BannerView::class -> {
                             HuaweiBannerAdFactory(bannerAd as BannerView)
                         }
@@ -38,7 +53,7 @@ abstract class BannerAdFactory {
                     }
                 }
                 GoogleBannerAd::class -> {
-                    return when (K::class) {
+                    when (K::class) {
                         AdView::class -> {
                             GoogleBannerAdFactory(bannerAd as AdView)
                         }

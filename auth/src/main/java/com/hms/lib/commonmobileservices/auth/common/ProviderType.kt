@@ -14,12 +14,44 @@
 
 package com.hms.lib.commonmobileservices.auth.common
 
+/**
+ * Enumeration class representing different types of providers.
+ * Each provider type has a corresponding value.
+ * @property value the string representation of the provider type.
+ */
 enum class ProviderType(val value: String) {
+    /**
+     * No provider type.
+     */
     NoProvider("non"),
+
+    /**
+     * Huawei provider type.
+     */
     Huawei("huawei"),
+
+    /**
+     * Google provider type.
+     */
     Google("google"),
+
+    /**
+     * Facebook provider type.
+     */
     Facebook("facebook"),
+
+    /**
+     * Email provider type.
+     */
     Email("email"),
+
+    /**
+     * Twitter provider type.
+     */
     Twitter("twitter"),
+
+    /**
+     * Google Game provider type.
+     */
     GoogleGame("googlegame")
 }

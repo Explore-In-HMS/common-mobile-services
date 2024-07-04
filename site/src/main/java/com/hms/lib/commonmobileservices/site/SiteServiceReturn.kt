@@ -14,6 +14,20 @@
 
 package com.hms.lib.commonmobileservices.site
 
+/**
+ * Data class representing the returned site information.
+ *
+ * @property id The unique identifier of the site.
+ * @property name The name of the site.
+ * @property locationLat The latitude of the site's location.
+ * @property locationLong The longitude of the site's location.
+ * @property phoneNumber The phone number associated with the site.
+ * @property formatAddress The formatted address of the site.
+ * @property distance The distance to the site (if available).
+ * @property image The list of image references associated with the site.
+ * @property averagePrice The average price of the site (if available).
+ * @property point The rating of the site (if available).
+ */
 data class SiteServiceReturn (
     val id : String?,
     val name : String?,

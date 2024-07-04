@@ -16,13 +16,25 @@ package com.hms.lib.commonmobileservices.ads.banner.implementation
 
 import com.google.android.gms.ads.AdView
 
+/**
+ * Implementation of the IBannerAd interface for Google banner ads.
+ *
+ * @property _banner The AdView instance representing the Google banner ad.
+ */
 class GoogleBannerAd(private var _banner: AdView) : IBannerAd {
+    /**
+     * Destroys the Google banner ad.
+     */
     override fun destroy() {
         _banner.destroy()
     }
 
+    /**
+     * Checks if the Google banner ad is currently loading.
+     *
+     * @return true if the banner ad is loading, false otherwise.
+     */
     override fun isLoading(): Boolean {
         return _banner.isLoading
     }
-
 }

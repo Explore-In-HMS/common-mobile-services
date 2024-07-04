@@ -27,11 +27,23 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.hms.lib.commonmobileservices.push.R
 
+/**
+ * SliderPushNotificationReceiver is a BroadcastReceiver that handles push notifications for a slider widget.
+ * It updates the notification when the user clicks on the previous or next button, and also handles opening URLs
+ * associated with the notification. It also sets the notification channel to high priority if the API level is
+ * 26 or higher, and closes the notification bar after handling the notification.
+ */
 class SliderPushNotificationReceiver : BroadcastReceiver() {
 
     private val TAG = "SliderPushNotification"
     private var channelId: String? = null
 
+    /**
+     * Called when a push notification is received.
+     *
+     * @param context The context in which the receiver is running.
+     * @param intent The intent containing the push notification data.
+     */
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != null) {
             channelId = intent.getStringExtra("channel_id")
@@ -78,6 +90,12 @@ class SliderPushNotificationReceiver : BroadcastReceiver() {
         }
     }
 
+    /**
+     * Updates the notification with the specified action.
+     *
+     * @param context The context in which the receiver is running.
+     * @param action The action to perform on the notification.
+     */
     @SuppressLint("WrongConstant")
     fun updateNotification(context: Context, action: String) {
         var notificationManager: NotificationManager? = null

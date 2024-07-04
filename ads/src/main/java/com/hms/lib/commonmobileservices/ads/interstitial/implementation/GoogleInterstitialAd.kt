@@ -17,8 +17,17 @@ package com.hms.lib.commonmobileservices.ads.interstitial.implementation
 import android.app.Activity
 import com.google.android.gms.ads.interstitial.InterstitialAd
 
+/**
+ * Implementation of the IInterstitialAd interface for Google interstitial ads.
+ *
+ * @property _interstitial The InterstitialAd instance representing the Google interstitial ad.
+ */
 class GoogleInterstitialAd(private var _interstitial: InterstitialAd) : IInterstitialAd {
-
+    /**
+     * Displays the Google interstitial ad.
+     *
+     * @param activity The activity where the ad will be displayed.
+     */
     override fun show(activity: Activity) {
         _interstitial.show(activity)
     }

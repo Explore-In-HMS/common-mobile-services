@@ -23,8 +23,23 @@ import com.hms.lib.commonmobileservices.imageclassification.implementation.IImag
 import com.huawei.agconnect.config.AGConnectServicesConfig
 import com.huawei.hms.mlsdk.common.MLApplication
 
+/**
+ * A utility class for obtaining instances of image classification based on the mobile service provider.
+ *
+ * This class provides a companion object with a method for obtaining an instance of [IImageClassification]
+ * based on the mobile service provider (Google Mobile Services or Huawei Mobile Services).
+ */
 class ImageClassification {
     companion object {
+        /**
+         * Obtains an instance of image classification based on the mobile service provider.
+         *
+         * @param context The context used for accessing resources and services.
+         * @param confidenceThreshold The confidence threshold to be applied for classification. It should be a value
+         * between 0.0 and 1.0. Defaults to null.
+         * @return An instance of [IImageClassification] for performing image classification.
+         * @throws IllegalArgumentException if the mobile service provider is not supported.
+         */
         fun getClient(
             context: Context,
             confidenceThreshold: Float? = null

@@ -17,12 +17,22 @@ import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 
+/**
+ * Class representing common URL check threats.
+ */
 class CommonUrlCheckThreat {
     companion object{
         const val MALWARE_APPLICATIONS = "MALWARE_APPLICATIONS"
         const val PHISHING = "PHISHING"
     }
 
+    /**
+     * Determines the threat type based on the mobile service type and threat string.
+     *
+     * @param ctx The context of the application.
+     * @param type The type of threat as a string.
+     * @return An integer representing the threat type.
+     */
     fun urlThreatType(ctx: Context, type:String):Int{
         return if(Device.getMobileServiceType(ctx) == MobileServiceType.HMS){
             when(type){
@@ -39,5 +49,5 @@ class CommonUrlCheckThreat {
         }
     }
 
-    var urlCheckResult:Int?=null
+    var urlCheckResult:Int? = null
 }

@@ -19,10 +19,19 @@ import com.google.mlkit.vision.text.Text
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.hms.lib.commonmobileservices.textrecognition.common.RecognitionResult
 
+/**
+ * Interface for text recognition API.
+ */
 interface ITextRecognitionAPI {
 
+    /**
+     * Performs text recognition on the provided bitmap image.
+     *
+     * @param bitmap The bitmap image containing the text to be recognized.
+     * @param callback Callback to receive the recognition result.
+     */
     fun textRecognition(
         bitmap: Bitmap,
         callback: (recognizedValue: RecognitionResult<Any>) -> Unit
-        )
+    )
 }

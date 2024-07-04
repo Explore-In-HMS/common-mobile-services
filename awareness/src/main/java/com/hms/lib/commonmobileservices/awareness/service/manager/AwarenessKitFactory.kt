@@ -17,9 +17,21 @@ package com.hms.lib.commonmobileservices.awareness.service.manager
 import android.content.Context
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 
+/**
+ * Factory class for obtaining instances of awareness service implementations based on the provided mobile service type.
+ */
 class AwarenessKitFactory {
+
+    /**
+     * Retrieves an instance of an awareness service based on the provided mobile service type.
+     *
+     * @param context The application context.
+     * @param type The mobile service type (HMS for Huawei Mobile Services, GMS for Google Mobile Services).
+     * @return An instance of the awareness service corresponding to the provided mobile service type,
+     *         or null if the type is not recognized or supported.
+     */
     fun getAwarenessService(context: Context, type: MobileServiceType): IAwarenessAPI? {
-        return when(type){
+        return when (type) {
             MobileServiceType.HMS -> HuaweiAwarenessKit(context)
             MobileServiceType.GMS -> GoogleAwarenessKit(context)
             else -> null

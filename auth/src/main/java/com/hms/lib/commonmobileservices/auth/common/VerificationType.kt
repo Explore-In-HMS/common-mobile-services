@@ -14,8 +14,22 @@
 
 package com.hms.lib.commonmobileservices.auth.common
 
+/**
+ * Enumeration class representing different types of verification methods.
+ */
 enum class VerificationType {
+    /**
+     * Verification using a code.
+     */
     CODE,
+
+    /**
+     * Verification using a link.
+     */
     LINK,
+
+    /**
+     * No verification method.
+     */
     NON
 }

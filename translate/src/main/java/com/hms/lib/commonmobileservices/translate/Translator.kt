@@ -21,8 +21,18 @@ import com.hms.lib.commonmobileservices.translate.implementation.GoogleTranslato
 import com.hms.lib.commonmobileservices.translate.implementation.HuaweiTranslator
 import com.hms.lib.commonmobileservices.translate.implementation.ITranslator
 
+/**
+ * Singleton class responsible for providing an instance of the translator based on the mobile service type.
+ */
 class Translator {
     companion object {
+        /**
+         * Retrieves the translator instance based on the mobile service type.
+         *
+         * @param context The context of the application.
+         * @return An instance of the translator.
+         * @throws IllegalArgumentException if the mobile service type is not supported.
+         */
         fun getClient(
             context: Context,
         ): ITranslator {

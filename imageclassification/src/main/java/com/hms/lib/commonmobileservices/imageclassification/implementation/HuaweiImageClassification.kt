@@ -20,9 +20,24 @@ import com.hms.lib.commonmobileservices.imageclassification.common.ImageLabel
 import com.huawei.hms.mlsdk.classification.MLImageClassificationAnalyzer
 import com.huawei.hms.mlsdk.common.MLFrame
 
+/**
+ * A class implementing image classification using Huawei's ML Kit Image Classification API.
+ *
+ * This class implements the [IImageClassification] interface, providing methods to analyze images
+ * and obtain classification results using Huawei's ML Kit Image Classification API.
+ *
+ * @property analyzer The MLImageClassificationAnalyzer instance used for image classification.
+ */
 class HuaweiImageClassification(
     private val analyzer: MLImageClassificationAnalyzer
 ) : IImageClassification {
+    /**
+     * Analyzes the provided bitmap image and returns the classification results asynchronously.
+     *
+     * @param bitmap The bitmap image to be analyzed.
+     * @param callback A callback function to receive the classification result asynchronously.
+     * The result is encapsulated within a [ClassificationResult] object containing a list of [ImageLabel]s.
+     */
     override fun analyseImage(
         bitmap: Bitmap,
         callback: (classificationResult: ClassificationResult<List<ImageLabel>>) -> Unit
@@ -53,6 +68,9 @@ class HuaweiImageClassification(
             }
     }
 
+    /**
+     * Stops the image classification analyzer.
+     */
     override fun stopAnalyzer() {
         analyzer.stop()
     }

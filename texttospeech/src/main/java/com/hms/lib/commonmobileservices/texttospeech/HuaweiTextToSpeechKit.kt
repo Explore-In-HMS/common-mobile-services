@@ -20,6 +20,9 @@ import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.tts.MLTtsConfig
 import com.huawei.hms.mlsdk.tts.MLTtsEngine
 
+/**
+ * Implementation of the text-to-speech API using Huawei's text-to-speech service.
+ */
 class HuaweiTextToSpeechKit : ITextToSpeechAPI {
 
     companion object {
@@ -27,6 +30,15 @@ class HuaweiTextToSpeechKit : ITextToSpeechAPI {
         private lateinit var mLTtsEngine: MLTtsEngine
     }
 
+    /**
+     * Initiates text-to-speech with the provided text.
+     *
+     * @param text The text to be converted to speech.
+     * @param activity The activity context.
+     * @param apiKey The API key for Huawei Text-to-Speech.
+     * @param languageCode The language code for the text.
+     * @param personType The person type for the text.
+     */
     override fun runTextToSpeech(
         text: String,
         activity: Activity,
@@ -40,6 +52,9 @@ class HuaweiTextToSpeechKit : ITextToSpeechAPI {
         mLTtsEngine.speak(text, MLTtsEngine.QUEUE_FLUSH)
     }
 
+    /**
+     * Stops the text-to-speech engine.
+     */
     override fun stopTextToSpeech() {
         mLTtsEngine.stop()
         mLTtsEngine.shutdown()

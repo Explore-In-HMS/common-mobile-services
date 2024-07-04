@@ -13,104 +13,163 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-import android.os.RemoteException
-import com.google.android.gms.maps.model.RuntimeRemoteException
-import java.lang.Exception
-
-class TileOverlay (private val tileOverlayImpl: Any) {
-    fun hide(){
-        when (tileOverlayImpl){
-            is HmsTileOverlay -> tileOverlayImpl.isVisible=false
-            is GmsTileOverlay -> tileOverlayImpl.isVisible=false
+/**
+ * Represents a tile overlay on the map.
+ *
+ * @property tileOverlayImpl The underlying tile overlay implementation.
+ */
+class TileOverlay(private val tileOverlayImpl: Any) {
+    /**
+     * Hides the tile overlay.
+     */
+    fun hide() {
+        when (tileOverlayImpl) {
+            is HmsTileOverlay -> tileOverlayImpl.isVisible = false
+            is GmsTileOverlay -> tileOverlayImpl.isVisible = false
         }
     }
 
-    fun show(){
-        when (tileOverlayImpl){
-            is HmsTileOverlay -> tileOverlayImpl.isVisible=true
-            is GmsTileOverlay -> tileOverlayImpl.isVisible=true
+    /**
+     * Shows the tile overlay.
+     */
+    fun show() {
+        when (tileOverlayImpl) {
+            is HmsTileOverlay -> tileOverlayImpl.isVisible = true
+            is GmsTileOverlay -> tileOverlayImpl.isVisible = true
         }
     }
 
-    fun remove() :Boolean{
+    /**
+     * Removes the tile overlay from the map.
+     *
+     * @return True if the removal was successful, false otherwise.
+     */
+    fun remove(): Boolean {
         return try {
-            when (tileOverlayImpl){
+            when (tileOverlayImpl) {
                 is HmsTileOverlay -> tileOverlayImpl.remove()
                 is GmsTileOverlay -> tileOverlayImpl.remove()
             }
             true
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
             false
         }
     }
 
+    /**
+     * Clears the tile cache for the tile overlay.
+     */
     fun clearTileCache() {
-        when(tileOverlayImpl){
+        when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.clearTileCache()
             else -> (tileOverlayImpl as GmsTileOverlay).clearTileCache()
         }
     }
 
+    /**
+     * Retrieves the ID of the tile overlay.
+     *
+     * @return The ID of the tile overlay.
+     */
     fun getId(): String {
-        return when(tileOverlayImpl){
+        return when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.id
             else -> (tileOverlayImpl as GmsTileOverlay).id
         }
     }
 
+    /**
+     * Sets the z-index of the tile overlay.
+     *
+     * @param zIndex The z-index value to set.
+     */
     fun setZIndex(zIndex: Float) {
-        when(tileOverlayImpl){
+        when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.zIndex = zIndex
             is GmsTileOverlay -> tileOverlayImpl.zIndex = zIndex
         }
     }
 
+    /**
+     * Retrieves the z-index of the tile overlay.
+     *
+     * @return The z-index of the tile overlay.
+     */
     fun getZIndex(): Float {
-        return when(tileOverlayImpl){
+        return when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.zIndex
             else -> (tileOverlayImpl as GmsTileOverlay).zIndex
         }
     }
 
+    /**
+     * Sets the visibility of the tile overlay.
+     *
+     * @param visible True to make the tile overlay visible, false to hide it.
+     */
     fun setVisible(visible: Boolean) {
-        when(tileOverlayImpl){
+        when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.isVisible = visible
             is GmsTileOverlay -> tileOverlayImpl.isVisible = visible
         }
     }
 
+    /**
+     * Checks if the tile overlay is visible.
+     *
+     * @return True if the tile overlay is visible, otherwise false.
+     */
     fun isVisible(): Boolean {
-        return when(tileOverlayImpl){
+        return when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.isVisible
             else -> (tileOverlayImpl as GmsTileOverlay).isVisible
         }
     }
 
+    /**
+     * Sets whether the tile overlay should fade in.
+     *
+     * @param fadeIn True to enable fade in, false otherwise.
+     */
     fun setFadeIn(fadeIn: Boolean) {
-        when(tileOverlayImpl){
+        when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.fadeIn = fadeIn
             is GmsTileOverlay -> tileOverlayImpl.fadeIn = fadeIn
         }
     }
 
+    /**
+     * Checks if the tile overlay should fade in.
+     *
+     * @return True if the tile overlay should fade in, otherwise false.
+     */
     fun getFadeIn(): Boolean {
-        return when(tileOverlayImpl){
+        return when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.fadeIn
             else -> (tileOverlayImpl as GmsTileOverlay).fadeIn
         }
     }
 
+    /**
+     * Sets the transparency of the tile overlay.
+     *
+     * @param transparency The transparency value to set.
+     */
     fun setTransparency(transparency: Float) {
-        when(tileOverlayImpl){
+        when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.transparency = transparency
             is GmsTileOverlay -> tileOverlayImpl.transparency = transparency
         }
     }
 
+    /**
+     * Retrieves the transparency of the tile overlay.
+     *
+     * @return The transparency of the tile overlay.
+     */
     fun getTransparency(): Float {
-        return when(tileOverlayImpl){
+        return when (tileOverlayImpl) {
             is HmsTileOverlay -> tileOverlayImpl.transparency
             else -> (tileOverlayImpl as GmsTileOverlay).transparency
         }

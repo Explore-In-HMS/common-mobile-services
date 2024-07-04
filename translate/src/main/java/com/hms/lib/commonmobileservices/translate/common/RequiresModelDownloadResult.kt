@@ -13,8 +13,26 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.translate.common
 
+/**
+ * Sealed interface representing the result of a check for model download requirement.
+ * It can indicate whether a model download is required, not required, or an error occurred during the process.
+ */
 sealed interface RequiresModelDownloadResult {
+    /**
+     * Indicates that a model download is required.
+     */
     object Required : RequiresModelDownloadResult
+
+    /**
+     * Indicates that no model download is required.
+     */
     object NotRequired : RequiresModelDownloadResult
+
+    /**
+     * Represents an error that occurred during the model download requirement check,
+     * encapsulating the exception that occurred.
+     *
+     * @property exception The exception that occurred during the model download requirement check.
+     */
     data class Error(val exception: Exception) : RequiresModelDownloadResult
 }

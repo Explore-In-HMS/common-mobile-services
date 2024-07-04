@@ -13,4 +13,14 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class LatLngBounds (val southwest: LatLng, val northeast: LatLng)
+/**
+ * Represents a rectangular bounding box in geographical coordinates, defined by its southwest
+ * and northeast corners.
+ *
+ * @property southwest The geographical point representing the southwest corner of the bounding box.
+ * @property northeast The geographical point representing the northeast corner of the bounding box.
+ */
+data class LatLngBounds(
+    val southwest: LatLng,
+    val northeast: LatLng
+)

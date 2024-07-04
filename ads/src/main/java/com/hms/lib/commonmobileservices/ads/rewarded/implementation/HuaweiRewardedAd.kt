@@ -24,8 +24,24 @@ import com.huawei.hms.ads.reward.Reward
 import com.huawei.hms.ads.reward.RewardAd
 import com.huawei.hms.ads.reward.RewardAdStatusListener
 
+/**
+ * Implementation of the IRewardedAd interface for Huawei rewarded ads.
+ *
+ * @property _rewarded The Huawei rewarded ad instance.
+ */
 class HuaweiRewardedAd(private var _rewarded: RewardAd) : IRewardedAd {
+    /**
+     * Retrieves the metadata associated with the rewarded ad.
+     *
+     * @return The metadata bundle.
+     */
     override fun getMetaData(): Bundle = _rewarded.metadata
+
+    /**
+     * Sets a listener for metadata changes on the rewarded ad.
+     *
+     * @param callback The callback to be invoked when metadata changes.
+     */
     override fun setOnMetadataChangedListener(callback: MetaDataChangedListener) {
         val listener = object : OnMetadataChangedListener() {
             override fun onMetadataChanged() {
@@ -35,21 +51,27 @@ class HuaweiRewardedAd(private var _rewarded: RewardAd) : IRewardedAd {
         _rewarded.setOnMetadataChangedListener(listener)
     }
 
+    /**
+     * Sets whether the rewarded ad should be shown in immersive mode.
+     *
+     * @param value Boolean indicating whether to enable immersive mode.
+     */
     override fun setImmersive(value: Boolean) {
         _rewarded.setImmersive(value)
     }
 
+    /**
+     * Shows the rewarded ad to the user.
+     *
+     * @param activity The activity context in which to show the ad.
+     * @param callback The callback for handling user's earned rewards.
+     */
     override fun show(activity: Activity, callback: UserRewardEarnedListener) {
         val listener = object : RewardAdStatusListener() {
             override fun onRewarded(p0: Reward?) {
                 val rewardItem = object : IRewardItem {
-                    override fun getAmount(): Int? {
-                        return p0?.amount
-                    }
-
-                    override fun getTypeOrName(): String? {
-                        return p0?.name
-                    }
+                    override fun getAmount(): Int? = p0?.amount
+                    override fun getTypeOrName(): String? = p0?.name
                 }
                 callback.onUserEarnedReward(rewardItem)
             }

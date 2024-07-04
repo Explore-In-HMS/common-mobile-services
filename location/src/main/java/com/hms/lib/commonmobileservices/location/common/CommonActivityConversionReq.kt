@@ -13,6 +13,13 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.location.common
 
+/**
+ * A data class representing a request for common activity conversions.
+ *
+ * This class encapsulates a list of activity conversion information.
+ *
+ * @property activityConversions The list of activity conversion information.
+ */
 class CommonActivityConversionReq {
-    var activityConversions: List<CommonActivityConversionInfo>?=null
+    var activityConversions: List<CommonActivityConversionInfo>? = null
 }

@@ -18,13 +18,38 @@ import com.hms.lib.commonmobileservices.imageclassification.implementation.Huawe
 import com.hms.lib.commonmobileservices.imageclassification.implementation.IImageClassification
 import java.lang.IllegalArgumentException
 
+/**
+ * An abstract factory class for creating instances of image classification.
+ *
+ * This class provides abstract methods to create instances of [IImageClassification] with default options
+ * and with custom confidence thresholds.
+ */
 abstract class ImageClassificationFactory {
+    /**
+     * Creates an instance of image classification with default options.
+     *
+     * @return An instance of [IImageClassification] for performing image classification.
+     */
     abstract fun create(): IImageClassification
+
+    /**
+     * Creates an instance of image classification with a custom confidence threshold.
+     *
+     * @param confidenceThreshold The confidence threshold to be applied for classification. It should be a value
+     * between 0.0 and 1.0.
+     * @return An instance of [IImageClassification] for performing image classification with the specified confidence threshold.
+     */
     abstract fun create(confidenceThreshold: Float): IImageClassification
 
     companion object {
-        inline fun <reified T: IImageClassification> createFactory(): ImageClassificationFactory =
-            when(T::class){
+        /**
+         * Creates a factory instance based on the specified image classification type.
+         *
+         * @throws IllegalArgumentException if the specified image classification type is not supported.
+         * @return An instance of [ImageClassificationFactory] for the specified image classification type.
+         */
+        inline fun <reified T : IImageClassification> createFactory(): ImageClassificationFactory =
+            when (T::class) {
                 HuaweiImageClassification::class -> HuaweiImageClassificationFactory()
                 GoogleImageLabeling::class -> GoogleImageLabelingFactory()
                 else -> throw IllegalArgumentException()

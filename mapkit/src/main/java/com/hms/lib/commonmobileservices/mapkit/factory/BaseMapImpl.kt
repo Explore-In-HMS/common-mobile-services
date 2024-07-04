@@ -16,9 +16,19 @@ package com.hms.lib.commonmobileservices.mapkit.factory
 import com.hms.lib.commonmobileservices.mapkit.helper.DistanceUtil
 import com.hms.lib.commonmobileservices.mapkit.model.LatLng
 
+/**
+ * BaseMapImpl is an abstract class that implements the CommonMap interface.
+ * It serves as a foundation for various map implementations by providing common functionality.
+ */
 abstract class BaseMapImpl : CommonMap {
-
-    override fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng) : Double{
-        return DistanceUtil().calculateDistance(p1,p2)
+    /**
+     * Calculates the distance between two points on the map.
+     *
+     * @param p1 The first LatLng representing the starting point.
+     * @param p2 The second LatLng representing the destination point.
+     * @return The distance between the two points in meters.
+     */
+    override fun calculateDistanceBetweenPoints(p1: LatLng, p2: LatLng): Double {
+        return DistanceUtil().calculateDistance(p1, p2)
     }
 }

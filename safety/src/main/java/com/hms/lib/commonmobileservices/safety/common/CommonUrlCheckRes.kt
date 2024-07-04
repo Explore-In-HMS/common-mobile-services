@@ -13,6 +13,12 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
+/**
+ * Class representing common URL check response.
+ */
 class CommonUrlCheckRes {
-    var urlCheckThreats: List<CommonUrlCheckThreat>?=null
+    /**
+     * List of common URL check threats.
+     */
+    var urlCheckThreats: List<CommonUrlCheckThreat>? = null
 }

@@ -25,24 +25,36 @@ import com.hms.lib.commonmobileservices.speechtotext.manager.ISpeechToTextAPI
 import com.hms.lib.commonmobileservices.core.ResultData
 import com.huawei.hms.mlsdk.common.MLApplication
 
+/**
+ * Implementation of ISpeechToTextAPI for Huawei Mobile Services (HMS).
+ */
 class HuaweiSpeechToTextKit : ISpeechToTextAPI {
 
+    /**
+     * Initiates the speech-to-text process.
+     *
+     * @param activity The activity context.
+     * @param recordAudioResultCode The code to be used for the result of the speech-to-text operation.
+     * @param languageCode The language code for speech recognition.
+     * @param hmsApiKey The API key required for speech recognition in Huawei's ML Kit (unused in HMS implementation).
+     */
     override fun performSpeechToText(
         activity: Activity,
         recordAudioResultCode: Int,
-        languageCode:String,
-        hmsApiKey:String
+        languageCode: String,
+        hmsApiKey: String
     ) {
-        if(ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.RECORD_AUDIO
-            ) == PackageManager.PERMISSION_GRANTED){
-            MLApplication.getInstance().apiKey=hmsApiKey
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            MLApplication.getInstance().apiKey = hmsApiKey
             val intent = Intent(activity, MLAsrCaptureActivity::class.java)
                 .putExtra(MLAsrCaptureConstants.LANGUAGE, languageCode) // Example: "zh-CN": Chinese; "en-US": English; "fr-FR": French; "es-ES": Spanish; "de-DE": German; "it-IT": Italian
                 .putExtra(MLAsrCaptureConstants.FEATURE, MLAsrCaptureConstants.FEATURE_WORDFLUX)
             activity.startActivityForResult(intent, recordAudioResultCode)
-        }else{
+        } else {
             val strings = arrayOf(
                 Manifest.permission.RECORD_AUDIO,
             )
@@ -50,6 +62,14 @@ class HuaweiSpeechToTextKit : ISpeechToTextAPI {
         }
     }
 
+    /**
+     * Parses the speech-to-text result data.
+     *
+     * @param callback Callback to receive the parsed speech-to-text result.
+     * @param activity The activity context.
+     * @param data The intent data containing the speech-to-text result.
+     * @param resultCode The result code of the speech-to-text operation.
+     */
     override fun parseSpeechToTextData(
         callback: (speechToTextResult: ResultData<String>) -> Unit,
         activity: Activity,
@@ -64,7 +84,7 @@ class HuaweiSpeechToTextKit : ISpeechToTextAPI {
                     callback.invoke(ResultData.Success(textData))
                 }
             }
-            MLAsrCaptureConstants.ASR_FAILURE ->  callback.invoke(ResultData.Failed())
+            MLAsrCaptureConstants.ASR_FAILURE -> callback.invoke(ResultData.Failed())
         }
     }
 }

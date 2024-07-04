@@ -13,8 +13,28 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.core
 
+/**
+ * A callback interface for handling asynchronous results.
+ *
+ * @param T The type of result returned by the asynchronous operation.
+ */
 interface ResultCallback<T> {
+    /**
+     * Called when the asynchronous operation succeeds.
+     *
+     * @param result The result of the asynchronous operation, if any. Defaults to null.
+     */
     fun onSuccess(result: T? = null)
+
+    /**
+     * Called when the asynchronous operation fails.
+     *
+     * @param error The exception that occurred during the operation.
+     */
     fun onFailure(error: Exception)
+
+    /**
+     * Called when the asynchronous operation is cancelled.
+     */
     fun onCancelled()
 }

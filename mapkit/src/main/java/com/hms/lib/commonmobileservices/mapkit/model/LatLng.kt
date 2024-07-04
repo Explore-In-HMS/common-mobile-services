@@ -13,4 +13,13 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class LatLng (val lat: Double, val lng: Double)
+/**
+ * Represents a geographical point defined by its latitude and longitude coordinates.
+ *
+ * @property lat The latitude coordinate of the geographical point, in degrees.
+ * @property lng The longitude coordinate of the geographical point, in degrees.
+ */
+data class LatLng(
+    val lat: Double,
+    val lng: Double
+)

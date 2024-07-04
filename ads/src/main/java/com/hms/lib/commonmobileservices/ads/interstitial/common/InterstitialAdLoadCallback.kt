@@ -16,7 +16,21 @@ package com.hms.lib.commonmobileservices.ads.interstitial.common
 
 import com.hms.lib.commonmobileservices.ads.interstitial.implementation.IInterstitialAd
 
+/**
+ * Callback interface for handling interstitial ad loading events.
+ */
 interface InterstitialAdLoadCallback {
+    /**
+     * Called when the loading of an interstitial ad fails.
+     *
+     * @param adError The error message describing the reason for the ad load failure.
+     */
     fun onAdLoadFailed(adError: String)
+
+    /**
+     * Called when an interstitial ad is successfully loaded.
+     *
+     * @param interstitialAd The loaded interstitial ad instance.
+     */
     fun onInterstitialAdLoaded(interstitialAd: IInterstitialAd)
 }

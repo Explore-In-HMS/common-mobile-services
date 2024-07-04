@@ -13,6 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.identity.common
 
+/**
+ * Abstract class representing a mapper that converts objects of type [I] to objects of type [O].
+ * @param I The input type to be mapped from.
+ * @param O The output type to be mapped to.
+ */
 abstract class Mapper<I, O> {
+
+    /**
+     * Maps an object of type [I] to an object of type [O].
+     * @param from The object to be mapped.
+     * @return The mapped object of type [O].
+     */
     abstract fun map(from: I): O
 }

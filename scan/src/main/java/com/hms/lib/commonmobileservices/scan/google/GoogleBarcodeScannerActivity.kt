@@ -34,21 +34,31 @@ import com.hms.lib.commonmobileservices.scan.R
 import java.io.IOException
 
 
+/**
+ * Activity for scanning barcodes using Google's barcode scanning APIs.
+ */
 class GoogleBarcodeScannerActivity : AppCompatActivity() {
     private var surfaceView: SurfaceView? = null
     private var intentData = ""
     private var barcodeDetector: BarcodeDetector? = null
     private var cameraSource: CameraSource? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_google_barcode_scanner)
         initComponents()
     }
 
+    /**
+     * Initializes the UI components.
+     */
     private fun initComponents() {
         surfaceView = findViewById(R.id.surfaceView)
     }
 
+    /**
+     * Initializes barcode detectors and camera sources.
+     */
     private fun initialiseDetectorsAndSources() {
         barcodeDetector = BarcodeDetector.Builder(this)
             .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -89,6 +99,9 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Opens the camera for scanning.
+     */
     private fun openCamera() {
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -104,6 +117,11 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Sets the barcode data and finishes the activity.
+     *
+     * @param barCode The detected barcode data.
+     */
     private fun setBarCode(barCode: SparseArray<Barcode>) {
         intentData = barCode.valueAt(0).displayValue
         val resultIntent = Intent()
@@ -122,6 +140,9 @@ class GoogleBarcodeScannerActivity : AppCompatActivity() {
         initialiseDetectorsAndSources()
     }
 
+    /**
+     * Handles the result of the permission request.
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,

@@ -19,37 +19,43 @@ import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 
+/**
+ * Manager class for handling text-to-speech functionality with Huawei and Google services.
+ */
 class HuaweiGoogleTextToSpeechManager(context: Context) {
 
     private var textToSpeechService: ITextToSpeechAPI? = null
 
     init {
+        // Initialize the text-to-speech service based on the mobile service type
         textToSpeechService = TextToSpeechFactory().getMLService(
-            Device.getMobileServiceType(
-                context,
-                MobileServiceType.HMS
-            )
+            Device.getMobileServiceType(context, MobileServiceType.HMS)
         )!!
     }
 
+    /**
+     * Runs the text-to-speech functionality.
+     *
+     * @param text The text to be converted to speech.
+     * @param activity The activity context.
+     * @param apiKey The API key required for the service.
+     * @param languageCode The language code for the speech.
+     * @param personType The type of voice for the speech.
+     */
     fun runTextToSpeech(
         text: String,
         activity: Activity,
         apiKey: String,
         languageCode: String,
-        personType: String,
+        personType: String
     ) {
-        textToSpeechService?.runTextToSpeech(
-            text,
-            activity,
-            apiKey,
-            languageCode,
-            personType
-        )
+        textToSpeechService?.runTextToSpeech(text, activity, apiKey, languageCode, personType)
     }
 
+    /**
+     * Stops the text-to-speech functionality.
+     */
     fun stopTextToSpeech() {
         textToSpeechService?.stopTextToSpeech()
     }
-
 }

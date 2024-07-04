@@ -22,8 +22,21 @@ import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.hms.location.ActivityIdentificationService
 
+/**
+ * A service class for managing activity identification updates across different mobile service providers.
+ *
+ * This class provides methods for creating and deleting activity identification updates.
+ */
 class CommonActivityIdentificationService {
 
+    /**
+     * Creates activity conversion updates.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param activityConversionReq The request for activity conversion updates.
+     * @param pendingIntent The pending intent to be triggered when activity conversion updates occur.
+     * @return A [Work] object representing the asynchronous task of creating activity conversion updates.
+     */
     @SuppressLint("MissingPermission")
     fun createActivityConversionUpdates(
         context: Context,
@@ -38,6 +51,7 @@ class CommonActivityIdentificationService {
             )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> ActivityRecognition.getClient(context).requestActivityTransitionUpdates(
                 activityConversionReq.toGMSActivityConversionReq(),
                 pendingIntent
@@ -48,6 +62,14 @@ class CommonActivityIdentificationService {
         return worker
     }
 
+    /**
+     * Creates activity identification updates.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param intervalMillis The time interval for activity identification updates in milliseconds.
+     * @param pendingIntent The pending intent to be triggered when activity identification updates occur.
+     * @return A [Work] object representing the asynchronous task of creating activity identification updates.
+     */
     @SuppressLint("MissingPermission")
     fun createActivityIdentificationUpdates(
         context: Context,
@@ -62,6 +84,7 @@ class CommonActivityIdentificationService {
             )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> ActivityRecognition.getClient(context)
                 .requestActivityUpdates(intervalMillis, pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
@@ -70,6 +93,13 @@ class CommonActivityIdentificationService {
         return worker
     }
 
+    /**
+     * Deletes activity conversion updates.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param pendingIntent The pending intent associated with the activity conversion updates to be deleted.
+     * @return A [Work] object representing the asynchronous task of deleting activity conversion updates.
+     */
     @SuppressLint("MissingPermission")
     fun deleteActivityConversionUpdates(
         context: Context,
@@ -82,6 +112,7 @@ class CommonActivityIdentificationService {
             )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> ActivityRecognition.getClient(context)
                 .removeActivityTransitionUpdates(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
@@ -90,6 +121,13 @@ class CommonActivityIdentificationService {
         return worker
     }
 
+    /**
+     * Deletes activity identification updates.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param pendingIntent The pending intent associated with the activity identification updates to be deleted.
+     * @return A [Work] object representing the asynchronous task of deleting activity identification updates.
+     */
     @SuppressLint("MissingPermission")
     fun deleteActivityIdentificationUpdates(
         context: Context,
@@ -102,6 +140,7 @@ class CommonActivityIdentificationService {
             )
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }
+
             else -> ActivityRecognition.getClient(context).removeActivityUpdates(pendingIntent)
                 .addOnSuccessListener { worker.onSuccess(Unit) }
                 .addOnFailureListener { worker.onFailure(it) }

@@ -16,13 +16,38 @@ package com.hms.lib.commonmobileservices.awareness.model
 
 import java.io.Serializable
 
+/**
+ * Represents awareness data related to headset usage.
+ *
+ * @property headsetDataArray A mutable list containing integer values representing headset data.
+ * @constructor Creates an instance of [HeadsetAwarenessData] with the provided headset data array.
+ */
 data class HeadsetAwarenessData(
     val headsetDataArray: MutableList<Int>
-):Serializable
+) : Serializable
 
-enum class HeadsetDataValue(val value:Int) {
+/**
+ * Enumerates different values representing headset usage.
+ *
+ * @property value The integer value associated with the headset usage.
+ */
+enum class HeadsetDataValue(val value: Int) {
+    /**
+     * Represents headset usage as false.
+     */
     HEADSET_FALSE(0),
+
+    /**
+     * Represents headset usage as true.
+     */
     HEADSET_TRUE(1);
+
+    /**
+     * Provides a way to retrieve a [HeadsetDataValue] enum instance based on its integer value.
+     *
+     * @param value The integer value associated with the headset usage.
+     * @return The [HeadsetDataValue] enum instance corresponding to the given value, or null if not found.
+     */
     companion object {
         fun valueOf(value: Int) = values().find { it.value == value }
     }

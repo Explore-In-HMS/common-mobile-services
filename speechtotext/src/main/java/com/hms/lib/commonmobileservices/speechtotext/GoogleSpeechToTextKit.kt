@@ -25,19 +25,29 @@ import androidx.core.app.ActivityCompat
 import com.hms.lib.commonmobileservices.speechtotext.manager.ISpeechToTextAPI
 import com.hms.lib.commonmobileservices.core.ResultData
 
-class GoogleSpeechToTextKit :
-    ISpeechToTextAPI {
-
+/**
+ * Implementation of ISpeechToTextAPI for Google Mobile Services (GMS).
+ */
+class GoogleSpeechToTextKit : ISpeechToTextAPI {
+    /**
+     * Initiates the speech-to-text process.
+     *
+     * @param activity The activity context.
+     * @param recordAudioResultCode The code to be used for the result of the speech-to-text operation.
+     * @param languageCode The language code for speech recognition.
+     * @param hmsApiKey The API key required for speech recognition (unused in GMS implementation).
+     */
     override fun performSpeechToText(
         activity: Activity,
         recordAudioResultCode: Int,
         languageCode: String,
-        hmsApiKey:String
+        hmsApiKey: String
     ) {
-        if(ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.RECORD_AUDIO
-            ) == PackageManager.PERMISSION_GRANTED){
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             val sttIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
             sttIntent.putExtra(
                 RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -52,7 +62,7 @@ class GoogleSpeechToTextKit :
                 e.printStackTrace()
                 Toast.makeText(activity, "Your device does not support STT.", Toast.LENGTH_LONG).show()
             }
-        }else{
+        } else {
             val strings = arrayOf(
                 Manifest.permission.RECORD_AUDIO,
             )
@@ -60,6 +70,14 @@ class GoogleSpeechToTextKit :
         }
     }
 
+    /**
+     * Parses the speech-to-text result data.
+     *
+     * @param callback Callback to receive the parsed speech-to-text result.
+     * @param activity The activity context.
+     * @param data The intent data containing the speech-to-text result.
+     * @param resultCode The result code of the speech-to-text operation.
+     */
     override fun parseSpeechToTextData(
         callback: (speechToTextResult: ResultData<String>) -> Unit,
         activity: Activity,

@@ -21,9 +21,15 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.hms.lib.commonmobileservices.core.ResultData
 
+/**
+ * Class responsible for managing object detection using Huawei or Google ML services.
+ */
 class HuaweiGoogleObjectDetectionManager(context: Context) {
     private var objectDetectionService: IObjectDetectionAPI? = null
 
+    /**
+     * Initializes the object detection service based on the mobile service type.
+     */
     init {
         objectDetectionService = ObjectDetectionFactory().getMLService(
             Device.getMobileServiceType(
@@ -33,6 +39,13 @@ class HuaweiGoogleObjectDetectionManager(context: Context) {
         )
     }
 
+    /**
+     * Performs static image detection using the selected ML service.
+     * @param callback Callback function to handle the detection result.
+     * @param activity The activity context.
+     * @param bitmap The input image bitmap.
+     * @param apiKey The API key for Google ML service.
+     */
     fun staticImageDetection(
         callback: (detectedValue: ResultData<List<Any>>) -> Unit,
         activity: Activity,

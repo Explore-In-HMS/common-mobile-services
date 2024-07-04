@@ -20,12 +20,33 @@ import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 import com.huawei.hms.location.ActivityIdentificationResponse
 
+
+/**
+ * A class representing a response for common activity identification.
+ *
+ * This class encapsulates lists of activity identification data, the most identified activity,
+ * and related time information.
+ *
+ * @property activityIdentificationDataList The list of activity identification data.
+ * @property mostActivityIdentification The most identified activity.
+ * @property time The time of the identification.
+ * @property elapsedTimeFromReboot The elapsed time in milliseconds since the device reboot.
+ */
 class CommonActivityIdentificationResponse {
     var activityIdentificationDataList: List<CommonActivityIdentificationData>? = null
     var mostActivityIdentification: CommonActivityIdentificationData? = null
     var time: Long? = null
     var elapsedTimeFromReboot: Long? = null
 
+    /**
+     * Fetches common activity identification response from an intent.
+     *
+     * This function extracts activity identification data from the provided intent based on the mobile service provider.
+     *
+     * @param context The context used for accessing resources and services.
+     * @param intent The intent from which to extract activity identification data.
+     * @return A [CommonActivityIdentificationResponse] containing the extracted activity identification data.
+     */
     fun fetchDataFromIntent(
         context: Context,
         intent: Intent
@@ -33,6 +54,7 @@ class CommonActivityIdentificationResponse {
         return when (Device.getMobileServiceType(context)) {
             MobileServiceType.HMS -> ActivityIdentificationResponse.getDataFromIntent(intent)
                 .toCommonActivityIdentificationResponse()
+
             else -> ActivityRecognitionResult.extractResult(intent)
                 ?.toCommonActivityIdentificationResponse()
         }

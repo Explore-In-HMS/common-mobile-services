@@ -13,8 +13,22 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.safety.common
 
+/**
+ * Class representing a common response containing information about malicious apps.
+ */
 class CommonMaliciousAppResponse {
-    var getMaliciousAppsList: List<CommonMaliciousAppsData>?=null
-    var rtnCode: Int?=null
-    var errorReason: String?=null
+    /**
+     * List of malicious apps data.
+     */
+    var getMaliciousAppsList: List<CommonMaliciousAppsData>? = null
+
+    /**
+     * Return code indicating the status of the response.
+     */
+    var rtnCode: Int? = null
+
+    /**
+     * Error reason in case of failure.
+     */
+    var errorReason: String? = null
 }

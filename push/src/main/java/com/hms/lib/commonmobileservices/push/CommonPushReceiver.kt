@@ -22,6 +22,11 @@ import com.hms.lib.commonmobileservices.push.model.PushMessage
 import com.hms.lib.commonmobileservices.push.model.Token
 
 private const val TAG = "CommonPushReceiver"
+
+/**
+ * A base BroadcastReceiver class for handling common push notification events.
+ * Extend this class to implement custom handling for push notification events.
+ */
 open class CommonPushReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         intent?.let {
@@ -54,18 +59,43 @@ open class CommonPushReceiver : BroadcastReceiver() {
         }
     }
 
+    /**
+     * Called when a push message is received.
+     * Override this method to handle received push messages.
+     * @param remoteMessage The received push message.
+     */
     open fun onMessageReceived(remoteMessage: PushMessage) {
     }
 
+    /**
+     * Called when messages are deleted from the server.
+     * Override this method to handle deleted messages event.
+     */
     open fun onDeletedMessages() {
     }
 
+    /**
+     * Called when a message is successfully sent to the server.
+     * Override this method to handle message sent event.
+     * @param messageId The ID of the sent message.
+     */
     open fun onMessageSent(messageId: String) {
     }
 
+    /**
+     * Called when an error occurs while sending a message.
+     * Override this method to handle message send error event.
+     * @param messageId The ID of the message.
+     * @param exception The exception that occurred during send.
+     */
     open fun onSendError(messageId: String, exception: Exception) {
     }
 
+    /**
+     * Called when a new token is generated.
+     * Override this method to handle token generation event.
+     * @param token The new token generated.
+     */
     open fun onNewToken(token: Token) {
     }
 }

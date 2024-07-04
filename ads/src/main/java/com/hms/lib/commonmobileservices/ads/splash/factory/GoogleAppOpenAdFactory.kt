@@ -18,6 +18,16 @@ import com.google.android.gms.ads.appopen.AppOpenAd
 import com.hms.lib.commonmobileservices.ads.splash.implementation.GoogleAppOpenAd
 import com.hms.lib.commonmobileservices.ads.splash.implementation.ISplashAd
 
-class GoogleAppOpenAdFactory(private val appOpenAd: AppOpenAd): SplashAdFactory() {
+/**
+ * Factory class for creating Google App Open ads.
+ *
+ * @param appOpenAd The Google App Open ad to be used for creating the splash ad.
+ */
+class GoogleAppOpenAdFactory(private val appOpenAd: AppOpenAd) : SplashAdFactory() {
+    /**
+     * Creates an instance of the Google App Open ad.
+     *
+     * @return An instance of the ISplashAd interface representing the Google App Open ad.
+     */
     override fun create(): ISplashAd = GoogleAppOpenAd(appOpenAd)
 }

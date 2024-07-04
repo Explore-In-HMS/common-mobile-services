@@ -17,44 +17,59 @@ import android.content.Context
 import com.hms.lib.commonmobileservices.core.Device
 import com.hms.lib.commonmobileservices.core.MobileServiceType
 
+/**
+ * A data class representing common activity identification data.
+ *
+ * This class encapsulates information about identified activities and their corresponding possibilities.
+ *
+ * @property possibility The possibility of the identified activity.
+ * @property identificationActivity The type of identified activity.
+ */
 class CommonActivityIdentificationData {
 
-    companion object{
-        var VEHICLE="VEHICLE"
-        var BIKE="BIKE"
-        var FOOT="FOOT"
-        var STILL="STILL"
-        var OTHERS="OTHERS"
-        var WALKING="WALKING"
-        var RUNNING="RUNNING"
+    companion object {
+        var VEHICLE = "VEHICLE"
+        var BIKE = "BIKE"
+        var FOOT = "FOOT"
+        var STILL = "STILL"
+        var OTHERS = "OTHERS"
+        var WALKING = "WALKING"
+        var RUNNING = "RUNNING"
     }
 
-        fun activityType(ctx:Context,type:String):Int{
-            if(Device.getMobileServiceType(ctx) == MobileServiceType.HMS){
-                return when(type){
-                    "VEHICLE" -> 100
-                    "BIKE" -> 101
-                    "FOOT"-> 102
-                    "STILL"-> 103
-                    "OTHERS"-> 104
-                    "WALKING"-> 107
-                    "RUNNING"-> 108
-                     else -> -1
-                }
-            }else{
-                return when(type){
-                    "VEHICLE" -> 0
-                    "BIKE" -> 1
-                    "FOOT"-> 2
-                    "STILL"-> 3
-                    "OTHERS"-> 4
-                    "WALKING"-> 7
-                    "RUNNING"-> 8
-                    else -> -1
-                }
+    /**
+     * Maps the activity type to its corresponding identifier.
+     *
+     * @param ctx The context used for accessing resources and services.
+     * @param type The type of activity to be mapped.
+     * @return The identifier corresponding to the activity type.
+     */
+    fun activityType(ctx: Context, type: String): Int {
+        if (Device.getMobileServiceType(ctx) == MobileServiceType.HMS) {
+            return when (type) {
+                "VEHICLE" -> 100
+                "BIKE" -> 101
+                "FOOT" -> 102
+                "STILL" -> 103
+                "OTHERS" -> 104
+                "WALKING" -> 107
+                "RUNNING" -> 108
+                else -> -1
+            }
+        } else {
+            return when (type) {
+                "VEHICLE" -> 0
+                "BIKE" -> 1
+                "FOOT" -> 2
+                "STILL" -> 3
+                "OTHERS" -> 4
+                "WALKING" -> 7
+                "RUNNING" -> 8
+                else -> -1
             }
         }
+    }
 
-    var possibility: Int?=null
-    var identificationActivity:Int?=null
+    var possibility: Int? = null
+    var identificationActivity: Int? = null
 }

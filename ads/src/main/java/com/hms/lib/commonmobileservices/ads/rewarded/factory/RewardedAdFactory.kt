@@ -20,10 +20,25 @@ import com.hms.lib.commonmobileservices.ads.rewarded.implementation.HuaweiReward
 import com.hms.lib.commonmobileservices.ads.rewarded.implementation.IRewardedAd
 import com.huawei.hms.ads.reward.RewardAd
 
+/**
+ * Abstract factory class for creating rewarded ads.
+ */
 abstract class RewardedAdFactory {
+    /**
+     * Abstract method to create a rewarded ad.
+     *
+     * @return The created rewarded ad.
+     */
     abstract fun create(): IRewardedAd
 
     companion object {
+        /**
+         * Creates a rewarded ad factory based on the type of rewarded ad.
+         *
+         * @param rewardedAd The rewarded ad instance.
+         * @return The created rewarded ad factory.
+         * @throws IllegalArgumentException if the provided types are incompatible.
+         */
         inline fun <reified T : IRewardedAd, reified K> createFactory(rewardedAd: K): RewardedAdFactory {
             when (T::class) {
                 HuaweiRewardedAd::class -> {

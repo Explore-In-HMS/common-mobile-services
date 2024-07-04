@@ -28,90 +28,165 @@ import com.hms.lib.commonmobileservices.mapkit.factory.MapFactory
 import com.hms.lib.commonmobileservices.mapkitcommon.R
 import com.hms.lib.commonmobileservices.mapkitcommon.databinding.CommonMapViewBinding
 
-class CommonMapView @JvmOverloads constructor(lifecycleContext: Context,
-                    attrs: AttributeSet? = null,
-                    defStyle: Int =0 ,
-                    defStyleRes: Int = 0
-                    )
-    : RelativeLayout(lifecycleContext, attrs,defStyle,defStyleRes){
+/**
+ * Custom view representing a common map view that can be used with either Huawei Maps or Google Maps.
+ *
+ * @param lifecycleContext The context associated with the lifecycle of the map view.
+ * @param attrs The attribute set for the view.
+ * @param defStyle An attribute in the current theme that contains a reference to a style resource to apply to this view.
+ * @param defStyleRes A resource identifier of a style resource that supplies default values for the view, used only if defStyleAttr is 0 or can not be found in the theme. Can be 0 to not look for defaults.
+ */
+class CommonMapView @JvmOverloads constructor(
+    lifecycleContext: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+    defStyleRes: Int = 0
+) : RelativeLayout(lifecycleContext, attrs, defStyle, defStyleRes) {
+
+    /**
+     * The underlying CommonMap instance associated with this CommonMapView.
+     */
     private lateinit var _myCommonMap: CommonMap
-    val mapImpl : CommonMap
+
+    /**
+     * Gets the underlying CommonMap instance associated with this CommonMapView.
+     */
+    val mapImpl: CommonMap
         get() = _myCommonMap
 
+    /**
+     * The binding instance for the CommonMapView, used for accessing layout elements and binding data.
+     */
     private val binding: CommonMapViewBinding
 
-    private val currentContext=lifecycleContext
+    /**
+     * The context associated with the lifecycle of the CommonMapView.
+     */
+    private val currentContext = lifecycleContext
 
+
+    /**
+     * Initializes the CommonMapView.
+     * - Retrieves the API key for Huawei Maps from the provided attributes.
+     * - Determines whether to use a custom map based on the provided attributes.
+     * - Inflates the view binding.
+     * - If not using a custom map:
+     *   - Creates and initializes the underlying CommonMap instance using MapFactory.
+     *   - Sets layout parameters for the map view.
+     *   - Adds the map view to the root layout.
+     *
+     * @param attrs The attribute set for the view.
+     */
     init {
-        // getting api key for huawei
+        // Getting the API key for Huawei Maps
         val typedArray = context.obtainStyledAttributes(
             attrs,
             R.styleable.CommonMapViewParams, 0, 0
         )
         val apiKey = typedArray.getString(R.styleable.CommonMapViewParams_hms_api_key)
-        val useCustomMap = typedArray.getBoolean(R.styleable.CommonMapViewParams_use_custom_map,false)
+        val useCustomMap =
+            typedArray.getBoolean(R.styleable.CommonMapViewParams_use_custom_map, false)
 
         typedArray.recycle()
 
-        binding = CommonMapViewBinding.inflate(LayoutInflater.from(currentContext),this,true)
+        // Inflating the view binding
+        binding = CommonMapViewBinding.inflate(LayoutInflater.from(currentContext), this, true)
 
-        if(!useCustomMap){
+        if (!useCustomMap) {
+            // Creating and initializing the CommonMap instance if not using a custom map
             _myCommonMap =
-                MapFactory.createAndGetMap(context,
+                MapFactory.createAndGetMap(
+                    context,
                     Device.getMobileServiceType(context, preferredDistributeType),
                     apiKey
                 )
+            // Setting layout parameters for the map view
             _myCommonMap.getMapView().layoutParams = LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
             )
+            // Adding the map view to the root layout
             binding.rlRootCommonMapView.addView(_myCommonMap.getMapView())
         }
     }
 
-
-    fun setCommonMap(commonMap: CommonMap){
-        _myCommonMap=commonMap
-        binding.rlRootCommonMapView
-            .addView(_myCommonMap.getMapView())
+    /**
+     * Sets the underlying CommonMap instance for this CommonMapView.
+     *
+     * @param commonMap The CommonMap instance to set.
+     */
+    fun setCommonMap(commonMap: CommonMap) {
+        _myCommonMap = commonMap
+        binding.rlRootCommonMapView.addView(_myCommonMap.getMapView())
     }
 
-    fun onCreate(bundle: Bundle?,lifecycle: Lifecycle) : CommonMap {
+    /**
+     * Initializes the CommonMapView with the provided bundle and lifecycle.
+     *
+     * @param bundle The bundle containing saved state information.
+     * @param lifecycle The lifecycle of the CommonMapView.
+     * @return The initialized CommonMap instance.
+     */
+    fun onCreate(bundle: Bundle?, lifecycle: Lifecycle): CommonMap {
         _myCommonMap.onCreate(bundle)
         lifecycle.addObserver(MyObserver(_myCommonMap))
         return mapImpl
     }
 
-    companion object{
-        var preferredDistributeType : MobileServiceType?=null
+    /**
+     * Companion object to hold the preferred distribution type for mobile services.
+     */
+    companion object {
+        /**
+         * The preferred distribution type for mobile services.
+         */
+        var preferredDistributeType: MobileServiceType? = null
     }
 
-    internal class MyObserver(private val commonMap: CommonMap) : LifecycleObserver{
+    /**
+     * Observer class to handle lifecycle events for the associated CommonMap instance.
+     *
+     * @property commonMap The CommonMap instance to observe.
+     */
+    internal class MyObserver(private val commonMap: CommonMap) : LifecycleObserver {
+        /**
+         * Handles the ON_START lifecycle event by calling [CommonMap.onStart].
+         */
         @OnLifecycleEvent(Lifecycle.Event.ON_START)
-        fun start(){
+        fun start() {
             commonMap.onStart()
         }
 
+        /**
+         * Handles the ON_RESUME lifecycle event by calling [CommonMap.onResume].
+         */
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        fun resume(){
+        fun resume() {
             commonMap.onResume()
         }
 
+        /**
+         * Handles the ON_PAUSE lifecycle event by calling [CommonMap.onPause].
+         */
         @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        fun pause(){
+        fun pause() {
             commonMap.onPause()
         }
 
+        /**
+         * Handles the ON_STOP lifecycle event by calling [CommonMap.onStop].
+         */
         @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-        fun stop(){
+        fun stop() {
             commonMap.onStop()
         }
 
+        /**
+         * Handles the ON_DESTROY lifecycle event by calling [CommonMap.onDestroy].
+         */
         @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun destroy(){
+        fun destroy() {
             commonMap.onDestroy()
         }
-
     }
-
 }

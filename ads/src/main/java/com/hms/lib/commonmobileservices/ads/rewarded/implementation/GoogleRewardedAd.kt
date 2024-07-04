@@ -24,35 +24,52 @@ import com.hms.lib.commonmobileservices.ads.rewarded.common.IRewardItem
 import com.hms.lib.commonmobileservices.ads.rewarded.common.UserRewardEarnedListener
 import com.hms.lib.commonmobileservices.ads.rewarded.common.MetaDataChangedListener
 
+/**
+ * Implementation of the IRewardedAd interface for Google rewarded ads.
+ *
+ * @property _rewarded The Google rewarded ad instance.
+ */
 class GoogleRewardedAd(private var _rewarded: RewardedAd) : IRewardedAd {
+    /**
+     * Retrieves the metadata associated with the rewarded ad.
+     *
+     * @return The metadata bundle.
+     */
     override fun getMetaData(): Bundle = _rewarded.adMetadata
 
+    /**
+     * Sets a listener for metadata changes on the rewarded ad.
+     *
+     * @param callback The callback to be invoked when metadata changes.
+     */
     override fun setOnMetadataChangedListener(callback: MetaDataChangedListener) {
         val listener = OnAdMetadataChangedListener { callback.onMetaDataChanged() }
         _rewarded.onAdMetadataChangedListener = listener
     }
 
+    /**
+     * Sets whether the rewarded ad should be shown in immersive mode.
+     *
+     * @param value Boolean indicating whether to enable immersive mode.
+     */
     override fun setImmersive(value: Boolean) {
         _rewarded.setImmersiveMode(value)
     }
 
+    /**
+     * Shows the rewarded ad to the user.
+     *
+     * @param activity The activity context in which to show the ad.
+     * @param callback The callback for handling user's earned rewards.
+     */
     override fun show(activity: Activity, callback: UserRewardEarnedListener) {
-        val listener = object : OnUserEarnedRewardListener {
-            override fun onUserEarnedReward(p0: RewardItem) {
-                val rewardItem = object : IRewardItem {
-                    override fun getAmount(): Int {
-                        return p0.amount
-                    }
-
-                    override fun getTypeOrName(): String {
-                        return p0.type
-                    }
-
-                }
-                callback.onUserEarnedReward(rewardItem)
+        val listener = OnUserEarnedRewardListener { p0 ->
+            val rewardItem = object : IRewardItem {
+                override fun getAmount(): Int? = p0.amount
+                override fun getTypeOrName(): String? = p0.type
             }
+            callback.onUserEarnedReward(rewardItem)
         }
         _rewarded.show(activity, listener)
     }
-
 }

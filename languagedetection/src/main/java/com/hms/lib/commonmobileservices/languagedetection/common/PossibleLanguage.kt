@@ -13,6 +13,11 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.languagedetection.common
 
+/**
+ * Data class representing a possible language detected during language identification.
+ * @param langCode The language code representing the detected language.
+ * @param confidence The confidence score indicating the level of confidence in the detection result.
+ */
 data class PossibleLanguage(
     val langCode: String,
     val confidence: Float

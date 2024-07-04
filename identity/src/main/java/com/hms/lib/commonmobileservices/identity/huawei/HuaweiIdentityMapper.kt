@@ -17,7 +17,16 @@ import com.hms.lib.commonmobileservices.identity.common.Mapper
 import com.hms.lib.commonmobileservices.identity.model.UserAddressResponse
 import com.huawei.hms.identity.entity.UserAddress
 
+/**
+ * Mapper implementation to convert UserAddress objects to UserAddressResponse objects specifically for Huawei identity mapping.
+ */
 class HuaweiIdentityMapper : Mapper<UserAddress, UserAddressResponse>() {
+
+    /**
+     * Maps a UserAddress object to a UserAddressResponse object for Huawei identity mapping.
+     * @param from The UserAddress object to be mapped.
+     * @return The mapped UserAddressResponse object.
+     */
     override fun map(from: UserAddress): UserAddressResponse = UserAddressResponse(
         title = from.name,
         addressLine = from.addressLine1 + from.addressLine2,

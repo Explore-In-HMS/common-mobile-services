@@ -17,7 +17,19 @@ import com.google.android.gms.safetynet.SafetyNetApi
 import com.hms.lib.commonmobileservices.safety.SafetyServiceResponse
 import com.hms.lib.commonmobileservices.safety.common.Mapper
 
-class GoogleSafetyMapper: Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse?>() {
+/**
+ * Mapper class for mapping SafetyNet API's RecaptchaTokenResponse to SafetyServiceResponse.
+ * This mapper is used to map the response token from SafetyNet API's RecaptchaTokenResponse
+ * to a SafetyServiceResponse object.
+ */
+class GoogleSafetyMapper : Mapper<SafetyNetApi.RecaptchaTokenResponse, SafetyServiceResponse?>() {
+
+    /**
+     * Maps the RecaptchaTokenResponse to SafetyServiceResponse.
+     *
+     * @param from The source RecaptchaTokenResponse object to be mapped.
+     * @return A SafetyServiceResponse object containing the response token, or null if the token is empty.
+     */
     override fun map(from: SafetyNetApi.RecaptchaTokenResponse): SafetyServiceResponse? = from.tokenResult?.let {
         SafetyServiceResponse(responseToken = it)
     }

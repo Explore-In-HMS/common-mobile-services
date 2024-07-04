@@ -13,7 +13,17 @@
 // limitations under the License.
 package com.hms.lib.commonmobileservices.mapkit.model
 
-data class VisibleRegion (
+/**
+ * Represents the visible region on a map view, defined by the four corners of the viewport
+ * (near left, near right, far left, and far right) and the bounds enclosing the visible area.
+ *
+ * @property nearLeft The geographical point at the top-left corner of the visible region.
+ * @property nearRight The geographical point at the top-right corner of the visible region.
+ * @property farLeft The geographical point at the bottom-left corner of the visible region.
+ * @property farRight The geographical point at the bottom-right corner of the visible region.
+ * @property bounds The bounds of the visible area, enclosing all visible geographical points.
+ */
+data class VisibleRegion(
     val nearLeft: LatLng,
     val nearRight: LatLng,
     var farLeft: LatLng,
