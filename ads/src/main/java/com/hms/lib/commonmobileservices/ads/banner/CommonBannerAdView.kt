@@ -21,6 +21,14 @@ import com.huawei.hms.ads.BannerAdSize
 import com.huawei.hms.ads.banner.BannerView
 
 @SuppressLint("CustomViewStyleable")
+/**
+ * A custom view that encapsulates banner ad views for both GMS (Google Mobile Services) and HMS (Huawei Mobile Services).
+ * It dynamically initializes the appropriate ad view based on the mobile service type available on the device.
+ *
+ * @param context The context to use.
+ * @param attrs The attributes of the XML tag that is inflating the view.
+ * @param defStyleAttr An attribute in the current theme that contains a reference to a style resource that supplies defaults values for the view. Can be 0 to not look for defaults.
+ */
 class CommonBannerAdView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -50,6 +58,11 @@ class CommonBannerAdView @JvmOverloads constructor(
         typedArray.recycle()
     }
 
+    /**
+     * Initializes the appropriate banner ad view based on the mobile service type.
+     *
+     * @param callback The callback to be invoked when an ad is loaded or fails to load.
+     */
     fun initialize(callback: BannerAdLoadCallback) {
 
         when (Device.getMobileServiceType(context)) {
@@ -101,16 +114,28 @@ class CommonBannerAdView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Loads a GMS banner ad.
+     */
     private fun loadGMSAd() {
         val adRequest = AdRequest.Builder().build()
         gmsAdView.loadAd(adRequest)
     }
 
+    /**
+     * Loads an HMS banner ad.
+     */
     private fun loadHMSAd() {
         val adParam = AdParam.Builder().build()
         hmsAdView.loadAd(adParam)
     }
 
+    /**
+     * Returns the appropriate GMS ad size based on the provided integer.
+     *
+     * @param size The integer representing the ad size.
+     * @return The corresponding GMS AdSize.
+     */
     private fun getGMSAdSize(size: Int): AdSize {
         return when (size) {
             1 -> AdSize.LARGE_BANNER
@@ -123,6 +148,12 @@ class CommonBannerAdView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Returns the appropriate HMS ad size based on the provided integer.
+     *
+     * @param size The integer representing the ad size.
+     * @return The corresponding HMS BannerAdSize.
+     */
     private fun getHMSAdSize(size: Int): BannerAdSize {
         return when (size) {
             1 -> BannerAdSize.BANNER_SIZE_360_57
@@ -135,6 +166,9 @@ class CommonBannerAdView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Cleans up resources when the view is detached from the window.
+     */
     override fun onDetachedFromWindow() {
         gmsAdView.destroy()
         hmsAdView.destroy()
