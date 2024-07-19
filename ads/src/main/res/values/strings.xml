@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="unsupported_mobile_service_type">Unsupported mobile service type.</string>
+    <string name="you_must_enter_the_gms_ad_unit_id">You must enter the GMS ad unit ID.</string>
+    <string name="you_must_enter_the_hms_ad_unit_id">You must enter the HMS ad unit ID.</string>
 </resources>
