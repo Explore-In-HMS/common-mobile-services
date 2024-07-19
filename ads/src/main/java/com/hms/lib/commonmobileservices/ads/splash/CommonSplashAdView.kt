@@ -48,11 +48,26 @@ class CommonSplashAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * The HMS splash view used to display the Huawei splash ad.
+     */
     private lateinit var hmsSplashView: SplashView
 
+    /**
+     * The ad unit ID for GMS (Google Mobile Services) splash ad.
+     */
     private var gmsAdUnitId: String? = null
+
+    /**
+     * The ad unit ID for HMS (Huawei Mobile Services) splash ad.
+     */
     private var hmsAdUnitId: String? = null
+
+    /**
+     * Indicates whether the splash ad has been paused.
+     */
     private var hasPaused: Boolean = false
+
 
     /**
      * Gets the current screen orientation.
