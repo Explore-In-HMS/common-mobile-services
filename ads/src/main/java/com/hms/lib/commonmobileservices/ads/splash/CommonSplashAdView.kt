@@ -24,9 +24,23 @@ import com.huawei.hms.ads.splash.SplashAd
 import com.huawei.hms.ads.splash.SplashView
 import com.huawei.hms.ads.splash.SplashView.SplashAdLoadListener
 
+/**
+ * The timeout duration for the splash ad in milliseconds.
+ */
 const val AD_TIMEOUT = 10000
+
+/**
+ * The message identifier for the ad timeout.
+ */
 const val MSG_AD_TIMEOUT = 1001
 
+
+/**
+ * A custom view to display splash ads from both GMS and HMS.
+ * @param context The context of the application.
+ * @param attrs The attribute set for custom view styling.
+ * @param defStyleAttr Default style attributes.
+ */
 @SuppressLint("CustomViewStyleable")
 class CommonSplashAdView @JvmOverloads constructor(
     context: Context,
@@ -40,6 +54,11 @@ class CommonSplashAdView @JvmOverloads constructor(
     private var hmsAdUnitId: String? = null
     private var hasPaused: Boolean = false
 
+    /**
+     * Gets the current screen orientation.
+     * @return [ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE] if the orientation is landscape,
+     * [ActivityInfo.SCREEN_ORIENTATION_PORTRAIT] otherwise.
+     */
     private var screenOrientation: Int
         get() {
             val config = resources.configuration
@@ -50,6 +69,10 @@ class CommonSplashAdView @JvmOverloads constructor(
             }
         }
 
+    /**
+     * Handler to manage the timeout for the splash ad.
+     * If the ad is not loaded within the specified timeout, this handler will trigger the `jump` method to proceed.
+     */
     private val timeoutHandler = Handler(Looper.getMainLooper()) {
         if (it.what == MSG_AD_TIMEOUT) {
             if (hasWindowFocus()) {
@@ -59,6 +82,10 @@ class CommonSplashAdView @JvmOverloads constructor(
         false
     }
 
+    /**
+     * Initializes the CommonSplashAdView with attributes from XML.
+     * This block reads the custom attributes defined for the view and sets the relevant properties.
+     */
     init {
         val typedArray = context.obtainStyledAttributes(
             attrs,
@@ -73,6 +100,10 @@ class CommonSplashAdView @JvmOverloads constructor(
         typedArray.recycle()
     }
 
+    /**
+     * Loads the appropriate splash ad based on the mobile service type.
+     * @param callback The callback to be invoked when the ad is loaded or fails to load.
+     */
     fun load(
         callback: SplashAdLoadCallback,
     ) {
@@ -132,6 +163,9 @@ class CommonSplashAdView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Handles the transition after the splash ad is displayed or fails to load.
+     */
     private fun jump() {
         if (!hasPaused) {
             (hmsSplashView.parent as? ViewGroup)?.removeView(hmsSplashView)
