@@ -74,7 +74,7 @@ class CommonSplashAdView @JvmOverloads constructor(
      * @return [ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE] if the orientation is landscape,
      * [ActivityInfo.SCREEN_ORIENTATION_PORTRAIT] otherwise.
      */
-    private var screenOrientation: Int
+    private val screenOrientation: Int
         get() {
             val config = resources.configuration
             return if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -110,8 +110,6 @@ class CommonSplashAdView @JvmOverloads constructor(
             typedArray.getString(R.styleable.CommonSplashAdViewParams_gms_splash_ad_unit_id)
         hmsAdUnitId =
             typedArray.getString(R.styleable.CommonSplashAdViewParams_hms_splash_ad_unit_id)
-        screenOrientation =
-            typedArray.getInt(R.styleable.CommonSplashAdViewParams_screen_orientation, 0)
         typedArray.recycle()
     }
 
