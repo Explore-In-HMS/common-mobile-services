@@ -14,4 +14,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="CommonSplashAdViewParams">
+        <attr name="gms_splash_ad_unit_id" format="string" />
+        <attr name="hms_splash_ad_unit_id" format="string" />
+        <attr name="screen_orientation" format="integer" />
+    </declare-styleable>
+
 </resources>
