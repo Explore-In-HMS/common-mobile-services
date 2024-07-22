@@ -4,14 +4,19 @@
         <attr name="hms_ad_unit_id" format="string" />
         <attr name="gms_ad_unit_id" format="string" />
         <attr name="ad_size" format="enum">
-            <enum name="banner" value="0"/>
-            <enum name="large_banner" value="1"/>
-            <enum name="full_banner" value="2"/>
-            <enum name="leaderboard" value="3"/>
-            <enum name="medium_rectangle" value="4"/>
-            <enum name="smart_banner" value="5"/>
-            <enum name="wide_skyscraper" value="6"/>
+            <enum name="banner" value="0" />
+            <enum name="large_banner" value="1" />
+            <enum name="full_banner" value="2" />
+            <enum name="leaderboard" value="3" />
+            <enum name="medium_rectangle" value="4" />
+            <enum name="smart_banner" value="5" />
+            <enum name="wide_skyscraper" value="6" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CommonSplashAdViewParams">
+        <attr name="gms_splash_ad_unit_id" format="string" />
+        <attr name="hms_splash_ad_unit_id" format="string" />
     </declare-styleable>
 
 </resources>
