@@ -15,7 +15,6 @@
 package com.hms.lib.commonmobileservices.ads.interstitial
 
 import android.content.Context
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -33,31 +32,18 @@ import com.huawei.hms.ads.AdParam
  */
 class InterstitialAd {
     companion object {
-        /**
-         * Loads an interstitial ad based on the mobile service type.
-         *
-         * @param context The context of the application.
-         * @param hmsAd_ID The ad ID for Huawei Mobile Services.
-         * @param gmsAd_ID The ad ID for Google Mobile Services.
-         * @param gmsAdRequestParams The Google Mobile Services AdRequest parameters. Default is null.
-         * @param hmsAdRequestParams The Huawei Mobile Services AdParam parameters. Default is null.
-         * @param callback The callback for interstitial ad loading events.
-         * @throws IllegalArgumentException if the mobile service type is not supported.
-         */
         fun load(
             context: Context,
-            hmsAd_ID: String,
-            gmsAd_ID: String,
-            gmsAdRequestParams: AdRequest? = null,
-            hmsAdRequestParams: AdParam? = null,
-            callback: InterstitialAdLoadCallback
+            gmsAdUnitId: String,
+            hmsAdUnitId: String,
+            callback: InterstitialAdLoadCallback,
         ) {
             when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
-                    val adRequestParams = gmsAdRequestParams ?: AdManagerAdRequest.Builder().build()
+                    val adRequestParams = AdManagerAdRequest.Builder().build()
                     InterstitialAd.load(
                         context,
-                        gmsAd_ID,
+                        gmsAdUnitId,
                         adRequestParams,
                         object :
                             com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
@@ -75,11 +61,12 @@ class InterstitialAd {
                             }
                         })
                 }
+
                 MobileServiceType.HMS -> {
                     val interstitialAd = com.huawei.hms.ads.InterstitialAd(context)
-                    val adRequestParams = hmsAdRequestParams ?: AdParam.Builder().build()
+                    val adRequestParams = AdParam.Builder().build()
                     interstitialAd.apply {
-                        adId = hmsAd_ID
+                        adId = hmsAdUnitId
                         adListener = object : AdListener() {
                             override fun onAdLoaded() {
                                 super.onAdLoaded()
@@ -97,6 +84,7 @@ class InterstitialAd {
                         loadAd(adRequestParams)
                     }
                 }
+
                 MobileServiceType.NON -> throw IllegalArgumentException()
             }
         }
