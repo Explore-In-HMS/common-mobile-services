@@ -28,10 +28,18 @@ import com.huawei.hms.ads.AdListener
 import com.huawei.hms.ads.AdParam
 
 /**
- * Helper class for loading interstitial ads based on the mobile service type.
+ * A class to manage loading interstitial ads for both Google Mobile Services (GMS) and Huawei Mobile Services (HMS).
  */
 class InterstitialAd {
     companion object {
+        /**
+         * Loads an interstitial ad based on the mobile service type available on the device.
+         *
+         * @param context The context in which the ad is to be loaded.
+         * @param gmsAdUnitId The ad unit ID for Google Mobile Services.
+         * @param hmsAdUnitId The ad unit ID for Huawei Mobile Services.
+         * @param callback The callback to notify when the ad is loaded or if loading fails.
+         */
         fun load(
             context: Context,
             gmsAdUnitId: String,
