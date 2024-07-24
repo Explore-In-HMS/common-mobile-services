@@ -982,6 +982,47 @@ In Addition you need add your ca-app-pub value in androidmanifest.xml
         android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
+### Splash Ad
+Splash ads are displayed immediately after an app is launched, even before the home screen of the app is displayed. You need to design a default slogan image for the app in advance and ensure that the default slogan image is displayed before a splash ad is loaded, enhancing user experience.
+
+#### How to use
+Add CommonSplashAdView to your XML layout file. 
+'app:gms_splash_ad_unit_id' and 'app:hms_splash_ad_unit_id' are used to set the ad unit IDs for Google Mobile Services and Huawei Mobile Services respectively; replace these with your actual ad unit IDs.
+```kt
+    <com.hms.lib.commonmobileservices.ads.splash.CommonSplashAdView
+    android:id="@+id/commonSplashView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:gms_splash_ad_unit_id="ca-app-pub-3940256099942544/9257395921"
+    app:hms_splash_ad_unit_id="testq6zq98hecj"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="parent" />
+```
+Find the CommonSplashAdView in your layout.
+```kt
+val splashAdView: CommonSplashAdView = findViewById(R.id.commonSplashView)
+```
+Call the `load()` function on the `CommonSplashAdView` instance to load the splash ad, passing an instance of `SplashAdLoadCallback` to handle the ad loading process. If the ad fails to load, the `onAdLoadFailed(adError: String)` method logs the error message; if the ad successfully loads, the `onSplashAdLoaded(splashAd: ISplashAd)` method displays the ad by calling `splashAd.show(requireActivity())`.
+```kt
+ splashAdView.load(object : SplashAdLoadCallback {
+    override fun onAdLoadFailed(adError: String) {
+        Log.e("ERROR SPLASH AD: ", adError)
+    }
+
+    override fun onSplashAdLoaded(splashAd: ISplashAd) {
+        splashAd.show(requireActivity())
+    }
+})
+```
+In Addition you need add your ca-app-pub value in androidmanifest.xml
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
+```
+
 ## Face Detection
 With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
 
