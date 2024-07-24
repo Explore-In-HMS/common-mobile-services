@@ -14,10 +14,13 @@
 
 package com.hms.lib.commonmobileservices.ads.interstitial
 
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.hms.lib.commonmobileservices.ads.R
 import com.hms.lib.commonmobileservices.ads.interstitial.common.InterstitialAdLoadCallback
 import com.hms.lib.commonmobileservices.ads.interstitial.factory.InterstitialAdFactory
 import com.hms.lib.commonmobileservices.ads.interstitial.implementation.GoogleInterstitialAd
@@ -42,55 +45,60 @@ class InterstitialAd {
          */
         fun load(
             context: Context,
-            gmsAdUnitId: String,
-            hmsAdUnitId: String,
+            gmsAdUnitId: String? = null,
+            hmsAdUnitId: String? = null,
             callback: InterstitialAdLoadCallback,
         ) {
             when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
                     val adRequestParams = AdManagerAdRequest.Builder().build()
-                    InterstitialAd.load(
-                        context,
-                        gmsAdUnitId,
-                        adRequestParams,
-                        object :
-                            com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
-                            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                                val googleInterstitialAdFactory =
-                                    InterstitialAdFactory.createFactory<GoogleInterstitialAd, InterstitialAd>(
-                                        interstitialAd
-                                    )
-                                googleInterstitialAdFactory.create()
-                                    .let(callback::onInterstitialAdLoaded)
-                            }
+                    if (gmsAdUnitId != null) {
+                        InterstitialAd.load(
+                            context,
+                            gmsAdUnitId,
+                            adRequestParams,
+                            object :
+                                com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback() {
+                                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                                    val googleInterstitialAdFactory =
+                                        InterstitialAdFactory.createFactory<GoogleInterstitialAd, InterstitialAd>(
+                                            interstitialAd
+                                        )
+                                    googleInterstitialAdFactory.create()
+                                        .let(callback::onInterstitialAdLoaded)
+                                }
 
-                            override fun onAdFailedToLoad(adError: LoadAdError) {
-                                callback.onAdLoadFailed(adError.toString())
-                            }
-                        })
+                                override fun onAdFailedToLoad(adError: LoadAdError) {
+                                    callback.onAdLoadFailed(adError.toString())
+                                }
+                            })
+                    } else Log.i(TAG, context.getString(R.string.you_must_enter_the_gms_ad_unit_id))
                 }
 
                 MobileServiceType.HMS -> {
                     val interstitialAd = com.huawei.hms.ads.InterstitialAd(context)
                     val adRequestParams = AdParam.Builder().build()
-                    interstitialAd.apply {
-                        adId = hmsAdUnitId
-                        adListener = object : AdListener() {
-                            override fun onAdLoaded() {
-                                super.onAdLoaded()
-                                val huaweiInterstitialAd =
-                                    InterstitialAdFactory.createFactory<HuaweiInterstitialAd, com.huawei.hms.ads.InterstitialAd>(
-                                        interstitialAd
-                                    )
-                                huaweiInterstitialAd.create().let(callback::onInterstitialAdLoaded)
-                            }
+                    if (hmsAdUnitId != null) {
+                        interstitialAd.apply {
+                            adId = hmsAdUnitId
+                            adListener = object : AdListener() {
+                                override fun onAdLoaded() {
+                                    super.onAdLoaded()
+                                    val huaweiInterstitialAd =
+                                        InterstitialAdFactory.createFactory<HuaweiInterstitialAd, com.huawei.hms.ads.InterstitialAd>(
+                                            interstitialAd
+                                        )
+                                    huaweiInterstitialAd.create()
+                                        .let(callback::onInterstitialAdLoaded)
+                                }
 
-                            override fun onAdFailed(errorCode: Int) {
-                                callback.onAdLoadFailed(errorCode.toString())
+                                override fun onAdFailed(errorCode: Int) {
+                                    callback.onAdLoadFailed(errorCode.toString())
+                                }
                             }
+                            loadAd(adRequestParams)
                         }
-                        loadAd(adRequestParams)
-                    }
+                    } else Log.i(TAG, context.getString(R.string.you_must_enter_the_hms_ad_unit_id))
                 }
 
                 MobileServiceType.NON -> throw IllegalArgumentException()
