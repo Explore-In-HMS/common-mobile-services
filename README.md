@@ -986,8 +986,8 @@ In Addition you need add your ca-app-pub value in androidmanifest.xml
 Splash ads are displayed immediately after an app is launched, even before the home screen of the app is displayed. You need to design a default slogan image for the app in advance and ensure that the default slogan image is displayed before a splash ad is loaded, enhancing user experience.
 
 #### How to use
-Add CommonSplashAdView to your XML layout file. 
-'app:gms_splash_ad_unit_id' and 'app:hms_splash_ad_unit_id' are used to set the ad unit IDs for Google Mobile Services and Huawei Mobile Services respectively; replace these with your actual ad unit IDs.
+Add `CommonSplashAdView` to your XML layout file. 
+`app:gms_splash_ad_unit_id` and `app:hms_splash_ad_unit_id` are used to set the ad unit IDs for Google Mobile Services and Huawei Mobile Services respectively; replace these with your actual ad unit IDs.
 ```kt
     <com.hms.lib.commonmobileservices.ads.splash.CommonSplashAdView
     android:id="@+id/commonSplashView"
@@ -1000,7 +1000,7 @@ Add CommonSplashAdView to your XML layout file.
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="parent" />
 ```
-Find the CommonSplashAdView in your layout.
+Find the `CommonSplashAdView` in your layout.
 ```kt
 val splashAdView: CommonSplashAdView = findViewById(R.id.commonSplashView)
 ```
@@ -1016,7 +1016,7 @@ Call the `load()` function on the `CommonSplashAdView` instance to load the spla
     }
 })
 ```
-In Addition you need add your ca-app-pub value in androidmanifest.xml
+In Addition you need add your ca-app-pub value in `AndroidManifest.xml`
 ```xml
     <meta-data
         android:name="com.google.android.gms.ads.APPLICATION_ID"
