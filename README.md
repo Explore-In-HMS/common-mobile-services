@@ -666,7 +666,7 @@ CommonAnalytics.instance(this)?.getAAID()
 ```
 
 ## Credit Card Scanner
-This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
+This library re a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
 
 ### How to use
 
@@ -934,6 +934,50 @@ fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResul
 ## Ads
 Allows you to show ads in your app. 
 
+### Banner Ad
+Banner ads are rectangular images that occupy a spot within an app's layout, either at the top, middle, or bottom of the device screen. Banner ads refresh automatically at regular intervals. When a user clicks a banner ad, the user is redirected to the advertiser's page.
+
+#### How to use
+Add `CommonBannerAdView` to your layout file
+
+```xml
+	<com.hms.lib.commonmobileservices.ads.banner.CommonBannerAdView
+	        android:id="@+id/cvBannerAd"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        app:hms_ad_unit_id="your_hms_ad_unit_id"
+		app:gms_ad_unit_id="your_gms_ad_unit_id"
+	        app:ad_size="large_banner"
+	        app:layout_constraintBottom_toBottomOf="parent"
+	        />
+```
+| ad_size | GMS | HMS |
+|:--------:|:----------------------------|:--------------------:|
+|    banner     |              AdSize.BANNER              |          BannerAdSize.BANNER_SIZE_320_50            | 
+|     large_banner    |             AdSize.LARGE_BANNER               |          BannerAdSize.BANNER_SIZE_360_57            | 
+|     full_banner    |          AdSize.FULL_BANNER                  |          BannerAdSize.BANNER_SIZE_360_144            | 
+|     leaderboard    |               AdSize.LEADERBOARD             |          BannerAdSize.BANNER_SIZE_468_60            | 
+|     medium_rectangle    |         AdSize.MEDIUM_RECTANGLE                   |           BannerAdSize.BANNER_SIZE_320_100           | 
+|     smart_banner    |                 AdSize.SMART_BANNER           |          BannerAdSize.BANNER_SIZE_DYNAMIC            | 
+|     wide_skyscraper    |             AdSize.WIDE_SKYSCRAPER               |          BannerAdSize.BANNER_SIZE_320_50            | 
+
+Then in your Activity or Fragment, you need to call `initialize()` function to get banner ad. By passing `BannerAdLoadCallback` you will get `IBannerAd` instance in order to show ad.
+
+```kt
+	val commonAdView : CommonBannerAdView = findViewById(R.id.cvBannerAd)
+        
+        commonAdView.initialize(
+            object : BannerAdLoadCallback {
+                override fun onAdLoadFailed(adError: String) {
+                    Log.e("ERROR AD: ", adError)
+                }
+
+                override fun onBannerAdLoaded(bannerAd: IBannerAd) {
+                    Log.e("SUCCESS! ", bannerAd.toString())
+                }
+            }
+        )
+```
 ### Rewarded Ad
 Rewarded ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
 You can specify the reward values associated with the ad units in your app and set different rewards for different ad units. Users will receive the reward for interacting with the ad without needing to install anything.
