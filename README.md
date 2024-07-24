@@ -666,7 +666,7 @@ CommonAnalytics.instance(this)?.getAAID()
 ```
 
 ## Credit Card Scanner
-This library re a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
+This library reads a credit card with device camera. It uses Huawei ML-Card-Bcr library to scan image. But it is inherited from `CreditCardScanner` common interface, so you can use your own implementation of credit card reader. HMS library does not require a Huawei device or HMS Core, so this library works well in all devices.
 
 ### How to use
 
@@ -938,7 +938,7 @@ Allows you to show ads in your app.
 Banner ads are rectangular images that occupy a spot within an app's layout, either at the top, middle, or bottom of the device screen. Banner ads refresh automatically at regular intervals. When a user clicks a banner ad, the user is redirected to the advertiser's page.
 
 #### How to use
-Add `CommonBannerAdView` to your layout file
+Add `CommonBannerAdView` to your layout file.
 
 ```xml
 	<com.hms.lib.commonmobileservices.ads.banner.CommonBannerAdView
