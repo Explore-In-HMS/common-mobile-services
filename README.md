@@ -126,8 +126,6 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:textrecognition
  ### Ads
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:ads:<versionName>'
-implementation 'com.google.android.gms:play-services-ads:22.2.0'
-implementation 'com.huawei.hms:ads-prime:3.4.62.302'
 ```
 ### Face Detection
 ```gradle
