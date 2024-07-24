@@ -982,6 +982,35 @@ In Addition you need add your ca-app-pub value in androidmanifest.xml
         android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
+### Interstitial Ad 
+Interstitial ads are full-screen ads that cover the interface of an app. Such an ad is displayed when a user starts, pauses, or exits an app, without disrupting the user's experience.
+
+#### How to use
+Call the `InterstitialAd.load()` function to load an interstitial ad by passing the `context`, Google Mobile Services (GMS) ad unit ID, Huawei Mobile Services (HMS) ad unit ID, and an instance of `InterstitialAdLoadCallback` to handle the ad loading process. If the ad fails to load, the `onAdLoadFailed(adError: String)` method logs the error message; if the ad successfully loads, the `onInterstitialAdLoaded(interstitialAd: IInterstitialAd)` method displays the ad by calling `interstitialAd.show(requireActivity())`.
+```kt
+InterstitialAd.load(
+    context = requireContext(),
+    gmsAdUnitId = "ca-app-pub-3940256099942544/1033173712",
+    hmsAdUnitId = "testb4znbuh3n2",
+    callback = object : InterstitialAdLoadCallback {
+        override fun onAdLoadFailed(adError: String) {
+            Log.e("ERROR AD: ", adError)
+        }
+
+        override fun onInterstitialAdLoaded(interstitialAd: IInterstitialAd) {
+            interstitialAd.show(requireActivity())
+        }
+    }
+)
+```
+
+In Addition you need add your ca-app-pub value in `AndroidManifest.xml`.
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
+```
+
 ## Face Detection
 With ML Kit's face detection API, you can detect faces in an image, identify key facial features, and get the contours of detected faces. Note that the API detects faces, it does not recognize people. With face detection, you can get the information you need to perform tasks like embellishing selfies and portraits, or generating avatars from a user's photo. Because ML Kit can perform face detection in real time, you can use it in applications like video chat or games that respond to the player's expressions.
 
