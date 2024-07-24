@@ -935,36 +935,43 @@ fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResul
 
 ## Ads
 Allows you to show ads in your app. 
+Firstly, you need add your `AdMob app ID` value in `AndroidManifest.xml` to use Google AdMob.
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
+```
 
 ### Rewarded Ad
-Rewarded ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
+Rewarded Ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
 You can specify the reward values associated with the ad units in your app and set different rewards for different ad units. Users will receive the reward for interacting with the ad without needing to install anything.
 
 #### How to use
-Create an IRewardedAd variable in order to get instance when ads showing is ready.
+Create an `IRewardedAd` variable in order to get instance when ads showing is ready.
 ```kt
     private lateinit var rewardedAd: IRewardedAd
 ```
-First, you need to call static 'load()' function to get rewarded ad instance. 
-By passing 'context', 'hmsAd_ID', 'gmsAd_ID' and 'RewardedAdLoadCallback' you will get IRewardedAd instance in order to show ad.
+First, you need to call static `RewardedAd.load()` function to get rewarded ad instance. 
+By passing `context`, `hmsAdUnitId`, `gmsAdUnitId` and `RewardedAdLoadCallback` you will get `IRewardedAd` instance in order to show ad.
 ```kt
     RewardedAd.load(
         this,
-        "testx9dtjwj8hp",
-        "ca-app-pub-3940256099942544/5224354917",
+        "your_hms_ad_unit_id",
+        "your_gms_ad_unit_id",
         object : RewardedAdLoadCallback {
             override fun onAdLoadFailed(adError: String) {
-                 Log.e("main", adError)
+                 Log.e("ERROR AD:", adError)
             }
             override fun onRewardedAdLoaded(rewardedAd: IRewardedAd) {
+		Log.i("SUCCESS!", rewardedAd.toString())
                 rewardedAd = rewardedAd
             }
         }
     )
 ```
 Call `show()` function whenever you want to show ad. 
-You need to pass 'context' and 'UserRewardEarnedListener' params in order to get reward after user watched the ad.
-You can get reward value by calling 'getAmount()' function.  
+You need to pass `context` and `UserRewardEarnedListener` params in order to get reward after user watched the ad.
+You can get reward value by calling `getAmount()` function.  
 ```kt
     rewardedAd.show(    
         this,
@@ -974,12 +981,6 @@ You can get reward value by calling 'getAmount()' function.
             }
         }
     )
-```
-In Addition you need add your ca-app-pub value in androidmanifest.xml
-```xml
-    <meta-data
-        android:name="com.google.android.gms.ads.APPLICATION_ID"
-        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
 ### Interstitial Ad 
