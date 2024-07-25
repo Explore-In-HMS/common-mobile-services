@@ -932,7 +932,13 @@ fun textRecognition(bitmap: Bitmap, callback: (recognizedValue: RecognitionResul
 ```
 
 ## Ads
-Allows you to show ads in your app. 
+Allows you to show ads in your app. \
+Firstly, you need add your `AdMob app ID` value in `AndroidManifest.xml` to use Google AdMob.
+```xml
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
+```
 
 ### Banner Ad
 Banner ads are rectangular images that occupy a spot within an app's layout, either at the top, middle, or bottom of the device screen. Banner ads refresh automatically at regular intervals. When a user clicks a banner ad, the user is redirected to the advertiser's page.
@@ -945,8 +951,8 @@ Add `CommonBannerAdView` to your layout file.
 	        android:id="@+id/cvBannerAd"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        app:hms_ad_unit_id="your_hms_ad_unit_id"
-		app:gms_ad_unit_id="your_gms_ad_unit_id"
+	        app:hms_ad_unit_id="**your_hms_ad_unit_id**"
+		app:gms_ad_unit_id="**your_gms_ad_unit_id**"
 	        app:ad_size="large_banner"
 	        app:layout_constraintBottom_toBottomOf="parent"
 	        />
@@ -973,55 +979,74 @@ Then in your Activity or Fragment, you need to call `initialize()` function to g
                 }
 
                 override fun onBannerAdLoaded(bannerAd: IBannerAd) {
-                    Log.e("SUCCESS! ", bannerAd.toString())
+                    Log.i("SUCCESS! ", bannerAd.toString())
                 }
             }
         )
 ```
+
+### Interstitial Ad 
+Interstitial ads are full-screen ads that cover the interface of an app. Such an ad is displayed when a user starts, pauses, or exits an app, without disrupting the user's experience.
+
+#### How to use
+Call the `InterstitialAd.load()` function to load an interstitial ad by passing the `context`, Google Mobile Services (GMS) ad unit ID, Huawei Mobile Services (HMS) ad unit ID, and an instance of `InterstitialAdLoadCallback` to handle the ad loading process. If the ad fails to load, the `onAdLoadFailed(adError: String)` method logs the error message; if the ad successfully loads, the `onInterstitialAdLoaded(interstitialAd: IInterstitialAd)` method displays the ad by calling `interstitialAd.show(requireActivity())`.
+```kt
+InterstitialAd.load(
+    context = requireContext(),
+    gmsAdUnitId = "**your_gms_ad_unit_id**",
+    hmsAdUnitId = "**your_hms_ad_unit_id**",
+    callback = object : InterstitialAdLoadCallback {
+        override fun onAdLoadFailed(adError: String) {
+            Log.e("ERROR AD: ", adError)
+        }
+
+        override fun onInterstitialAdLoaded(interstitialAd: IInterstitialAd) {
+	    Log.i("SUCCESS! ", interstitialAd.toString())
+            interstitialAd.show(requireActivity())
+        }
+    }
+)
+```
+
 ### Rewarded Ad
-Rewarded ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
+Rewarded Ads are shown to users in exchange for a reward, such as an extra life or in-app currency. 
 You can specify the reward values associated with the ad units in your app and set different rewards for different ad units. Users will receive the reward for interacting with the ad without needing to install anything.
 
 #### How to use
-Create an IRewardedAd variable in order to get instance when ads showing is ready.
+Create an `IRewardedAd` variable in order to get instance when ads showing is ready.
 ```kt
     private lateinit var rewardedAd: IRewardedAd
 ```
-First, you need to call static 'load()' function to get rewarded ad instance. 
-By passing 'context', 'hmsAd_ID', 'gmsAd_ID' and 'RewardedAdLoadCallback' you will get IRewardedAd instance in order to show ad.
+First, you need to call static `RewardedAd.load()` function to get rewarded ad instance. 
+By passing `context`, `hmsAdUnitId`, `gmsAdUnitId` and `RewardedAdLoadCallback` you will get `IRewardedAd` instance in order to show ad.
 ```kt
     RewardedAd.load(
         this,
-        "testx9dtjwj8hp",
-        "ca-app-pub-3940256099942544/5224354917",
+        "**your_hms_ad_unit_id**",
+        "**your_gms_ad_unit_id**",
         object : RewardedAdLoadCallback {
             override fun onAdLoadFailed(adError: String) {
-                 Log.e("main", adError)
+                 Log.e("ERROR AD:", adError)
             }
             override fun onRewardedAdLoaded(rewardedAd: IRewardedAd) {
+		Log.i("SUCCESS!", rewardedAd.toString())
                 rewardedAd = rewardedAd
             }
         }
     )
 ```
 Call `show()` function whenever you want to show ad. 
-You need to pass 'context' and 'UserRewardEarnedListener' params in order to get reward after user watched the ad.
-You can get reward value by calling 'getAmount()' function.  
+You need to pass `context` and `UserRewardEarnedListener` params in order to get reward after user watched the ad.
+You can get reward value by calling `getAmount()` function.  
 ```kt
     rewardedAd.show(    
         this,
         object : UserRewardEarnedListener {
             override fun onUserEarnedReward(item: IRewardItem) {
-                Log.d("main", "${item.getAmount()} ${item.getTypeOrName()}")
+                Log.d("onUserEarnedReward", "${item.getAmount()} ${item.getTypeOrName()}")
             }
         }
     )
-```
-In Addition you need add your ca-app-pub value in androidmanifest.xml
-```xml
-    <meta-data
-        android:name="com.google.android.gms.ads.APPLICATION_ID"
-        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
 ### Splash Ad
@@ -1035,12 +1060,8 @@ Add `CommonSplashAdView` to your XML layout file.
     android:id="@+id/commonSplashView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:gms_splash_ad_unit_id="ca-app-pub-3940256099942544/9257395921"
-    app:hms_splash_ad_unit_id="testq6zq98hecj"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="parent" />
+    app:gms_splash_ad_unit_id="**your_gms_ad_unit_id**"
+    app:hms_splash_ad_unit_id="**your_hms_ad_unit_id**" />
 ```
 Find the `CommonSplashAdView` in your layout.
 ```kt
@@ -1054,44 +1075,10 @@ Call the `load()` function on the `CommonSplashAdView` instance to load the spla
     }
 
     override fun onSplashAdLoaded(splashAd: ISplashAd) {
+	Log.i("SUCCESS!", splashAd.toString())
         splashAd.show(requireActivity())
     }
 })
-```
-In Addition you need add your ca-app-pub value in `AndroidManifest.xml`
-```xml
-    <meta-data
-        android:name="com.google.android.gms.ads.APPLICATION_ID"
-        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
-```
-
-### Interstitial Ad 
-Interstitial ads are full-screen ads that cover the interface of an app. Such an ad is displayed when a user starts, pauses, or exits an app, without disrupting the user's experience.
-
-#### How to use
-Call the `InterstitialAd.load()` function to load an interstitial ad by passing the `context`, Google Mobile Services (GMS) ad unit ID, Huawei Mobile Services (HMS) ad unit ID, and an instance of `InterstitialAdLoadCallback` to handle the ad loading process. If the ad fails to load, the `onAdLoadFailed(adError: String)` method logs the error message; if the ad successfully loads, the `onInterstitialAdLoaded(interstitialAd: IInterstitialAd)` method displays the ad by calling `interstitialAd.show(requireActivity())`.
-```kt
-InterstitialAd.load(
-    context = requireContext(),
-    gmsAdUnitId = "ca-app-pub-3940256099942544/1033173712",
-    hmsAdUnitId = "testb4znbuh3n2",
-    callback = object : InterstitialAdLoadCallback {
-        override fun onAdLoadFailed(adError: String) {
-            Log.e("ERROR AD: ", adError)
-        }
-
-        override fun onInterstitialAdLoaded(interstitialAd: IInterstitialAd) {
-            interstitialAd.show(requireActivity())
-        }
-    }
-)
-```
-
-In Addition you need add your ca-app-pub value in `AndroidManifest.xml`.
-```xml
-    <meta-data
-        android:name="com.google.android.gms.ads.APPLICATION_ID"
-        android:value="ca-app-pub-YOUR-CA_APP_PUB_HERE" />
 ```
 
 ## Face Detection
