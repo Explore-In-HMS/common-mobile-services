@@ -951,8 +951,8 @@ Add `CommonBannerAdView` to your layout file.
 	        android:id="@+id/cvBannerAd"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        app:hms_ad_unit_id="your_hms_ad_unit_id"
-		app:gms_ad_unit_id="your_gms_ad_unit_id"
+	        app:hms_ad_unit_id="**your_hms_ad_unit_id**"
+		app:gms_ad_unit_id="**your_gms_ad_unit_id**"
 	        app:ad_size="large_banner"
 	        app:layout_constraintBottom_toBottomOf="parent"
 	        />
@@ -993,8 +993,8 @@ Call the `InterstitialAd.load()` function to load an interstitial ad by passing 
 ```kt
 InterstitialAd.load(
     context = requireContext(),
-    gmsAdUnitId = "ca-app-pub-3940256099942544/1033173712",
-    hmsAdUnitId = "testb4znbuh3n2",
+    gmsAdUnitId = "**your_gms_ad_unit_id**",
+    hmsAdUnitId = "**your_hms_ad_unit_id**",
     callback = object : InterstitialAdLoadCallback {
         override fun onAdLoadFailed(adError: String) {
             Log.e("ERROR AD: ", adError)
@@ -1022,8 +1022,8 @@ By passing `context`, `hmsAdUnitId`, `gmsAdUnitId` and `RewardedAdLoadCallback` 
 ```kt
     RewardedAd.load(
         this,
-        "your_hms_ad_unit_id",
-        "your_gms_ad_unit_id",
+        "**your_hms_ad_unit_id**",
+        "**your_gms_ad_unit_id**",
         object : RewardedAdLoadCallback {
             override fun onAdLoadFailed(adError: String) {
                  Log.e("ERROR AD:", adError)
@@ -1060,12 +1060,8 @@ Add `CommonSplashAdView` to your XML layout file.
     android:id="@+id/commonSplashView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:gms_splash_ad_unit_id="ca-app-pub-3940256099942544/9257395921"
-    app:hms_splash_ad_unit_id="testq6zq98hecj"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="parent" />
+    app:gms_splash_ad_unit_id="**your_gms_ad_unit_id**"
+    app:hms_splash_ad_unit_id="**your_hms_ad_unit_id**" />
 ```
 Find the `CommonSplashAdView` in your layout.
 ```kt
