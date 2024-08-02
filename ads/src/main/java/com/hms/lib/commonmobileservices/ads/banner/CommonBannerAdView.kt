@@ -35,8 +35,8 @@ class CommonBannerAdView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private lateinit var gmsAdView: AdView
-    private lateinit var hmsAdView: BannerView
+    private var gmsAdView: AdView? = null
+    private var hmsAdView: BannerView? = null
 
     private var gmsAdUnitId: String? = null
     private var hmsAdUnitId: String? = null
@@ -119,7 +119,7 @@ class CommonBannerAdView @JvmOverloads constructor(
      */
     private fun loadGMSAd() {
         val adRequest = AdRequest.Builder().build()
-        gmsAdView.loadAd(adRequest)
+        gmsAdView?.loadAd(adRequest)
     }
 
     /**
@@ -127,7 +127,7 @@ class CommonBannerAdView @JvmOverloads constructor(
      */
     private fun loadHMSAd() {
         val adParam = AdParam.Builder().build()
-        hmsAdView.loadAd(adParam)
+        hmsAdView?.loadAd(adParam)
     }
 
     /**
@@ -170,8 +170,8 @@ class CommonBannerAdView @JvmOverloads constructor(
      * Cleans up resources when the view is detached from the window.
      */
     override fun onDetachedFromWindow() {
-        gmsAdView.destroy()
-        hmsAdView.destroy()
+        gmsAdView?.destroy()
+        hmsAdView?.destroy()
         super.onDetachedFromWindow()
     }
 }

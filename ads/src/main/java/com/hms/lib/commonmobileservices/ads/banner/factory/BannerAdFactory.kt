@@ -39,7 +39,7 @@ abstract class BannerAdFactory {
          * @return A banner ad factory.
          * @throws IllegalArgumentException If an invalid combination of banner ad type and view type is provided.
          */
-        inline fun <reified T : IBannerAd, reified K> createFactory(bannerAd: K): BannerAdFactory {
+        inline fun <reified T : IBannerAd, reified K> createFactory(bannerAd: K?): BannerAdFactory {
             return when (T::class) {
                 HuaweiBannerAd::class -> {
                     when (K::class) {
