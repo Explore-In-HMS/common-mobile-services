@@ -21,24 +21,24 @@ import com.hms.lib.commonmobileservices.account.common.Scope
  *
  * @property familyName The family name of the user.
  * @property givenName The given name of the user.
- * @property email The email address of the user, can be null if not available.
+ * @property email The email address of the user.
  * @property displayName The display name of the user.
- * @property id The unique ID of the user.
- * @property photoUrl The URI of the user's profile photo, can be null if not available.
- * @property authServiceToken The authentication service token associated with the user.
- * @property idToken The ID token associated with the user.
- * @property accessToken The access token associated with the user.
- * @property scopes The set of scopes granted to the user.
+ * @property id The unique identifier for the user.
+ * @property photoUrl The photo URL of the user.
+ * @property authServiceToken The authentication service token for the user.
+ * @property idToken The ID token for the user.
+ * @property accessToken The access token for the user.
+ * @property scopes The set of granted scopes for the user.
  */
 data class SignInUser(
-    val familyName: String,
-    val givenName: String,
+    val familyName: String?,
+    val givenName: String?,
     val email: String?,
-    val displayName: String,
-    val id: String,
+    val displayName: String?,
+    val id: String?,
     val photoUrl: Uri?,
-    val authServiceToken: String,
-    val idToken: String,
-    val accessToken: String,
-    val scopes: Set<Scope>
+    val authServiceToken: String?,
+    val idToken: String?,
+    val accessToken: String?,
+    val scopes: Set<Scope>?
 )

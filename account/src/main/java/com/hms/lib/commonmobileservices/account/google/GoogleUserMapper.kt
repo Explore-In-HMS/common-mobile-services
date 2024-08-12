@@ -32,16 +32,16 @@ internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser>() {
      * @throws NullPointerException if any required field in GoogleSignInAccount is null.
      */
     override fun map(from: GoogleSignInAccount): SignInUser = SignInUser(
-        familyName = from.familyName!!,
-        givenName = from.givenName!!,
-        email = if (from.email == null) "" else from.email,
-        displayName = from.displayName!!,
-        id = from.id!!,
-        photoUrl = from.photoUrl!!,
-        authServiceToken = if (from.idToken == null) "" else from.idToken!!,
-        idToken = if (from.idToken == null) "" else from.idToken!!,
+        familyName = from.familyName,
+        givenName = from.givenName,
+        email = from.email,
+        displayName = from.displayName,
+        id = from.id,
+        photoUrl = from.photoUrl,
+        authServiceToken = from.idToken,
+        idToken = from.idToken,
         accessToken = "",
-        scopes = getGrantedScopes(from),
+        scopes = getGrantedScopes(from)
     )
 
     /**
