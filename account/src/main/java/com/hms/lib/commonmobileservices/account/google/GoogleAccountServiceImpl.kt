@@ -131,7 +131,7 @@ internal class GoogleAccountServiceImpl(private val context: Context, signInPara
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         task.addOnSuccessListener {
             it.email?.let { it1 -> sharedPrefHelper.setEmail(it1) }
-            signInUser = mapper.map(task.result!!)
+            signInUser = mapper.map(task.result)
             callback.onSuccess(signInUser)
         }
         task.addOnFailureListener { callback.onFailure(task.exception!!) }

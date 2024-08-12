@@ -33,13 +33,13 @@ internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser>() {
     override fun map(from: AuthHuaweiId): SignInUser = SignInUser(
         familyName = from.familyName,
         givenName = from.givenName,
-        email = if (from.email == null) "" else from.email,
+        email = from.email,
         displayName = from.displayName,
         id = from.unionId,
         photoUrl = from.avatarUri,
-        authServiceToken = if (from.accessToken == null) "" else from.accessToken,
-        idToken = if (from.idToken == null) "" else from.idToken,
-        accessToken = if (from.accessToken == null) "" else from.accessToken,
+        authServiceToken = from.accessToken,
+        idToken = from.idToken,
+        accessToken = from.accessToken,
         scopes = getGrantedScopes(from)
     )
 
