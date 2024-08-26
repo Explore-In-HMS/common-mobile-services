@@ -1,8 +1,8 @@
 apply from: "$project.rootDir/base_sdk.gradle"
 
 dependencies {
-    implementation 'com.huawei.hms:ml-computer-translate:3.6.0.312'
-    implementation 'com.google.mlkit:translate:17.0.1'
+    implementation 'com.huawei.hms:ml-computer-translate:3.11.0.302'
+    implementation 'com.google.mlkit:translate:17.0.3'
     api project(':core')
 }
 
