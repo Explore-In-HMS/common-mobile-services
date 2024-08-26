@@ -78,7 +78,9 @@ apmsInstrumentationEnabled=false
 ### Step 6. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
-`latest version: 3.0.3`
+Please write the latest version where the `versionName` is written below:
+
+[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
 ### MapKit
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
