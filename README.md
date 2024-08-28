@@ -4,10 +4,10 @@
 
 # Common Mobile Services
 [![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services/month.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services) [![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
-It is a library that provides a common interface for mobile services for Android developers. Its aim is removing special mobile service dependencies for your app code.
+It is a library that provides a common interface for mobile services for Android developers. Its aim is to remove special mobile service dependencies for your app code.
 This has mainly two benefits:
-1- It removes creation and lifecycle control code from your app code. So your classes get rid of one extra responsibility.(Separation of Concerns)
-2- Makes it possible to use different mobile services. For example not all Android devices has Google Mobile Services(GMS). By doing this library you can use
+1- It removes creation and lifecycle control code from your app code. So your classes get rid of one extra responsibility. (Separation of Concerns)
+2- Makes it possible to use different mobile services. For example, not all Android devices have Google Mobile Services(GMS). By doing this library you can use
 different services without modifying your app code.
 
 This library contains 2 services for now: Google Mobile Services(GMS) and Huawei Mobile Services(HMS). This library will grow with the added services.
@@ -78,7 +78,9 @@ apmsInstrumentationEnabled=false
 ### Step 6. Add the dependency for module(s):
 com.github.Explore-In-HMS.common-mobile-services
 
-`latest version: 3.0.3`
+Please write the latest version where the `versionName` is written below:
+
+[![](https://jitpack.io/v/Explore-In-HMS/common-mobile-services.svg)](https://jitpack.io/#Explore-In-HMS/common-mobile-services)
 ### MapKit
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:mapkit:<versionName>'
@@ -1197,7 +1199,9 @@ imageClassification.analyseImage(bitmap){ classificationResult ->
 ```
 
 ## Account
-This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with single code base.
+This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with a single code base.
+
+Note: To enable Firebase Authentication, activate the Google sign-in method, add your Android app details (app name, package name, and SHA-1 fingerprint), and place the `google-services.json` file in your app directory; similarly, for HMS Account Kit, enter your SHA-256 fingerprint in the AppGallery Connect Project Settings, enable Account Kit, and place the downloaded `agconnect-services.json` file in the same directory.
 
 ### How to use
 
