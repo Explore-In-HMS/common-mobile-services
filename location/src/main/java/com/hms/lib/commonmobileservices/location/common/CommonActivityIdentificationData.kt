@@ -45,8 +45,8 @@ class CommonActivityIdentificationData {
      * @return The identifier corresponding to the activity type.
      */
     fun activityType(ctx: Context, type: String): Int {
-        if (Device.getMobileServiceType(ctx) == MobileServiceType.HMS) {
-            return when (type) {
+        return if (Device.getMobileServiceType(ctx) == MobileServiceType.HMS) {
+            when (type) {
                 "VEHICLE" -> 100
                 "BIKE" -> 101
                 "FOOT" -> 102
@@ -57,7 +57,7 @@ class CommonActivityIdentificationData {
                 else -> -1
             }
         } else {
-            return when (type) {
+            when (type) {
                 "VEHICLE" -> 0
                 "BIKE" -> 1
                 "FOOT" -> 2
