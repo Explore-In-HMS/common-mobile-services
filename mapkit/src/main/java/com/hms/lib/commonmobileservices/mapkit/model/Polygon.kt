@@ -93,7 +93,8 @@ class Polygon(val polygonImpl: Any) {
     fun getPoints(): List<LatLng>? {
         return when (polygonImpl) {
             is HmsPolygon -> polygonImpl.points?.map { it.toLatLng() }
-            else -> (polygonImpl as GmsPolygon).points?.map { it.toLatLng() }
+            is GmsPolygon -> polygonImpl.points.map { it.toLatLng() }
+            else -> null
         }
     }
 
