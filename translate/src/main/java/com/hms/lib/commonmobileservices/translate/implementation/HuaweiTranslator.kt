@@ -97,11 +97,12 @@ class HuaweiTranslator : ITranslator {
     ) {
         val model = MLLocalTranslatorModel.Factory(langCode).create()
         val downloadStrategyFactory = MLModelDownloadStrategy.Factory()
-        if (requireWifi){
+        if (requireWifi) {
             downloadStrategyFactory.needWifi()
         }
+
         val downloadStrategy = downloadStrategyFactory.create()
-        val modelDownloadListener = MLModelDownloadListener { alreadyDownLength, totalLength -> }
+        val modelDownloadListener = MLModelDownloadListener { _, _ -> }
 
         modelManager.downloadModel(model, downloadStrategy, modelDownloadListener)
             .addOnSuccessListener {

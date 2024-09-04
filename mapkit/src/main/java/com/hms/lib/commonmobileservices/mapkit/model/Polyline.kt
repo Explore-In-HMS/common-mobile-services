@@ -82,7 +82,8 @@ class Polyline(val polylineImpl: Any) {
         when (polylineImpl) {
             is HmsPolyline -> polylineImpl.points = points?.map { it?.toHMSLatLng() }
             is GmsPolyline -> polylineImpl.points =
-                points?.map { it?.toGMSLatLng() } as MutableList<com.google.android.gms.maps.model.LatLng>
+                points?.map { it?.toGMSLatLng() }?.toMutableList()
+                    ?: mutableListOf()
         }
     }
 

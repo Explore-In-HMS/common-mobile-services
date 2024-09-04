@@ -16,12 +16,12 @@ package com.hms.lib.commonmobileservices.location.common
 /**
  * Abstract class for mapping input of type [I] to output of type [O].
  */
-abstract class Mapper<I, O> {
+interface Mapper<I, O> {
     /**
      * Map function to convert input of type [I] to output of type [O].
      *
      * @param from The input object to be mapped.
      * @return The mapped output object.
      */
-    abstract fun map(from: I): O
+    fun map(from: I): O
 }

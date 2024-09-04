@@ -151,7 +151,13 @@ fun GeofencingEvent.toCommonGeofenceData(): GeofencingData? {
  * @return The HMS ActivityConversionRequest object.
  */
 fun CommonActivityConversionReq.toHMSActivityConversionReq(): ActivityConversionRequest {
-    return ActivityConversionRequest(activityConversions!!.let { it -> it.map { it.toHMSActivityConversionInfo() } })
+    return ActivityConversionRequest(
+        activityConversions!!.let { conversions ->
+            conversions.map { conversion ->
+                conversion.toHMSActivityConversionInfo()
+            }
+        }
+    )
 }
 
 /**
@@ -160,7 +166,13 @@ fun CommonActivityConversionReq.toHMSActivityConversionReq(): ActivityConversion
  * @return The GMS ActivityTransitionRequest object.
  */
 fun CommonActivityConversionReq.toGMSActivityConversionReq(): ActivityTransitionRequest {
-    return ActivityTransitionRequest(activityConversions!!.let { it -> it.map { it.toGMSActivityConversionInfo() } })
+    return ActivityTransitionRequest(
+        activityConversions!!.let { conversions ->
+            conversions.map { conversion ->
+                conversion.toGMSActivityConversionInfo()
+            }
+        }
+    )
 }
 
 /**
@@ -194,9 +206,11 @@ fun CommonActivityConversionInfo.toGMSActivityConversionInfo(): ActivityTransiti
  * @return The CommonActivityConversionResponse object.
  */
 fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActivityConversionResponse {
-    return CommonActivityConversionResponse().also { it ->
-        it.getActivityConversionDataList =
-            activityConversionDatas.map { it.toCommonConversionData() }
+    return CommonActivityConversionResponse().also { commonResponse ->
+        commonResponse.getActivityConversionDataList =
+            activityConversionDatas.map { conversionData ->
+                conversionData.toCommonConversionData()
+            }
     }
 }
 
@@ -206,8 +220,10 @@ fun ActivityConversionResponse.toCommonActivityConversionResponse(): CommonActiv
  * @return The CommonActivityConversionResponse object.
  */
 fun ActivityTransitionResult.toCommonActivityConversionResponse(): CommonActivityConversionResponse {
-    return CommonActivityConversionResponse().also { it ->
-        it.getActivityConversionDataList = transitionEvents.map { it.toCommonConversionData() }
+    return CommonActivityConversionResponse().also { commonResponse ->
+        commonResponse.getActivityConversionDataList = transitionEvents.map { event ->
+            event.toCommonConversionData()
+        }
     }
 }
 
