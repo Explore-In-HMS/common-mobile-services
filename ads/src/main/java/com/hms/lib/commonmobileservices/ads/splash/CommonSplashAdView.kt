@@ -89,10 +89,8 @@ class CommonSplashAdView @JvmOverloads constructor(
      * If the ad is not loaded within the specified timeout, this handler will trigger the `jump` method to proceed.
      */
     private val timeoutHandler = Handler(Looper.getMainLooper()) {
-        if (it.what == MSG_AD_TIMEOUT) {
-            if (hasWindowFocus()) {
-                jump()
-            }
+        if (it.what == MSG_AD_TIMEOUT && hasWindowFocus()) {
+            jump()
         }
         false
     }
