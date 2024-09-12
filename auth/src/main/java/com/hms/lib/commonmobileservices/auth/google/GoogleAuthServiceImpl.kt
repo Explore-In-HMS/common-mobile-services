@@ -29,6 +29,8 @@ import com.hms.lib.commonmobileservices.core.Work
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+private const val NO_EXISTING_USER = "There is no existing user."
+private const val METHOD_ERROR = "This method cannot be used with Firebase Auth Service"
 /**
  * A service implementation for authentication using Firebase Authentication. This class encapsulates the
  * functionality required to authenticate users via various methods including Google, Facebook, and phone number
@@ -70,7 +72,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                     work.onSuccess(mapper.map(it))
                 } ?: run {
                     signOut()
-                    work.onFailure(AuthException("There is no existing user."))
+                    work.onFailure(AuthException(NO_EXISTING_USER))
                 }
             }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -95,7 +97,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                     work.onSuccess(mapper.map(it))
                 } ?: run {
                     signOut()
-                    work.onFailure(AuthException("There is no existing user."))
+                    work.onFailure(AuthException(NO_EXISTING_USER))
                 }
             }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -119,7 +121,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                     work.onSuccess(mapper.map(it))
                 } ?: run {
                     signOut()
-                    work.onFailure(AuthException("There is no existing user."))
+                    work.onFailure(AuthException(NO_EXISTING_USER))
                 }
             }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -143,7 +145,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                     work.onSuccess(mapper.map(it))
                 } ?: run {
                     signOut()
-                    work.onFailure(AuthException("There is no existing user."))
+                    work.onFailure(AuthException(NO_EXISTING_USER))
                 }
             }
             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -181,14 +183,14 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                             work.onSuccess(mapper.map(it))
                         } ?: run {
                             signOut()
-                            work.onFailure(AuthException("There is no existing user."))
+                            work.onFailure(AuthException(NO_EXISTING_USER))
                         }
                     }
                     .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                     .addOnCanceledListener { work.onCanceled() }
 
             } ?: run { work.onFailure(AuthException("Verification code can not be empty.")) }
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -228,7 +230,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         verifyCode: String
     ): Work<Unit> {
         val work: Work<Unit> = Work()
-        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        work.addOnFailureListener { ExceptionUtil.get(Exception(METHOD_ERROR)) }
         return work
     }
 
@@ -249,7 +251,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -286,7 +288,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
         verifyCode: String
     ): Work<Unit> {
         val work: Work<Unit> = Work()
-        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        work.addOnFailureListener { ExceptionUtil.get(Exception(METHOD_ERROR)) }
         return work
     }
 
@@ -349,7 +351,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -373,7 +375,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -394,7 +396,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -430,7 +432,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
             } ?: run { work.onFailure(AuthException("Unexpected authentication error")) }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -451,7 +453,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -472,7 +474,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: work.onFailure(AuthException("There is no existing user."))
+        } ?: work.onFailure(AuthException(NO_EXISTING_USER))
 
         return work
     }
@@ -485,7 +487,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
      */
     override fun getCode(email: String): Work<Unit> {
         val work: Work<Unit> = Work()
-        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        work.addOnFailureListener { ExceptionUtil.get(Exception(METHOD_ERROR)) }
         return work
     }
 
@@ -497,7 +499,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
      */
     override fun getCodePassword(email: String?): Work<Unit> {
         val work: Work<Unit> = Work()
-        work.addOnFailureListener { ExceptionUtil.get(Exception("This method cannot be used with Firebase Auth Service")) }
+        work.addOnFailureListener { ExceptionUtil.get(Exception(METHOD_ERROR)) }
         return work
     }
 
@@ -566,7 +568,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -588,7 +590,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -611,12 +613,12 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                         work.onSuccess(mapper.map(it))
                     } ?: run {
                         signOut()
-                        work.onFailure(AuthException("There is no existing user."))
+                        work.onFailure(AuthException(NO_EXISTING_USER))
                     }
                 }
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -638,13 +640,13 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                         work.onSuccess(mapper.map(it))
                     } ?: run {
                         signOut()
-                        work.onFailure(AuthException("There is no existing user."))
+                        work.onFailure(AuthException(NO_EXISTING_USER))
                     }
                 }
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -665,13 +667,13 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                         work.onSuccess(mapper.map(it))
                     } ?: run {
                         signOut()
-                        work.onFailure(AuthException("There is no existing user."))
+                        work.onFailure(AuthException(NO_EXISTING_USER))
                     }
                 }
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -699,13 +701,13 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                         work.onSuccess(mapper.map(it))
                     } ?: run {
                         signOut()
-                        work.onFailure(AuthException("There is no existing user."))
+                        work.onFailure(AuthException(NO_EXISTING_USER))
                     }
                 }
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -739,7 +741,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
                             work.onSuccess(mapper.map(it))
                         } ?: run {
                             signOut()
-                            work.onFailure(AuthException("There is no existing user."))
+                            work.onFailure(AuthException(NO_EXISTING_USER))
                         }
                     }
                     .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
@@ -747,7 +749,7 @@ class GoogleAuthServiceImpl(private val context: Context) : AuthService {
 
             } ?: run { work.onFailure(AuthException("Unexpected authentication error")) }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }

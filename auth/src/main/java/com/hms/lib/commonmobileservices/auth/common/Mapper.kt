@@ -20,11 +20,11 @@ package com.hms.lib.commonmobileservices.auth.common
  * @param I the input type.
  * @param O the output type.
  */
-abstract class Mapper<I, O> {
+interface Mapper<I, O> {
     /**
      * Maps input of type [I] to output of type [O].
      * @param from the input to be mapped.
      * @return the mapped output.
      */
-    abstract fun map(from: I): O
+    fun map(from: I): O
 }

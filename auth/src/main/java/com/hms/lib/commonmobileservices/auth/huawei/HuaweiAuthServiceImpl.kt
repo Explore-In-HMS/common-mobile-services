@@ -25,6 +25,9 @@ import com.hms.lib.commonmobileservices.core.Work
 import com.huawei.agconnect.auth.*
 import java.util.*
 
+private const val EMPTY_ERROR = "Verify code can not be empty."
+private const val NO_EXISTING_USER = "There is no existing user."
+
 /**
  * Implementation of AuthService for Huawei AGConnectAuth service.
  */
@@ -32,6 +35,7 @@ class HuaweiAuthServiceImpl : AuthService {
 
     private val agcConnectAuth: AGConnectAuth = AGConnectAuth.getInstance()
     private val mapper: Mapper<AGConnectUser, AuthUser> = AgcUserMapper()
+
 
     /**
      * Signs in using Facebook authentication provider.
@@ -275,7 +279,7 @@ class HuaweiAuthServiceImpl : AuthService {
                         .addOnCanceledListener { work.onCanceled() }
 
                 } ?: run { work.onFailure(AuthException("Email can not be empty.")) }
-            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException(EMPTY_ERROR)) }
         } ?: run { work.onFailure(AuthException("Password can not be empty.")) }
 
         return work
@@ -340,7 +344,7 @@ class HuaweiAuthServiceImpl : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -364,7 +368,7 @@ class HuaweiAuthServiceImpl : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -385,7 +389,7 @@ class HuaweiAuthServiceImpl : AuthService {
                 .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                 .addOnCanceledListener { work.onCanceled() }
 
-        } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+        } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
         return work
     }
@@ -418,10 +422,10 @@ class HuaweiAuthServiceImpl : AuthService {
                             .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                             .addOnCanceledListener { work.onCanceled() }
 
-                    } ?: run { work.onFailure(AuthException("There is no existing user.")) }
+                    } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
 
                 } ?: run { work.onFailure(AuthException("Phone number can not be empty.")) }
-            } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException(EMPTY_ERROR)) }
         } ?: run { work.onFailure(AuthException("Country code can not be empty.")) }
 
         return work
@@ -448,8 +452,8 @@ class HuaweiAuthServiceImpl : AuthService {
                     .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                     .addOnCanceledListener { work.onCanceled() }
 
-            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
-        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
+        } ?: run { work.onFailure(AuthException(EMPTY_ERROR)) }
 
         return work
     }
@@ -475,8 +479,8 @@ class HuaweiAuthServiceImpl : AuthService {
                     .addOnFailureListener { work.onFailure(ExceptionUtil.get(it)) }
                     .addOnCanceledListener { work.onCanceled() }
 
-            } ?: run { work.onFailure(AuthException("There is no existing user.")) }
-        } ?: run { work.onFailure(AuthException("Verify code can not be empty.")) }
+            } ?: run { work.onFailure(AuthException(NO_EXISTING_USER)) }
+        } ?: run { work.onFailure(AuthException(EMPTY_ERROR)) }
 
         return work
     }
