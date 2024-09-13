@@ -23,7 +23,7 @@ private typealias GoogleScope = com.google.android.gms.common.api.Scope
 /**
  * Mapper class to map Google sign-in account to application-specific sign-in user.
  */
-internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser>() {
+internal class GoogleUserMapper : Mapper<GoogleSignInAccount, SignInUser> {
     /**
      * Maps a GoogleSignInAccount instance to a SignInUser instance.
      *
