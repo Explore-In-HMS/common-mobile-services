@@ -23,7 +23,7 @@ private typealias HuaweiScope = com.huawei.hms.support.api.entity.auth.Scope
 /**
  * Mapper class to map Huawei AuthHuaweiId to application-specific sign-in user.
  */
-internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser>() {
+internal class HuaweiUserMapper : Mapper<AuthHuaweiId, SignInUser> {
     /**
      * Maps an AuthHuaweiId instance to a SignInUser instance.
      *

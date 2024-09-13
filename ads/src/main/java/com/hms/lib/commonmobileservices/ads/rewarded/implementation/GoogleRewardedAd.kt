@@ -18,7 +18,6 @@ import android.app.Activity
 import android.os.Bundle
 import com.google.android.gms.ads.OnUserEarnedRewardListener
 import com.google.android.gms.ads.rewarded.OnAdMetadataChangedListener
-import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.hms.lib.commonmobileservices.ads.rewarded.common.IRewardItem
 import com.hms.lib.commonmobileservices.ads.rewarded.common.UserRewardEarnedListener

@@ -220,28 +220,28 @@ abstract class CommonLocationClient(
      * @return True if the required permissions are granted, false otherwise.
      */
     private fun hasLocationPermission(activity: Activity): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            return ActivityCompat.checkSelfPermission(
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            (ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(
+                        activity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED) ||
+                    ActivityCompat.checkSelfPermission(
+                        activity,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
         } else {
-            return ActivityCompat.checkSelfPermission(
+            ActivityCompat.checkSelfPermission(
                 activity,
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(
+                        activity,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
         }
     }
 

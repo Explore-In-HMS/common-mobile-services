@@ -20,12 +20,12 @@ package com.hms.lib.commonmobileservices.account.common
  * @param I the type of the input to be mapped
  * @param O the type of the output after mapping
  */
-abstract class Mapper<I, O> {
+interface Mapper<I, O> {
     /**
      * Maps the input [from] of type [I] to an output of type [O].
      *
      * @param from the input to be mapped
      * @return the output after mapping
      */
-    abstract fun map(from: I): O
+    fun map(from: I): O
 }

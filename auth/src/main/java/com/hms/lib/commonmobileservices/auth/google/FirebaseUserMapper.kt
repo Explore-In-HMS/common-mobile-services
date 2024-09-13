@@ -23,7 +23,7 @@ import com.hms.lib.commonmobileservices.auth.common.ServiceType
 /**
  * Mapper class for mapping [FirebaseUser] instances to [AuthUser] instances.
  */
-class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser>() {
+class FirebaseUserMapper : Mapper<FirebaseUser, AuthUser> {
     /**
      * Maps a [FirebaseUser] instance to an [AuthUser] instance.
      * @param from the source [FirebaseUser] instance to be mapped.

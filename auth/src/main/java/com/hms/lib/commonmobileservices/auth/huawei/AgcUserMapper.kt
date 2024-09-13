@@ -24,7 +24,7 @@ import com.huawei.agconnect.auth.AGConnectUser
 /**
  * Mapper class to map AGConnectUser to AuthUser.
  */
-class AgcUserMapper : Mapper<AGConnectUser, AuthUser>() {
+class AgcUserMapper : Mapper<AGConnectUser, AuthUser> {
 
     /**
      * Maps an AGConnectUser instance to an AuthUser instance.
