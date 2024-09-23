@@ -145,9 +145,9 @@ implementation 'com.github.Explore-In-HMS.common-mobile-services:imageclassifica
 ```gradle
 implementation 'com.github.Explore-In-HMS.common-mobile-services:account:<versionName>'
 ```
-### Auth
+### 
 ```gradle
-implementation 'com.github.Explore-In-HMS.common-mobile-services:auth:<versionName>'
+implementation 'com.github.Explore-In-HMS.common-mobile-services::<versionName>'
 ```
 ### Safety
 ```gradle
@@ -1201,7 +1201,7 @@ imageClassification.analyseImage(bitmap){ classificationResult ->
 ## Account
 This library provides AccountService interface to handle Google Account Service and Huawei Account Kit with a single code base.
 
-Note: To enable Firebase Authentication, activate the Google sign-in method, add your Android app details (app name, package name, and SHA-1 fingerprint), and place the `google-services.json` file in your app directory; similarly, for HMS Account Kit, enter your SHA-256 fingerprint in the AppGallery Connect Project Settings, enable Account Kit, and place the downloaded `agconnect-services.json` file in the same directory.
+Note: To enable Firebase entication, activate the Google sign-in method, add your Android app details (app name, package name, and SHA-1 fingerprint), and place the `google-services.json` file in your app directory; similarly, for HMS Account Kit, enter your SHA-256 fingerprint in the AppGallery Connect Project Settings, enable Account Kit, and place the downloaded `agconnect-services.json` file in the same directory.
 
 ### How to use
 
@@ -1250,6 +1250,8 @@ accountService.signOut()
 
 ## Auth
 This library provides AuthService interface to handle Firebase Auth Service and AGC Auth Service with single code base.
+
+**Note**: In both Firebase (GMS) and the Auth Service (HMS), each authentication method (such as `phone`, `email`, `Google`, `Mobile number`, `Email address`, `HUAWEI ID`) is disabled by default. To use them, you need to go to the respective Console and navigate to the **Authentication** section. In Firebase (GMS), under the **Sign-in method** tab, you can enable each provider, and in the Auth Service (HMS), under the **Authentication mode** tab, you can enable the required options. Without this step, these authentication methods won't be available in your app.
 
 ### How to use
 
