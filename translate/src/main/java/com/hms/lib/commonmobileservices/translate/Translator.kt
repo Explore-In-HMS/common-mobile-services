@@ -35,6 +35,7 @@ class Translator {
          */
         fun getClient(
             context: Context,
+            apiKey: String? = null
         ): ITranslator {
             return when (Device.getMobileServiceType(context)) {
                 MobileServiceType.GMS -> {
@@ -43,9 +44,14 @@ class Translator {
                     translatorFactory.create()
                 }
                 MobileServiceType.HMS -> {
-                    val translatorFactory =
-                        TranslatorFactory.createFactory<HuaweiTranslator>()
-                    translatorFactory.create()
+                    val translatorFactory = TranslatorFactory.createFactory<HuaweiTranslator>()
+                    val translator = translatorFactory.create()
+                    if (translator is HuaweiTranslator) {
+                        apiKey?.let {
+                            translator.setApiKey(it)
+                        } ?: throw IllegalArgumentException("API key is required for HuaweiTranslator")
+                    }
+                    translator
                 }
                 MobileServiceType.NON -> throw IllegalArgumentException()
             }
