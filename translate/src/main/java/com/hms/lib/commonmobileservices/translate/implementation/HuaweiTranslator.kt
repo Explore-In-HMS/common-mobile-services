@@ -17,6 +17,7 @@ import com.hms.lib.commonmobileservices.translate.common.DeleteModelResult
 import com.hms.lib.commonmobileservices.translate.common.DownloadModelResult
 import com.hms.lib.commonmobileservices.translate.common.RequiresModelDownloadResult
 import com.hms.lib.commonmobileservices.translate.common.TranslateResult
+import com.huawei.hms.mlsdk.common.MLApplication
 import com.huawei.hms.mlsdk.model.download.MLLocalModelManager
 import com.huawei.hms.mlsdk.model.download.MLModelDownloadListener
 import com.huawei.hms.mlsdk.model.download.MLModelDownloadStrategy
@@ -32,6 +33,25 @@ class HuaweiTranslator : ITranslator {
 
     private val modelManager = MLLocalModelManager.getInstance()
     private lateinit var translator: MLLocalTranslator
+
+    /**
+     * Sets the API key for the ML Kit application instance.
+     *
+     * This function sets the provided API key to the ML Kit instance. If the
+     * API key is blank or empty, an exception is thrown to indicate that the
+     * API key must be set before initialization.
+     *
+     * @param apiKey The API key to be used for ML Kit services.
+     *
+     * @throws Exception If the provided API key is blank or not set.
+     */
+    fun setApiKey(apiKey: String) {
+        if (apiKey.isBlank()) {
+            throw Exception("API key not set. Set api key before initialization.")
+        } else {
+            MLApplication.getInstance().apiKey = apiKey
+        }
+    }
 
     /**
      * Translates the given text from the source language to the target language.
